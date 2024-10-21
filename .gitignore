@@ -50,3 +50,6 @@ Thumbs.db
 
 # asdf
 .tool-versions
+
+# env
+.env
