@@ -1,12 +1,9 @@
 # frozen_string_literal: true
 
-require 'dotenv/load' # Load environment variables
 require_relative 'environments'
 
 load_gems
-
-require_all File.join(File.dirname(__FILE__), '../app') # Load application files
-
+load_app
 connect_database
 
 # Start the application

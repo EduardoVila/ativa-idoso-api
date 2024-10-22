@@ -10,3 +10,167 @@ require:
 AllCops:
   TargetRubyVersion: 3.3.5
   NewCops: enable
+
+Style/Documentation:
+  Description: 'Document classes and non-namespace modules.'
+  Enabled: false
+
+Style/AndOr:
+  EnforcedStyle: conditionals
+
+Style/AsciiComments:
+  Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false
+
+Style/Encoding:
+  Enabled: true
+
+Style/EndlessMethod:
+  EnforcedStyle: allow_single_line
+
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: always
+
+Style/ModuleFunction:
+  Enabled: false # there area differences between `module_function` and `extend self` (e.g. private methods)
+
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/HeredocIndentation:
+  Enabled: true
+
+Layout/EmptyLinesAroundBlockBody:
+  Exclude:
+    - 'spec/**/*.rb'
+
+Layout/EmptyLinesAroundClassBody:
+  Enabled: false
+
+Layout/EmptyLinesAroundModuleBody:
+  Enabled: false
+
+Layout/EmptyLineBetweenDefs:
+  NumberOfEmptyLines: [1, 2] # min: 1, max: 2
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - 'spec/**/*.rb'
+
+Lint/UselessAccessModifier:
+  MethodCreatingMethods:
+    - 'def_matcher'
+    - 'def_node_matcher'
+
+Metrics/BlockLength:
+  Max: 70
+  Exclude:
+    - 'Rakefile'
+    - '**/*.rake'
+    - 'spec/**/*.rb'
+
+Metrics/MethodLength:
+  Max: 50
+
+Metrics/AbcSize:
+  Max: 25
+
+Metrics/ClassLength:
+  Max: 300
+
+Layout/LineLength:
+  Max: 80
+  AllowHeredoc: true
+  AllowedPatterns: ['^ *# ', '(\A|\s)#']
+  AllowURI: true
+  URISchemes:
+    - http
+    - https
+
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+
+Lint/RaiseException:
+  Enabled: true
+
+Lint/MissingSuper:
+  Exclude:
+    - 'app/commands/*'
+    - 'app/services/**/*'
+
+Lint/StructNewOverride:
+  Enabled: true
+
+Style/ExponentialNotation:
+  Enabled: true
+
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
+
+Style/SlicingWithRange:
+  Enabled: true
+
+Lint/DeprecatedOpenSSLConstant:
+  Enabled: true
+
+Lint/UnusedBlockArgument:
+  Enabled: false
+
+Lint/DuplicateElsifCondition:
+  Enabled: true
+
+Lint/MixedRegexpCaptureTypes:
+  Enabled: true
+
+Style/OptionalBooleanParameter:
+  Enabled: false
+
+Style/AccessorGrouping:
+  Enabled: true
+
+Style/ArrayCoercion:
+  Enabled: true
+
+Style/BisectedAttrAccessor:
+  Enabled: true
+
+Style/CaseLikeIf:
+  Enabled: true
+
+Style/HashAsLastArrayItem:
+  Enabled: true
+
+Style/HashLikeCase:
+  Enabled: true
+
+Style/RedundantAssignment:
+  Enabled: true
+
+Style/RedundantFetchBlock:
+  Enabled: true
+
+Style/RedundantFileExtensionInRequire:
+  Enabled: true
+
+Style/RedundantRegexpCharacterClass:
+  Enabled: true
+
+Style/RedundantRegexpEscape:
+  Enabled: true
+
+Naming/VariableNumber:
+  Enabled: true

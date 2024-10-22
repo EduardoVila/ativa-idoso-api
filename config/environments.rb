@@ -23,12 +23,14 @@ configure :development do
 end
 
 configure :test do
-  set :database, { adapter: 'postgresql', database: ENV.fetch('TEST_DB_URL', nil) }
+  set :database,
+      { adapter: 'postgresql', database: ENV.fetch('TEST_DB_URL', nil) }
   set :show_exceptions, false # Disable error reporting
 end
 
 configure :production do
-  set :database, { adapter: 'postgresql', database: ENV.fetch('PRODUCTION_DB_URL', nil) }
+  set :database,
+      { adapter: 'postgresql', database: ENV.fetch('PRODUCTION_DB_URL', nil) }
   set :show_exceptions, false # Disable error reporting
   set :logging, true # Enable logging in production
 end
@@ -47,4 +49,10 @@ end
 
 def connect_database(environment = ENV.fetch('ENVIRONMENT', 'development'))
   settings.database.establish_connection(environment.to_sym)
+end
+
+def load_app
+  require 'require_all'
+
+  require_all File.join(File.dirname(__FILE__), '../app')
 end

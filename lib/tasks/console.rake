@@ -13,12 +13,9 @@ namespace :console do
     require_relative '../../config/environments'
 
     load_gems
-
-    require_all File.join(File.dirname(__FILE__), '../../app')
-
+    load_app
     connect_database
 
-    # Start the Pry console
-    binding.pry
+    binding.pry # rubocop:disable Lint/Debugger
   end
 end
