@@ -23,8 +23,17 @@ configure :development do
 end
 
 configure :test do
-  set :database,
-      { adapter: 'postgresql', database: ENV.fetch('TEST_DB_URL', nil) }
+  set :database, {
+    adapter: 'postgresql',
+    encoding: 'unicode',
+    database: ENV.fetch('TEST_DB_URL', nil),
+    username: ENV.fetch('DB_USER', nil),
+    password: ENV.fetch('DB_PASSWORD', nil),
+    host: ENV.fetch('DB_HOST', 'localhost'),
+    port: ENV.fetch('DB_PORT', 5432),
+    pool: ENV.fetch('POOL_SIZE', 5),
+    timeout: ENV.fetch('TIMEOUT', 5000)
+  }
   set :show_exceptions, false # Disable error reporting
 end
 
@@ -39,7 +48,7 @@ end
 set :sessions, true
 set :session_secret, ENV['SESSION_SECRET'] || ''
 
-def load_gems(environment = ENV.fetch('ENVIRONMENT', 'development'))
+def load_gems(environment = ENV.fetch('ENVIRONMENT'))
   require 'bundler/setup'
 
   ENV.fetch('BUNDLE_GEMFILE', File.expand_path('../Gemfile', __dir__))
@@ -47,12 +56,18 @@ def load_gems(environment = ENV.fetch('ENVIRONMENT', 'development'))
   Bundler.require(:default, environment.to_sym)
 end
 
-def connect_database(environment = ENV.fetch('ENVIRONMENT', 'development'))
-  settings.database.establish_connection(environment.to_sym)
+def connect_database
+  require 'byebug'
+  byebug
+
+  settings.database.establish_connection
 end
 
 def load_app
   require 'require_all'
 
-  require_all File.join(File.dirname(__FILE__), '../app')
+  app_dir = File.join(File.dirname(__FILE__), '../app')
+
+  # Require all other files
+  require_all app_dir
 end

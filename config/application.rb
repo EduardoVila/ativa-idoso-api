@@ -2,9 +2,9 @@
 
 require_relative 'environments'
 
-load_gems
-load_app
+load_gems(ENV.fetch('ENVIRONMENT'))
 connect_database
+load_app
 
 # Start the application
 class AlpopAnalysis < Sinatra::Base
