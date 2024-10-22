@@ -1,0 +1,29 @@
+# Sample configuration file for Sidekiq.
+# Options here can still be overridden by cmd line args.
+# Place this file at config/sidekiq.yml and Sidekiq will
+# pick it up automatically.
+---
+:verbose: false
+:concurrency: 10
+
+# Set timeout to 8 on Heroku, longer if you manage your own systems.
+:timeout: 8
+
+:logfile: './log/sidekiq.log'
+
+# Sidekiq will run this file through ERB when reading it so you can
+# even put in dynamic logic, like a host-specific queue.
+# http://www.mikeperham.com/2013/11/13/advanced-sidekiq-host-specific-queues/
+:queues:
+  - default
+
+# custom property read by config/initializers/sidekiq.rb
+:redis_url: 'redis://localhost:6379'
+
+# you can override concurrency based on environment
+production:
+  :concurrency: <%= ENV.fetch('SIDEKIQ_MAX_THREADS', 5) %>
+  # override it if needed
+  # :redis_url: 'redis://redis.example.com:7372/12'
+staging:
+  :concurrency: <%= ENV.fetch('SIDEKIQ_MAX_THREADS', 5) %>

@@ -60,6 +60,6 @@ group :development do
   gem 'rubocop-capybara' # Capybara-specific RuboCop rules
   gem 'rubocop-factory_bot' # FactoryBot-specific RuboCop rules
   gem 'rubocop-performance' # Performance optimizations for RuboCop
-  gem 'spring' # Preloads application for faster boot times
-  gem 'spring-watcher-listen' # Watches files for changes in Spring
+  gem 'rubocop-rake' # RuboCop tasks for Rake
+  gem 'rubocop-rspec' # RSpec-specific RuboCop rules
 end
