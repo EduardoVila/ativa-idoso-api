@@ -11,7 +11,7 @@ configure :development do
   set :database, {
     adapter: 'postgresql',
     encoding: 'unicode',
-    database: ENV.fetch('DEVELOPMENT_DB_URL', nil),
+    database: ENV.fetch('DEVELOPMENT_DB', nil),
     username: ENV.fetch('DB_USER', nil),
     password: ENV.fetch('DB_PASSWORD', nil),
     host: ENV.fetch('DB_HOST', 'localhost'),
@@ -26,7 +26,7 @@ configure :test do
   set :database, {
     adapter: 'postgresql',
     encoding: 'unicode',
-    database: ENV.fetch('TEST_DB_URL', nil),
+    database: ENV.fetch('TEST_DB', nil),
     username: ENV.fetch('DB_USER', nil),
     password: ENV.fetch('DB_PASSWORD', nil),
     host: ENV.fetch('DB_HOST', 'localhost'),
@@ -39,7 +39,7 @@ end
 
 configure :production do
   set :database,
-      { adapter: 'postgresql', database: ENV.fetch('PRODUCTION_DB_URL', nil) }
+      { adapter: 'postgresql', database: ENV.fetch('PRODUCTION_DB', nil) }
   set :show_exceptions, false # Disable error reporting
   set :logging, true # Enable logging in production
 end
@@ -48,19 +48,12 @@ end
 set :sessions, true
 set :session_secret, ENV['SESSION_SECRET'] || ''
 
-def load_gems(environment = ENV.fetch('ENVIRONMENT'))
+def load_gems(environment = ENV.fetch('APP_ENV'))
   require 'bundler/setup'
 
   ENV.fetch('BUNDLE_GEMFILE', File.expand_path('../Gemfile', __dir__))
 
   Bundler.require(:default, environment.to_sym)
-end
-
-def connect_database
-  require 'byebug'
-  byebug
-
-  settings.database.establish_connection
 end
 
 def load_app
@@ -71,3 +64,5 @@ def load_app
   # Require all other files
   require_all app_dir
 end
+
+# settings.database.connection.raw_connection.conninfo to get connection info

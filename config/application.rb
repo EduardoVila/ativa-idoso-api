@@ -2,7 +2,7 @@
 
 require_relative 'environments'
 
-load_gems(ENV.fetch('ENVIRONMENT'))
+load_gems
 connect_database
 load_app
 

@@ -16,7 +16,7 @@ preload_app!
 port ENV.fetch('PORT', 3000)
 
 # Specifies the `environment` that Puma will run in.
-environment ENV.fetch('ENVIRONMENT')
+environment ENV.fetch('APP_ENV')
 
 # Establish database connection for each worker
 on_worker_boot do

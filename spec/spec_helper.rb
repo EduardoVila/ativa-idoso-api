@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ENV['ENVIRONMENT'] = 'test'
+ENV['APP_ENV'] = 'test'
 
 require 'simplecov'
 require 'simplecov-lcov'
@@ -8,7 +8,7 @@ require_relative '../config/environments'
 require_relative '../config/application'
 
 connect_database
-load_gems('test')
+load_gems
 load_app
 
 Dotenv.load
@@ -62,11 +62,10 @@ RSpec.configure do |config|
     end
   end
 
-  # Configuração para limpar o banco de dados entre os testes
   config.before(:suite) do
     FactoryBot.find_definitions
 
-    ActiveRecord::Base.connection.migration_context.migrate
+    ActiveRecord::Migration.migrate('db/migrate')
   end
 
   config.before do

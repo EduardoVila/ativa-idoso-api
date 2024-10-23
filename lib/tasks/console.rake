@@ -13,7 +13,6 @@ namespace :console do
     require_relative '../../config/environments'
 
     load_gems
-    connect_database
     load_app
 
     binding.pry # rubocop:disable Lint/Debugger
