@@ -59,3 +59,5 @@ coverage/
 
 # Ruby gems
 .byebug_history
+.pryrc
+bundle/

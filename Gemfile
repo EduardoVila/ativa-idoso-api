@@ -43,6 +43,7 @@ group :development, :test do
   gem 'guard-rspec', require: false # Integration with RSpec
   gem 'pry' # REPL for debugging
   gem 'pry-byebug' # Enhanced REPL for debugging
+  gem 'pry-coolline' # CoolLine integration for Pry
   gem 'rack-test' # Helpers for testing Rack applications
   gem 'rspec' # Testing framework
   gem 'shoulda-matchers' # Matchers for common Rails functionality

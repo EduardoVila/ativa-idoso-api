@@ -19,28 +19,28 @@ set :root, File.expand_path('../alpop-analysis', __dir__) # Set the root directo
 db_config = {
   adapter: 'postgresql',
   encoding: 'unicode',
-  username: ENV.fetch('DB_USER', nil),
-  password: ENV.fetch('DB_PASSWORD', nil),
-  host: ENV.fetch('DB_HOST', 'localhost'),
-  port: ENV.fetch('DB_PORT', 5432),
-  pool: ENV.fetch('POOL_SIZE', 5),
-  timeout: ENV.fetch('TIMEOUT', 5000)
+  username: ENV.fetch('DB_USER'),
+  password: ENV.fetch('DB_PASSWORD'),
+  host: ENV.fetch('DB_HOST'),
+  port: ENV.fetch('DB_PORT'),
+  pool: ENV.fetch('DB_POOL_SIZE'),
+  timeout: ENV.fetch('DB_TIMEOUT')
 }
 
 # Load environment-specific configurations
 configure :development do
-  set :database, db_config.merge(database: ENV.fetch('DEVELOPMENT_DB', nil))
+  set :database, db_config.merge(database: ENV.fetch('DB_DEVELOPMENT'))
   set :show_exceptions, :after_handler # Enable error reporting
   set :logging, true # Enable logging in development
 end
 
 configure :test do
-  set :database, db_config.merge(database: ENV.fetch('TEST_DB', nil))
+  set :database, db_config.merge(database: ENV.fetch('DB_TEST'))
   set :show_exceptions, false # Disable error reporting
 end
 
 configure :production do
-  set :database, db_config.merge(database: ENV.fetch('PRODUCTION_DB', nil))
+  set :database, db_config.merge(database: ENV.fetch('DB_PRODUCTION'))
   set :show_exceptions, false # Disable error reporting
   set :logging, true # Enable logging in production
 end

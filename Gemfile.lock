@@ -74,6 +74,8 @@ GEM
     coderay (1.1.3)
     concurrent-ruby (1.3.4)
     connection_pool (2.4.1)
+    coolline (0.5.0)
+      unicode_utils (~> 1.4)
     crack (1.0.0)
       bigdecimal
       rexml
@@ -191,6 +193,9 @@ GEM
     pry-byebug (3.10.1)
       byebug (~> 11.0)
       pry (>= 0.13, < 0.15)
+    pry-coolline (0.2.6)
+      coolline (~> 0.5)
+      pry (~> 0.13)
     psych (5.1.2)
       stringio
     public_suffix (6.0.1)
@@ -284,7 +289,7 @@ GEM
     shellany (0.0.1)
     shoulda-matchers (6.4.0)
       activesupport (>= 5.2.0)
-    sidekiq (7.3.3)
+    sidekiq (7.3.4)
       connection_pool (>= 2.3.0)
       logger
       rack (>= 2.2.4)
@@ -325,6 +330,7 @@ GEM
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.6.0)
+    unicode_utils (1.4.0)
     uniform_notifier (1.16.0)
     uri (0.13.1)
     useragent (0.16.10)
@@ -380,6 +386,7 @@ DEPENDENCIES
   pg
   pry
   pry-byebug
+  pry-coolline
   puma
   rack-test
   rake

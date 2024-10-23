@@ -5,7 +5,7 @@ require 'spec_helper'
 RSpec.describe Analysis::Report, type: :model do
   describe 'validations' do
     it 'is valid with valid attributes' do
-      report = described_class.new(name: 'test')
+      report = described_class.new
       expect(report).to be_valid
     end
   end
