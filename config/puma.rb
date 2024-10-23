@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'dotenv'
+Dotenv.load
+
 # Specifies the number of worker processes to boot in clustered mode.
 # Workers are forked web server processes. If using threads and workers together
 # the concurrency of the application would be max `threads` * `workers`.

@@ -53,3 +53,9 @@ Thumbs.db
 
 # env
 .env
+
+# coverage folder
+coverage/
+
+# Ruby gems
+.byebug_history

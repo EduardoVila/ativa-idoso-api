@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'require_all'
+
 require_all 'app/models/concerns/delegators'
 
 module Analysis

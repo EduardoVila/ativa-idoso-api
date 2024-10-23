@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class HealthController < ApplicationController
-  set :base, '/health'
+  set :base, '/'
 
   get '/' do
     status 200

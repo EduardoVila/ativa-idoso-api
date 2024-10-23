@@ -10,13 +10,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_23_132431) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_23_203100) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
+  enable_extension "unaccent"
+  enable_extension "uuid-ossp"
 
-  create_table "analysis_reports", force: :cascade do |t|
-    t.string "name"
+  create_table "analysis_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "cpf"
+    t.integer "status"
+    t.float "fee"
+    t.boolean "approved"
+    t.integer "disapproval_situation"
+    t.uuid "api_client_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["api_client_id"], name: "index_analysis_reports_on_api_client_id"
+  end
+
+  create_table "api_clients", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "client_id"
+    t.string "client_secret"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_foreign_key "analysis_reports", "api_clients"
 end

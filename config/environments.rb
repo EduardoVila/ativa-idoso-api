@@ -1,68 +1,66 @@
 # frozen_string_literal: true
 
-require 'sinatra'
-require 'sinatra/activerecord'
-require 'dotenv/load'
+# settings.database.connection.raw_connection.conninfo to get connection info
+# settings.database.connection.raw_connection.conninfo[6][:val] to get connection dbname
 
-Dotenv.load
+require 'sinatra' # Load the Sinatra web framework
+require 'sinatra/activerecord' # Load the ActiveRecord ORM
+require 'dotenv/load' # Load the dotenv gem to read .env files
+
+Dotenv.load # Load environment variables from .env files
+
+# To set the environment, use the APP_ENV environment variable
+set :environment, ENV.fetch('APP_ENV', 'development') # Default to development
+set :server, :puma # Use the Puma web server
+set :app_file, File.expand_path('application.rb', __dir__) # Set the application file
+set :root, File.expand_path('../alpop-analysis', __dir__) # Set the root directory
+
+# Set the database configuration
+db_config = {
+  adapter: 'postgresql',
+  encoding: 'unicode',
+  username: ENV.fetch('DB_USER', nil),
+  password: ENV.fetch('DB_PASSWORD', nil),
+  host: ENV.fetch('DB_HOST', 'localhost'),
+  port: ENV.fetch('DB_PORT', 5432),
+  pool: ENV.fetch('POOL_SIZE', 5),
+  timeout: ENV.fetch('TIMEOUT', 5000)
+}
 
 # Load environment-specific configurations
 configure :development do
-  set :database, {
-    adapter: 'postgresql',
-    encoding: 'unicode',
-    database: ENV.fetch('DEVELOPMENT_DB', nil),
-    username: ENV.fetch('DB_USER', nil),
-    password: ENV.fetch('DB_PASSWORD', nil),
-    host: ENV.fetch('DB_HOST', 'localhost'),
-    port: ENV.fetch('DB_PORT', 5432),
-    pool: ENV.fetch('POOL_SIZE', 5),
-    timeout: ENV.fetch('TIMEOUT', 5000)
-  }
-  set :show_exceptions, true # Enable error reporting
+  set :database, db_config.merge(database: ENV.fetch('DEVELOPMENT_DB', nil))
+  set :show_exceptions, :after_handler # Enable error reporting
+  set :logging, true # Enable logging in development
 end
 
 configure :test do
-  set :database, {
-    adapter: 'postgresql',
-    encoding: 'unicode',
-    database: ENV.fetch('TEST_DB', nil),
-    username: ENV.fetch('DB_USER', nil),
-    password: ENV.fetch('DB_PASSWORD', nil),
-    host: ENV.fetch('DB_HOST', 'localhost'),
-    port: ENV.fetch('DB_PORT', 5432),
-    pool: ENV.fetch('POOL_SIZE', 5),
-    timeout: ENV.fetch('TIMEOUT', 5000)
-  }
+  set :database, db_config.merge(database: ENV.fetch('TEST_DB', nil))
   set :show_exceptions, false # Disable error reporting
 end
 
 configure :production do
-  set :database,
-      { adapter: 'postgresql', database: ENV.fetch('PRODUCTION_DB', nil) }
+  set :database, db_config.merge(database: ENV.fetch('PRODUCTION_DB', nil))
   set :show_exceptions, false # Disable error reporting
   set :logging, true # Enable logging in production
 end
 
-# Common settings for all environments
-set :sessions, true
-set :session_secret, ENV['SESSION_SECRET'] || ''
+# Implement a loader to load the application and its dependencies
+module ApplicationLoader
+  def self.load_gems(environment = ENV.fetch('APP_ENV'))
+    require 'bundler/setup'
 
-def load_gems(environment = ENV.fetch('APP_ENV'))
-  require 'bundler/setup'
+    ENV.fetch('BUNDLE_GEMFILE', File.expand_path('../Gemfile', __dir__))
 
-  ENV.fetch('BUNDLE_GEMFILE', File.expand_path('../Gemfile', __dir__))
+    Bundler.require(:default, environment.to_sym)
+  end
 
-  Bundler.require(:default, environment.to_sym)
+  def self.load_app
+    require 'require_all'
+
+    app_dir = File.join(File.dirname(__FILE__), '../app')
+
+    # Require all other files
+    require_all app_dir
+  end
 end
-
-def load_app
-  require 'require_all'
-
-  app_dir = File.join(File.dirname(__FILE__), '../app')
-
-  # Require all other files
-  require_all app_dir
-end
-
-# settings.database.connection.raw_connection.conninfo to get connection info

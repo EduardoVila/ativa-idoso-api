@@ -4,14 +4,7 @@ ENV['APP_ENV'] = 'test'
 
 require 'simplecov'
 require 'simplecov-lcov'
-require_relative '../config/environments'
 require_relative '../config/application'
-
-connect_database
-load_gems
-load_app
-
-Dotenv.load
 
 SimpleCov::Formatter::LcovFormatter.config.report_with_single_file = true
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
@@ -41,18 +34,19 @@ SimpleCov.at_exit { SimpleCov.result.format! }
 module RSpecMixin
   include Rack::Test::Methods
 
-  def app
+  def application
     Sinatra::Application
+  end
+
+  def settings
+    application.settings
   end
 end
 
 RSpec.configure do |config|
   config.include RSpecMixin
-
-  # Configurar FactoryBot
   config.include FactoryBot::Syntax::Methods
 
-  # Configurar shoulda-matchers
   Shoulda::Matchers.configure do |shoulda_config|
     shoulda_config.integrate do |with|
       with.test_framework :rspec
@@ -63,17 +57,28 @@ RSpec.configure do |config|
   end
 
   config.before(:suite) do
+    FactoryBot.definition_file_paths = %w[./spec/factories]
     FactoryBot.find_definitions
-
-    ActiveRecord::Migration.migrate('db/migrate')
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with :truncation
+    ActiveRecord::Migration.verbose = false
+    ActiveRecord::MigrationContext.new('db/migrate').migrate
   end
 
   config.before do
-    DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.start
   end
 
   config.after do
     DatabaseCleaner.clean
   end
+
+  config.order = :random
+  config.profile_examples = 10
+  config.shared_context_metadata_behavior = :apply_to_host_groups
+  config.default_formatter = 'doc' if config.files_to_run.one?
+  config.disable_monkey_patching!
+  config.mock_with(:rspec) { |mocks| mocks.verify_partial_doubles = true }
+
+  Kernel.srand config.seed
 end
