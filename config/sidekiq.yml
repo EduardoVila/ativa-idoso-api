@@ -17,7 +17,7 @@
 :queues:
   - default
 
-# custom property read by config/initializers/sidekiq.rb
+# custom property read by config/sidekiq.rb
 :redis_url: 'redis://localhost:6379'
 
 # you can override concurrency based on environment
