@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
+# This is the main application file that will be used to start the application
+
 # Load the application loader and environments
 require_relative 'environments'
 require_relative 'router'
 
-# Add the lib directory to the load path
-$LOAD_PATH.unshift(File.expand_path('lib', __dir__))
-
-# Load gems and the application
+# Load gems according to the environment
 ApplicationLoader.load_gems
-ApplicationLoader.load_app
 
 # Start the application
 class AlpopAnalysis < Sinatra::Base
@@ -18,6 +16,10 @@ class AlpopAnalysis < Sinatra::Base
     enable :dump_errors
     enable :raise_errors
   end
+
+  # Load the application and lib directories
+  ApplicationLoader.load_app
+  ApplicationLoader.load_lib
 
   Router.init(self)
 end

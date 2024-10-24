@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# This is the router file that will be used to define the application routes
+
 require 'require_all'
 require_all 'app/controllers'
 
