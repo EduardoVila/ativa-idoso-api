@@ -10,8 +10,47 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
+require 'bcrypt'
+require_relative '../application_record'
+require 'logger'
 module API
-  class Client < ApplicationRecord
+  class Client < ::ApplicationRecord
+    before_validation :set_client_credentials, on: :create
+
     has_many :analysis_reports, class_name: 'Analysis::Report'
+
+    validates :client_id, presence: true, uniqueness: true
+    validates :client_secret, presence: true
+
+    # Method to check if the provided client_secret matches the hashed one
+    # returns the client if the secret is correct, otherwise nil
+    def authenticate(secret)
+      return unless BCrypt::Password.new(client_secret) == secret
+
+      self
+    end
+
+    private
+
+    def set_client_credentials
+      self.client_id = SecureRandom.hex(32)
+      client_secret = SecureRandom.hex(32)
+
+      encoded_client_id = Base64.strict_encode64(client_id)
+      encoded_client_secret = Base64.strict_encode64(client_secret)
+
+      # Log the client credentials to the console for admin use
+      logger = Logger.new($stdout)
+      logger.info(
+        "Database populated with new client:\n" \
+        "client_id: #{client_id}\n" \
+        "client_secret: #{client_secret}\n\n" \
+        "strict base64 client_id: #{encoded_client_id}\n" \
+        "strict base64 client_secret: #{encoded_client_secret}\n"
+      )
+
+      # Hash the client_secret before saving it to the database
+      self.client_secret = BCrypt::Password.create(client_secret)
+    end
   end
 end

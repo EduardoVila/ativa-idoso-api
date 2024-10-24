@@ -12,12 +12,13 @@ gem 'activemodel' # Model framework for ActiveRecord
 gem 'active_model_serializers' # JSON serialization for models
 gem 'activerecord' # ORM for database interaction
 gem 'activesupport' # Utility classes and extensions
+gem 'bcrypt' # Password hashing
 gem 'bullet' # N+1 query detection
-gem 'devise' # User authentication
 gem 'dotenv' # Environment variable management
 gem 'faraday' # HTTP client for making API requests
 gem 'foreman' # Process manager for running multiple processes
 gem 'i18n' # Internationalization support
+gem 'jwt' # JSON Web Token support
 gem 'ostruct' # OpenStruct for storing data
 gem 'pg' # PostgreSQL database adapter
 gem 'puma' # Web server for serving the application

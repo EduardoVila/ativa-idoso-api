@@ -80,6 +80,7 @@ configure :production do
 end
 
 configure :development, :test, :production do
+  set :sessions, true # Enable sessions
   set :server, :puma # Use the Puma web server
   set :app_file, File.expand_path('application.rb', __dir__) # Set the application file
   set :root, File.expand_path('../alpop-analysis', __dir__) # Set the root directory
