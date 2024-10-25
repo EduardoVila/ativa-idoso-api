@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: analysis_steps
@@ -12,9 +10,3 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
-module Analysis
-  class Step < ApplicationRecord
-    has_many :item_steps, class_name: 'Analysis::ItemStep', dependent: :destroy
-    has_many :items, through: :item_steps, class_name: 'Analysis::Item'
-  end
-end

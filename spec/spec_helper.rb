@@ -34,13 +34,8 @@ SimpleCov.at_exit { SimpleCov.result.format! }
 module RSpecMixin
   include Rack::Test::Methods
 
-  def application
-    Sinatra::Application
-  end
-
-  def settings
-    application.settings
-  end
+  def application = Sinatra::Application
+  def settings = application.settings
 end
 
 RSpec.configure do |config|
@@ -65,13 +60,8 @@ RSpec.configure do |config|
     ActiveRecord::MigrationContext.new('db/migrate').migrate
   end
 
-  config.before do
-    DatabaseCleaner.start
-  end
-
-  config.after do
-    DatabaseCleaner.clean
-  end
+  config.before { DatabaseCleaner.start }
+  config.after { DatabaseCleaner.clean }
 
   config.order = :random
   config.profile_examples = 10

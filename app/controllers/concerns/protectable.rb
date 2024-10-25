@@ -14,9 +14,7 @@ module Protectable
     authorization_header&.split&.last
   end
 
-  def decoded_authorization_token
-    jwt_decode(authorization_header)
-  end
+  # TODO
 
   def current_user
     @current_user = API::Client.find(decoded_authorization_token[:api_client_id])

@@ -14,6 +14,7 @@ gem 'activerecord' # ORM for database interaction
 gem 'activesupport' # Utility classes and extensions
 gem 'bcrypt' # Password hashing
 gem 'bullet' # N+1 query detection
+gem 'cpf_cnpj' # CPF and CNPJ validation
 gem 'dotenv' # Environment variable management
 gem 'faraday' # HTTP client for making API requests
 gem 'foreman' # Process manager for running multiple processes
@@ -37,6 +38,7 @@ group :development, :test do
   gem 'byebug' # Debugger for debugging
   gem 'capybara' # Acceptance testing framework
   gem 'clipboard' # Copy to clipboard functionality in tests
+  gem 'cpf_faker' # CPF generation for tests
   gem 'database_cleaner-active_record' # Ensures a clean state for tests
   gem 'factory_bot' # Fixtures replacement for tests
   gem 'faker' # Data generation for tests

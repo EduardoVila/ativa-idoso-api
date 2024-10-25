@@ -12,9 +12,15 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
-module Analysis
-  class Step < ApplicationRecord
-    has_many :item_steps, class_name: 'Analysis::ItemStep', dependent: :destroy
-    has_many :items, through: :item_steps, class_name: 'Analysis::Item'
+FactoryBot.define do
+  factory :analysis_step, class: 'Analysis::Step' do
+    name { Faker::Name.name }
+    command_class do
+      [
+        'ScoreModules::ProScore::FamilyHoldingCommand',
+        'ScoreModules::ProScore::BouncedCheckCommand'
+      ].sample
+    end
+    index_order { rand(1..1000) }
   end
 end

@@ -12,7 +12,8 @@ namespace :console do
   task :start do
     require_relative '../../config/environments' # Environment setup
     require_relative '../../config/application' # Application setup
-
+    # require_relative '../../spec/spec_helper' # RSpec setup
+    Dir[File.join(__dir__, '../../spec/factories/**/*.rb')].each { |file| require file } # FactoryBot setup
     binding.pry # rubocop:disable Lint/Debugger
   end
 end

@@ -10,11 +10,9 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
-module Analysis
-  class ItemStep < ApplicationRecord
-    belongs_to :item, class_name: 'Analysis::Item',
-                      foreign_key: 'analysis_item_id'
-    belongs_to :step, class_name: 'Analysis::Step',
-                      foreign_key: 'analysis_step_id'
+FactoryBot.define do
+  factory :analysis_item_step, class: 'Analysis::ItemStep' do
+    step factory: :analysis_step
+    analysis_item
   end
 end

@@ -18,8 +18,33 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_23_203100) do
   enable_extension "unaccent"
   enable_extension "uuid-ossp"
 
-  create_table "analysis_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "analysis_item_steps", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "analysis_item_id", null: false
+    t.uuid "analysis_step_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["analysis_item_id"], name: "index_analysis_item_steps_on_analysis_item_id"
+    t.index ["analysis_step_id"], name: "index_analysis_item_steps_on_analysis_step_id"
+  end
+
+  create_table "analysis_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
     t.string "cpf"
+    t.integer "status", default: 0
+    t.integer "error_status", default: 0
+    t.integer "prediction"
+    t.integer "payment_situation", default: 0
+    t.integer "disapproval_situation"
+    t.uuid "clone_of_id"
+    t.uuid "analysis_report_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["analysis_report_id"], name: "index_analysis_items_on_analysis_report_id"
+    t.index ["clone_of_id"], name: "index_analysis_items_on_clone_of_id"
+  end
+
+  create_table "analysis_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "cpfs"
     t.integer "status"
     t.float "fee"
     t.boolean "approved"
@@ -30,6 +55,15 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_23_203100) do
     t.index ["api_client_id"], name: "index_analysis_reports_on_api_client_id"
   end
 
+  create_table "analysis_steps", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.integer "command_class"
+    t.integer "index_order"
+    t.boolean "enabled", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "api_clients", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "client_id"
     t.string "client_secret"
@@ -37,5 +71,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_23_203100) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "analysis_item_steps", "analysis_items"
+  add_foreign_key "analysis_item_steps", "analysis_steps"
+  add_foreign_key "analysis_items", "analysis_items", column: "clone_of_id"
+  add_foreign_key "analysis_items", "analysis_reports"
   add_foreign_key "analysis_reports", "api_clients"
 end

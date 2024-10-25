@@ -5,7 +5,7 @@
 # Table name: analysis_reports
 #
 #  id                    :uuid             not null, primary key
-#  cpf                   :string
+#  cpfs                  :string
 #  status                :integer
 #  fee                   :float
 #  approved              :boolean
@@ -16,7 +16,25 @@
 #
 module Analysis
   class Report < ApplicationRecord
-    belongs_to :api_client, class_name: 'API::Client'
-    has_many :items, class_name: 'Analysis::Item'
+    enum status: { todo: 0, wip: 1, done: 2, not_found: 3, error: 4 }
+    enum disapproval_situation: {
+      debtor: 1, # when has debits with Alpop
+      blocked_negativity: 2,
+      reproved_by_trial: 3,
+      insufficient_income: 4,
+      exceeded_debits: 5,
+      blocked_cpf: 6,
+      reproved_by_relative: 7,
+      reproved_by_bounced_check: 8,
+      reproved_by_age_and_income: 9,
+      reproved_by_obit_indication: 10
+    }
+
+    belongs_to :api_client, class_name: 'API::Client',
+                            foreign_key: 'api_client_id'
+    has_many :items, class_name: 'Analysis::Item', dependent: :destroy,
+                     inverse_of: :report
+
+    scope :approved, -> { where(approved: true) }
   end
 end
