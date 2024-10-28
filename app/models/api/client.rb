@@ -42,15 +42,17 @@ module API
       encoded_client_id = Base64.strict_encode64(client_id)
       encoded_client_secret = Base64.strict_encode64(client_secret)
 
-      # Log the client credentials to the console for admin use
-      logger = Logger.new($stdout)
-      logger.info(
-        "#{'Database populated with new client:'.green.bold}\n\n" \
-        "client_id: #{client_id.yellow.bold}\n" \
-        "client_secret: #{client_secret.yellow.bold}\n\n" \
-        "strict base64 client_id: #{encoded_client_id.yellow.bold}\n" \
-        "strict base64 client_secret: #{encoded_client_secret.yellow.bold}\n"
-      )
+      unless AlpopAnalysis.settings.test?
+        # Log the client credentials to the console for admin use
+        logger = Logger.new($stdout)
+        logger.info(
+          "#{'Database populated with new client:'.green.bold}\n\n" \
+          "client_id: #{client_id.yellow.bold}\n" \
+          "client_secret: #{client_secret.yellow.bold}\n\n" \
+          "strict base64 client_id: #{encoded_client_id.yellow.bold}\n" \
+          "strict base64 client_secret: #{encoded_client_secret.yellow.bold}\n"
+        )
+      end
 
       # Hash the client_secret before saving it to the database
       self.client_secret = BCrypt::Password.create(client_secret)

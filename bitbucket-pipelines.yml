@@ -1,0 +1,39 @@
+image: ruby:3.3.5
+
+definitions:
+  caches:
+    bundler: ./vendor
+  services:
+    redis:
+      image: redis
+      memory: 512
+    postgres:
+      image: postgres
+      environment:
+        POSTGRES_DB: $DB_TEST
+        POSTGRES_USER: $DB_USER
+        POSTGRES_PASSWORD: $DB_PASSWORD
+
+  steps:
+    - step: &install-dependencies-and-run-tests
+        name: Linter and Specs
+        caches:
+          - bundler
+        script:
+          - bundle install
+          - bundle exec rubocop
+         # - bundle exec rspec
+        services:
+          - redis
+          - postgres
+
+pipelines:
+  default:
+    - step: *install-dependencies-and-run-tests
+
+  branches:
+    dev:
+      - step: *install-dependencies-and-run-tests
+
+    master:
+      - step: *install-dependencies-and-run-tests

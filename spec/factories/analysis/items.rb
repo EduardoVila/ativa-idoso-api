@@ -31,7 +31,7 @@ FactoryBot.define do
       ].sample
     end
 
-    association :report, factory: :analysis_report
+    report factory: %i[analysis_report]
 
     Analysis::Report.statuses.each_key do |status|
       trait status.to_sym do

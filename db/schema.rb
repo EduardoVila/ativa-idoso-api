@@ -65,8 +65,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_23_203100) do
   end
 
   create_table "api_clients", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "client_id"
-    t.string "client_secret"
+    t.string "client_id", null: false
+    t.string "client_secret", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
