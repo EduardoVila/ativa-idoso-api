@@ -1,6 +1,6 @@
 class AddAnalysisTables < ActiveRecord::Migration[7.2]
   def change
-    create_table :analysis_reports, id: :uuid, default: 'gen_random_uuid()' do |t|
+    create_table :analysis_reports, id: :uuid, default: 'uuid_generate_v4()' do |t|
       t.string :cpfs
       t.integer :status
       t.float :fee
@@ -10,7 +10,7 @@ class AddAnalysisTables < ActiveRecord::Migration[7.2]
       t.timestamps
     end
 
-    create_table :analysis_items, id: :uuid, default: 'gen_random_uuid()' do |t|
+    create_table :analysis_items, id: :uuid, default: 'uuid_generate_v4()' do |t|
       t.string :name
       t.string :cpf
       t.integer :status, default: 0
@@ -23,7 +23,7 @@ class AddAnalysisTables < ActiveRecord::Migration[7.2]
       t.timestamps
     end
 
-    create_table :analysis_steps, id: :uuid, default: 'gen_random_uuid()' do |t|
+    create_table :analysis_steps, id: :uuid, default: 'uuid_generate_v4()' do |t|
       t.string :name
       t.integer :command_class
       t.integer :index_order
@@ -31,7 +31,7 @@ class AddAnalysisTables < ActiveRecord::Migration[7.2]
       t.timestamps
     end
 
-    create_table :analysis_item_steps, id: :uuid, default: 'gen_random_uuid()' do |t|
+    create_table :analysis_item_steps, id: :uuid, default: 'uuid_generate_v4()' do |t|
       t.references :analysis_item, type: :uuid, null: false, foreign_key: true, index: true
       t.references :analysis_step, type: :uuid, null: false, foreign_key: true, index: true
       t.timestamps

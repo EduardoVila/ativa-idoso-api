@@ -14,7 +14,14 @@
 #
 module Analysis
   class Step < ApplicationRecord
-    has_many :item_steps, class_name: 'Analysis::ItemStep', dependent: :destroy
-    has_many :items, through: :item_steps, class_name: 'Analysis::Item'
+    has_many :item_steps,
+             class_name: 'Analysis::ItemStep',
+             inverse_of: :step,
+             dependent: :destroy
+
+    has_many :items, through: :item_steps,
+                     class_name: 'Analysis::Item',
+                     inverse_of: :steps
+
   end
 end

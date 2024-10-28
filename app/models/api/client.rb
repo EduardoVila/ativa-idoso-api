@@ -13,11 +13,14 @@
 require 'bcrypt'
 require_relative '../application_record'
 require 'logger'
+require 'colorize'
 module API
   class Client < ::ApplicationRecord
     before_validation :set_client_credentials, on: :create
 
-    has_many :analysis_reports, class_name: 'Analysis::Report'
+    has_many :analysis_reports, class_name: 'Analysis::Report',
+                                inverse_of: :api_client,
+                                dependent: :destroy
 
     validates :client_id, presence: true, uniqueness: true
     validates :client_secret, presence: true
@@ -42,11 +45,11 @@ module API
       # Log the client credentials to the console for admin use
       logger = Logger.new($stdout)
       logger.info(
-        "Database populated with new client:\n" \
-        "client_id: #{client_id}\n" \
-        "client_secret: #{client_secret}\n\n" \
-        "strict base64 client_id: #{encoded_client_id}\n" \
-        "strict base64 client_secret: #{encoded_client_secret}\n"
+        "#{'Database populated with new client:'.green.bold}\n\n" \
+        "client_id: #{client_id.yellow.bold}\n" \
+        "client_secret: #{client_secret.yellow.bold}\n\n" \
+        "strict base64 client_id: #{encoded_client_id.yellow.bold}\n" \
+        "strict base64 client_secret: #{encoded_client_secret.yellow.bold}\n"
       )
 
       # Hash the client_secret before saving it to the database

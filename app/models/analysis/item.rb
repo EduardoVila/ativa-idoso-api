@@ -78,19 +78,25 @@ module Analysis
       validates :error_status
     end
 
-    belongs_to :report, class_name: 'Analysis::Report', inverse_of: :items,
+    belongs_to :report, class_name: 'Analysis::Report',
                         foreign_key: 'analysis_report_id'
+
     belongs_to :clone_of, class_name: 'Analysis::Item',
-                          optional: true,
-                          inverse_of: :clones
+                          foreign_key: 'clone_of_id',
+                          optional: true
 
     has_many :clones, class_name: 'Analysis::Item',
-                      foreign_key: 'clone_of_id',
                       inverse_of: :clone_of,
                       dependent: :nullify
 
-    has_many :item_steps, class_name: 'Analysis::ItemStep', dependent: :destroy
-    has_many :steps, through: :item_steps, class_name: 'Analysis::Step'
+    has_many :item_steps, class_name: 'Analysis::ItemStep',
+                          inverse_of: :item,
+                          dependent: :destroy
+
+    has_many :steps, through: :item_steps,
+                     class_name: 'Analysis::Step',
+                     inverse_of: :items,
+                     dependent: :destroy
 
     def cpf_normalizer
       self.cpf = CPF::Formatter.format cpf if cpf.present?

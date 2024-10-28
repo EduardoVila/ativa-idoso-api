@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'sinatra'
+require_relative 'concerns/tokenable'
 
 class ApplicationController < Sinatra::Base
   before do

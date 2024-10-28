@@ -13,6 +13,6 @@
 FactoryBot.define do
   factory :analysis_item_step, class: 'Analysis::ItemStep' do
     step factory: :analysis_step
-    analysis_item
+    item factory: :analysis_item
   end
 end

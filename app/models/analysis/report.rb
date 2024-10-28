@@ -32,8 +32,10 @@ module Analysis
 
     belongs_to :api_client, class_name: 'API::Client',
                             foreign_key: 'api_client_id'
-    has_many :items, class_name: 'Analysis::Item', dependent: :destroy,
-                     inverse_of: :report
+
+    has_many :items, class_name: 'Analysis::Item',
+                     inverse_of: :report,
+                     dependent: :destroy
 
     scope :approved, -> { where(approved: true) }
   end

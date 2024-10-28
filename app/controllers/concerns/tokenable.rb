@@ -4,12 +4,12 @@ require_relative '../../models/api/client' # Ensure you require the Client model
 
 module Tokenable
   # Generate a JWT token
-  def self.encode_token(payload)
+  def self.encode(payload)
     JWT.encode(payload, ENV.fetch('JWT_SECRET', nil), 'HS256')
   end
 
   # Decode the JWT token and return the payload
-  def self.decode_token(token)
+  def self.decode(token)
     JWT.decode(token, ENV.fetch('JWT_SECRET', nil), true,
                { algorithm: 'HS256' }).first
   rescue JWT::DecodeError
@@ -17,12 +17,40 @@ module Tokenable
   end
 
   # Method to authenticate a client based on client_id and client_secret
-  def self.authenticate(client_id, client_secret)
-    client = API::Client.find_by(client_id: client_id)
+  # Returns a JWT token if the client is authenticated
+  def self.authenticate_client(client_id, client_secret)
+    client = API::Client.find_by_client_id client_id
 
     return unless client&.authenticate(client_secret)
 
     payload = { client_id: client_id, exp: Time.now.to_i + 3600 } # 1-hour expiration
-    encode_token(payload)
+    encode(payload)
+  end
+
+  def self.authenticate_token(request)
+    authorization_header = request.env['HTTP_AUTHORIZATION']
+    token = authorization_header&.split&.last
+
+    return 401 unless token
+
+    decoded_token = Tokenable.decode token
+
+    return 401 unless decoded_token
+
+    client_id = decoded_token['client_id']
+
+    begin
+      @current_user = API::Client.find_by_client_id client_id
+    rescue NoMethodError
+      404
+    rescue JWT::ExpiredSignature, JWT::DecodeError
+      401
+    end
+
+    @current_user ? 200 : 401
+  end
+
+  def self.current_user
+    @current_user ||= nil
   end
 end

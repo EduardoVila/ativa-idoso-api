@@ -11,14 +11,4 @@ class Router < Sinatra::Base
     app.use HealthController
     app.use API::V1::TokensController
   end
-
-  before do
-    Protectable.authenticate_request if protected_route?
-  end
-
-  # Method to check if the route is protected
-  def protected_route?
-    protected_routes = [''] # Add your protected routes here
-    protected_routes.include?(request.path_info)
-  end
 end

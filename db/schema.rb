@@ -18,7 +18,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_23_203100) do
   enable_extension "unaccent"
   enable_extension "uuid-ossp"
 
-  create_table "analysis_item_steps", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "analysis_item_steps", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "analysis_item_id", null: false
     t.uuid "analysis_step_id", null: false
     t.datetime "created_at", null: false
@@ -27,7 +27,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_23_203100) do
     t.index ["analysis_step_id"], name: "index_analysis_item_steps_on_analysis_step_id"
   end
 
-  create_table "analysis_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "analysis_items", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name"
     t.string "cpf"
     t.integer "status", default: 0
@@ -43,7 +43,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_23_203100) do
     t.index ["clone_of_id"], name: "index_analysis_items_on_clone_of_id"
   end
 
-  create_table "analysis_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "analysis_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "cpfs"
     t.integer "status"
     t.float "fee"
@@ -55,7 +55,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_23_203100) do
     t.index ["api_client_id"], name: "index_analysis_reports_on_api_client_id"
   end
 
-  create_table "analysis_steps", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "analysis_steps", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name"
     t.integer "command_class"
     t.integer "index_order"
@@ -64,7 +64,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_23_203100) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "api_clients", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "api_clients", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "client_id"
     t.string "client_secret"
     t.datetime "created_at", null: false
