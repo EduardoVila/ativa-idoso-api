@@ -9,4 +9,9 @@ class ApplicationController < Sinatra::Base
     request.path_info =
       "/#{request.path_info.sub(%r{\A/?#{settings.base}}, '')}"
   end
+
+  def authenticate_access_token_from(request)
+    http_status = Tokenable.authenticate_access_token(request)
+    halt http_status unless http_status == 200
+  end
 end
