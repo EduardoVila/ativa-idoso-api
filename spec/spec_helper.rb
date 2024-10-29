@@ -13,13 +13,6 @@ SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
 ])
 SimpleCov.minimum_coverage 98
 SimpleCov.start do
-  add_group 'Models', 'app/models'
-  add_group 'Controllers', 'app/controllers'
-  add_group 'Jobs', 'app/jobs'
-  add_group 'Serializers', 'app/serializers'
-  add_group 'Integrators', 'lib/integrators'
-  add_group 'Services', 'app/services'
-
   add_filter 'app/models/application_record.rb'
   add_filter 'config'
   add_filter 'app/serializers/application_serializer.rb'
