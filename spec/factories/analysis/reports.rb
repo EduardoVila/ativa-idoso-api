@@ -19,6 +19,7 @@ require 'cpf_cnpj'
 
 FactoryBot.define do
   factory :analysis_report, class: 'Analysis::Report' do
+    cpfs { [Faker::CPF.pretty, Faker::CPF.pretty] }
     status { %i[todo wip done not_found error].sample }
 
     api_client factory: :api_client

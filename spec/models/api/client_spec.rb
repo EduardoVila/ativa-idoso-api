@@ -15,9 +15,21 @@ require 'bcrypt'
 
 RSpec.describe API::Client, type: :model do
   describe 'factories' do
-    subject { build(:api_client) }
+    context 'with default traits' do
+      subject { create(:api_client) }
 
-    it { is_expected.to be_valid }
+      it { is_expected.to be_valid }
+    end
+
+    context 'with :with_reports trait' do
+      subject { create(:api_client, :with_reports) }
+
+      it { is_expected.to be_valid }
+
+      it 'creates reports' do
+        expect(subject.analysis_reports.count).to eq(1)
+      end
+    end
   end
 
   describe 'associations' do

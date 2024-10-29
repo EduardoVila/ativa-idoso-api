@@ -20,4 +20,16 @@ RSpec.describe Analysis::Step, type: :model do
 
     it { is_expected.to be_valid }
   end
+
+  describe 'associations' do
+    it {
+      expect(subject).to have_many(:item_steps).class_name('Analysis::ItemStep')
+        .inverse_of(:step)
+    }
+
+    it {
+      expect(subject).to have_many(:items).through(:item_steps)
+        .class_name('Analysis::Item').inverse_of(:steps)
+    }
+  end
 end

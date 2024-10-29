@@ -18,9 +18,37 @@ require 'spec_helper'
 
 RSpec.describe Analysis::Report, type: :model do
   describe 'factories' do
-    subject { build(:analysis_report) }
+    context 'with default traits' do
+      subject(:analysis_report) { build(:analysis_report) }
 
-    it { is_expected.to be_valid }
+      it { is_expected.to be_valid }
+    end
+
+    context 'with :processed trait' do
+      subject(:analysis_report) { create(:analysis_report, :processed) }
+
+      it { is_expected.to be_valid }
+
+      it 'sets the fee' do
+        expect(analysis_report.fee).to be_present
+      end
+
+      it 'sets the approved' do
+        expect(analysis_report.approved).to be_present
+      end
+    end
+  end
+
+  describe 'associations' do
+    it {
+      expect(subject).to belong_to(:api_client).class_name('API::Client')
+
+    }
+
+    it {
+      expect(subject).to have_many(:items).class_name('Analysis::Item')
+        .dependent(:destroy)
+    }
   end
 
   describe 'validations' do

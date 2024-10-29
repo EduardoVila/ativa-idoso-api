@@ -19,4 +19,16 @@ RSpec.describe Analysis::ItemStep, type: :model do
 
     it { is_expected.to be_valid }
   end
+
+  describe 'associations' do
+    it {
+      expect(subject).to belong_to(:item).class_name('Analysis::Item')
+        .with_foreign_key('analysis_item_id')
+    }
+
+    it {
+      expect(subject).to belong_to(:step).class_name('Analysis::Step')
+        .with_foreign_key('analysis_step_id')
+    }
+  end
 end

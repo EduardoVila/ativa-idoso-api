@@ -25,4 +25,31 @@ RSpec.describe Analysis::Item, type: :model do
 
     it { is_expected.to be_valid }
   end
+
+  describe 'associations' do
+    it {
+      expect(subject).to belong_to(:report).class_name('Analysis::Report')
+        .with_foreign_key('analysis_report_id')
+    }
+
+    it {
+      expect(subject).to belong_to(:clone_of).class_name('Analysis::Item')
+        .with_foreign_key('clone_of_id').optional
+    }
+
+    it {
+      expect(subject).to have_many(:clones).class_name('Analysis::Item')
+        .inverse_of(:clone_of).dependent(:nullify)
+    }
+
+    it {
+      expect(subject).to have_many(:item_steps).class_name('Analysis::ItemStep')
+        .inverse_of(:item).dependent(:destroy)
+    }
+
+    it {
+      expect(subject).to have_many(:steps).through(:item_steps)
+        .class_name('Analysis::Step').inverse_of(:items).dependent(:destroy)
+    }
+  end
 end
