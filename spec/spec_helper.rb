@@ -25,7 +25,6 @@ SimpleCov.start do
   add_filter 'app/serializers/application_serializer.rb'
   add_filter 'app/models/concerns'
   add_filter 'lib/concerns'
-  add_filter 'app'
 end
 
 # Gera o relatório de cobertura ao finalizar os testes

@@ -182,3 +182,12 @@ Naming/VariableNumber:
 
 RSpec/NamedSubject:
   Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Max: 15
+
+RSpec/MultipleExpectations:
+  Enabled: false
