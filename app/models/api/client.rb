@@ -5,8 +5,8 @@
 # Table name: api_clients
 #
 #  id            :uuid             not null, primary key
-#  client_id     :string
-#  client_secret :string
+#  client_id     :string           not null
+#  client_secret :string           not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #

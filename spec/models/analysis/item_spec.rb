@@ -17,3 +17,12 @@
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #
+require 'spec_helper'
+
+RSpec.describe Analysis::Item, type: :model do
+  describe 'factories' do
+    subject { build(:analysis_item) }
+
+    it { is_expected.to be_valid }
+  end
+end

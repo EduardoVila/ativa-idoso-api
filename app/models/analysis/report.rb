@@ -5,7 +5,7 @@
 # Table name: analysis_reports
 #
 #  id                    :uuid             not null, primary key
-#  cpfs                  :string
+#  cpfs                  :string           is an Array
 #  status                :integer
 #  fee                   :float
 #  approved              :boolean

@@ -5,7 +5,7 @@
 # Table name: analysis_reports
 #
 #  id                    :uuid             not null, primary key
-#  cpfs                  :string
+#  cpfs                  :string           is an Array
 #  status                :integer
 #  fee                   :float
 #  approved              :boolean
@@ -17,6 +17,12 @@
 require 'spec_helper'
 
 RSpec.describe Analysis::Report, type: :model do
+  describe 'factories' do
+    subject { build(:analysis_report) }
+
+    it { is_expected.to be_valid }
+  end
+
   describe 'validations' do
     it 'is valid with valid attributes' do
       report = described_class.new

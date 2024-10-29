@@ -5,7 +5,7 @@
 # Table name: analysis_reports
 #
 #  id                    :uuid             not null, primary key
-#  cpfs                  :string
+#  cpfs                  :string           is an Array
 #  status                :integer
 #  fee                   :float
 #  approved              :boolean
@@ -19,7 +19,6 @@ require 'cpf_cnpj'
 
 FactoryBot.define do
   factory :analysis_report, class: 'Analysis::Report' do
-    cpfs { [Faker::CPF.pretty, Faker::CPF.pretty] }
     status { %i[todo wip done not_found error].sample }
 
     api_client factory: :api_client

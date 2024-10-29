@@ -11,12 +11,12 @@
 #  updated_at       :datetime         not null
 #
 
-# require 'spec_helper'
+require 'spec_helper'
 
-# RSpec.describe Analysis::ItemStep, type: :model do
-#   describe 'factories' do
-#     subject { build(:analysis_item_step) }
+RSpec.describe Analysis::ItemStep, type: :model do
+  describe 'factories' do
+    subject { build(:analysis_item_step) }
 
-#     it { is_expected.to be_valid }
-#   end
-# end
+    it { is_expected.to be_valid }
+  end
+end

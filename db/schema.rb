@@ -44,7 +44,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_23_203100) do
   end
 
   create_table "analysis_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "cpfs"
+    t.string "cpfs", array: true
     t.integer "status"
     t.float "fee"
     t.boolean "approved"

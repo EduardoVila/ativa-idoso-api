@@ -52,12 +52,10 @@ RSpec.configure do |config|
   end
 
   config.before(:suite) do
-    FactoryBot.definition_file_paths = %w[./spec/factories]
+    system('APP_ENV=test bundle exec rake db:migrate:redo')
     FactoryBot.find_definitions
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with :truncation
-    ActiveRecord::Migration.verbose = false
-    ActiveRecord::MigrationContext.new('db/migrate').migrate
   end
 
   config.before { DatabaseCleaner.start }
