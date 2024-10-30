@@ -3,33 +3,38 @@
 module Formattable
   extend ActiveSupport::Concern
 
-  def get_object # rubocop:disable Naming/AccessorMethodName
-    Object.const_get(model_name)
+  def create_object(parsed_response_body)
+    klass_model.create(formatter(parsed_response_body, klass_model.new))
   end
 
-  def model_name
+  def klass_model
+    Object.const_get(klass_name)
+  end
+
+  def klass_name
     self.class.name.gsub('Integrators', '')
   end
 
-  def formatter(item, class_name) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-    object = Object.const_get(class_name).new
+  def enable_nested_relations
+    false
+  end
 
+  def formatter(item, object) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     item.deep_transform_keys!(&:underscore)
-    item.map do |key, value| # rubocop:disable Performance/MapCompact
+    item.map do |key, value| # rubocop:disable  Performance/MapCompact
       next unless key != 'id' && object.respond_to?(key.to_s)
 
-      object_key = object.public_send(key)
-      class_name = object_key &&
-                   object_key.class.to_s.include?(
-                     'ActiveRecord_Associations_CollectionProxy'
-                   ) &&
-                   object.public_send(key).name
+      key_class_name = object.public_send(key)&.name
 
-      if value.is_a?(Array) && class_name # formatting has_many relations (E.g. bills has many receivements)
+      if value.is_a?(Array) && key_class_name # formatting has_many relations (E.g. bills has many receivements)
         value.map! do |item|
+          class_name = object.public_send(key)&.name
+
+          next if class_name.blank?
+
           key_class =  Object.const_get(class_name)
           key_object = key_class.new(
-            formatted_item(item, key_class.new)
+            formatter(item, key_class.new)
           )
 
           key_object.raw_data = item if key_object.respond_to? :raw_data
@@ -47,16 +52,16 @@ module Formattable
 
         key = "#{key}_attributes"
 
-        value = formatted_item(value, nested_object.new)
+        value = formatter(value, nested_object.new)
 
         next if value.nil?
       end
 
+      if key.include?('dt') && value.present? # putting dates in the correct format
+        value = Date.strptime(value, '%m/%d/%Y')
+      end
+
       { key => value }
     end.compact.reduce(:update)
-  end
-
-  def enable_nested_relations
-    false
   end
 end

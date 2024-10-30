@@ -12,6 +12,8 @@ module Integrators
       include Parseable
 
       def create
+        require 'byebug'
+        byebug
         error_retries ||= 9
 
         response = do_request(:post, post[:url], post[:headers], post[:body])
@@ -19,10 +21,8 @@ module Integrators
         raise Errors::Analysis::TokenCreateError unless response.status == 200
 
         parsed_response_body = parser(response.body)
-        token = new_token(parsed_response_body)
-        token.save
 
-        token
+        create_object(parsed_response_body)
       rescue Faraday::ConnectionFailed => e
         ErrorLogger.log e
 
@@ -35,6 +35,8 @@ module Integrators
         retry
       end
 
+      private
+
       def post
         {
           url: 'http://localhost:8000/api/v1/tokens',
@@ -45,15 +47,11 @@ module Integrators
             'Content-Type' => 'application/x-www-form-urlencoded'
           },
           body: URI.encode_www_form(
-            'client_id' => client_id64,
-            'client_secret' => client_secret64,
+            'client_id' => client_credentials[:client_id64],
+            'client_secret' => client_credentials[:client_secret64],
             'grant_type' => 'client_credentials'
           )
         }
-      end
-
-      def new_token(parsed_response_body)
-        get_object.new formatter(parsed_response_body, model_name)
       end
 
       def client_credentials
@@ -63,10 +61,6 @@ module Integrators
             ENV.fetch('ANALYSIS_CLIENT_SECRET')
           )
         }
-      end
-
-      def client_secret64
-        Base64.strict_encode64(ENV.fetch('ANALYSIS_CLIENT_SECRET'))
       end
     end
   end
