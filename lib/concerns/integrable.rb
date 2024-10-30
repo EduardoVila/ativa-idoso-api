@@ -1,11 +1,17 @@
 # frozen_string_literal: true
 
-require 'concerns/formatted_item'
 require 'faraday'
+require 'faraday/retry'
+require 'faraday/net_http'
 
 module Integrable
   extend ActiveSupport::Concern
-  include FormattedItem
+
+  def do_request(verb, url, headers, params = nil, proxy = nil)
+    send(:"do_#{verb}_request", url, headers, params, proxy)
+  end
+
+  private
 
   def conn
     ::Faraday.new do |f|
@@ -13,30 +19,6 @@ module Integrable
       f.adapter :net_http
       f.request :retry, max: 3, interval: 0.05
     end
-  end
-
-  def do_request(verb, url, headers, params = nil, proxy = nil)
-    send(:"do_#{verb}_request", url, headers, params, proxy)
-  end
-
-  def parse_body(body)
-    JSON.parse(body)
-  rescue JSON::ParserError
-    nil
-  end
-
-  private
-
-  def get_object # rubocop:disable Naming/AccessorMethodName
-    Object.const_get(model_name)
-  end
-
-  def model_name
-    self.class.name.gsub('Integrators', '')
-  end
-
-  def enable_nested_relations
-    false
   end
 
   def do_get_request(url, headers, params, proxy)

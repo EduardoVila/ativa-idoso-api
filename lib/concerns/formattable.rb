@@ -1,9 +1,19 @@
 # frozen_string_literal: true
 
-module FormattedItem
+module Formattable
   extend ActiveSupport::Concern
 
-  def formatted_item(item, object) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+  def get_object # rubocop:disable Naming/AccessorMethodName
+    Object.const_get(model_name)
+  end
+
+  def model_name
+    self.class.name.gsub('Integrators', '')
+  end
+
+  def formatter(item, class_name) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+    object = Object.const_get(class_name).new
+
     item.deep_transform_keys!(&:underscore)
     item.map do |key, value| # rubocop:disable Performance/MapCompact
       next unless key != 'id' && object.respond_to?(key.to_s)

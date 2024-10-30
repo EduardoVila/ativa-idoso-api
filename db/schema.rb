@@ -43,6 +43,18 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_23_203100) do
     t.index ["clone_of_id"], name: "index_analysis_items_on_clone_of_id"
   end
 
+  create_table "analysis_predictions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "cpf"
+    t.boolean "approved"
+    t.float "fee"
+    t.string "label"
+    t.jsonb "input_data"
+    t.uuid "analysis_item_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["analysis_item_id"], name: "index_analysis_predictions_on_analysis_item_id"
+  end
+
   create_table "analysis_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "cpfs", array: true
     t.integer "status"
@@ -64,6 +76,15 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_23_203100) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "analysis_tokens", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "access_token"
+    t.string "token_type"
+    t.integer "expires_in"
+    t.string "scope"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "api_clients", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "client_id", null: false
     t.string "client_secret", null: false
@@ -75,5 +96,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_23_203100) do
   add_foreign_key "analysis_item_steps", "analysis_steps"
   add_foreign_key "analysis_items", "analysis_items", column: "clone_of_id"
   add_foreign_key "analysis_items", "analysis_reports"
+  add_foreign_key "analysis_predictions", "analysis_items"
   add_foreign_key "analysis_reports", "api_clients"
 end

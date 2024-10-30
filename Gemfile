@@ -18,6 +18,8 @@ gem 'colorize' # Colorized output
 gem 'cpf_cnpj' # CPF and CNPJ validation
 gem 'dotenv' # Environment variable management
 gem 'faraday' # HTTP client for making API requests
+gem 'faraday-net_http' # Net::HTTP adapter for Faraday
+gem 'faraday-retry' # Retry middleware for Faraday
 gem 'foreman' # Process manager for running multiple processes
 gem 'i18n' # Internationalization support
 gem 'jwt' # JSON Web Token support

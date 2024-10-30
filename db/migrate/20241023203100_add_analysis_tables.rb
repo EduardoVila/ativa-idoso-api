@@ -36,5 +36,23 @@ class AddAnalysisTables < ActiveRecord::Migration[7.2]
       t.references :analysis_step, type: :uuid, null: false, foreign_key: true, index: true
       t.timestamps
     end
+
+    create_table :analysis_predictions, id: :uuid, default: 'uuid_generate_v4()' do |t|
+      t.string :cpf
+      t.boolean :approved
+      t.float :fee
+      t.string :label
+      t.jsonb :input_data
+      t.references :analysis_item, type: :uuid, null: false, foreign_key: true, index: true
+      t.timestamps
+    end
+
+    create_table :analysis_tokens, id: :uuid, default: 'uuid_generate_v4()' do |t|
+      t.string :access_token
+      t.string :token_type
+      t.integer :expires_in
+      t.string :scope
+      t.timestamps
+    end
   end
 end
