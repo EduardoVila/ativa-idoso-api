@@ -12,8 +12,6 @@ module Integrators
       include Parseable
 
       def create
-        require 'byebug'
-        byebug
         error_retries ||= 9
 
         response = do_request(:post, post[:url], post[:headers], post[:body])
