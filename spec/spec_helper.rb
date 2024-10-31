@@ -44,7 +44,7 @@ RSpec.configure do |config|
   end
 
   config.before(:suite) do
-    system('APP_ENV=test bundle exec rake db:migrate:redo')
+    system('APP_ENV=test bundle exec rake db:restart_test')
     FactoryBot.find_definitions
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with :truncation

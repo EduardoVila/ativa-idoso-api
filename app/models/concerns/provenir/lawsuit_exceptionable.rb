@@ -32,13 +32,13 @@ module Provenir
     end
 
     def exceptionable_keyword_found?(keyword)
-      return if keyword.blank? # rubocop:disable Style/Style/ReturnNilInPredicateMethodDefinition
+      return if keyword.blank? # rubocop:disable Style/ReturnNilInPredicateMethodDefinition
 
       exceptionable_keywords.any?(formatted_string(keyword))
     end
 
     def non_exceptionable_keyword_found?(keyword)
-      return if keyword.blank? # rubocop:disable Style/Style/ReturnNilInPredicateMethodDefinition
+      return if keyword.blank? # rubocop:disable Style/ReturnNilInPredicateMethodDefinition
 
       non_exceptionable_keywords.any?(formatted_string(keyword))
     end

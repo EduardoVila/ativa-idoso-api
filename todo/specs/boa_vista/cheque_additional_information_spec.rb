@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe BoaVista::ChequeAdditionalInformation, type: :model do
-  context 'factories' do
+  describe 'factories' do
     subject { build :boa_vista_cheque_additional_information }
 
     it { is_expected.to be_valid }

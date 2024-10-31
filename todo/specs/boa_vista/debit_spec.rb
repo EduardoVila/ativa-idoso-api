@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe BoaVista::Debit, type: :model do
-  context 'factories' do
+  describe 'factories' do
     subject { build :boa_vista_debit }
 
     it { is_expected.to be_valid }
@@ -14,14 +14,15 @@ RSpec.describe BoaVista::Debit, type: :model do
   end
 
   describe 'scopes' do
-    context 'current_semester' do
+    describe 'current_semester' do
       let!(:current_semester_item) do
         create(
           :boa_vista_debit,
           occurrence_date: Time.zone.today.strftime('%d/%m/%Y')
         )
       end
-      let!(:old_item) do
+
+      before do
         create(
           :boa_vista_debit,
           occurrence_date: (Time.zone.today - 7.months).strftime('%d/%m/%Y')
@@ -29,9 +30,8 @@ RSpec.describe BoaVista::Debit, type: :model do
       end
 
       it 'returns items filtered by occurrence date of current semester' do
-        expect(described_class.current_semester).to match_array(
-          [current_semester_item]
-        )
+        expect(described_class.current_semester)
+          .to contain_exactly(current_semester_item)
       end
     end
   end

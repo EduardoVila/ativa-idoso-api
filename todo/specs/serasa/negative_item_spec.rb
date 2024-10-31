@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Serasa::NegativeItem, type: :model do
-  context 'factories' do
+  describe 'factories' do
     subject { build :serasa_negative_item }
 
     it { is_expected.to be_valid }
@@ -25,9 +25,7 @@ RSpec.describe Serasa::NegativeItem, type: :model do
       end
 
       it 'returns items filtered by occurrence date of current semester' do
-        expect(described_class.current_semester).to match_array(
-          [current_semester_item]
-        )
+        expect(described_class.current_semester).to contain_exactly(current_semester_item)
       end
     end
   end

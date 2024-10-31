@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Serasa::NegativeData, type: :model do
-  context 'factories' do
+  describe 'factories' do
     subject { build :serasa_negative_data }
 
     it { is_expected.to be_valid }
@@ -53,7 +53,7 @@ RSpec.describe Serasa::NegativeData, type: :model do
 
         it 'returns a array of NegativeItem model' do
           expect(subject.debits.count).to be(4)
-          expect(subject.debits).to match_array([*pefin_items, *refin_items])
+          expect(subject.debits).to match_array(pefin_items + refin_items)
         end
       end
 
@@ -126,7 +126,7 @@ RSpec.describe Serasa::NegativeData, type: :model do
       end
 
       context 'when has blocked pefin or refin items' do
-        context 'pefin' do
+        describe 'pefin' do
           before do
             create(
               :serasa_negative_item,
@@ -141,7 +141,7 @@ RSpec.describe Serasa::NegativeData, type: :model do
           end
         end
 
-        context 'refin' do
+        describe 'refin' do
           before do
             create(
               :serasa_negative_item,

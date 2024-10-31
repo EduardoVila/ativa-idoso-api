@@ -19,13 +19,13 @@ require 'spec_helper'
 RSpec.describe Analysis::Report, type: :model do
   describe 'factories' do
     context 'with default traits' do
-      subject(:analysis_report) { build(:analysis_report) }
+      subject(:analysis_report) { build :analysis_report }
 
       it { is_expected.to be_valid }
     end
 
     context 'with :processed trait' do
-      subject(:analysis_report) { create(:analysis_report, :processed) }
+      subject(:analysis_report) { create :analysis_report, :processed }
 
       it { is_expected.to be_valid }
 

@@ -33,23 +33,21 @@ RSpec.describe ProScore::Trial, type: :model do
     it { is_expected.to have_many(:motions) }
   end
 
-  context 'custom methods' do
+  describe 'custom methods' do
     describe '#defendant_and_disapproved?' do
       subject { create :pro_score_trial, report: pro_score_report }
 
       let(:score) { create :score, :done }
-      let!(:pro_score_report) { create :pro_score_report, score: }
+      let!(:pro_score_report) { create(:pro_score_report, score:) }
 
       context 'when is defendant' do
-        let!(:trial_part1) do
+        before do
           create(
             :pro_score_trial_part,
             :defendant,
             trial: subject,
             nome: score.name
           )
-        end
-        let!(:trial_part2) do
           create(
             :pro_score_trial_part,
             :plaintiff,
@@ -176,15 +174,13 @@ RSpec.describe ProScore::Trial, type: :model do
       end
 
       context 'when it is coplaintiff' do
-        let!(:trial_part1) do
+        before do
           create(
             :pro_score_trial_part,
             :defendant,
             trial: subject,
             nome: 'foo'
           )
-        end
-        let!(:trial_part2) do
           create(
             :pro_score_trial_part,
             :plaintiff,
@@ -214,18 +210,16 @@ RSpec.describe ProScore::Trial, type: :model do
       subject { create :pro_score_trial, report: pro_score_report }
 
       let(:score) { create :score, :done }
-      let!(:pro_score_report) { create :pro_score_report, score: }
+      let!(:pro_score_report) { create(:pro_score_report, score:) }
 
       context 'when is defendant' do
-        let!(:trial_part1) do
+        before do
           create(
             :pro_score_trial_part,
             :defendant,
             trial: subject,
             nome: score.name
           )
-        end
-        let!(:trial_part2) do
           create(
             :pro_score_trial_part,
             :plaintiff,
@@ -240,15 +234,13 @@ RSpec.describe ProScore::Trial, type: :model do
       end
 
       context 'when it is coplaintiff' do
-        let!(:trial_part1) do
+        before do
           create(
             :pro_score_trial_part,
             :defendant,
             trial: subject,
             nome: 'foo'
           )
-        end
-        let!(:trial_part2) do
           create(
             :pro_score_trial_part,
             :plaintiff,

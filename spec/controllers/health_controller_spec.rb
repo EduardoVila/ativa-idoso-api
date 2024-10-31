@@ -31,7 +31,7 @@ RSpec.describe HealthController, type: :controller do
   describe 'GET /protected' do
     context 'when the request is valid' do
       before do
-        api_client = create(:api_client)
+        api_client = create :api_client
         valid_token = generate_valid_token(api_client)
         header 'Authorization', "Bearer #{valid_token}"
         get '/protected'

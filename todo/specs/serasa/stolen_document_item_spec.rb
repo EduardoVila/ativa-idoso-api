@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Serasa::StolenDocumentItem, type: :model do
-  context 'factories' do
+  describe 'factories' do
     subject { build :serasa_stolen_document_item }
 
     it { is_expected.to be_valid }

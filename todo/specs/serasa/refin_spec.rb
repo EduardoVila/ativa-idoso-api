@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Serasa::Refin, type: :model do
-  context 'factories' do
+  describe 'factories' do
     subject { build :serasa_refin }
 
     it { is_expected.to be_valid }

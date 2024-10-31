@@ -16,7 +16,7 @@ require 'spec_helper'
 
 RSpec.describe Analysis::Step, type: :model do
   describe 'factories' do
-    subject { build(:analysis_step) }
+    subject { build :analysis_step }
 
     it { is_expected.to be_valid }
   end

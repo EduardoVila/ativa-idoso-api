@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe BoaVista::HistoricInformedCheque, type: :model do
-  context 'factories' do
+  describe 'factories' do
     subject { build :boa_vista_historic_informed_cheque }
 
     it { is_expected.to be_valid }

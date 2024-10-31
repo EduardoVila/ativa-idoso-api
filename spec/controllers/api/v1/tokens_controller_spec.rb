@@ -14,7 +14,7 @@ RSpec.describe API::V1::TokensController, type: :controller do
   describe 'POST /api/v1/tokens' do
     context 'when the request is valid' do
       let(:json_response) { JSON.parse(last_response.body) }
-      let(:api_client) { create(:api_client) }
+      let(:api_client) { create :api_client }
       let(:client_id) { 'client_id' }
       let(:client_secret) { 'client_secret' }
       let(:client_id_base64) { Base64.strict_encode64(client_id) }

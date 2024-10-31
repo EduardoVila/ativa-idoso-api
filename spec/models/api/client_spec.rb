@@ -16,13 +16,13 @@ require 'bcrypt'
 RSpec.describe API::Client, type: :model do
   describe 'factories' do
     context 'with default traits' do
-      subject { create(:api_client) }
+      subject { create :api_client }
 
       it { is_expected.to be_valid }
     end
 
     context 'with :with_reports trait' do
-      subject { create(:api_client, :with_reports) }
+      subject { create :api_client, :with_reports }
 
       it { is_expected.to be_valid }
 
@@ -37,7 +37,7 @@ RSpec.describe API::Client, type: :model do
   end
 
   describe '#authenticate' do
-    let(:api_client) { create(:api_client) }
+    let(:api_client) { create :api_client }
     let(:authenticate) { api_client.authenticate(client_secret) }
 
     context 'when it receives correct client_secret' do

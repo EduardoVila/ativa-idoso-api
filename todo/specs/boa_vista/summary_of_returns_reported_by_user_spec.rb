@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe BoaVista::SummaryOfReturnsReportedByUser, type: :model do
-  context 'factories' do
+  describe 'factories' do
     subject { build :boa_vista_summary_of_returns_reported_by_user }
 
     it { is_expected.to be_valid }

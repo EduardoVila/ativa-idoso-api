@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe ProScore::Authentication, type: :model do
-  context 'factories' do
+  describe 'factories' do
     subject { build :pro_score_authentication }
 
     it { is_expected.to be_valid }

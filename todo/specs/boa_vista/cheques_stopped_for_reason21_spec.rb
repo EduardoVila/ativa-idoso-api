@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe BoaVista::ChequesStoppedForReason21, type: :model do
-  context 'factories' do
+  describe 'factories' do
     subject { build :boa_vista_cheques_stopped_for_reason21 }
 
     it { is_expected.to be_valid }

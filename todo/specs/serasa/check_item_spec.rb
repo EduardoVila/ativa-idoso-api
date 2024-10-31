@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Serasa::CheckItem, type: :model do
-  context 'factories' do
+  describe 'factories' do
     subject { build :serasa_check_item }
 
     it { is_expected.to be_valid }

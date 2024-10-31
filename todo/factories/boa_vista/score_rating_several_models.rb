@@ -23,6 +23,5 @@ FactoryBot.define do
 
     boa_vista_acerta_essencial
     # boa_vista_acerta_positivo
-
   end
 end

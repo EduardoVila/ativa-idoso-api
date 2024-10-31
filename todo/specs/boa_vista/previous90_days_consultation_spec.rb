@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe BoaVista::Previous90DaysConsultation, type: :model do
-  context 'factories' do
+  describe 'factories' do
     subject { build :boa_vista_previous90_days_consultation }
 
     it { is_expected.to be_valid }

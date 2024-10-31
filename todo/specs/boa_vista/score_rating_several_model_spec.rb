@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe BoaVista::ScoreRatingSeveralModel, type: :model do
-  context 'factories' do
+  describe 'factories' do
     subject { build :boa_vista_score_rating_several_model }
 
     it { is_expected.to be_valid }

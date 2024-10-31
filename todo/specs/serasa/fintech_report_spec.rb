@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Serasa::FintechReport, type: :model do
-  context 'factories' do
+  describe 'factories' do
     subject { build :serasa_fintech_report }
 
     it { is_expected.to be_valid }

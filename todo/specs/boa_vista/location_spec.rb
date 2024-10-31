@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe BoaVista::Location, type: :model do
-  context 'factories' do
+  describe 'factories' do
     subject { build :boa_vista_location }
 
     it { is_expected.to be_valid }
