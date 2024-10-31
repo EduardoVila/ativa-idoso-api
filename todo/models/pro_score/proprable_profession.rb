@@ -1,0 +1,21 @@
+# frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: pro_score_proprable_professions
+#
+#  id                  :bigint           not null, primary key
+#  codigo              :string
+#  titulo              :string
+#  numero_plugin       :string
+#  pro_score_report_id :bigint
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#
+module ProScore
+  class ProprableProfession < ApplicationRecord
+    belongs_to :report, class_name: 'ProScore::Report',
+                        foreign_key: 'pro_score_report_id',
+                        inverse_of: :proprable_profession
+  end
+end
