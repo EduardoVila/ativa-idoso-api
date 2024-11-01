@@ -29,6 +29,7 @@ gem 'puma' # Web server for serving the application
 gem 'rake' # Task runner for the application
 gem 'redis' # Redis client for caching
 gem 'require_all' # Require all files in a directory
+gem 'sentry-ruby'
 gem 'sidekiq' # Background job processing
 gem 'sidekiq-batch' # Batch processing for Sidekiq
 gem 'sidekiq-status' # Status tracking for Sidekiq jobs

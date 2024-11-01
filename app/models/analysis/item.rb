@@ -93,6 +93,10 @@ module Analysis
                           inverse_of: :item,
                           dependent: :destroy
 
+    has_many :predictions, class_name: 'Analysis::Prediction',
+                           inverse_of: :item,
+                           dependent: :destroy
+
     has_many :steps, through: :item_steps,
                      class_name: 'Analysis::Step',
                      inverse_of: :items,
