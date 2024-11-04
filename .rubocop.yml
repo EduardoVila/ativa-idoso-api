@@ -33,6 +33,9 @@ Style/DoubleNegation:
 Style/Encoding:
   Enabled: true
 
+Style/Alias:
+  Enabled: false
+
 Style/EndlessMethod:
   EnforcedStyle: allow_single_line
 
@@ -196,6 +199,14 @@ RSpec/MultipleExpectations:
 RSpec/NestedGroups:
   Enabled: false
 
+RSpec/LetSetup:
+  Enabled: false
+
+RSpec/IndexedLet:
+  Enabled: false
+
+Layout/EndOfLine:
+  Enabled: false
+
 FactoryBot/ConsistentParenthesesStyle:
   EnforcedStyle: omit_parentheses
-

@@ -85,6 +85,10 @@ module Analysis
                           foreign_key: 'clone_of_id',
                           optional: true
 
+    has_one :boa_vista_cadastral, class_name: 'BoaVista::Cadastral',
+                                  dependent: :destroy,
+                                  as: :consumer
+
     has_many :clones, class_name: 'Analysis::Item',
                       inverse_of: :clone_of,
                       dependent: :nullify
