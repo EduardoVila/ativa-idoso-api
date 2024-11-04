@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 require 'base64'
-
-require_dependency 'errors/analysis/prediction_create_error'
+require_relative '../../errors/analysis/token_create_error'
+require_relative '../../concerns/formattable'
+require_relative '../../concerns/integrable'
+require_relative '../../concerns/parseable'
 
 module Integrators
   module Analysis
@@ -33,7 +35,7 @@ module Integrators
         prediction.save
         prediction
       rescue Faraday::ConnectionFailed => e
-        # ErrorLogger.log e
+        ErrorLogger.log e
 
         unless error_retries.positive?
           raise Errors::Analysis::PredictionCreateError

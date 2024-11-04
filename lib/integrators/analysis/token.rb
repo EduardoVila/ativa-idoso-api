@@ -6,7 +6,7 @@ require_relative '../../errors/analysis/token_create_error'
 require_relative '../../concerns/formattable'
 require_relative '../../concerns/integrable'
 require_relative '../../concerns/parseable'
-# require_dependency 'errors/analysis/token_create_error'
+require_relative '../../error_logger'
 
 module Integrators
   module Analysis
@@ -32,7 +32,7 @@ module Integrators
         token.save
         token
       rescue Faraday::ConnectionFailed => e
-        # ErrorLogger.log e
+        ErrorLogger.log e
 
         raise Errors::Analysis::TokenCreateError unless error_retries.positive?
 
