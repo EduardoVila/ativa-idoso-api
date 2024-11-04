@@ -10,9 +10,7 @@ RSpec.describe Idwall::Report, type: :model do
   end
 
   describe 'validations' do
-    context 'number' do
-      it { is_expected.to validate_presence_of :number }
-    end
+    it { is_expected.to validate_presence_of :number }
   end
 
   describe 'associations' do

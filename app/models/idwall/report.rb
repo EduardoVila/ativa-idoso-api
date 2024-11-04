@@ -14,7 +14,7 @@
 #
 module Idwall
   class Report < ApplicationRecord
-    enum :status, [ :processing, :processed ]
+    enum :status, %i[processing processed]
 
     validates :number, presence: true
 

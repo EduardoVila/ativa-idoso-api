@@ -31,21 +31,21 @@ module Analysis
 
     before_validation :cpf_normalizer
 
-    enum :status, [:todo, :wip, :done, :not_found, :error]
-    enum :error_status, [
-      :none,
-      :idwall,
-      :boa_vista,
-      :pro_score_trials,
-      :serasa,
-      :pro_score_family_holdings,
-      :pro_score_bounced_checks,
-      :pro_score_presumed_income,
-      :pro_score_commercial_relations,
-      :provenir_big_data_corp
+    enum :status, %i[todo wip done not_found error]
+    enum :error_status, %i[
+      none
+      idwall
+      boa_vista
+      pro_score_trials
+      serasa
+      pro_score_family_holdings
+      pro_score_bounced_checks
+      pro_score_presumed_income
+      pro_score_commercial_relations
+      provenir_big_data_corp
     ], suffix: true
 
-    enum :disapproval_situation, [ 
+    enum :disapproval_situation, [
       :debtor, # when has debits with Alpop
       :blocked_negativity, # when has blocked negativity
       :reproved_by_trial,
@@ -60,12 +60,12 @@ module Analysis
       :reproved_by_recent_debit
     ]
 
-    enum :payment_situation, [
-      :unanalyzed,
-      :good_payer,
-      :no_payer,
-      :new_client,
-      :late_payer 
+    enum :payment_situation, %i[
+      unanalyzed
+      good_payer
+      no_payer
+      new_client
+      late_payer
     ], suffix: true
 
     validates :status, inclusion: { in: statuses.keys }
@@ -90,8 +90,8 @@ module Analysis
                           optional: true
 
     has_one :idwall_report, class_name: 'Idwall::Report',
-                          inverse_of: :analysis_item,
-                          dependent: :destroy
+                            inverse_of: :analysis_item,
+                            dependent: :destroy
 
     has_many :clones, class_name: 'Analysis::Item',
                       inverse_of: :clone_of,

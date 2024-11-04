@@ -196,6 +196,12 @@ RSpec/MultipleExpectations:
 RSpec/NestedGroups:
   Enabled: false
 
+RSpec/LetSetup:
+  Enabled: false
+
+RSpec/IndexedLet:
+  Enabled: false
+
 FactoryBot/ConsistentParenthesesStyle:
   EnforcedStyle: omit_parentheses
 

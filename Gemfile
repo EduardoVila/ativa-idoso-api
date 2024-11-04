@@ -16,10 +16,12 @@ gem 'bcrypt' # Password hashing
 gem 'bullet' # N+1 query detection
 gem 'colorize' # Colorized output
 gem 'cpf_cnpj' # CPF and CNPJ validation
+gem 'damerau-levenshtein' # Damerau-Levenshtein distance calculation
 gem 'dotenv' # Environment variable management
 gem 'faraday' # HTTP client for making API requests
 gem 'faraday-net_http' # Net::HTTP adapter for Faraday
 gem 'faraday-retry' # Retry middleware for Faraday
+gem 'fiddle'
 gem 'foreman' # Process manager for running multiple processes
 gem 'i18n' # Internationalization support
 gem 'jwt' # JSON Web Token support
@@ -36,8 +38,6 @@ gem 'sinatra' # Core framework for the application
 gem 'sinatra-activerecord' # ActiveRecord integration with Sinatra
 gem 'sinatra-contrib' # Additional Sinatra utilities
 gem 'tzinfo' # Timezone support
-gem 'fiddle'
-gem 'damerau-levenshtein' # Damerau-Levenshtein distance calculation
 
 group :development, :test do
   gem 'byebug' # Debugger for debugging
