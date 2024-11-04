@@ -15,6 +15,6 @@ FactoryBot.define do
     year_of_death { '' }
     social_name { '' }
 
-    idwall_report
+    idwall_report factory: :idwall_report
   end
 end

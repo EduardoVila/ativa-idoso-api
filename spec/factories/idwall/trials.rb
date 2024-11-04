@@ -5,6 +5,6 @@ FactoryBot.define do
     subject { 'Locação de Imóvel' }
     kind { 'Despejo por Falta de Pagamento Cumulado Com Cobrança' }
 
-    idwall_report
+    idwall_report factory: :idwall_report
   end
 end

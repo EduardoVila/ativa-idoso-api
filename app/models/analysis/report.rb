@@ -16,19 +16,25 @@
 #
 module Analysis
   class Report < ApplicationRecord
-    enum status: { todo: 0, wip: 1, done: 2, not_found: 3, error: 4 }
-    enum disapproval_situation: {
-      debtor: 1, # when has debits with Alpop
-      blocked_negativity: 2,
-      reproved_by_trial: 3,
-      insufficient_income: 4,
-      exceeded_debits: 5,
-      blocked_cpf: 6,
-      reproved_by_relative: 7,
-      reproved_by_bounced_check: 8,
-      reproved_by_age_and_income: 9,
-      reproved_by_obit_indication: 10
-    }
+    enum :status, [
+      :todo,
+      :wip,
+      :done,
+      :not_found,
+      :error
+    ]
+    enum :disapproval_situation, [
+      :debtor, # when has debits with Alpop
+      :blocked_negativity,
+      :reproved_by_trial,
+      :insufficient_income,
+      :exceeded_debits,
+      :blocked_cpf,
+      :reproved_by_relative,
+      :reproved_by_bounced_check,
+      :reproved_by_age_and_income,
+      :reproved_by_obit_indication
+    ]
 
     belongs_to :api_client, class_name: 'API::Client',
                             foreign_key: 'api_client_id'

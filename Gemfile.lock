@@ -84,6 +84,7 @@ GEM
       bigdecimal
       rexml
     crass (1.0.6)
+    damerau-levenshtein (1.3.3)
     database_cleaner-active_record (2.2.0)
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
@@ -117,6 +118,7 @@ GEM
     ffi (1.17.0-x86_64-darwin)
     ffi (1.17.0-x86_64-linux-gnu)
     ffi (1.17.0-x86_64-linux-musl)
+    fiddle (1.1.4)
     foreman (0.88.1)
     formatador (1.1.0)
     globalid (1.2.1)
@@ -347,6 +349,7 @@ DEPENDENCIES
   colorize
   cpf_cnpj
   cpf_faker
+  damerau-levenshtein
   database_cleaner-active_record
   database_consistency
   dotenv
@@ -355,6 +358,7 @@ DEPENDENCIES
   faraday
   faraday-net_http
   faraday-retry
+  fiddle
   foreman
   guard
   guard-rspec

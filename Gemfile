@@ -36,6 +36,8 @@ gem 'sinatra' # Core framework for the application
 gem 'sinatra-activerecord' # ActiveRecord integration with Sinatra
 gem 'sinatra-contrib' # Additional Sinatra utilities
 gem 'tzinfo' # Timezone support
+gem 'fiddle'
+gem 'damerau-levenshtein' # Damerau-Levenshtein distance calculation
 
 group :development, :test do
   gem 'byebug' # Debugger for debugging

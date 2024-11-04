@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require 'spec_helper'
 
 RSpec.describe BoaVista::ChequesStoppedForReason21, type: :model do
   describe 'factories' do
