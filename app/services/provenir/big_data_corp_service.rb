@@ -11,9 +11,9 @@ module Provenir
     end
 
     def call
-      integrator = Integrators::Provenir::BigDataCorp.new(analysis_item)
+      integrator = Integrators::Provenir::BigDataCorp.new
 
-      integrator.post_request
+      integrator.post_request(analysis_item)
     end
   end
 end

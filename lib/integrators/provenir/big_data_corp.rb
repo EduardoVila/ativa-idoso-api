@@ -15,14 +15,6 @@ module Integrators
       include Nestable
       include CustomJsonParseable
 
-      attr_reader :analysis_item, :cpf
-
-      def initialize(analysis_item)
-        @analysis_item = analysis_item
-        @cpf = CPF::Formatter.strip(analysis_item.cpf)
-        @error_retries ||= 4
-      end
-
       # conn method override with extended timeout
       def conn
         Faraday.new(ssl: ssl_options) do |f|
@@ -33,7 +25,12 @@ module Integrators
         end
       end
 
-      def post_request
+      def post_request(analysis_item) # rubocop:disable Metrics/AbcSize
+        @analysis_item = analysis_item
+        @cpf = CPF::Formatter.strip(analysis_item.cpf)
+
+        error_retries ||= 4
+
         response = do_request(:post, post[:url], post[:headers], post[:body])
 
         unless response.status == 200
@@ -52,11 +49,11 @@ module Integrators
       rescue Faraday::ConnectionFailed => e
         ErrorLogger.log e
 
-        unless @error_retries.positive?
+        unless error_retries.positive?
           raise ::Errors::Provenir::BigDataCorpPostResponseError
         end
 
-        @error_retries -= 1
+        error_retries -= 1
 
         sleep 3
 
@@ -78,7 +75,7 @@ module Integrators
             'Content-Type' => 'application/json',
             'Authorization' => "Basic #{access_token}"
           },
-          body: { Alpop: { Input: { Cpf: cpf } } }.to_json
+          body: { Alpop: { Input: { Cpf: @cpf } } }.to_json
         }
       end
 

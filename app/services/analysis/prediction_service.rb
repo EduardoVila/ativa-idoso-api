@@ -11,9 +11,9 @@ module Analysis
     end
 
     def call
-      integrator = Integrators::Analysis::Prediction.new(analysis_item)
+      integrator = Integrators::Analysis::Prediction.new
 
-      integrator.post_request
+      integrator.post_request(analysis_item)
     end
   end
 end

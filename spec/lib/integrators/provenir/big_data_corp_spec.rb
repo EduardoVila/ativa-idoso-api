@@ -23,7 +23,7 @@ RSpec.describe Integrators::Provenir::BigDataCorp do
 
   it_behaves_like 'integrable', described_class
 
-  describe '#load_data' do
+  describe '#post_request' do
     subject(:response) { described_class.new.post_request(analysis_item) }
 
     let(:analysis_item) { create :analysis_item }

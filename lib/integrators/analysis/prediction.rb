@@ -14,14 +14,11 @@ module Integrators
       include Integrable
       include Parseable
 
-      attr_reader :analysis_item
-
-      def initialize(analysis_item)
+      def post_request(analysis_item)
         @analysis_item = analysis_item
-        @error_retries ||= 9
-      end
 
-      def post_request
+        error_retries ||= 9
+
         response = do_request(:post, post[:url], post[:headers], post[:body])
 
         unless response.status == 200
@@ -39,11 +36,11 @@ module Integrators
       rescue Faraday::ConnectionFailed => e
         ErrorLogger.log e
 
-        unless @error_retries.positive?
+        unless error_retries.positive?
           raise ::Errors::Analysis::PredictionPostResponseError
         end
 
-        @error_retries -= 1
+        error_retries -= 1
 
         sleep 3
 
@@ -64,8 +61,8 @@ module Integrators
             'Authorization' => "Bearer #{access_token64}"
           },
           body: {
-            cpf: analysis_item.cpf,
-            features: analysis_item.features
+            cpf: @analysis_item.cpf,
+            features: @analysis_item.features
           }.to_json
         }
       end

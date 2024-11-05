@@ -16,11 +16,9 @@ module Integrators
 
       # Create a new token for the analysis service using the client credentials
       # provided in the environment variables.
-      def initialize
-        @error_retries = 9
-      end
-
       def post_request
+        error_retries = 9
+
         response = do_request(:post, post[:url], post[:headers], post[:body])
 
         unless response.status == 200
@@ -36,11 +34,11 @@ module Integrators
       rescue Faraday::ConnectionFailed => e
         ErrorLogger.log e
 
-        unless @error_retries.positive?
+        unless error_retries.positive?
           raise ::Errors::Analysis::TokenPostResponseError
         end
 
-        @error_retries -= 1
+        error_retries -= 1
 
         sleep 3
 
