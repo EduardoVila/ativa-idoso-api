@@ -3,6 +3,8 @@
 module Formattable
   extend ActiveSupport::Concern
 
+  private
+
   def initialize_object(parsed_response_body)
     klass_model.new(formatter(parsed_response_body, klass_model.new))
   end

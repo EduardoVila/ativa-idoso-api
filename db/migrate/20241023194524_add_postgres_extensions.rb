@@ -1,4 +1,4 @@
-class AddPostgresExtensions < ActiveRecord::Migration[7.2]
+class AddPostgresExtensions < ActiveRecord::Migration[7.1]
   enable_extension 'pgcrypto' unless extension_enabled?('pgcrypto')
   enable_extension 'pg_stat_statements' unless extension_enabled?('pg_stat_statements')
   enable_extension 'uuid-ossp' unless extension_enabled?('uuid-ossp')

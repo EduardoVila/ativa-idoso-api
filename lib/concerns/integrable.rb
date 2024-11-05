@@ -7,19 +7,19 @@ require 'faraday/net_http'
 module Integrable
   extend ActiveSupport::Concern
 
-  def do_request(verb, url, headers, params = nil, proxy = nil)
-    send(:"do_#{verb}_request", url, headers, params, proxy)
-  end
-
-  private
-
   def conn
-    ::Faraday.new do |f|
+    ::Faraday.new(ssl: ssl_options) do |f|
       f.request :url_encoded
       f.adapter :net_http
       f.request :retry, max: 3, interval: 0.05
     end
   end
+
+  def do_request(verb, url, headers, params = nil, proxy = nil)
+    send(:"do_#{verb}_request", url, headers, params, proxy)
+  end
+
+  private
 
   def do_get_request(url, headers, params, proxy)
     get_conn = conn
@@ -63,5 +63,38 @@ module Integrable
       req.headers = headers
       req.body = params
     end
+  end
+
+  def enable_log_response
+    false
+  end
+
+  def enable_log_request
+    false
+  end
+
+  def enable_nested_relations
+    false
+  end
+
+  def use_certificate
+    false
+  end
+
+  def ssl_options
+    return {} unless use_certificate
+
+    {
+      client_cert: OpenSSL::X509::Certificate.new(ca_certificate),
+      client_key: OpenSSL::PKey::RSA.new(ca_key)
+    }
+  end
+
+  def ca_certificate
+    raise NotImplementedError
+  end
+
+  def ca_key
+    raise NotImplementedError
   end
 end

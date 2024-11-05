@@ -28,7 +28,7 @@ module Provenir
 
     accepts_nested_attributes_for :source
 
-    alias_method :sources, :source
+    alias_attribute :sources, :source
 
     def sources_attributes=(params)
       self.source_attributes = params

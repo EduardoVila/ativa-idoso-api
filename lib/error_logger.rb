@@ -20,10 +20,10 @@ module ErrorLogger
 
   def log(err)
     # async remote requests
-    remote_log(err) if Rails.env.production?
+    remote_log(err) if Sinatra::Application.settings.production?
 
     # sync logging to file
-    rails_log_err err
+    sinatra_log_err err
   end
 
   def remote_log(err)
@@ -32,8 +32,8 @@ module ErrorLogger
 
   private
 
-  def rails_log_err(err)
-    logger = Rails.logger
+  def sinatra_log_err(err)
+    logger ||= Logger.new($stdout)
     backtrace = err.backtrace
 
     logger.error err.message
