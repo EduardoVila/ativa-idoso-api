@@ -2,7 +2,7 @@
 
 module Errors
   module Provenir
-    class BigDataCorpLoadDataError < StandardError
+    class BigDataCorpPostResponseError < StandardError
     end
   end
 end

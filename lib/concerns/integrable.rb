@@ -73,10 +73,6 @@ module Integrable
     false
   end
 
-  def enable_nested_relations
-    false
-  end
-
   def use_certificate
     false
   end

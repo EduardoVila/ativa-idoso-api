@@ -2,8 +2,8 @@
 
 require_relative '../application_service'
 
-module Analysis
-  class PredictionService < ApplicationService
+module Provenir
+  class BigDataCorpService < ApplicationService
     attr_reader :analysis_item
 
     def initialize(analysis_item)
@@ -11,7 +11,7 @@ module Analysis
     end
 
     def call
-      integrator = Integrators::Analysis::Prediction.new(analysis_item)
+      integrator = Integrators::Provenir::BigDataCorp.new(analysis_item)
 
       integrator.post_request
     end

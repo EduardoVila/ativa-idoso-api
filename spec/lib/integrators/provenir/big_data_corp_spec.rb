@@ -4,8 +4,13 @@ require 'spec_helper'
 require 'webmock/rspec'
 require 'concerns/integrable'
 require_relative '../../../integrable'
-require_relative '../../../../lib/errors/provenir/big_data_corp_load_data_error'
+# rubocop:disable Layout/LineLength
+require_relative '../../../../lib/errors/provenir/big_data_corp_post_response_error'
+# rubocop:enable Layout/LineLength
 require_relative '../../../../lib/integrators/provenir/big_data_corp'
+require 'dotenv/load'
+
+Dotenv.load('.env')
 
 RSpec.describe Integrators::Provenir::BigDataCorp do
   let(:url) { ENV.fetch('PROVENIR_BIG_DATA_CORP_URL') }
@@ -19,7 +24,7 @@ RSpec.describe Integrators::Provenir::BigDataCorp do
   it_behaves_like 'integrable', described_class
 
   describe '#load_data' do
-    subject(:response) { described_class.new.load_data(analysis_item) }
+    subject(:response) { described_class.new.post_request(analysis_item) }
 
     let(:analysis_item) { create :analysis_item }
 
@@ -64,8 +69,8 @@ RSpec.describe Integrators::Provenir::BigDataCorp do
     end
 
     context 'when it does not return 200' do
-      let(:big_data_corp_load_data_error) do
-        Errors::Provenir::BigDataCorpLoadDataError
+      let(:post_response_error) do
+        Errors::Provenir::BigDataCorpPostResponseError
       end
 
       before do
@@ -74,7 +79,7 @@ RSpec.describe Integrators::Provenir::BigDataCorp do
         )
       end
 
-      it { expect { response }.to raise_error big_data_corp_load_data_error }
+      it { expect { response }.to raise_error post_response_error }
 
       context 'when connection fails' do
         before do
@@ -88,8 +93,8 @@ RSpec.describe Integrators::Provenir::BigDataCorp do
 
           allow(instance).to receive(:sleep).exactly(4).times
           expect do
-            instance.load_data(analysis_item)
-          end.to raise_error Errors::Provenir::BigDataCorpLoadDataError
+            instance.post_request(analysis_item)
+          end.to raise_error post_response_error
         end
       end
     end
