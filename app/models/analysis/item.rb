@@ -86,6 +86,12 @@ module Analysis
                           foreign_key: 'clone_of_id',
                           optional: true
 
+    has_one :boa_vista_acerta_essencial,
+            class_name: 'BoaVista::AcertaEssencial',
+            inverse_of: :analysis_item,
+            dependent: :destroy,
+            as: :consumer
+
     has_one :provenir_big_data_corp, class_name: 'Provenir::BigDataCorp',
                                      inverse_of: :analysis_item,
                                      dependent: :destroy

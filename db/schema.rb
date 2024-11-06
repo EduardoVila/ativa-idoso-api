@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_06_172318) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_06_183643) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pgcrypto"
@@ -91,6 +91,532 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_06_172318) do
     t.string "client_secret", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "boa_vista_acerta_essencials", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "cpf", null: false
+    t.integer "credit_type", default: 0, null: false
+    t.string "raw_data"
+    t.string "consumer_type"
+    t.uuid "consumer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["consumer_type", "consumer_id"], name: "index_boa_vista_acerta_essencials_on_consumer"
+  end
+
+  create_table "boa_vista_additional_informations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register_type"
+    t.string "register"
+    t.string "text"
+    t.string "origin"
+    t.string "fu_origin"
+    t.string "information_type"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_additional_information_on_acerta_essencial_id"
+  end
+
+  create_table "boa_vista_bank_branch_phones_addresses", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register_type"
+    t.string "register"
+    t.string "bank"
+    t.string "bank_name"
+    t.string "agency"
+    t.string "agency_name"
+    t.string "address"
+    t.string "neighborhood"
+    t.string "zip_code"
+    t.string "city"
+    t.string "federative_unit"
+    t.string "plaza"
+    t.string "area_code"
+    t.string "phone_1"
+    t.string "phone_2"
+    t.string "reserved"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "idx_on_boa_vista_acerta_essencial_id_79c1bf7475"
+  end
+
+  create_table "boa_vista_cheque_additional_informations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register_type"
+    t.string "register"
+    t.string "document_type"
+    t.string "document_number"
+    t.string "text"
+    t.string "type_of_register"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_cheque_additional_info_on_acerta_essencial_id"
+  end
+
+  create_table "boa_vista_cheque_stoppeds", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register_type"
+    t.string "register"
+    t.string "occurrence_type"
+    t.string "document_type"
+    t.string "document_number"
+    t.string "bank"
+    t.string "agency"
+    t.string "current_account"
+    t.string "cheque"
+    t.string "point"
+    t.string "occurrence_date"
+    t.string "availability_date"
+    t.string "informant"
+    t.string "indicator"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_cheque_stopped_on_acerta_essencial_id"
+  end
+
+  create_table "boa_vista_cheques_stopped_for_reason21s", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register_type"
+    t.string "register"
+    t.string "document_type"
+    t.string "document_number"
+    t.string "bank"
+    t.string "agency"
+    t.string "current_account"
+    t.string "initial_cheque"
+    t.string "final_cheque"
+    t.string "point"
+    t.string "occurrence_date"
+    t.string "availability_date"
+    t.string "currency"
+    t.string "value"
+    t.string "informant"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_cheques_stopped_for_reason21_on_acerta_essencial_id"
+  end
+
+  create_table "boa_vista_current_account_historics", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register_type"
+    t.string "register"
+    t.string "bank"
+    t.string "agency"
+    t.string "current_account"
+    t.string "document_type"
+    t.string "document_number"
+    t.string "consultation_date"
+    t.string "consultation_hour"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_current_account_historic_on_acerta_essencial_id"
+  end
+
+  create_table "boa_vista_debit_occurrences", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register_type"
+    t.string "register"
+    t.string "total_debtor"
+    t.string "total_guarantor"
+    t.string "accumulated_value"
+    t.string "first_debit_date"
+    t.string "first_debit_value"
+    t.string "biggest_debit_date"
+    t.string "biggest_debit_value"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_debit_occurrences_on_acerta_essencial_id"
+  end
+
+  create_table "boa_vista_debits", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register_type"
+    t.string "register"
+    t.string "occurrence_type"
+    t.string "occurrence_date"
+    t.string "contract"
+    t.string "availability_date"
+    t.string "currency", default: "0"
+    t.string "value"
+    t.string "condition"
+    t.string "informant"
+    t.string "segment"
+    t.string "informed_by_querent"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_debits_on_boa_vista_acerta_essencial_id"
+  end
+
+  create_table "boa_vista_decisions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register_type"
+    t.string "register"
+    t.string "document_type"
+    t.string "document"
+    t.string "score"
+    t.string "approves"
+    t.string "text"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_decisions_on_boa_vista_acerta_essencial_id"
+  end
+
+  create_table "boa_vista_documents_names", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register_type"
+    t.string "register"
+    t.string "name"
+    t.string "birth_date"
+    t.string "document_type"
+    t.string "document_number"
+    t.string "document_2"
+    t.string "document_3"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_documents_names_on_acerta_essencial_id"
+  end
+
+  create_table "boa_vista_historic_informed_cheques", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register_type"
+    t.string "register"
+    t.string "document_type"
+    t.string "document_number"
+    t.string "bank"
+    t.string "agency"
+    t.string "current_account"
+    t.string "cheque"
+    t.string "consultation_date"
+    t.string "consultation_hour"
+    t.string "network"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_historic_informed_cheque_on_acerta_essencial_id"
+  end
+
+  create_table "boa_vista_identifications", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register"
+    t.string "document"
+    t.string "name"
+    t.string "mother_name"
+    t.string "birth_date"
+    t.string "rg_number"
+    t.string "emitting_organ"
+    t.string "rg_federative_unit"
+    t.string "rg_emitting_date"
+    t.string "consulted_gender"
+    t.string "birth_city"
+    t.string "marital_status"
+    t.string "dependent_number"
+    t.string "educational_level"
+    t.string "revenue_situation"
+    t.string "update_date"
+    t.string "cpf_zone"
+    t.string "voter_title"
+    t.string "death"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_identifications_on_acerta_essencial_id"
+  end
+
+  create_table "boa_vista_list_of_returns_reported_by_ccfs", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register_type"
+    t.string "register"
+    t.string "document_type"
+    t.string "document_number"
+    t.string "name"
+    t.string "bank"
+    t.string "agency"
+    t.string "reason_12"
+    t.string "last_occurrence_12_date"
+    t.string "reason_13"
+    t.string "last_occurrence_13_date"
+    t.string "reason_14"
+    t.string "last_occurrence_14_date"
+    t.string "reason_99"
+    t.string "last_occurrence_99_date"
+    t.string "bank_name"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_list_of_returns_reported_by_ccfs_on_acerta_essencial_id"
+  end
+
+  create_table "boa_vista_locations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register_type"
+    t.string "register"
+    t.string "public_place_type"
+    t.string "public_place_name"
+    t.string "public_place_number"
+    t.string "complement"
+    t.string "neighborhood"
+    t.string "city"
+    t.string "federative_unit"
+    t.string "zip_code"
+    t.string "ddd_1"
+    t.string "phone_1"
+    t.string "ddd_2"
+    t.string "phone_2"
+    t.string "ddd_3"
+    t.string "phone_3"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_locations_on_boa_vista_acerta_essencial_id"
+  end
+
+  create_table "boa_vista_phone_confirmations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register_type"
+    t.string "register"
+    t.string "area_code"
+    t.string "phone"
+    t.string "document_type"
+    t.string "document_number"
+    t.string "name"
+    t.string "neighborhood"
+    t.string "zip_code"
+    t.string "city"
+    t.string "federative_unit"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_phone_confirmations_on_acerta_essencial_id"
+  end
+
+  create_table "boa_vista_previous90_days_consultations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register_type"
+    t.string "register"
+    t.string "total"
+    t.string "year_1"
+    t.string "month_1"
+    t.string "total_1"
+    t.string "year_2"
+    t.string "month_2"
+    t.string "total_2"
+    t.string "year_3"
+    t.string "month_3"
+    t.string "total_3"
+    t.string "year_4"
+    t.string "month_4"
+    t.string "total_4"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_previous90_days_consultations_on_acerta_essencial_id"
+  end
+
+  create_table "boa_vista_previous_cheque_consultations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register_type"
+    t.string "register"
+    t.string "document_type"
+    t.string "document_number"
+    t.string "consultation_type"
+    t.string "credit_date"
+    t.string "credit_hour"
+    t.string "currency"
+    t.string "value"
+    t.string "informant"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_previous_cheque_consultations_on_acerta_essencial_id"
+  end
+
+  create_table "boa_vista_previous_queries", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register_type"
+    t.string "register"
+    t.string "occurrence_type"
+    t.string "date"
+    t.string "currency"
+    t.string "value"
+    t.string "informant"
+    t.string "product"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_previous_queries_on_acerta_essencial_id"
+  end
+
+  create_table "boa_vista_protested_title_summaries", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register_type"
+    t.string "register"
+    t.string "total"
+    t.string "initial_period"
+    t.string "final_period"
+    t.string "currency"
+    t.string "accumulated_value"
+    t.string "federative_unit"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "idx_on_boa_vista_acerta_essencial_id_f338e63983"
+  end
+
+  create_table "boa_vista_protested_titles", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register_type"
+    t.string "register"
+    t.string "occurrence_type"
+    t.string "registry"
+    t.string "occurrence_date"
+    t.string "currency"
+    t.string "value"
+    t.string "city"
+    t.string "federative_unit"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_protested_titles_on_acerta_essencial_id"
+  end
+
+  create_table "boa_vista_record_messages", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register_type"
+    t.string "register"
+    t.string "record_reference"
+    t.string "text"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_record_messages_on_acerta_essencial_id"
+  end
+
+  create_table "boa_vista_returns_reported_by_users", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register_type"
+    t.string "register"
+    t.string "document_type"
+    t.string "document"
+    t.string "bank"
+    t.string "agency"
+    t.string "current_account"
+    t.string "initial_cheque"
+    t.string "final_cheque"
+    t.string "reason"
+    t.string "point"
+    t.string "occurrence_date"
+    t.string "register_date"
+    t.string "currency"
+    t.string "value"
+    t.string "informant_code"
+    t.string "informant"
+    t.string "city"
+    t.string "federative_unit"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_returns_reported_by_users_on_acerta_essencial_id"
+  end
+
+  create_table "boa_vista_score_rating_several_models", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register_type"
+    t.string "register"
+    t.string "score_type"
+    t.string "score"
+    t.string "plan_name"
+    t.string "score_model"
+    t.string "score_name"
+    t.string "numeric_classification"
+    t.string "alphabetic_classification"
+    t.string "probability"
+    t.string "text"
+    t.string "code_kind_model"
+    t.string "kind_description"
+    t.string "text_2"
+    t.string "value"
+    t.string "message"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_score_rating_several_models_on_acerta_essencial_id"
+  end
+
+  create_table "boa_vista_summary_devolution_reported_by_ccfs", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register_type"
+    t.string "register"
+    t.string "document_type"
+    t.string "document_number"
+    t.string "name"
+    t.string "names_total"
+    t.string "devolution_total"
+    t.string "reason_12"
+    t.string "reason_13"
+    t.string "reason_14"
+    t.string "reason_99"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_summary_devolution_reported_by_ccf_on_acerta_essencial_id"
+  end
+
+  create_table "boa_vista_summary_of_returns_reported_by_users", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register_type"
+    t.string "register"
+    t.string "document_type"
+    t.string "document_number"
+    t.string "total"
+    t.string "first_devolution_date"
+    t.string "last_devolution_date"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_summary_of_return_reported_by_user_on_acerta_essencial_id"
+  end
+
+  create_table "boa_vista_summary_previous_query_cheques", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register_type"
+    t.string "register"
+    t.string "document_type"
+    t.string "document_number"
+    t.string "total"
+    t.string "value"
+    t.string "day"
+    t.string "day_value"
+    t.string "pre_dated"
+    t.string "pre_dated_value"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_summary_previous_query_cheques_on_acerta_essencial_id"
+  end
+
+  create_table "boa_vista_zip_code_confirmations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "register_size"
+    t.string "register_type"
+    t.string "register"
+    t.string "zip_code"
+    t.string "address"
+    t.string "neighborhood"
+    t.string "city"
+    t.string "federative_unit"
+    t.uuid "boa_vista_acerta_essencial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_zip_code_confirmations_on_acerta_essencial_id"
   end
 
   create_table "lawsuit_banned_keywords", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -804,6 +1330,33 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_06_172318) do
   add_foreign_key "analysis_items", "analysis_reports"
   add_foreign_key "analysis_predictions", "analysis_items"
   add_foreign_key "analysis_reports", "api_clients"
+  add_foreign_key "boa_vista_additional_informations", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_bank_branch_phones_addresses", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_cheque_additional_informations", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_cheque_stoppeds", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_cheques_stopped_for_reason21s", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_current_account_historics", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_debit_occurrences", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_debits", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_decisions", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_documents_names", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_historic_informed_cheques", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_identifications", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_list_of_returns_reported_by_ccfs", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_locations", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_phone_confirmations", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_previous90_days_consultations", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_previous_cheque_consultations", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_previous_queries", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_protested_title_summaries", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_protested_titles", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_record_messages", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_returns_reported_by_users", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_score_rating_several_models", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_summary_devolution_reported_by_ccfs", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_summary_of_returns_reported_by_users", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_summary_previous_query_cheques", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_zip_code_confirmations", "boa_vista_acerta_essencials"
   add_foreign_key "provenir_addresses", "provenir_extended_addresses"
   add_foreign_key "provenir_aliases", "provenir_basic_data"
   add_foreign_key "provenir_alternative_id_numbers", "provenir_basic_data"
