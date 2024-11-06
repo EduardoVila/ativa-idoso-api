@@ -14,57 +14,56 @@ module Integrators
       include Integrable
       include Parseable
 
-      def post_request(analysis_item)
-        @analysis_item = analysis_item
+      def create_resource(analysis_item)
+        response = perform_post_request(analysis_item)
 
-        error_retries ||= 9
-
-        response = do_request(:post, post[:url], post[:headers], post[:body])
-
-        unless response.status == 200
+        unless response.success?
           raise ::Errors::Analysis::PredictionPostResponseError
         end
 
         parsed_response_body = parser(response.body)
-
-        prediction = initialize_object_with_nested_attributes(
-          parsed_response_body
-        )
-        prediction.item = analysis_item
+        prediction = build_prediction(parsed_response_body, analysis_item)
 
         prediction.save && prediction
       rescue Faraday::ConnectionFailed => e
         ErrorLogger.log e
-
-        unless error_retries.positive?
-          raise ::Errors::Analysis::PredictionPostResponseError
-        end
-
-        error_retries -= 1
-
-        sleep 3
-
-        retry
+        raise ::Errors::Analysis::PredictionPostResponseError
       end
 
       private
 
+      def perform_post_request(analysis_item)
+        do_request(:post, post_url, post_headers, post_body(analysis_item))
+      end
+
+      def build_prediction(parsed_response_body, analysis_item)
+        prediction = initialize_object_with_nested_attributes(
+          parsed_response_body
+        )
+        prediction.item = analysis_item
+        prediction
+      end
+
       # Endpoint: POST /api/v1/predictions
-      def post
+      def post_url
+        "#{ENV.fetch('PREDICTION_URL')}/api/v1/predictions"
+      end
+
+      def post_headers
         {
-          url: "#{ENV.fetch('PREDICTION_URL')}/api/v1/predictions",
-          headers: {
-            'Accept' => '*/*',
-            'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            'User-Agent' => 'Faraday v2.12.0',
-            'Content-Type' => 'application/json',
-            'Authorization' => "Bearer #{access_token64}"
-          },
-          body: {
-            cpf: @analysis_item.cpf,
-            features: @analysis_item.features
-          }.to_json
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'User-Agent' => 'Faraday v2.12.0',
+          'Content-Type' => 'application/json',
+          'Authorization' => "Bearer #{access_token64}"
         }
+      end
+
+      def post_body(analysis_item)
+        {
+          cpf: analysis_item.cpf,
+          features: analysis_item.features
+        }.to_json
       end
 
       def access_token64

@@ -15,79 +15,82 @@ module Integrators
       include Nestable
       include CustomJsonParseable
 
-      # conn method override with extended timeout
-      def conn
-        Faraday.new(ssl: ssl_options) do |f|
-          f.request :url_encoded
-          f.adapter :net_http
-          f.request :retry, max: 3, interval: 0.05
-          f.options.timeout = 120
+      # Override the default timeout of 60 seconds to 120 seconds
+      def conn(proxy: nil)
+        super(proxy: proxy).tap do |connection|
+          connection.options.timeout = 120
         end
       end
 
-      def post_request(analysis_item) # rubocop:disable Metrics/AbcSize
-        @analysis_item = analysis_item
-        @cpf = CPF::Formatter.strip(analysis_item.cpf)
+      def create_resource(analysis_item)
+        cpf = CPF::Formatter.strip(analysis_item.cpf)
+        response = perform_post_request(cpf)
 
-        error_retries ||= 4
-
-        response = do_request(:post, post[:url], post[:headers], post[:body])
-
-        unless response.status == 200
+        unless response.success?
           raise ::Errors::Provenir::BigDataCorpPostResponseError
         end
 
-        json_root = custom_json_parser(response)
-
-        big_data_corp = klass_model.new(analysis_item: analysis_item)
-        big_data_corp.attributes = initialize_nested_attributes(
-          json_root, big_data_corp
+        json_root = parse_response(response)
+        big_data_corp = build_big_data_corp(
+          analysis_item, json_root, response.body
         )
-        big_data_corp.raw_data = response.body
 
         big_data_corp.save && big_data_corp
       rescue Faraday::ConnectionFailed => e
         ErrorLogger.log e
-
-        unless error_retries.positive?
-          raise ::Errors::Provenir::BigDataCorpPostResponseError
-        end
-
-        error_retries -= 1
-
-        sleep 3
-
-        retry
+        raise ::Errors::Provenir::BigDataCorpPostResponseError
       end
 
       private
 
-      def custom_json_parser(response)
-        normalized_json = custom_provenir_json_parse(response.body)
-        normalized_json['Alpop']['BigDataCorp'] # return the root of the json
+      def enable_nested_relations
+        true
       end
 
-      # Endpoint: POST ENV['PROVENIR_BIG_DATA_CORP_URL']
-      def post
+      def perform_post_request(cpf)
+        do_request(:post, post_url, post_headers, post_body(cpf))
+      end
+
+      def build_big_data_corp(analysis_item, json_root, raw_data)
+        big_data_corp = klass_model.new(analysis_item: analysis_item)
+        big_data_corp.attributes = initialize_nested_attributes(
+          json_root, big_data_corp
+        )
+        big_data_corp.raw_data = raw_data
+        big_data_corp
+      end
+
+      def parse_response(response)
+        normalized_json = custom_provenir_json_parse(response.body)
+        normalized_json.dig('Alpop', 'BigDataCorp') || {}
+      end
+
+      def post_url
+        ENV.fetch('PROVENIR_BIG_DATA_CORP_URL')
+      end
+
+      def post_headers
         {
-          url: ENV.fetch('PROVENIR_BIG_DATA_CORP_URL'),
-          headers: {
-            'Content-Type' => 'application/json',
-            'Authorization' => "Basic #{access_token}"
-          },
-          body: { Alpop: { Input: { Cpf: @cpf } } }.to_json
+          'Content-Type' => 'application/json',
+          'Authorization' => "Basic #{access_token}"
         }
+      end
+
+      def post_body(cpf)
+        { Alpop: { Input: { Cpf: cpf } } }.to_json
       end
 
       def access_token
         Base64.strict_encode64("#{client_id}:#{client_secret}")
       end
 
-      def enable_nested_relations = true
+      def client_id
+        ENV.fetch('PROVENIR_CLIENT_ID')
+      end
 
-      def client_id = ENV.fetch('PROVENIR_CLIENT_ID')
-
-      def client_secret = ENV.fetch('PROVENIR_CLIENT_SECRET')
+      def client_secret
+        ENV.fetch('PROVENIR_CLIENT_SECRET')
+      end
     end
   end
 end

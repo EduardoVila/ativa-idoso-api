@@ -14,14 +14,10 @@ module Integrators
       include Integrable
       include Parseable
 
-      # Create a new token for the analysis service using the client credentials
-      # provided in the environment variables.
-      def post_request
-        error_retries = 9
+      def create_resource
+        response = perform_post_request
 
-        response = do_request(:post, post[:url], post[:headers], post[:body])
-
-        unless response.status == 200
+        unless response.success?
           raise ::Errors::Analysis::TokenPostResponseError
         end
 
@@ -33,40 +29,39 @@ module Integrators
         token.save && token
       rescue Faraday::ConnectionFailed => e
         ErrorLogger.log e
-
-        unless error_retries.positive?
-          raise ::Errors::Analysis::TokenPostResponseError
-        end
-
-        error_retries -= 1
-
-        sleep 3
-
-        retry
+        raise ::Errors::Analysis::TokenPostResponseError
       end
 
       private
 
+      def perform_post_request
+        do_request(:post, post_url, post_headers, post_body)
+      end
+
       # Endpoint: POST /api/v1/tokens
-      def post
+      def post_url
+        "#{ENV.fetch('PREDICTION_URL')}/api/v1/tokens"
+      end
+
+      def post_headers
         {
-          url: "#{ENV.fetch('PREDICTION_URL')}/api/v1/tokens",
-          headers: {
-            'Accept' => '*/*',
-            'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            'User-Agent' => 'Faraday v2.12.0',
-            'Content-Type' => 'application/x-www-form-urlencoded'
-          },
-          body: URI.encode_www_form(
-            'client_id' => Base64.strict_encode64(
-              ENV.fetch('PREDICTION_CLIENT_ID')
-            ),
-            'client_secret' => Base64.strict_encode64(
-              ENV.fetch('PREDICTION_CLIENT_SECRET')
-            ),
-            'grant_type' => 'client_credentials'
-          )
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'User-Agent' => 'Faraday v2.12.0',
+          'Content-Type' => 'application/x-www-form-urlencoded'
         }
+      end
+
+      def post_body
+        URI.encode_www_form(
+          'client_id' => Base64.strict_encode64(
+            ENV.fetch('PREDICTION_CLIENT_ID')
+          ),
+          'client_secret' => Base64.strict_encode64(
+            ENV.fetch('PREDICTION_CLIENT_SECRET')
+          ),
+          'grant_type' => 'client_credentials'
+        )
       end
     end
   end

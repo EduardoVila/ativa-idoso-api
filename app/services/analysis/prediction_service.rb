@@ -13,7 +13,7 @@ module Analysis
     def call
       integrator = Integrators::Analysis::Prediction.new
 
-      integrator.post_request(analysis_item)
+      integrator.create_resource(analysis_item)
     end
   end
 end
