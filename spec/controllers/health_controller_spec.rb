@@ -9,7 +9,7 @@ require 'json'
 
 # Helper method to generate a valid token
 def generate_valid_token(api_client)
-  payload = { client_id: api_client.client_id, exp: Time.now.to_i + 3600 }
+  payload = { client_id: api_client.client_id, exp: time.zone.today.to_i + 3600 }
   Tokenable.encode(payload)
 end
 

@@ -32,7 +32,7 @@ module API
             access_token: token,
             token_type: 'bearer',
             expires_in: 3600,
-            created_at: Time.now
+            created_at: time.zone.today
           }.to_json
         else
           halt 401

@@ -84,4 +84,6 @@ configure :development, :test, :production do
   set :server, :puma # Use the Puma web server
   set :app_file, File.expand_path('application.rb', __dir__) # Set the application file
   set :root, File.expand_path('../alpop-analysis', __dir__) # Set the root directory
+  set :time_zone,
+      Time.zone_default = ActiveSupport::TimeZone['America/Sao_Paulo']
 end
