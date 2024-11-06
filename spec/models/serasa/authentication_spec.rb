@@ -15,7 +15,7 @@ RSpec.describe Serasa::Authentication, type: :model do
         subject { create :serasa_authentication, :expired }
 
         it 'returns true' do
-          expect(subject.expired?).to eq(true)
+          expect(subject.expired?).to be(true)
         end
       end
 
@@ -23,7 +23,7 @@ RSpec.describe Serasa::Authentication, type: :model do
         subject { create :serasa_authentication }
 
         it 'returns false' do
-          expect(subject.expired?).to eq(false)
+          expect(subject.expired?).to be(false)
         end
       end
     end

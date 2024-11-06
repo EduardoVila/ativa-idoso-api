@@ -9,6 +9,6 @@ FactoryBot.define do
     city { Faker::Address.city }
     federal_unit { Faker::Address.state_abbr }
 
-    notary { create :serasa_notary }
+    notary factory: :serasa_notary
   end
 end

@@ -8,6 +8,6 @@ FactoryBot.define do
     birth_date { Time.zone.today }
     status_registration { 'REGULAR' }
 
-    fintech_report { create :serasa_fintech_report }
+    fintech_report factory: :serasa_fintech_report
   end
 end

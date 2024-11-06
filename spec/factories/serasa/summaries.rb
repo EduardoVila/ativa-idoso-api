@@ -5,18 +5,18 @@ FactoryBot.define do
     count { rand(0..100) }
     balance { rand(0..1000) }
 
-    owner { create :serasa_pefin }
+    owner factory: :serasa_pefin
 
     trait :pefin do
-      owner { create :serasa_pefin }
+      owner factory: :serasa_pefin
     end
 
     trait :refin do
-      owner { create :serasa_refin }
+      owner factory: :serasa_refin
     end
 
     trait :notary do
-      owner { create :serasa_notary }
+      owner factory: :serasa_notary
     end
   end
 end

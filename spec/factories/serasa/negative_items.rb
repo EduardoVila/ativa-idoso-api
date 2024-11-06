@@ -12,10 +12,10 @@ FactoryBot.define do
     federal_unit { Faker::Address.state_abbr }
     principal { [true, false].sample }
 
-    owner { create :serasa_pefin }
+    owner factory: :serasa_pefin
 
     trait :pefin do
-      owner { create :serasa_pefin }
+      owner factory: :serasa_pefin
     end
   end
 end

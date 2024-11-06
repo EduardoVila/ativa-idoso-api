@@ -13,6 +13,6 @@ FactoryBot.define do
     check_number { 'CCF-BB' }
     alinea { rand(0..10) }
 
-    check { create :serasa_check }
+    check factory: :serasa_check
   end
 end

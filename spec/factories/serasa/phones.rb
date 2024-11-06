@@ -6,14 +6,14 @@ FactoryBot.define do
     area_code { Faker::PhoneNumber.country_code }
     phone_number { Faker::PhoneNumber.phone_number }
 
-    owner { create :serasa_registration }
+    owner factory: :serasa_registration
 
     trait :registration do
-      owner { create :serasa_registration }
+      owner factory: :serasa_registration
     end
 
     trait :stolen_document do
-      owner { create :serasa_stolen_document }
+      owner factory: :serasa_stolen_document
     end
   end
 end

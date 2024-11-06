@@ -10,6 +10,6 @@ FactoryBot.define do
     detailed_reason { 'ROUBADO' }
     occurrence_state { Faker::Address.state_abbr }
 
-    stolen_document { create :serasa_stolen_document }
+    stolen_document factory: :serasa_stolen_document
   end
 end

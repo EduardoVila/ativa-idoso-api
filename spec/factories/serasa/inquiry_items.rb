@@ -5,6 +5,6 @@ FactoryBot.define do
     occurrence_date { Time.zone.today }
     days_quantity { rand(1..1000) }
 
-    inquiry { create :serasa_inquiry }
+    inquiry factory: :serasa_inquiry
   end
 end

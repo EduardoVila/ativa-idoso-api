@@ -14,7 +14,7 @@ RSpec.describe Serasa::NegativeItem, type: :model do
   end
 
   describe 'scopes' do
-    context 'current_semester' do
+    context 'when it is current_semester' do
       let!(:current_semester_item) do
         create :serasa_negative_item, occurrence_date: Time.zone.today
       end
@@ -25,7 +25,9 @@ RSpec.describe Serasa::NegativeItem, type: :model do
       end
 
       it 'returns items filtered by occurrence date of current semester' do
-        expect(described_class.current_semester).to contain_exactly(current_semester_item)
+        expect(described_class.current_semester).to contain_exactly(
+          current_semester_item
+        )
       end
     end
   end

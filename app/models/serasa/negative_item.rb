@@ -42,7 +42,7 @@ module Serasa
     end
 
     def check_disapproved_words?(value)
-      return if value.blank?
+      return false if value.blank?
 
       disapproved_words.any? do |word|
         formatted_string(value).include? word

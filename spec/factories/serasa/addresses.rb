@@ -9,6 +9,6 @@ FactoryBot.define do
     city { Faker::Address.city }
     state { Faker::Address.state }
 
-    registration { create :serasa_registration }
+    registration factory: :serasa_registration
   end
 end
