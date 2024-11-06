@@ -4,6 +4,6 @@ FactoryBot.define do
   factory :serasa_fintech_report, class: 'Serasa::FintechReport' do
     raw_data { '{}' }
 
-    owner { create :score }
+    owner factory: :analysis_item
   end
 end

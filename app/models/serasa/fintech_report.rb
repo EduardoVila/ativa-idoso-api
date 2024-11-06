@@ -13,9 +13,9 @@
 module Serasa
   class FintechReport < ApplicationRecord
     belongs_to :owner,
-               class_name: '::Score',
+               class_name: '::Analysis::Item',
                inverse_of: :serasa_fintech_report,
-               foreign_key: 'score_id'
+               foreign_key: 'analysis_item_id'
 
     has_one :registration,
             class_name: 'Serasa::Registration',

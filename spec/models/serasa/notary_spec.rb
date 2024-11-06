@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require 'spec_helper'
 
-RSpec.describe Serasa::Refin, type: :model do
+RSpec.describe Serasa::Notary, type: :model do
   describe 'factories' do
-    subject { build :serasa_refin }
+    subject { build :serasa_notary }
 
     it { is_expected.to be_valid }
   end

@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require 'spec_helper'
 
-RSpec.describe Serasa::Pefin, type: :model do
+RSpec.describe Serasa::Check, type: :model do
   describe 'factories' do
-    subject { build :serasa_pefin }
+    subject { build :serasa_check }
 
     it { is_expected.to be_valid }
   end

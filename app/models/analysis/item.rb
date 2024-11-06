@@ -90,6 +90,10 @@ module Analysis
                                      inverse_of: :analysis_item,
                                      dependent: :destroy
 
+    has_one :serasa_fintech_report, class_name: 'Serasa::FintechReport',
+                                    inverse_of: :owner,
+                                    dependent: :destroy
+
     has_many :clones, class_name: 'Analysis::Item',
                       inverse_of: :clone_of,
                       dependent: :nullify

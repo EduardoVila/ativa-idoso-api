@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_04_134758) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_06_172318) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pgcrypto"
@@ -589,6 +589,215 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_04_134758) do
     t.index ["provenir_lawsuit_id"], name: "index_provenir_update_lawsuit_id"
   end
 
+  create_table "serasa_addresses", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "address_line"
+    t.string "district"
+    t.string "zip_code"
+    t.string "country"
+    t.string "city"
+    t.string "state"
+    t.uuid "serasa_registration_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["serasa_registration_id"], name: "index_serasa_addresses_on_serasa_registration_id"
+  end
+
+  create_table "serasa_authentications", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "access_token"
+    t.string "expires_in"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "serasa_check_items", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.date "occurrence_date"
+    t.string "legal_square"
+    t.integer "bank_id"
+    t.string "bank_name"
+    t.integer "bank_agency_id"
+    t.integer "check_count"
+    t.string "city"
+    t.string "federal_unit"
+    t.string "check_number"
+    t.string "alinea"
+    t.uuid "serasa_check_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["serasa_check_id"], name: "index_serasa_check_items_on_serasa_check_id"
+  end
+
+  create_table "serasa_checks", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "serasa_negative_data_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["serasa_negative_data_id"], name: "index_serasa_checks_on_serasa_negative_data_id"
+  end
+
+  create_table "serasa_facts", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "serasa_fintech_report_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["serasa_fintech_report_id"], name: "index_serasa_facts_on_serasa_fintech_report_id"
+  end
+
+  create_table "serasa_fintech_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "raw_data"
+    t.uuid "analysis_item_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["analysis_item_id"], name: "index_serasa_fintech_reports_on_analysis_item_id"
+  end
+
+  create_table "serasa_inquiries", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "serasa_fact_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["serasa_fact_id"], name: "index_serasa_inquiries_on_serasa_fact_id"
+  end
+
+  create_table "serasa_inquiry_items", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.date "occurrence_date"
+    t.integer "days_quantity"
+    t.string "segment_description"
+    t.uuid "serasa_inquiry_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["serasa_inquiry_id"], name: "index_serasa_inquiry_items_on_serasa_inquiry_id"
+  end
+
+  create_table "serasa_negative_data", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "serasa_fintech_report_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["serasa_fintech_report_id"], name: "index_serasa_negative_data_on_serasa_fintech_report_id"
+  end
+
+  create_table "serasa_negative_items", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.date "occurrence_date"
+    t.string "legal_nature_id"
+    t.string "legal_nature"
+    t.string "contract_id"
+    t.string "creditor_name"
+    t.float "amount"
+    t.string "city"
+    t.string "federal_unit"
+    t.boolean "principal"
+    t.string "owner_type"
+    t.uuid "owner_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_type", "owner_id"], name: "index_serasa_negative_items_on_owner"
+  end
+
+  create_table "serasa_notaries", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "serasa_negative_data_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["serasa_negative_data_id"], name: "index_serasa_notaries_on_serasa_negative_data_id"
+  end
+
+  create_table "serasa_notary_items", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.date "occurrence_date"
+    t.float "amount"
+    t.string "office_number"
+    t.string "office_name"
+    t.string "city"
+    t.string "federal_unit"
+    t.uuid "serasa_notary_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["serasa_notary_id"], name: "index_serasa_notary_items_on_serasa_notary_id"
+  end
+
+  create_table "serasa_pefins", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "serasa_negative_data_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["serasa_negative_data_id"], name: "index_serasa_pefins_on_serasa_negative_data_id"
+  end
+
+  create_table "serasa_phones", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "region_code"
+    t.string "area_code"
+    t.string "phone_number"
+    t.string "owner_type"
+    t.uuid "owner_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_type", "owner_id"], name: "index_serasa_phones_on_owner"
+  end
+
+  create_table "serasa_refins", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "serasa_negative_data_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["serasa_negative_data_id"], name: "index_serasa_refins_on_serasa_negative_data_id"
+  end
+
+  create_table "serasa_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "document_number"
+    t.string "consumer_name"
+    t.string "mother_name"
+    t.string "birth_date"
+    t.string "status_registration"
+    t.date "status_date"
+    t.uuid "serasa_fintech_report_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["serasa_fintech_report_id"], name: "index_serasa_registrations_on_serasa_fintech_report_id"
+  end
+
+  create_table "serasa_scores", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.integer "score"
+    t.string "score_model"
+    t.string "range"
+    t.string "default_rate"
+    t.integer "code_message"
+    t.string "message"
+    t.uuid "serasa_fintech_report_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["serasa_fintech_report_id"], name: "index_serasa_scores_on_serasa_fintech_report_id"
+  end
+
+  create_table "serasa_stolen_document_items", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.date "occurrence_date"
+    t.datetime "inclusion_date"
+    t.string "document_type"
+    t.string "document_number"
+    t.string "issuing_authority"
+    t.string "detailed_reason"
+    t.string "occurrence_state"
+    t.uuid "serasa_stolen_document_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["serasa_stolen_document_id"], name: "idx_on_serasa_stolen_document_id_e5dbecfd0e"
+  end
+
+  create_table "serasa_stolen_documents", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.date "occurrence_date"
+    t.datetime "inclusion_date"
+    t.string "document_type"
+    t.string "document_number"
+    t.string "issuing_authority"
+    t.string "detailed_reason"
+    t.string "occurrence_state"
+    t.uuid "serasa_fact_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["serasa_fact_id"], name: "index_serasa_stolen_documents_on_serasa_fact_id"
+  end
+
+  create_table "serasa_summaries", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.integer "count"
+    t.float "balance"
+    t.string "owner_type"
+    t.uuid "owner_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_type", "owner_id"], name: "index_serasa_summaries_on_owner"
+  end
+
   add_foreign_key "analysis_item_steps", "analysis_items"
   add_foreign_key "analysis_item_steps", "analysis_steps"
   add_foreign_key "analysis_items", "analysis_items", column: "clone_of_id"
@@ -622,4 +831,20 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_04_134758) do
   add_foreign_key "provenir_sources", "provenir_rgs"
   add_foreign_key "provenir_tax_returns", "provenir_financial_data"
   add_foreign_key "provenir_updates", "provenir_lawsuits"
+  add_foreign_key "serasa_addresses", "serasa_registrations"
+  add_foreign_key "serasa_check_items", "serasa_checks"
+  add_foreign_key "serasa_checks", "serasa_negative_data", column: "serasa_negative_data_id"
+  add_foreign_key "serasa_facts", "serasa_fintech_reports"
+  add_foreign_key "serasa_fintech_reports", "analysis_items"
+  add_foreign_key "serasa_inquiries", "serasa_facts"
+  add_foreign_key "serasa_inquiry_items", "serasa_inquiries"
+  add_foreign_key "serasa_negative_data", "serasa_fintech_reports"
+  add_foreign_key "serasa_notaries", "serasa_negative_data", column: "serasa_negative_data_id"
+  add_foreign_key "serasa_notary_items", "serasa_notaries"
+  add_foreign_key "serasa_pefins", "serasa_negative_data", column: "serasa_negative_data_id"
+  add_foreign_key "serasa_refins", "serasa_negative_data", column: "serasa_negative_data_id"
+  add_foreign_key "serasa_registrations", "serasa_fintech_reports"
+  add_foreign_key "serasa_scores", "serasa_fintech_reports"
+  add_foreign_key "serasa_stolen_document_items", "serasa_stolen_documents"
+  add_foreign_key "serasa_stolen_documents", "serasa_facts"
 end

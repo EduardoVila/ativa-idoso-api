@@ -9,6 +9,6 @@ FactoryBot.define do
     code_message { rand(0..100) }
     message { Faker::Lorem.paragraphs(number: 1) }
 
-    fintech_report { create :serasa_fintech_report }
+    fintech_report factory: :serasa_fintech_report
   end
 end
