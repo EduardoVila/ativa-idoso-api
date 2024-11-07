@@ -31,7 +31,7 @@ RSpec.describe BoaVista::BasicRegistration, type: :model do
   describe '.age' do
     context 'when the birth date has a valid date' do
       subject do
-        create :boa_vista_basic_registration, birth_date: time.zone.today
+        create :boa_vista_basic_registration, birth_date: Time.zone.today
       end
 
       it 'returns the age correctly' do

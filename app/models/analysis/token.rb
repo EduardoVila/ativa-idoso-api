@@ -15,7 +15,7 @@
 module Analysis
   class Token < ApplicationRecord
     def expired?
-      (created_at.to_i + expires_in) < time.zone.today.to_i
+      (created_at.to_i + expires_in) < Time.now.to_i
     end
   end
 end

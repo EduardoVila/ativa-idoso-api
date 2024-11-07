@@ -25,7 +25,7 @@ module Tokenable
 
     return unless client&.authenticate(client_secret) # Authenticate the client
 
-    payload = { client_id: client_id, exp: time.zone.today.to_i + 3600 } # 1-hour expiration
+    payload = { client_id: client_id, exp: Time.now.to_i + 3600 } # 1-hour expiration
     encode(payload)
   end
 

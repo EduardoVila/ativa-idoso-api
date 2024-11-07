@@ -34,7 +34,7 @@ module BoaVista
 
       birth_date_datetime = birth_date.to_datetime
 
-      today = time.zone.today
+      today = Time.zone.today
       age = today.year - birth_date_datetime.year
       age -= 1 if today < birth_date_datetime + age.years
 

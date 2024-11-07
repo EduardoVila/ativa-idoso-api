@@ -16,6 +16,7 @@ gem 'bcrypt' # Password hashing
 gem 'bullet' # N+1 query detection
 gem 'colorize' # Colorized output
 gem 'cpf_cnpj' # CPF and CNPJ validation
+gem 'damerau-levenshtein' # Damerau-Levenshtein distance calculation
 gem 'dotenv' # Environment variable management
 gem 'faraday' # HTTP client for making API requests
 gem 'faraday-net_http' # Net::HTTP adapter for Faraday
@@ -24,11 +25,13 @@ gem 'foreman' # Process manager for running multiple processes
 gem 'i18n' # Internationalization support
 gem 'jwt' # JSON Web Token support
 gem 'ostruct' # OpenStruct for storing data
+gem 'paper_trail' # Versioning for records
 gem 'pg' # PostgreSQL database adapter
 gem 'puma' # Web server for serving the application
 gem 'rake' # Task runner for the application
 gem 'redis' # Redis client for caching
 gem 'require_all' # Require all files in a directory
+gem 'sentry-ruby'
 gem 'sidekiq' # Background job processing
 gem 'sidekiq-batch' # Batch processing for Sidekiq
 gem 'sidekiq-status' # Status tracking for Sidekiq jobs
@@ -36,6 +39,7 @@ gem 'sinatra' # Core framework for the application
 gem 'sinatra-activerecord' # ActiveRecord integration with Sinatra
 gem 'sinatra-contrib' # Additional Sinatra utilities
 gem 'tzinfo' # Timezone support
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby] # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 
 group :development, :test do
   gem 'byebug' # Debugger for debugging
