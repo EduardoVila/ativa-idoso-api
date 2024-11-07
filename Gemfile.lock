@@ -363,6 +363,7 @@ DEPENDENCIES
   sinatra-contrib
   sinatra-reloader
   tzinfo
+  tzinfo-data
   webmock
 
 RUBY VERSION

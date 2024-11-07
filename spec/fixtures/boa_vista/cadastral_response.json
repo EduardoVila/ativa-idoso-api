@@ -1,0 +1,59 @@
+{
+   "cadastroBasico": {
+      "cpf": "25197582871",
+      "nome": "Aline Heloise Teixeira",
+      "nomeMae": "Cecília Laura Andreia",
+      "dataNascimento": "13/09/1986",
+      "situacaoCPF": "Regular",
+      "pessoaPoliticamenteExposta": false
+   },
+  "localizacao":{
+     "cpf":"34323282818",
+     "enderecos":[
+        {
+           "tipoLogradouro":"R",
+           "logradouro":"Rua Guanabara",
+           "numero":"633",
+           "bairro":"Vila Cambuí",
+           "cidade":"Assis",
+           "uf":"SP",
+           "cep":"19804185"
+        },
+        {
+           "tipoLogradouro":"R",
+           "logradouro":"Avenida Comendador José Cruz",
+           "numero":"482",
+           "bairro":"Vila Papelao",
+           "cidade":"Manaus",
+           "uf":"AM",
+           "cep":"13276180"
+        }
+     ],
+     "telefones":[
+        {
+           "ddd":"92",
+           "numero":"39828944",
+           "tipo":"FIXO"
+        },
+        {
+           "ddd":"19",
+           "numero":"40028922",
+           "tipo":"FIXO"
+        }
+     ],
+     "emails":[
+        "mario@alpop.com.br",
+        "mario_andrade@galpop.com"
+     ]
+  },
+  "qualificacao":{
+     "cpf":"34323282818",
+     "obito":"Não",
+     "pessoasRelacionada":[
+        {
+           "nome":"Mariana Souza",
+           "grauParentesco":"Mae"
+        }
+     ]
+  }
+}

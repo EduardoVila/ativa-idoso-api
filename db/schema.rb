@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_06_183643) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_07_163255) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pgcrypto"
@@ -1113,6 +1113,30 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_06_183643) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["provenir_lawsuit_id"], name: "index_provenir_update_lawsuit_id"
+  end
+
+  create_table "request_logs", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "method"
+    t.string "path"
+    t.string "params"
+    t.string "headers"
+    t.string "body"
+    t.string "options"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "response_logs", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "table", null: false
+    t.string "table_pointer"
+    t.string "path", null: false
+    t.string "body"
+    t.string "status", null: false
+    t.string "method"
+    t.string "headers"
+    t.string "raw_data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "serasa_addresses", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
