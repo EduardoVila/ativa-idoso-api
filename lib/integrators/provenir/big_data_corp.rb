@@ -47,6 +47,10 @@ module Integrators
         true
       end
 
+      def enable_log_response
+        true
+      end
+
       def perform_post_request(cpf)
         do_request(:post, post_url, post_headers, post_body(cpf))
       end

@@ -22,11 +22,17 @@ module Integrable
 
   def do_request(verb, url, headers, params = nil, proxy = nil)
     connection = conn(proxy: proxy)
-    connection.public_send(verb) do |req|
+    response = connection.public_send(verb) do |req|
       req.url url
       req.headers.update(headers) if headers
       req.body = params if params
+
+      RequestLogger.log(req) if enable_log_request
     end
+
+    ResponseLogger.log(response, 'integrable', params) if enable_log_response
+
+    response
   end
 
   private
