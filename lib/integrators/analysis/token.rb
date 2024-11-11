@@ -2,7 +2,11 @@
 
 require 'base64'
 
-require_dependency 'errors/analysis/token_create_error'
+require_relative '../../errors/analysis/token_create_error'
+require_relative '../../concerns/formattable'
+require_relative '../../concerns/integrable'
+require_relative '../../concerns/parseable'
+require_relative '../../error_logger'
 
 module Integrators
   module Analysis
@@ -11,7 +15,10 @@ module Integrators
       include Integrable
       include Parseable
 
-      def create
+      # Create a new token for the analysis service using the client credentials
+      # provided in the environment variables.
+      # Endpoint: POST /api/v1/tokens
+      def post_request
         error_retries ||= 9
 
         response = do_request(:post, post[:url], post[:headers], post[:body])
@@ -20,11 +27,14 @@ module Integrators
 
         parsed_response_body = parser(response.body)
 
-        create_object(parsed_response_body)
+        token = initialize_object(parsed_response_body)
+        token.access_token = Base64.strict_decode64(token.access_token)
+        token.save
+        token
       rescue Faraday::ConnectionFailed => e
         ErrorLogger.log e
 
-        raise create_error unless error_retries.positive?
+        raise Errors::Analysis::TokenCreateError unless error_retries.positive?
 
         error_retries -= 1
 
@@ -37,7 +47,7 @@ module Integrators
 
       def post
         {
-          url: 'http://localhost:8000/api/v1/tokens',
+          url: "#{ENV.fetch('PREDICTION_URL')}/api/v1/tokens",
           headers: {
             'Accept' => '*/*',
             'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',

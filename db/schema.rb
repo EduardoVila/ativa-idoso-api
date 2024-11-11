@@ -35,6 +35,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_23_203100) do
     t.integer "prediction"
     t.integer "payment_situation", default: 0
     t.integer "disapproval_situation"
+    t.jsonb "features", default: {}
     t.uuid "clone_of_id"
     t.uuid "analysis_report_id", null: false
     t.datetime "created_at", null: false

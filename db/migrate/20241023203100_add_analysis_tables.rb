@@ -18,6 +18,7 @@ class AddAnalysisTables < ActiveRecord::Migration[7.2]
       t.integer :prediction
       t.integer :payment_situation, default: 0
       t.integer :disapproval_situation
+      t.jsonb :features, default: {}
       t.references :clone_of, type: :uuid, foreign_key: { to_table: :analysis_items }, index: true
       t.references :analysis_report, type: :uuid, null: false, foreign_key: true, index: true
       t.timestamps

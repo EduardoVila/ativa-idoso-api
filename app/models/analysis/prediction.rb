@@ -16,7 +16,7 @@
 #
 module Analysis
   class Prediction < ApplicationRecord
-    belongs_to :report, class_name: 'Analysis::Report',
-                        foreign_key: 'analysis_report_id'
+    belongs_to :item, class_name: 'Analysis::Item',
+                      foreign_key: 'analysis_item_id'
   end
 end

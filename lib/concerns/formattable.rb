@@ -3,8 +3,8 @@
 module Formattable
   extend ActiveSupport::Concern
 
-  def create_object(parsed_response_body)
-    klass_model.create(formatter(parsed_response_body, klass_model.new))
+  def initialize_object(parsed_response_body)
+    klass_model.new(formatter(parsed_response_body, klass_model.new))
   end
 
   def klass_model
