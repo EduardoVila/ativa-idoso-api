@@ -1,5 +1,17 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: analysis_tokens
+#
+#  id           :uuid             not null, primary key
+#  access_token :string
+#  token_type   :string
+#  expires_in   :integer
+#  scope        :string
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#
 require 'spec_helper'
 
 RSpec.describe Analysis::Token, type: :model do

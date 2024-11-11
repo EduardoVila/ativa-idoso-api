@@ -18,4 +18,10 @@ namespace :db do
     system('APP_ENV=development bundle exec rake db:environment:set db:drop db:create db:migrate')
     # rubocop:enable Layout/LineLength
   end
+
+  desc 'Drop, create and migrate both test and development databases'
+  task :restart_dev_test do
+    Rake::Task['db:restart_test'].invoke
+    Rake::Task['db:restart_dev'].invoke
+  end
 end
