@@ -1,70 +1,69 @@
 # frozen_string_literal: true
 
 require 'base64'
-require_relative '../../errors/analysis/token_create_error'
-require_relative '../../concerns/formattable'
+require_relative '../../errors/analysis/prediction_post_response_error'
+require_relative '../../concerns/nestable'
 require_relative '../../concerns/integrable'
 require_relative '../../concerns/parseable'
+require_relative '../../error_logger'
 
 module Integrators
   module Analysis
     class Prediction
-      attr_reader :item
-
-      include Formattable
+      include Nestable
       include Integrable
       include Parseable
 
-      def initialize(item)
-        @item = item
-      end
+      def create_resource(analysis_item)
+        response = perform_post_request(analysis_item)
 
-      def post_request
-        error_retries ||= 9
-
-        response = do_request(:post, post[:url], post[:headers], post[:body])
-
-        unless response.status == 200
-          raise Errors::Analysis::PredictionCreateError
+        unless response.success?
+          raise ::Errors::Analysis::PredictionPostResponseError
         end
 
         parsed_response_body = parser(response.body)
+        prediction = build_prediction(parsed_response_body, analysis_item)
 
-        prediction = initialize_object(parsed_response_body)
-        prediction.item = item
-        prediction.save
-        prediction
+        prediction.save && prediction
       rescue Faraday::ConnectionFailed => e
         ErrorLogger.log e
-
-        unless error_retries.positive?
-          raise Errors::Analysis::PredictionCreateError
-        end
-
-        error_retries -= 1
-
-        sleep 3
-
-        retry
+        raise ::Errors::Analysis::PredictionPostResponseError
       end
 
       private
 
-      def post
+      def perform_post_request(analysis_item)
+        do_request(:post, post_url, post_headers, post_body(analysis_item))
+      end
+
+      def build_prediction(parsed_response_body, analysis_item)
+        prediction = initialize_object_with_nested_attributes(
+          parsed_response_body
+        )
+        prediction.item = analysis_item
+        prediction
+      end
+
+      # Endpoint: POST /api/v1/predictions
+      def post_url
+        "#{ENV.fetch('PREDICTION_URL')}/api/v1/predictions"
+      end
+
+      def post_headers
         {
-          url: "#{ENV.fetch('PREDICTION_URL')}/api/v1/predictions",
-          headers: {
-            'Accept' => '*/*',
-            'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            'User-Agent' => 'Faraday v2.12.0',
-            'Content-Type' => 'application/json',
-            'Authorization' => "Bearer #{access_token64}"
-          },
-          body: {
-            cpf: item.cpf,
-            features: item.features
-          }.to_json
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'User-Agent' => 'Faraday v2.12.0',
+          'Content-Type' => 'application/json',
+          'Authorization' => "Bearer #{access_token64}"
         }
+      end
+
+      def post_body(analysis_item)
+        {
+          cpf: analysis_item.cpf,
+          features: analysis_item.features
+        }.to_json
       end
 
       def access_token64

@@ -33,7 +33,7 @@ module Provenir
 
     accepts_nested_attributes_for :income_estimate, :tax_returns
 
-    alias_method :income_estimates, :income_estimate
+    alias_attribute :income_estimates, :income_estimate
 
     def income_estimates_attributes=(params)
       self.income_estimate_attributes = params

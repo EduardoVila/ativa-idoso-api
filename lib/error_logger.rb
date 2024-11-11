@@ -16,8 +16,9 @@
 module ErrorLogger
   extend self # to allow using private methods! (module_function will not allow it)
   def log(err)
-    # async remote requests to Sentry
+    # async remote requests
     remote_log(err) if Sinatra::Application.settings.production?
+
     # sync logging to file
     sinatra_log_err err
   end

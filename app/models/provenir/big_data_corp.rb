@@ -74,6 +74,23 @@ module Provenir
             inverse_of: :big_data_corp,
             dependent: :destroy
 
+    # alias_method :basic_data, :basic_datum
+    # alias_method :basic_data=, :basic_datum=
+    # alias_method :extended_addresses, :extended_address
+    # alias_method :extended_addresses=, :extended_address=
+    # alias_method :extended_phones, :extended_phone
+    # alias_method :extended_phones=, :extended_phone=
+    # alias_method :finantial_data, :financial_datum
+    # alias_method :finantial_data=, :financial_datum=
+    # alias_method :processes, :process
+    # alias_method :processes=, :process=
+    # alias_method :related_people, :related_person
+    # alias_method :related_people=, :related_person=
+    # alias_method :collections, :collection
+    # alias_method :collections=, :collection=
+    # alias_method :business_relationships, :business_relationship
+    # alias_method :business_relationships=, :business_relationship=
+
     accepts_nested_attributes_for :basic_datum, allow_destroy: true
     accepts_nested_attributes_for :extended_address, allow_destroy: true
     accepts_nested_attributes_for :extended_phone, allow_destroy: true
@@ -84,20 +101,21 @@ module Provenir
     accepts_nested_attributes_for :collection, allow_destroy: true
     accepts_nested_attributes_for :business_relationship, allow_destroy: true
 
-    alias_method :basic_data, :basic_datum
-    alias_method :extended_addresses, :extended_address
-    alias_method :extended_phones, :extended_phone
-    alias_method :finantial_data, :financial_datum
-    alias_method :processes, :process
-    alias_method :related_people, :related_person
-    alias_method :collections, :collection
-    alias_method :business_relationships, :business_relationship
+    alias_attribute :basic_data, :basic_datum
+    alias_attribute :extended_addresses, :extended_address
+    alias_attribute :extended_phones, :extended_phone
+    alias_attribute :finantial_data, :financial_datum
+    alias_attribute :processes, :process
+    alias_attribute :related_people, :related_person
+    alias_attribute :collections, :collection
+    alias_attribute :business_relationships, :business_relationship
 
     # Adds helpers to create nested associations via `#{association}_attributes`
     # It is needed in order to create nested associations with alias.
     # This is possible with `#{association}_attributes=value` method
     # provided by `accepts_nested_attributes_for :association`
     # Required to import Big Data Corp data from Provenir API
+
     def basic_data_attributes=(params)
       self.basic_datum_attributes = params
     end

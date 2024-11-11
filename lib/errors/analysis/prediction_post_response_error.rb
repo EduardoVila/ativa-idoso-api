@@ -2,7 +2,7 @@
 
 module Errors
   module Analysis
-    class TokenCreateError < StandardError
+    class PredictionPostResponseError < StandardError
     end
   end
 end

@@ -4,16 +4,16 @@ require_relative '../application_service'
 
 module Analysis
   class PredictionService < ApplicationService
-    attr_reader :item
+    attr_reader :analysis_item
 
-    def initialize(item)
-      @item = item
+    def initialize(analysis_item)
+      @analysis_item = analysis_item
     end
 
     def call
-      integrator = Integrators::Analysis::Prediction.new(item)
+      integrator = Integrators::Analysis::Prediction.new
 
-      integrator.post_request
+      integrator.create_resource(analysis_item)
     end
   end
 end

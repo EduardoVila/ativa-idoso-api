@@ -11,7 +11,7 @@ module Analysis
 
       if last_token.blank? || last_token.expired?
         integrator = Integrators::Analysis::Token.new
-        token = integrator.post_request
+        token = integrator.create_resource
 
         return token
       end

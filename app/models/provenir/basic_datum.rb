@@ -63,8 +63,8 @@ module Provenir
                                   :extended_document_information,
                                   :alias
 
-    alias_method :alternative_id_numbers, :alternative_id_number
-    alias_method :aliases, :alias
+    alias_attribute :alternative_id_numbers, :alternative_id_number
+    alias_attribute :aliases, :alias
 
     def alternative_id_numbers_attributes=(params)
       self.alternative_id_number_attributes = params

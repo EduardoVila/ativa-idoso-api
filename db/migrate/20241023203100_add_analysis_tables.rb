@@ -1,4 +1,4 @@
-class AddAnalysisTables < ActiveRecord::Migration[7.2]
+class AddAnalysisTables < ActiveRecord::Migration[7.1]
   def change
     create_table :analysis_reports, id: :uuid, default: 'uuid_generate_v4()' do |t|
       t.string :cpfs, array: true
