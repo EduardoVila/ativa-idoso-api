@@ -19,7 +19,7 @@ FactoryBot.define do
     expires_in { 300 }
 
     trait :expired do
-      created_at { Time.now - 500 }
+      created_at { Time.zone.now - 500 }
     end
   end
 end
