@@ -4,12 +4,11 @@ require 'base64'
 require 'spec_helper'
 require 'webmock/rspec'
 require 'dotenv/load'
-require 'concerns/integrable'
-require_relative '../../../integrable'
-require_relative '../../../../lib/integrators/serasa/authentication'
-require_relative '../../../../lib/errors/serasa/response_error'
+require_relative '../integrable'
+require_relative '../../../app/integrators/serasa/authentication_integrator'
+require_relative '../../../app/integrators/errors/serasa/response_error'
 
-RSpec.describe Integrators::Serasa::Authentication do
+RSpec.describe Serasa::AuthenticationIntegrator do
   let(:post_url) do
     ENV.fetch('SERASA_FINTECH_REPORT_LOGIN_URL')
   end
@@ -38,7 +37,7 @@ RSpec.describe Integrators::Serasa::Authentication do
       let(:json_file) { 'authentication_response' }
       let(:response_body) do
         File.read(
-          File.join(__dir__, "../../../fixtures/serasa/#{json_file}.json")
+          File.join(__dir__, "../../fixtures/serasa/#{json_file}.json")
         )
       end
 

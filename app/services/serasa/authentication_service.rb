@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_dependency 'integrators/serasa/authentication'
+require_relative '../application_service'
 
 module Serasa
   class AuthenticationService < ApplicationService
@@ -8,7 +8,7 @@ module Serasa
       last_authentication = Serasa::Authentication.last
 
       if last_authentication.blank? || last_authentication.expired?
-        integrator = Integrators::Serasa::Authentication.new
+        integrator = Serasa::AuthenticationIntegrator.new
         authentication = integrator.authenticate
 
         return authentication.access_token

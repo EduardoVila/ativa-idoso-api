@@ -3,8 +3,6 @@
 require 'spec_helper'
 require 'webmock/rspec'
 
-require_dependency 'response_logger' # ensuring autoload works for tdd-flow
-
 RSpec.describe ResponseLogger do
   describe '#log(req)' do
     let(:url) { 'https://blabla.com' }

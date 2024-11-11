@@ -1,17 +1,64 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
+require 'webmock/rspec'
 
-require_dependency 'data_loaders/boa_vista/base'
-require_dependency 'data_loaders/boa_vista/acerta_essencial'
+require_relative '../../../app/integrators/boa_vista/acerta_essencial_integrator'
 
-RSpec.describe DataLoaders::BoaVista::Base do
-  describe '.parse acerta essencial' do
+RSpec.describe BoaVista::AcertaEssencialIntegrator do
+  describe '#load' do
+    let(:analysis_item) { create :analysis_item }
+
+    context 'when load is called' do
+      before do
+        WebMock.disable_net_connect!
+
+        boa_vista_response_path = File.join(
+          __dir__, '..', '..', 'fixtures', 'boa_vista', 'response.xml'
+        )
+        body = Nokogiri::XML(File.open(boa_vista_response_path)).to_xml
+
+        # rubocop:disable Layout/LineLength
+        stub_request(:post, 'https://acerta.bvsnet.com.br/FamiliaAcertaPFXmlWeb/essencial/v3')
+          .with(
+            headers: {
+              'Accept' => '*/*',
+              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+              'User-Agent' => 'Faraday v2.12.0',
+              'Content-Type' => 'application/xml'
+            }
+          )
+          .to_return(status: 200, body:, headers: { 'Content-Type' => 'application/xml' })
+        # rubocop:enable Layout/LineLength
+      end
+
+      it 'returns a valid boa_vista_acerta_essencial xml' do
+        acerta_essencial = described_class.new
+        boa_vista_acerta_essencial = acerta_essencial.load(Faker::CPF.pretty,
+                                                           'CC')
+        boa_vista_acerta_essencial.update(consumer: analysis_item)
+
+        expect(boa_vista_acerta_essencial).to be_valid
+      end
+
+      it 'returns a boa_vista_acerta_essencial with the column raw_data' do
+        acerta_essencial = described_class.new
+        boa_vista_acerta_essencial = acerta_essencial.load(Faker::CPF.pretty,
+                                                           'CC')
+        boa_vista_acerta_essencial.update(consumer: analysis_item)
+
+        expect(boa_vista_acerta_essencial).to be_valid
+        expect(boa_vista_acerta_essencial.raw_data).to be_truthy
+      end
+    end
+  end
+
+  describe '#parse acerta essencial' do
     context 'when parse is called' do
       let(:cpf) { Faker::CPF.pretty }
       let(:boa_vista_response_path) do
         File.join(
-          __dir__, '..', '..', '..', 'fixtures', 'boa_vista', 'response.xml'
+          __dir__, '..', '..', 'fixtures', 'boa_vista', 'response.xml'
         )
       end
       let(:response_xml) do
@@ -20,7 +67,7 @@ RSpec.describe DataLoaders::BoaVista::Base do
       let(:response) { Hash.from_xml(response_xml) }
       let(:credit_type) { 'CC' }
       let(:acerta_essencial) do
-        DataLoaders::BoaVista::AcertaEssencial.parse(
+        BoaVista::AcertaEssencialIntegrator.new.parse(
           cpf, credit_type, response
         )
       end
@@ -161,7 +208,7 @@ RSpec.describe DataLoaders::BoaVista::Base do
       context 'parses plugin debitos' do
         context 'when there are not debitos' do
           let(:acerta_essencial) do
-            DataLoaders::BoaVista::AcertaEssencial.parse(
+            BoaVista::AcertaEssencialIntegrator.new.parse(
               cpf,
               credit_type,
               {
@@ -181,7 +228,7 @@ RSpec.describe DataLoaders::BoaVista::Base do
 
         context 'when the debit have missing data' do
           let(:acerta_essencial) do
-            DataLoaders::BoaVista::AcertaEssencial.parse(
+            BoaVista::AcertaEssencialIntegrator.new.parse(
               cpf,
               credit_type,
               {
@@ -240,7 +287,7 @@ RSpec.describe DataLoaders::BoaVista::Base do
       context 'parses plugin consultas_anteriores' do
         context 'when there are not consultas_anteriores' do
           let(:acerta_essencial) do
-            DataLoaders::BoaVista::AcertaEssencial.parse(
+            BoaVista::AcertaEssencialIntegrator.new.parse(
               cpf,
               credit_type,
               {
@@ -262,7 +309,7 @@ RSpec.describe DataLoaders::BoaVista::Base do
       context 'plugin titulos_protestados' do
         context 'when there are not titlos_protestados' do
           let(:acerta_essencial) do
-            DataLoaders::BoaVista::AcertaEssencial.parse(
+            BoaVista::AcertaEssencialIntegrator.new.parse(
               cpf,
               credit_type,
               {
@@ -282,7 +329,7 @@ RSpec.describe DataLoaders::BoaVista::Base do
 
         context 'when the protested_title have missing data' do
           let(:acerta_essencial) do
-            DataLoaders::BoaVista::AcertaEssencial.parse(
+            BoaVista::AcertaEssencialIntegrator.new.parse(
               cpf,
               credit_type,
               {
@@ -388,7 +435,7 @@ RSpec.describe DataLoaders::BoaVista::Base do
       end
 
       it 'parses plugin historico_conta_corrente_informada' do
-        acerta_essencial = DataLoaders::BoaVista::AcertaEssencial.parse(
+        acerta_essencial = BoaVista::AcertaEssencialIntegrator.new.parse(
           cpf, credit_type, response
         )
         current_account_historic = acerta_essencial.current_account_historic
@@ -978,7 +1025,7 @@ RSpec.describe DataLoaders::BoaVista::Base do
       context 'parses plugin score_classificacao_varios_modelos' do
         context 'when there are not score_classificacao_varios_modelos' do
           let(:acerta_essencial) do
-            DataLoaders::BoaVista::AcertaEssencial.parse(
+            BoaVista::AcertaEssencialIntegrator.new.parse(
               cpf,
               credit_type,
               {
@@ -1352,7 +1399,6 @@ RSpec.describe DataLoaders::BoaVista::Base do
           __dir__,
           '..',
           '..',
-          '..',
           'fixtures',
           'boa_vista',
           'response_with_missing_data.xml'
@@ -1364,7 +1410,7 @@ RSpec.describe DataLoaders::BoaVista::Base do
       let(:response) { Hash.from_xml(response_xml) }
       let(:credit_type) { 'CC' }
       let(:acerta_essencial) do
-        DataLoaders::BoaVista::AcertaEssencial.parse(
+        BoaVista::AcertaEssencialIntegrator.new.parse(
           cpf, credit_type, response
         )
       end
@@ -1379,7 +1425,7 @@ RSpec.describe DataLoaders::BoaVista::Base do
       let(:cpf) { Faker::CPF.pretty }
       let(:credit_type) { 'CC' }
       let(:acerta_essencial) do
-        DataLoaders::BoaVista::AcertaEssencial.parse(
+        BoaVista::AcertaEssencialIntegrator.new.parse(
           cpf, credit_type, nil
         )
       end
@@ -1388,5 +1434,338 @@ RSpec.describe DataLoaders::BoaVista::Base do
         expect(acerta_essencial).to eq(nil)
       end
     end
+  end
+
+  describe 'custom methods' do
+    let(:credentials) { described_class.new.credentials }
+    let(:xml_header) { described_class.new.build_xml_header }
+
+    describe '#build_essencial_body_request' do
+      @cpf = Faker::CPF.pretty
+      @credit_type = 'CC'
+      context 'when calls build_essencial_body_request' do
+        it 'builds the body correctly' do
+          expected_body = Nokogiri::XML::Builder.with(xml_header) do |xml|
+            xml.acertaContratoEntrada(
+              'xmlns' => 'http://boavistaservicos.com.br/familia/acerta/pf'
+            ) do
+              xml.usuario credentials[:user]
+              xml.senha credentials[:password]
+              xml.cpf @cpf
+              xml.tipoCredito @credit_type
+            end
+          end.to_xml
+
+          body = described_class.new.build_essencial_body_request(@cpf,
+                                                                  @credit_type)
+
+          expect(body).to eq expected_body
+        end
+      end
+    end
+
+    # describe '#build_completo_body_request' do
+    #   @cpf = Faker::CPF.pretty
+    #   @credit_type = 'CC'
+    #   context 'when calls build_completo_body_request' do
+    #     it 'builds the body correctly' do
+    #       expected_body = Nokogiri::XML::Builder.with(xml_header) do |xml|
+    #         xml.acertaPositivoContratoEntrada(
+    #           'xmlns' => 'http://boavistaservicos.com.br/familia/acerta/positivo/pf'
+    #         ) do
+    #           xml.usuario credentials[:user]
+    #           xml.senha credentials[:password]
+    #           xml.cpf @cpf
+    #           xml.tipoCredito @credit_type
+    #           xml.consultaChequeSimples 'S'
+    #         end
+    #       end.to_xml
+
+    #       body = described_class.new.build_completo_body_request(@cpf, @credit_type)
+
+    #       expect(body).to eq expected_body
+    #     end
+    #   end
+    # end
+
+    describe '#credentials' do
+      context 'when calls credentials' do
+        let(:secrets_boavista) do
+          {
+            user: ENV.fetch('BOA_VISTA_USER'),
+            password: ENV.fetch('BOA_VISTA_PASSWORD')
+          }
+        end
+
+        it 'setups user' do
+          user = secrets_boavista[:user]
+
+          expect(credentials[:user]).to eq(user)
+        end
+
+        it 'setups password' do
+          password = secrets_boavista[:password]
+
+          expect(credentials[:password]).to eq(password)
+        end
+      end
+    end
+
+    describe '#build_xml_header' do
+      context 'when calls build_xml_header' do
+        it 'builds the xml_header correctly' do
+          expected_xml_header = Nokogiri::XML(
+            '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+          )
+
+          xml_header = described_class.new.build_xml_header
+
+          expect(xml_header.to_xml).to eq expected_xml_header.to_xml
+        end
+      end
+    end
+
+    describe '#acerta_essencial' do
+      before do
+        WebMock.disable_net_connect!
+        @cpf = Faker::CPF.pretty
+
+        allow(ErrorLogger).to receive(:log)
+
+        # rubocop:disable Style/SymbolProc
+        body = Nokogiri::XML::Builder.with(xml_header) do |xml|
+          xml.essencial
+        end.to_xml
+        # rubocop:enable Style/SymbolProc
+
+        stub_request(
+          :post,
+          'https://acerta.bvsnet.com.br/FamiliaAcertaPFXmlWeb/essencial/v3'
+        ).with(
+          headers: {
+            'Accept' => '*/*',
+            'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+            'User-Agent' => 'Faraday v2.12.0',
+            'Content-Type' => 'application/xml'
+          }
+        ).to_return(
+          status: 200,
+          body:,
+          headers: { 'Content-Type' => 'application/xml' }
+        )
+      end
+
+      context 'when request is a success' do
+        let(:response_data) { described_class.new.acerta_essencial(@cpf, 'CC') }
+
+        it 'does not returns an empty body' do
+
+          expect(response_data).not_to eq('')
+
+          log = RequestLog.last
+          response_log = ResponseLog.last
+
+          expect(log.path).to eq(
+            'https://acerta.bvsnet.com.br/FamiliaAcertaPFXmlWeb/essencial/v3'
+          )
+          expect(response_log.table).to eq('boa_vista_acerta_essencial')
+          expect(response_log.table_pointer).to eq(@cpf)
+          expect(response_log.path).to eq(
+            'https://acerta.bvsnet.com.br/FamiliaAcertaPFXmlWeb/essencial/v3'
+          )
+          expect(log.method).to eq('post')
+          expect(log.body).to eq(
+            described_class.new.build_essencial_body_request(@cpf, 'CC').to_s
+          )
+        end
+
+        it 'does not returns a nil response' do
+          expect(response_data).not_to be_nil
+
+          log = RequestLog.last
+          response_log = ResponseLog.last
+
+          expect(log.path).to eq(
+            'https://acerta.bvsnet.com.br/FamiliaAcertaPFXmlWeb/essencial/v3'
+          )
+          expect(response_log.table).to eq('boa_vista_acerta_essencial')
+          expect(response_log.table_pointer).to eq(@cpf)
+          expect(response_log.path).to eq(
+            'https://acerta.bvsnet.com.br/FamiliaAcertaPFXmlWeb/essencial/v3'
+          )
+          expect(log.method).to eq('post')
+          expect(log.body).to eq(
+            described_class.new.build_essencial_body_request(@cpf, 'CC').to_s
+          )
+        end
+      end
+
+      context 'when request returns empty body' do
+        it 'raises EmptyResponseError' do
+          allow_any_instance_of(described_class).to receive(:acerta_essencial).with(@cpf,
+                                                                                    'CC')
+            .and_raise(EmptyResponseError.new)
+
+          expect { described_class.new.acerta_essencial(@cpf, 'CC') }
+            .to raise_error(EmptyResponseError)
+        end
+      end
+
+      context 'when request returns internal server error' do
+        before do
+          WebMock.disable_net_connect!
+          @cpf = Faker::CPF.pretty
+
+          allow(ErrorLogger).to receive(:log)
+
+          response_path = File.join(
+            __dir__,
+            '..',
+            '..',
+            'fixtures',
+            'boa_vista',
+            'internal_server_error.html'
+          )
+
+          body = File.read(response_path)
+
+          stub_request(
+            :post,
+            'https://acerta.bvsnet.com.br/FamiliaAcertaPFXmlWeb/essencial/v3'
+          ).with(
+            headers: {
+              'Accept' => '*/*',
+              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+              'User-Agent' => 'Faraday v2.12.0',
+              'Content-Type' => 'application/xml'
+            }
+          ).to_return(
+            status: 200,
+            body:,
+            headers: { 'Content-Type' => 'application/xml' }
+          )
+        end
+
+        it 'retries 5 times, and then returns nil' do
+          expect(described_class.new.acerta_essencial(@cpf, 'CC')).to eq(nil)
+        end
+      end
+    end
+
+    # describe '#acerta_positivo' do
+    #   before(:each) do
+    #     WebMock.disable_net_connect!
+    #     @cpf = Faker::CPF.pretty
+
+    #
+    #     body = Nokogiri::XML::Builder.with(xml_header) do |xml|
+    #       xml.completo
+    #     end.to_xml
+    #       #     stub_request(
+    #       :post,
+    #       'https://acerta.bvsnet.com.br/FamiliaAcertaPositivoPFXmlWeb/completo/v2'
+    #     )
+    #       .with(
+    #         headers: {
+    #           'Accept' => '*/*',
+    #           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+    #           'User-Agent' => 'Faraday v2.12.0',
+    #           'Content-Type' => 'application/xml'
+    #         }
+    #       )
+    #       .to_return(
+    #         status: 200,
+    #         body: body,
+    #         headers: { 'Content-Type' => 'application/xml' }
+    #       )
+    #   end
+
+    #   context 'when request is a success' do
+    #     let(:response_data) { described_class.new.acerta_positivo(@cpf, 'CC') }
+
+    #     it 'does not returns an empty body' do
+    #       expect(response_data).not_to eq('')
+
+    #       log = RequestLog.last
+    #       response_log = ResponseLog.last
+
+    #       expect(log.path).to eq(
+    #         'https://acerta.bvsnet.com.br/FamiliaAcertaPositivoPFXmlWeb/completo/v2'
+    #       )
+    #       expect(response_log.table).to eq('boa_vista_acerta_positivo')
+    #       expect(response_log.table_pointer).to eq(@cpf)
+    #       expect(response_log.path).to eq(
+    #         'https://acerta.bvsnet.com.br/FamiliaAcertaPositivoPFXmlWeb/completo/v2'
+    #       )
+    #       expect(log.method).to eq('post')
+    #       expect(log.body).to eq(
+    #         described_class.new.build_completo_body_request(@cpf, 'CC').to_s
+    #       )
+    #     end
+
+    #     it 'does not returns a nil response' do
+    #       expect(response_data).not_to be_nil
+
+    #       log = RequestLog.last
+    #       response_log = ResponseLog.last
+
+    #       expect(log.path).to eq(
+    #         'https://acerta.bvsnet.com.br/FamiliaAcertaPositivoPFXmlWeb/completo/v2'
+    #       )
+    #       expect(response_log.table).to eq('boa_vista_acerta_positivo')
+    #       expect(response_log.table_pointer).to eq(@cpf)
+    #       expect(response_log.path).to eq(
+    #         'https://acerta.bvsnet.com.br/FamiliaAcertaPositivoPFXmlWeb/completo/v2'
+    #       )
+    #       expect(log.method).to eq('post')
+    #       expect(log.body).to eq(
+    #         described_class.new.build_completo_body_request(@cpf, 'CC').to_s
+    #       )
+    #     end
+    #   end
+
+    #   context 'when request returns empty body' do
+    #     it 'raises EmptyResponseError' do
+    #       allow(described_class.new).to receive(:acerta_positivo).with(@cpf, 'CC')
+    #         .and_raise(EmptyResponseError.new)
+
+    #       expect { described_class.new.acerta_positivo(@cpf, 'CC') }
+    #         .to raise_error(EmptyResponseError)
+    #     end
+    #   end
+
+    #   context 'when request returns internal server error' do
+    #     before(:each) do
+    #       WebMock.disable_net_connect!
+    #       @cpf = Faker::CPF.pretty
+
+    #       response_path = Rails.root.join(
+    #         'spec/fixtures/boa_vista/internal_server_error.html'
+    #       )
+
+    #       body = File.read(response_path)
+
+    #       stub_request(
+    #         :post,
+    #         'https://acerta.bvsnet.com.br/FamiliaAcertaPositivoPFXmlWeb/completo/v2'
+    #       ).with(
+    #         headers: {
+    #           'Accept' => '*/*',
+    #           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+    #           'User-Agent' => 'Faraday v2.12.0',
+    #           'Content-Type' => 'application/xml'
+    #         }
+    #       ).to_return(
+    #         status: 200,
+    #         body: body,
+    #         headers: { 'Content-Type' => 'application/xml' }
+    #       )
+    #     end
+
+    #     it 'retries 5 times, and then returns nil' do
+    #       expect(described_class.new.acerta_positivo(@cpf, 'CC')).to eq(nil)
+    #     end
+    #   end
+    # end
   end
 end

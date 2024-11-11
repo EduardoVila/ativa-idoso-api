@@ -1,12 +1,28 @@
 # frozen_string_literal: true
 
-require 'errors/integrators/empty_response_error'
-require 'request_logger'
-require 'response_logger'
+require_relative '../concerns/custom_parseable'
+require_relative '../error_logger'
+require_relative '../errors/integrators/empty_response_error'
+require_relative '../request_logger'
+require_relative '../response_logger'
 
-module Integrators
-  class BoaVista
-    def self.acerta_essencial(cpf, creditType)
+module BoaVista
+  class AcertaEssencialIntegrator
+    include CustomParseable
+
+    def load(cpf, credit_type)
+      data = acerta_essencial(cpf, credit_type)
+
+      acerta_essencial = parse(cpf, credit_type, data)
+
+      return if acerta_essencial.blank?
+
+      acerta_essencial.raw_data = data
+
+      acerta_essencial
+    end
+
+    def acerta_essencial(cpf, creditType)
       begin
         url = 'https://acerta.bvsnet.com.br/FamiliaAcertaPFXmlWeb/essencial/v3'
         error_retries ||= 5
@@ -55,30 +71,30 @@ module Integrators
       Hash.from_xml(response.body) unless xml_with_errors?(response.body)
     end
 
-    def self.xml_with_errors?(xml_string)
+    def xml_with_errors?(xml_string)
       xml_errors = Nokogiri::XML(xml_string).errors
 
       !xml_errors.empty?
     end
 
-    def self.internal_server_error?(response)
+    def internal_server_error?(response)
       body = response.body
 
       response.status == 500 || body.include?('HTTP Status 500')
     end
 
-    def self.credentials
+    def credentials
       {
         user: ENV.fetch('BOA_VISTA_USER'),
         password: ENV.fetch('BOA_VISTA_PASSWORD')
       }
     end
 
-    def self.build_xml_header
+    def build_xml_header
       Nokogiri::XML('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>')
     end
 
-    def self.build_essencial_body_request(cpf, credit_type)
+    def build_essencial_body_request(cpf, credit_type)
       body = Nokogiri::XML::Builder.with(build_xml_header) do |xml|
         xml.acertaContratoEntrada(
           'xmlns' => 'http://boavistaservicos.com.br/familia/acerta/pf'
