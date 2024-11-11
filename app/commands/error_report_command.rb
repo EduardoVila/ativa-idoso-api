@@ -2,7 +2,6 @@
 
 # ErrorReportCommand provides error reporting to multiple destinations/services in a centralized way.
 # Currently, we're reporting to:
-# - NewRelic
 # - Sentry
 #
 # Since we're using an Error/Exception as argument, we're overriding ActiveCommand serialize/deserialize
@@ -28,8 +27,4 @@ class ErrorReportCommand < ApplicationCommand
   def sentry_report(err)
     Sentry.capture_message err
   end
-
-  # def new_relic_report(err)
-  #   NewRelic::Agent.notice_error err
-  # end
 end
