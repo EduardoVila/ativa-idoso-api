@@ -7,11 +7,11 @@ source 'https://rubygems.org'
 ruby '3.3.5'
 
 # Core Gems
-gem 'activejob' # Background job processing
-gem 'activemodel' # Model framework for ActiveRecord
+gem 'activejob', '~> 7.1.3.4' # Background job processing
+gem 'activemodel', '~> 7.1.3.4' # Model framework for ActiveRecord
 gem 'active_model_serializers' # JSON serialization for models
-gem 'activerecord' # ORM for database interaction
-gem 'activesupport' # Utility classes and extensions
+gem 'activerecord', '~> 7.1.3.4' # ORM for database interaction
+gem 'activesupport', '~> 7.1.3.4' # Utility classes and extensions
 gem 'bcrypt' # Password hashing
 gem 'bullet' # N+1 query detection
 gem 'colorize' # Colorized output
@@ -26,11 +26,13 @@ gem 'foreman' # Process manager for running multiple processes
 gem 'i18n' # Internationalization support
 gem 'jwt' # JSON Web Token support
 gem 'ostruct' # OpenStruct for storing data
+gem 'paper_trail' # Versioning for records
 gem 'pg' # PostgreSQL database adapter
 gem 'puma' # Web server for serving the application
 gem 'rake' # Task runner for the application
 gem 'redis' # Redis client for caching
 gem 'require_all' # Require all files in a directory
+gem 'sentry-ruby'
 gem 'sidekiq' # Background job processing
 gem 'sidekiq-batch' # Batch processing for Sidekiq
 gem 'sidekiq-status' # Status tracking for Sidekiq jobs

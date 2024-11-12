@@ -1,4 +1,4 @@
-class CreateIdwallTables < ActiveRecord::Migration[7.2]
+class CreateIdwallTables < ActiveRecord::Migration[7.1]
   def change
     create_table :idwall_reports, id: :uuid, default: 'uuid_generate_v4()' do |t|
       t.string :number

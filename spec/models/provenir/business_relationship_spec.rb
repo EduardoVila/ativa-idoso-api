@@ -1,0 +1,36 @@
+# frozen_string_literal: true
+
+require 'spec_helper'
+
+RSpec.describe Provenir::BusinessRelationship, type: :model do
+  describe 'factories' do
+    subject { build :provenir_business_relationship }
+
+    it { is_expected.to be_valid }
+  end
+
+  describe 'associations' do
+    it do
+      expect(subject).to belong_to(:big_data_corp)
+        .class_name('Provenir::BigDataCorp')
+        .with_foreign_key('provenir_big_data_corp_id')
+        .inverse_of(:business_relationship)
+    end
+
+    it do
+      expect(subject).to have_many(:business_relationships_items)
+        .class_name('Provenir::BusinessRelationshipsItem')
+        .with_foreign_key('provenir_business_relationship_id')
+        .inverse_of(:business_relationship)
+        .dependent(:destroy)
+    end
+  end
+
+  describe 'nested_attributes' do
+    it do
+      expect(subject).to accept_nested_attributes_for(
+        :business_relationships_items
+      )
+    end
+  end
+end

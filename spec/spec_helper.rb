@@ -11,17 +11,25 @@ SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
   SimpleCov::Formatter::LcovFormatter,
   SimpleCov::Formatter::HTMLFormatter
 ])
-SimpleCov.minimum_coverage 98
+
 SimpleCov.start do
-  add_filter 'app/models/application_record.rb'
-  add_filter 'config'
-  add_filter 'app/serializers/application_serializer.rb'
-  add_filter 'app/models/concerns'
-  add_filter 'lib/concerns'
+  add_group 'Commands', 'app/commands'
+  add_group 'Controllers', 'app/controllers'
+  add_group 'Jobs', 'app/jobs'
+  add_group 'Models', 'app/models'
+  add_group 'Services', 'app/services'
+
+  add_filter '/config'
+  add_filter '/lib/concerns'
+  add_filter '/app/models/application_record.rb'
+  add_filter '/app/models/concerns'
+  add_filter '/app/serializers/application_serializer.rb'
 end
 
-# Gera o relatório de cobertura ao finalizar os testes
-SimpleCov.at_exit { SimpleCov.result.format! }
+SimpleCov.at_exit do
+  SimpleCov.result.format!
+  SimpleCov.minimum_coverage 98
+end
 
 module RSpecMixin
   include Rack::Test::Methods

@@ -10,28 +10,40 @@ require_relative '../../application_controller'
 module API
   module V1
     class TokensController < ApplicationController
+      # Endpoint to generate a JWT token when a client authenticates with
+      # client_id and client_secret credentials.
       include Tokenable
       set :base, '/api/v1/tokens'
 
+      before do
+        @content_type = request.env['CONTENT_TYPE']
+        @grant_type = params['grant_type']
+        @client_id = params['client_id']
+        @client_secret = params['client_secret']
+      end
+
       post '/' do
-        if request.env['CONTENT_TYPE'] != 'application/x-www-form-urlencoded' ||
-           params['grant_type'] != 'client_credentials' ||
-           params['client_id'].nil? ||
-           params['client_secret'].nil?
+        # Check if the request is a valid client_credentials request
+        if @content_type != 'application/x-www-form-urlencoded' ||
+           @grant_type != 'client_credentials' ||
+           @client_id.nil? ||
+           @client_secret.nil?
           halt 401
         end
 
+        # Generate a JWT token
         token = Tokenable.create_access_token(
-          Base64.strict_decode64(params['client_id']),
-          Base64.strict_decode64(params['client_secret'])
+          Base64.strict_decode64(@client_id),
+          Base64.strict_decode64(@client_secret)
         )
 
+        # Return the token if it was generated
         if token
           status 200
           {
-            access_token: token,
+            access_token: Base64.strict_encode64(token),
             token_type: 'bearer',
-            expires_in: 3600,
+            expires_in: 10_080, # 7 days in minutes
             created_at: Time.now
           }.to_json
         else

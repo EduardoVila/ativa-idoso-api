@@ -16,6 +16,7 @@ AllCops:
   - 'bin/**/*'
   - 'db/**/*'
   - 'todo/**/*'
+  - 'lib/concerns/**/*'
 
 Style/Documentation:
   Description: 'Document classes and non-namespace modules.'
@@ -32,6 +33,9 @@ Style/DoubleNegation:
 
 Style/Encoding:
   Enabled: true
+
+Style/Alias:
+  Enabled: false
 
 Style/EndlessMethod:
   EnforcedStyle: allow_single_line
