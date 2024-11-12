@@ -1,4 +1,4 @@
-class CreateBoaVistaTables < ActiveRecord::Migration[7.2]
+class CreateBoaVistaTables < ActiveRecord::Migration[7.1]
   def change
     
     create_table :boa_vista_cadastrals, id: :uuid, default: 'uuid_generate_v4()' do |t|
