@@ -4,13 +4,13 @@
 #
 # Table name: provenir_processes
 #
-#  id                        :bigint           not null, primary key
-#  provenir_big_data_corp_id :bigint           not null
-#  created_at                :datetime         not null
-#  updated_at                :datetime         not null
+#  id                        :uuid             not null, primary key
 #  lawsuits_total            :integer
 #  defendant_lawsuits_total  :integer
 #  plaintiff_lawsuits_total  :integer
+#  provenir_big_data_corp_id :uuid             not null
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
 #
 module Provenir
   class Process < ApplicationRecord

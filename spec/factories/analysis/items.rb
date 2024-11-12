@@ -20,7 +20,8 @@
 #
 FactoryBot.define do
   factory :analysis_item, class: 'Analysis::Item' do
-    cpf   { Faker::CPF.pretty }
+    name { Faker::Name.name }
+    cpf { Faker::CPF.pretty }
     status { %i[todo wip done not_found error].sample }
 
     error_status do

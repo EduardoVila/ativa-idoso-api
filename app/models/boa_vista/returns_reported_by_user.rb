@@ -4,31 +4,30 @@
 #
 # Table name: boa_vista_returns_reported_by_users
 #
-#  id                                                              :bigint           not null, primary key
-#  register_size                                                   :string
-#  register_type                                                   :string
-#  register                                                        :string
-#  document_type                                                   :string
-#  document                                                        :string
-#  bank                                                            :string
-#  agency                                                          :string
-#  current_account                                                 :string
-#  initial_cheque                                                  :string
-#  final_cheque                                                    :string
-#  reason                                                          :string
-#  point                                                           :string
-#  occurrence_date                                                 :string
-#  register_date                                                   :string
-#  currency                                                        :string
-#  value                                                           :string
-#  informant_code                                                  :string
-#  informant                                                       :string
-#  city                                                            :string
-#  federative_unit                                                 :string
-#  boa_vista_acerta_essencial_id                                   :bigint
-#  index_boa_vista_returns_reported_by_users_on_boa_vista_acerta_e :bigint
-#  created_at                                                      :datetime         not null
-#  updated_at                                                      :datetime         not null
+#  id                            :uuid             not null, primary key
+#  register_size                 :string
+#  register_type                 :string
+#  register                      :string
+#  document_type                 :string
+#  document                      :string
+#  bank                          :string
+#  agency                        :string
+#  current_account               :string
+#  initial_cheque                :string
+#  final_cheque                  :string
+#  reason                        :string
+#  point                         :string
+#  occurrence_date               :string
+#  register_date                 :string
+#  currency                      :string
+#  value                         :string
+#  informant_code                :string
+#  informant                     :string
+#  city                          :string
+#  federative_unit               :string
+#  boa_vista_acerta_essencial_id :uuid             not null
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
 #
 module BoaVista
   class ReturnsReportedByUser < ApplicationRecord

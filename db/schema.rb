@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_07_163255) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_12_122544) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pgcrypto"
@@ -624,6 +624,218 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_07_163255) do
     t.integer "litigation_category", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "pro_score_authentications", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "token_type"
+    t.string "refresh_token"
+    t.string "access_token"
+    t.integer "expires_in"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "pro_score_bounced_checks", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "numero_plugin"
+    t.string "codigo_do_banco"
+    t.string "nome_do_banco"
+    t.string "numero_da_agencia"
+    t.string "quantidade_de_ocorrencias"
+    t.string "motivo_da_ocorrencia"
+    t.string "data_da_ultima_ocorrencia"
+    t.uuid "pro_score_report_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pro_score_report_id"], name: "index_pro_score_bounced_checks_on_pro_score_report_id"
+  end
+
+  create_table "pro_score_commercial_relations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "numero_plugin"
+    t.string "cpfcnpj"
+    t.string "razao_social"
+    t.uuid "pro_score_report_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pro_score_report_id"], name: "index_pro_score_commercial_relations_on_pro_score_report_id"
+  end
+
+  create_table "pro_score_criminal_antecedents", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "numero_plugin"
+    t.string "numero_da_certidao"
+    t.string "certidao"
+    t.string "data_da_emissao"
+    t.string "hora_da_emissao"
+    t.uuid "pro_score_report_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pro_score_report_id"], name: "index_pro_score_criminal_antecedents_on_pro_score_report_id"
+  end
+
+  create_table "pro_score_emergency_assistances", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "numero_plugin"
+    t.string "mes_disponibilizado"
+    t.string "codigo_do_municipio"
+    t.string "municipio"
+    t.string "uf"
+    t.string "parcelas"
+    t.string "valor"
+    t.string "enquadramento"
+    t.string "observacao"
+    t.uuid "pro_score_report_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pro_score_report_id"], name: "index_pro_score_emergency_assistances_on_pro_score_report_id"
+  end
+
+  create_table "pro_score_family_assistances", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "numero_plugin"
+    t.string "valor"
+    t.string "ultima_data_do_beneficio"
+    t.string "consta_beneficio"
+    t.uuid "pro_score_report_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pro_score_report_id"], name: "index_pro_score_family_assistances_on_pro_score_report_id"
+  end
+
+  create_table "pro_score_family_holdings", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "numero_plugin"
+    t.string "cpf_do_parente"
+    t.string "nome_do_parente"
+    t.string "grau_de_parentesco"
+    t.uuid "pro_score_report_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pro_score_report_id"], name: "index_pro_score_family_holdings_on_pro_score_report_id"
+  end
+
+  create_table "pro_score_monthly_benefits", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "numero_plugin"
+    t.string "mes_competencia"
+    t.string "mes_referencia"
+    t.string "uf"
+    t.string "nome_municipio"
+    t.string "nis_beneficiario"
+    t.string "numero_beneficio"
+    t.string "beneficio_concedido_judicialmente"
+    t.string "valor_parcela"
+    t.uuid "pro_score_report_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pro_score_report_id"], name: "index_pro_score_monthly_benefits_on_pro_score_report_id"
+  end
+
+  create_table "pro_score_presumed_incomes", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "numero_plugin"
+    t.string "valor_da_renda_presumida"
+    t.uuid "pro_score_report_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pro_score_report_id"], name: "index_pro_score_presumed_incomes_on_pro_score_report_id"
+  end
+
+  create_table "pro_score_presumed_salary_ranges", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "numero_plugin"
+    t.string "codigo_da_faixa_salarial"
+    t.string "faixa_salarial"
+    t.string "descricao_da_faixa"
+    t.uuid "pro_score_report_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pro_score_report_id"], name: "index_pro_score_presumed_salary_ranges_on_pro_score_report_id"
+  end
+
+  create_table "pro_score_proprable_professions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "numero_plugin"
+    t.string "codigo"
+    t.string "titulo"
+    t.uuid "pro_score_report_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pro_score_report_id"], name: "index_pro_score_proprable_professions_on_pro_score_report_id"
+  end
+
+  create_table "pro_score_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "raw_data"
+    t.text "performed_searches", default: [], array: true
+    t.uuid "analysis_item_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["analysis_item_id"], name: "index_pro_score_reports_on_analysis_item_id"
+  end
+
+  create_table "pro_score_trial_lawyers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "numero_plugin"
+    t.string "numero_do_processo_unico"
+    t.string "advogado_nome"
+    t.string "parte_nome"
+    t.string "cpf"
+    t.string "cnpj"
+    t.string "tipo"
+    t.string "oab_numero"
+    t.string "oab_uf"
+    t.uuid "pro_score_trial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pro_score_trial_id"], name: "index_pro_score_trial_lawyers_on_pro_score_trial_id"
+  end
+
+  create_table "pro_score_trial_motions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "numero_plugin"
+    t.string "numero_do_processo_unico"
+    t.datetime "data"
+    t.string "nome_original"
+    t.uuid "pro_score_trial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pro_score_trial_id"], name: "index_pro_score_trial_motions_on_pro_score_trial_id"
+  end
+
+  create_table "pro_score_trial_parts", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "numero_plugin"
+    t.string "numero_do_processo_unico"
+    t.string "nome"
+    t.string "documento"
+    t.string "tipo"
+    t.string "polo"
+    t.uuid "pro_score_trial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pro_score_trial_id"], name: "index_pro_score_trial_parts_on_pro_score_trial_id"
+  end
+
+  create_table "pro_score_trial_topics", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "numero_plugin"
+    t.string "numero_do_processo_unico"
+    t.string "codigo_cnpj"
+    t.string "titulo"
+    t.uuid "pro_score_trial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pro_score_trial_id"], name: "index_pro_score_trial_topics_on_pro_score_trial_id"
+  end
+
+  create_table "pro_score_trials", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "numero_plugin"
+    t.string "numero_do_processo_unico"
+    t.datetime "data_distribuicao"
+    t.string "area"
+    t.string "causa_moeda"
+    t.string "causa_valor"
+    t.string "unidade_origem"
+    t.string "url_processo"
+    t.string "sistema"
+    t.datetime "data_processamento"
+    t.string "tribunal"
+    t.string "uf"
+    t.string "segmento"
+    t.string "classe_processual_nome"
+    t.string "orgao_julgador"
+    t.string "juiz"
+    t.uuid "pro_score_report_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pro_score_report_id"], name: "index_pro_score_trials_on_pro_score_report_id"
   end
 
   create_table "provenir_addresses", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -1381,6 +1593,22 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_07_163255) do
   add_foreign_key "boa_vista_summary_of_returns_reported_by_users", "boa_vista_acerta_essencials"
   add_foreign_key "boa_vista_summary_previous_query_cheques", "boa_vista_acerta_essencials"
   add_foreign_key "boa_vista_zip_code_confirmations", "boa_vista_acerta_essencials"
+  add_foreign_key "pro_score_bounced_checks", "pro_score_reports"
+  add_foreign_key "pro_score_commercial_relations", "pro_score_reports"
+  add_foreign_key "pro_score_criminal_antecedents", "pro_score_reports"
+  add_foreign_key "pro_score_emergency_assistances", "pro_score_reports"
+  add_foreign_key "pro_score_family_assistances", "pro_score_reports"
+  add_foreign_key "pro_score_family_holdings", "pro_score_reports"
+  add_foreign_key "pro_score_monthly_benefits", "pro_score_reports"
+  add_foreign_key "pro_score_presumed_incomes", "pro_score_reports"
+  add_foreign_key "pro_score_presumed_salary_ranges", "pro_score_reports"
+  add_foreign_key "pro_score_proprable_professions", "pro_score_reports"
+  add_foreign_key "pro_score_reports", "analysis_items"
+  add_foreign_key "pro_score_trial_lawyers", "pro_score_trials"
+  add_foreign_key "pro_score_trial_motions", "pro_score_trials"
+  add_foreign_key "pro_score_trial_parts", "pro_score_trials"
+  add_foreign_key "pro_score_trial_topics", "pro_score_trials"
+  add_foreign_key "pro_score_trials", "pro_score_reports"
   add_foreign_key "provenir_addresses", "provenir_extended_addresses"
   add_foreign_key "provenir_aliases", "provenir_basic_data"
   add_foreign_key "provenir_alternative_id_numbers", "provenir_basic_data"

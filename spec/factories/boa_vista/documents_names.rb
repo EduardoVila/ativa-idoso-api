@@ -1,5 +1,23 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: boa_vista_documents_names
+#
+#  id                            :uuid             not null, primary key
+#  register_size                 :string
+#  register_type                 :string
+#  register                      :string
+#  name                          :string
+#  birth_date                    :string
+#  document_type                 :string
+#  document_number               :string
+#  document_2                    :string
+#  document_3                    :string
+#  boa_vista_acerta_essencial_id :uuid             not null
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
+#
 FactoryBot.define do
   factory :boa_vista_documents_name, class: 'BoaVista::DocumentsName' do
     register_size { '117' }

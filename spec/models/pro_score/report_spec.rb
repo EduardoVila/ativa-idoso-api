@@ -1,0 +1,99 @@
+# frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: pro_score_reports
+#
+#  id                 :uuid             not null, primary key
+#  raw_data           :string
+#  performed_searches :text             default([]), is an Array
+#  analysis_item_id   :uuid             not null
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#
+require 'spec_helper'
+
+RSpec.describe ProScore::Report, type: :model do
+  describe 'factories' do
+    subject { build :pro_score_report }
+
+    it { is_expected.to be_valid }
+  end
+
+  describe 'validations' do
+    it { is_expected.to validate_presence_of :raw_data }
+  end
+
+  describe 'associations' do
+    it {
+      expect(subject).to belong_to(:analysis_item)
+        .class_name('Analysis::Item')
+    }
+
+    it {
+      expect(subject).to have_many(:trials)
+        .class_name('ProScore::Trial')
+        .inverse_of(:report)
+    }
+
+    it {
+      expect(subject).to have_many(:monthly_benefits)
+        .class_name('ProScore::MonthlyBenefit')
+        .inverse_of(:report)
+    }
+
+    it {
+      expect(subject).to have_many(:emergency_assistances)
+        .class_name('ProScore::EmergencyAssistance')
+        .inverse_of(:report)
+    }
+
+    it {
+      expect(subject).to have_many(:family_assistances)
+        .class_name('ProScore::FamilyAssistance')
+        .inverse_of(:report)
+    }
+
+    it {
+      expect(subject).to have_many(:family_holdings)
+        .class_name('ProScore::FamilyHolding')
+        .inverse_of(:report)
+    }
+
+    it {
+      expect(subject).to have_many(:bounced_checks)
+        .class_name('ProScore::BouncedCheck')
+        .inverse_of(:report)
+    }
+
+    it {
+      expect(subject).to have_many(:commercial_relations)
+        .class_name('ProScore::CommercialRelation')
+        .inverse_of(:report)
+    }
+
+    it {
+      expect(subject).to have_many(:criminal_antecedents)
+        .class_name('ProScore::CriminalAntecedent')
+        .inverse_of(:report)
+    }
+
+    it {
+      expect(subject).to have_one(:proprable_professions)
+        .class_name('ProScore::ProprableProfession')
+        .inverse_of(:report)
+    }
+
+    it {
+      expect(subject).to have_one(:presumed_salary_ranges)
+        .class_name('ProScore::PresumedSalaryRange')
+        .inverse_of(:report)
+    }
+
+    it {
+      expect(subject).to have_one(:presumed_incomes)
+        .class_name('ProScore::PresumedIncome')
+        .inverse_of(:report)
+    }
+  end
+end

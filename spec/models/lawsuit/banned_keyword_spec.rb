@@ -1,5 +1,15 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: lawsuit_banned_keywords
+#
+#  id                  :uuid             not null, primary key
+#  keyword             :string
+#  litigation_category :integer          default("criminal")
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#
 require 'spec_helper'
 
 RSpec.describe Lawsuit::BannedKeyword, type: :model do

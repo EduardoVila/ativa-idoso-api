@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 # Module ErrorLogger is a simple error logger that logs errors to:
-# - NewRelic
 # - Sentry
-# - Rails log file
 #
 # usage
 # ----
@@ -11,7 +9,7 @@
 # begin
 #   something_critial!
 # rescue => err
-#   ErrorLogger.log err # will log to NewRelic, Sentry and Rails log file
+#   ErrorLogger.log err # will log to Sentry log file
 # end
 # ```
 #
