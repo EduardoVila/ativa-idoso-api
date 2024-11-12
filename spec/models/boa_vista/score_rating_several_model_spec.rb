@@ -1,0 +1,16 @@
+# frozen_string_literal: true
+
+require 'spec_helper'
+
+RSpec.describe BoaVista::ScoreRatingSeveralModel, type: :model do
+  describe 'factories' do
+    subject { build :boa_vista_score_rating_several_model }
+
+    it { is_expected.to be_valid }
+  end
+
+  describe 'associations' do
+    it { is_expected.to belong_to(:boa_vista_acerta_essencial).optional }
+    # it { is_expected.to belong_to(:boa_vista_acerta_positivo).optional }
+  end
+end

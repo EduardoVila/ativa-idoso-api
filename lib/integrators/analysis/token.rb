@@ -1,64 +1,67 @@
 # frozen_string_literal: true
 
 require 'base64'
-
-require_dependency 'errors/analysis/token_create_error'
+require_relative '../../errors/analysis/token_post_response_error'
+require_relative '../../concerns/nestable'
+require_relative '../../concerns/integrable'
+require_relative '../../concerns/parseable'
+require_relative '../../error_logger'
 
 module Integrators
   module Analysis
     class Token
-      include Formattable
+      include Nestable
       include Integrable
       include Parseable
 
-      def create
-        error_retries ||= 9
+      def create_resource
+        response = perform_post_request
 
-        response = do_request(:post, post[:url], post[:headers], post[:body])
-
-        raise Errors::Analysis::TokenCreateError unless response.status == 200
+        unless response.success?
+          raise ::Errors::Analysis::TokenPostResponseError
+        end
 
         parsed_response_body = parser(response.body)
 
-        create_object(parsed_response_body)
+        token = initialize_object_with_nested_attributes(parsed_response_body)
+        token.access_token = Base64.strict_decode64(token.access_token)
+
+        token.save && token
       rescue Faraday::ConnectionFailed => e
         ErrorLogger.log e
-
-        raise create_error unless error_retries.positive?
-
-        error_retries -= 1
-
-        sleep 3
-
-        retry
+        raise ::Errors::Analysis::TokenPostResponseError
       end
 
       private
 
-      def post
+      def perform_post_request
+        do_request(:post, post_url, post_headers, post_body)
+      end
+
+      # Endpoint: POST /api/v1/tokens
+      def post_url
+        "#{ENV.fetch('PREDICTION_URL')}/api/v1/tokens"
+      end
+
+      def post_headers
         {
-          url: 'http://localhost:8000/api/v1/tokens',
-          headers: {
-            'Accept' => '*/*',
-            'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            'User-Agent' => 'Faraday v2.12.0',
-            'Content-Type' => 'application/x-www-form-urlencoded'
-          },
-          body: URI.encode_www_form(
-            'client_id' => client_credentials[:client_id64],
-            'client_secret' => client_credentials[:client_secret64],
-            'grant_type' => 'client_credentials'
-          )
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'User-Agent' => 'Faraday v2.12.0',
+          'Content-Type' => 'application/x-www-form-urlencoded'
         }
       end
 
-      def client_credentials
-        {
-          client_id64: Base64.strict_encode64(ENV.fetch('ANALYSIS_CLIENT_ID')),
-          client_secret64: Base64.strict_encode64(
-            ENV.fetch('ANALYSIS_CLIENT_SECRET')
-          )
-        }
+      def post_body
+        URI.encode_www_form(
+          'client_id' => Base64.strict_encode64(
+            ENV.fetch('PREDICTION_CLIENT_ID')
+          ),
+          'client_secret' => Base64.strict_encode64(
+            ENV.fetch('PREDICTION_CLIENT_SECRET')
+          ),
+          'grant_type' => 'client_credentials'
+        )
       end
     end
   end

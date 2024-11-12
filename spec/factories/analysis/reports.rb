@@ -32,7 +32,7 @@ FactoryBot.define do
       end
     end
 
-    # This trait is used to create a score report with a random status
+    # This trait is used to create a analysis report with a random status
     Analysis::Report.statuses.each_key do |name|
       trait name.to_sym do
         status { name }

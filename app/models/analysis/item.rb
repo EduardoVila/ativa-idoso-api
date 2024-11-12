@@ -12,6 +12,7 @@
 #  prediction            :integer
 #  payment_situation     :integer          default("unanalyzed")
 #  disapproval_situation :integer
+#  features              :jsonb
 #  clone_of_id           :uuid
 #  analysis_report_id    :uuid             not null
 #  created_at            :datetime         not null
@@ -89,6 +90,20 @@ module Analysis
                                   dependent: :destroy,
                                   as: :consumer
 
+    has_one :boa_vista_acerta_essencial,
+            class_name: 'BoaVista::AcertaEssencial',
+            inverse_of: :analysis_item,
+            dependent: :destroy,
+            as: :consumer
+
+    has_one :provenir_big_data_corp, class_name: 'Provenir::BigDataCorp',
+                                     inverse_of: :analysis_item,
+                                     dependent: :destroy
+
+    has_one :serasa_fintech_report, class_name: 'Serasa::FintechReport',
+                                    inverse_of: :owner,
+                                    dependent: :destroy
+
     has_many :clones, class_name: 'Analysis::Item',
                       inverse_of: :clone_of,
                       dependent: :nullify
@@ -96,6 +111,10 @@ module Analysis
     has_many :item_steps, class_name: 'Analysis::ItemStep',
                           inverse_of: :item,
                           dependent: :destroy
+
+    has_many :predictions, class_name: 'Analysis::Prediction',
+                           inverse_of: :item,
+                           dependent: :destroy
 
     has_many :steps, through: :item_steps,
                      class_name: 'Analysis::Step',

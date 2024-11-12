@@ -1,49 +1,29 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    actionpack (7.2.2)
-      actionview (= 7.2.2)
-      activesupport (= 7.2.2)
-      nokogiri (>= 1.8.5)
-      racc
-      rack (>= 2.2.4, < 3.2)
-      rack-session (>= 1.0.1)
-      rack-test (>= 0.6.3)
-      rails-dom-testing (~> 2.2)
-      rails-html-sanitizer (~> 1.6)
-      useragent (~> 0.16)
-    actionview (7.2.2)
-      activesupport (= 7.2.2)
-      builder (~> 3.1)
-      erubi (~> 1.11)
-      rails-dom-testing (~> 2.2)
-      rails-html-sanitizer (~> 1.6)
-    active_model_serializers (0.10.14)
-      actionpack (>= 4.1)
-      activemodel (>= 4.1)
-      case_transform (>= 0.2)
-      jsonapi-renderer (>= 0.1.1.beta1, < 0.3)
-    activejob (7.2.2)
-      activesupport (= 7.2.2)
+    active_model_serializers (0.9.13)
+      activemodel (>= 3.2)
+      concurrent-ruby (~> 1.0)
+    activejob (7.1.3.4)
+      activesupport (= 7.1.3.4)
       globalid (>= 0.3.6)
-    activemodel (7.2.2)
-      activesupport (= 7.2.2)
-    activerecord (7.2.2)
-      activemodel (= 7.2.2)
-      activesupport (= 7.2.2)
+    activemodel (7.1.3.4)
+      activesupport (= 7.1.3.4)
+    activerecord (7.1.3.4)
+      activemodel (= 7.1.3.4)
+      activesupport (= 7.1.3.4)
       timeout (>= 0.4.0)
-    activesupport (7.2.2)
+    activesupport (7.1.3.4)
       base64
       benchmark (>= 0.3)
       bigdecimal
-      concurrent-ruby (~> 1.0, >= 1.3.1)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
       connection_pool (>= 2.2.5)
       drb
       i18n (>= 1.6, < 2)
-      logger (>= 1.4.2)
       minitest (>= 5.1)
-      securerandom (>= 0.3)
-      tzinfo (~> 2.0, >= 2.0.5)
+      mutex_m
+      tzinfo (~> 2.0)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
     annotate (3.2.0)
@@ -54,7 +34,6 @@ GEM
     bcrypt (3.1.20)
     benchmark (0.3.0)
     bigdecimal (3.1.8)
-    builder (3.3.0)
     bullet (7.2.0)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
@@ -68,8 +47,6 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
-    case_transform (0.2)
-      activesupport
     chronic_duration (0.10.6)
       numerizer (~> 0.1.1)
     clipboard (2.0.0)
@@ -85,7 +62,6 @@ GEM
     crack (1.0.0)
       bigdecimal
       rexml
-    crass (1.0.6)
     damerau-levenshtein (1.3.3)
     database_cleaner-active_record (2.2.0)
       activerecord (>= 5.a)
@@ -97,7 +73,6 @@ GEM
     docile (1.4.1)
     dotenv (3.1.4)
     drb (2.2.1)
-    erubi (1.13.0)
     factory_bot (6.5.0)
       activesupport (>= 5.0.0)
     faker (3.5.1)
@@ -142,8 +117,7 @@ GEM
     hashdiff (1.1.1)
     i18n (1.14.6)
       concurrent-ruby (~> 1.0)
-    json (2.8.1)
-    jsonapi-renderer (0.2.2)
+    json (2.7.6)
     jwt (2.9.3)
       base64
     language_server-protocol (3.17.0.3)
@@ -151,9 +125,6 @@ GEM
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     logger (1.6.1)
-    loofah (2.23.1)
-      crass (~> 1.0.2)
-      nokogiri (>= 1.12.0)
     lumberjack (1.2.10)
     matrix (0.4.2)
     method_source (1.1.0)
@@ -162,6 +133,7 @@ GEM
     multi_json (1.15.0)
     mustermann (3.0.3)
       ruby2_keywords (~> 0.0.1)
+    mutex_m (0.2.0)
     nenv (0.3.0)
     net-http (0.5.0)
       uri
@@ -193,7 +165,6 @@ GEM
       ast (~> 2.4.1)
       racc
     pg (1.5.9)
-    pg (1.5.9-x64-mingw-ucrt)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -215,13 +186,6 @@ GEM
       rack (>= 3.0.0)
     rack-test (2.1.0)
       rack (>= 1.3)
-    rails-dom-testing (2.2.0)
-      activesupport (>= 5.0.0)
-      minitest
-      nokogiri (>= 1.6)
-    rails-html-sanitizer (1.6.0)
-      loofah (~> 2.21)
-      nokogiri (~> 1.14)
     rainbow (3.1.1)
     rake (13.2.1)
     rb-fsevent (0.11.2)
@@ -259,7 +223,7 @@ GEM
       rubocop-ast (>= 1.32.2, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 3.0)
-    rubocop-ast (1.34.1)
+    rubocop-ast (1.34.0)
       parser (>= 3.3.1.0)
     rubocop-capybara (2.21.0)
       rubocop (~> 1.41)
@@ -274,7 +238,6 @@ GEM
       rubocop (~> 1.61)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
-    securerandom (0.3.1)
     sentry-ruby (5.21.0)
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
@@ -325,8 +288,7 @@ GEM
     unicode-display_width (2.6.0)
     unicode_utils (1.4.0)
     uniform_notifier (1.16.0)
-    uri (1.0.0)
-    useragent (0.16.10)
+    uri (0.13.1)
     webmock (3.24.0)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
@@ -352,10 +314,10 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
-  activejob
-  activemodel
-  activerecord
-  activesupport
+  activejob (~> 7.1.3.4)
+  activemodel (~> 7.1.3.4)
+  activerecord (~> 7.1.3.4)
+  activesupport (~> 7.1.3.4)
   annotate
   bcrypt
   bullet
