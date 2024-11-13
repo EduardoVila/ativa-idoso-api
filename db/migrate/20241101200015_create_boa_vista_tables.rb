@@ -8,8 +8,8 @@ class CreateBoaVistaTables < ActiveRecord::Migration[7.1]
     end
      
     create_table :boa_vista_cadastral_locations, id: :uuid, default: 'uuid_generate_v4()' do |t|
-      t.string :cpf                                 
-      t.string :emails   
+      t.string :cpf, null: false                                 
+      t.string :emails, array: true   
       t.references :boa_vista_cadastral, type: :uuid, null: false, foreign_key: true, index: true 
       t.timestamps              
     end
@@ -40,7 +40,7 @@ class CreateBoaVistaTables < ActiveRecord::Migration[7.1]
     end
 
     create_table :boa_vista_cadastral_qualifications, id: :uuid, default: 'uuid_generate_v4()' do |t|
-      t.string :cpf                              
+      t.string :cpf, null: false                              
       t.string :death                              
       t.references :boa_vista_cadastral, type: :uuid, null: false, foreign_key: true, index: true 
       t.timestamps
