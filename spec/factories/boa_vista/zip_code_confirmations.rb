@@ -1,5 +1,22 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: boa_vista_zip_code_confirmations
+#
+#  id                            :uuid             not null, primary key
+#  register_size                 :string
+#  register_type                 :string
+#  register                      :string
+#  zip_code                      :string
+#  address                       :string
+#  neighborhood                  :string
+#  city                          :string
+#  federative_unit               :string
+#  boa_vista_acerta_essencial_id :uuid             not null
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
+#
 FactoryBot.define do
   factory :boa_vista_zip_code_confirmation,
           class: 'BoaVista::ZipCodeConfirmation' do

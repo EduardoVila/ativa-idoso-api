@@ -4,7 +4,7 @@
 #
 # Table name: provenir_phones
 #
-#  id                                      :bigint           not null, primary key
+#  id                                      :uuid             not null, primary key
 #  number                                  :string
 #  complement                              :string
 #  area_code                               :string
@@ -21,6 +21,16 @@
 #  household_code                          :string
 #  address_entity_age                      :string
 #  country_code                            :string
+#  type_of_phone_plan                      :string           default("")
+#  portability_history                     :string           default("")
+#  validation_status                       :string           default("")
+#  last_validation_date                    :datetime
+#  first_passage_date_for_entity           :datetime
+#  last_passage_date_for_entity            :datetime
+#  first_passage_date_global               :datetime
+#  last_passage_date_global                :datetime
+#  creation_date                           :datetime
+#  capture_date                            :datetime
 #  phone_currently_in_rf_site              :boolean
 #  phone_entity_total_passages             :integer
 #  phone_entity_bad_passages               :integer
@@ -38,6 +48,7 @@
 #  last3_months_passages                   :integer
 #  last6_months_passages                   :integer
 #  last12_months_passages                  :integer
+#  last16_months_passages                  :integer          default(0)
 #  last18_months_passages                  :integer
 #  phone_number_of_entities                :integer
 #  phone_number_of_family_related_entities :integer
@@ -50,22 +61,11 @@
 #  is_active                               :boolean
 #  is_likely_from_accountant               :boolean
 #  is_in_do_not_call_list                  :boolean
+#  has_opt_in                              :boolean          default(FALSE)
 #  current_carrier                         :string
-#  provenir_extended_phone_id              :bigint           not null
+#  provenir_extended_phone_id              :uuid             not null
 #  created_at                              :datetime         not null
 #  updated_at                              :datetime         not null
-#  type_of_phone_plan                      :string           default("")
-#  portability_history                     :string           default("")
-#  validation_status                       :string           default("")
-#  last_validation_date                    :datetime
-#  first_passage_date_for_entity           :datetime
-#  last_passage_date_for_entity            :datetime
-#  first_passage_date_global               :datetime
-#  last_passage_date_global                :datetime
-#  creation_date                           :datetime
-#  capture_date                            :datetime
-#  has_opt_in                              :boolean          default(FALSE)
-#  last16_months_passages                  :integer          default(0)
 #
 module Provenir
   class Phone < ApplicationRecord

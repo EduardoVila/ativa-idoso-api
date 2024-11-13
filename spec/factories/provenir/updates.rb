@@ -1,5 +1,17 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: provenir_updates
+#
+#  id                  :uuid             not null, primary key
+#  content             :text
+#  publish_date        :datetime
+#  capture_date        :datetime
+#  provenir_lawsuit_id :uuid             not null
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#
 FactoryBot.define do
   factory :provenir_update, class: 'Provenir::Update' do
     content { Faker::Lorem.sentence }

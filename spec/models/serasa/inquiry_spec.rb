@@ -1,5 +1,14 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: serasa_inquiries
+#
+#  id             :uuid             not null, primary key
+#  serasa_fact_id :uuid             not null
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#
 require 'spec_helper'
 
 RSpec.describe Serasa::Inquiry, type: :model do

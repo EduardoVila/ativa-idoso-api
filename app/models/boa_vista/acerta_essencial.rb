@@ -4,14 +4,14 @@
 #
 # Table name: boa_vista_acerta_essencials
 #
-#  id            :bigint           not null, primary key
+#  id            :uuid             not null, primary key
 #  cpf           :string           not null
 #  credit_type   :integer          default("CC"), not null
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
 #  raw_data      :string
 #  consumer_type :string
-#  consumer_id   :bigint
+#  consumer_id   :uuid
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
 #
 module BoaVista
   class AcertaEssencial < ApplicationRecord

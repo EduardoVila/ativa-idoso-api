@@ -5,8 +5,8 @@
 # Table name: idwall_reports
 #
 #  id               :uuid             not null, primary key
-#  number           :string
-#  status           :integer
+#  number           :string           not null
+#  status           :integer          default("processing")
 #  raw_data         :string
 #  analysis_item_id :uuid             not null
 #  created_at       :datetime         not null

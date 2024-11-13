@@ -1,5 +1,39 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: provenir_basic_data
+#
+#  id                                   :uuid             not null, primary key
+#  tax_id_number                        :string
+#  tax_id_country                       :string
+#  name                                 :string
+#  gender                               :string
+#  name_word_count                      :integer
+#  number_of_full_name_namesakes        :integer
+#  name_uniqueness_score                :integer
+#  first_name_uniqueness_score          :integer
+#  first_and_last_name_uniqueness_score :integer
+#  birth_date                           :datetime
+#  age                                  :integer
+#  zodiac_sign                          :string
+#  chinese_sign                         :string
+#  birth_country                        :string
+#  mother_name                          :string
+#  father_name                          :string
+#  marital_status_data                  :string
+#  tax_id_status                        :string
+#  tax_id_origin                        :string
+#  tax_id_fiscal_region                 :string
+#  has_obit_indication                  :boolean
+#  tax_id_status_date                   :datetime
+#  tax_id_status_registration_date      :datetime
+#  creation_date                        :datetime
+#  last_update_date                     :datetime
+#  provenir_big_data_corp_id            :uuid             not null
+#  created_at                           :datetime         not null
+#  updated_at                           :datetime         not null
+#
 require 'spec_helper'
 
 RSpec.describe Provenir::BasicDatum, type: :model do

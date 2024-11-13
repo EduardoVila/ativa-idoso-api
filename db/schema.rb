@@ -665,8 +665,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_06_183643) do
   end
 
   create_table "idwall_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "number"
-    t.integer "status"
+    t.string "number", null: false
+    t.integer "status", default: 0
     t.string "raw_data"
     t.uuid "analysis_item_id", null: false
     t.datetime "created_at", null: false

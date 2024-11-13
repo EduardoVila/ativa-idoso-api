@@ -4,7 +4,7 @@
 #
 # Table name: boa_vista_bank_branch_phones_addresses
 #
-#  id                            :bigint           not null, primary key
+#  id                            :uuid             not null, primary key
 #  register_size                 :string
 #  register_type                 :string
 #  register                      :string
@@ -22,9 +22,9 @@
 #  phone_1                       :string
 #  phone_2                       :string
 #  reserved                      :string
+#  boa_vista_acerta_essencial_id :uuid             not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
-#  boa_vista_acerta_essencial_id :bigint
 #
 module BoaVista
   class BankBranchPhonesAddress < ApplicationRecord

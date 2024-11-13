@@ -1,5 +1,17 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: serasa_summaries
+#
+#  id         :uuid             not null, primary key
+#  count      :integer
+#  balance    :float
+#  owner_type :string
+#  owner_id   :uuid
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
 FactoryBot.define do
   factory :serasa_summary, class: 'Serasa::Summary' do
     count { rand(0..100) }

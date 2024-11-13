@@ -4,13 +4,13 @@
 #
 # Table name: provenir_income_estimates
 #
-#  id                          :bigint           not null, primary key
+#  id                          :uuid             not null, primary key
 #  mte                         :string
 #  company_ownership           :string
 #  ibge                        :string
 #  bigdata                     :string
 #  bigdata_v2                  :string
-#  provenir_financial_datum_id :bigint           not null
+#  provenir_financial_datum_id :uuid             not null
 #  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
 #

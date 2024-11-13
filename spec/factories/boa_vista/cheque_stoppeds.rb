@@ -1,5 +1,29 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: boa_vista_cheque_stoppeds
+#
+#  id                            :uuid             not null, primary key
+#  register_size                 :string
+#  register_type                 :string
+#  register                      :string
+#  occurrence_type               :string
+#  document_type                 :string
+#  document_number               :string
+#  bank                          :string
+#  agency                        :string
+#  current_account               :string
+#  cheque                        :string
+#  point                         :string
+#  occurrence_date               :string
+#  availability_date             :string
+#  informant                     :string
+#  indicator                     :string
+#  boa_vista_acerta_essencial_id :uuid             not null
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
+#
 FactoryBot.define do
   factory :boa_vista_cheque_stopped, class: 'BoaVista::ChequeStopped' do
     register_size { '105' }

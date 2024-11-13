@@ -1,5 +1,24 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: serasa_negative_items
+#
+#  id              :uuid             not null, primary key
+#  occurrence_date :date
+#  legal_nature_id :string
+#  legal_nature    :string
+#  contract_id     :string
+#  creditor_name   :string
+#  amount          :float
+#  city            :string
+#  federal_unit    :string
+#  principal       :boolean
+#  owner_type      :string
+#  owner_id        :uuid
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
 require 'spec_helper'
 
 RSpec.describe Serasa::NegativeItem, type: :model do

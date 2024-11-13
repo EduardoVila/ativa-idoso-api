@@ -4,11 +4,11 @@
 #
 # Table name: provenir_financial_data
 #
-#  id                        :bigint           not null, primary key
+#  id                        :uuid             not null, primary key
 #  total_assets              :string
 #  creation_date             :datetime
 #  last_update_date          :datetime
-#  provenir_big_data_corp_id :bigint           not null
+#  provenir_big_data_corp_id :uuid             not null
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
 #

@@ -1,5 +1,23 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: provenir_extended_addresses
+#
+#  id                          :uuid             not null, primary key
+#  total_addresses             :integer
+#  total_active_addresses      :integer
+#  total_work_addresses        :integer
+#  total_personal_addresses    :integer
+#  total_unique_addresses      :integer
+#  total_address_passages      :integer
+#  total_bad_address_passages  :integer
+#  oldest_address_passage_date :datetime
+#  newest_address_passage_date :datetime
+#  provenir_big_data_corp_id   :uuid             not null
+#  created_at                  :datetime         not null
+#  updated_at                  :datetime         not null
+#
 FactoryBot.define do
   factory :provenir_extended_address,
           class: 'Provenir::ExtendedAddress' do

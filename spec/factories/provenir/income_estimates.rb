@@ -1,5 +1,19 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: provenir_income_estimates
+#
+#  id                          :uuid             not null, primary key
+#  mte                         :string
+#  company_ownership           :string
+#  ibge                        :string
+#  bigdata                     :string
+#  bigdata_v2                  :string
+#  provenir_financial_datum_id :uuid             not null
+#  created_at                  :datetime         not null
+#  updated_at                  :datetime         not null
+#
 FactoryBot.define do
   factory :provenir_income_estimate,
           class: 'Provenir::IncomeEstimate' do
