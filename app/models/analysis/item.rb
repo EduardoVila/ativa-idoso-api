@@ -12,7 +12,6 @@
 #  prediction            :integer
 #  payment_situation     :integer          default("unanalyzed")
 #  disapproval_situation :integer
-#  features              :jsonb
 #  clone_of_id           :uuid
 #  analysis_report_id    :uuid             not null
 #  created_at            :datetime         not null

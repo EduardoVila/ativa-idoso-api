@@ -4,8 +4,8 @@
 #
 # Table name: idwall_addresses
 #
-#  id                :bigint           not null, primary key
-#  main              :boolean
+#  id                :uuid             not null, primary key
+#  main              :string
 #  city              :string
 #  state             :string
 #  number            :string
@@ -14,7 +14,7 @@
 #  neighborhood      :string
 #  people_at_address :string
 #  kind              :string
-#  idwall_report_id  :bigint           not null
+#  idwall_report_id  :uuid             not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #

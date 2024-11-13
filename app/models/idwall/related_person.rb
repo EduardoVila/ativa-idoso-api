@@ -4,11 +4,11 @@
 #
 # Table name: idwall_related_people
 #
-#  id               :bigint           not null, primary key
+#  id               :uuid             not null, primary key
 #  cpf              :string
 #  name             :string
 #  kind             :string
-#  idwall_report_id :bigint           not null
+#  idwall_report_id :uuid             not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #

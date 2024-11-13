@@ -1,5 +1,17 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: idwall_reports
+#
+#  id               :uuid             not null, primary key
+#  number           :string
+#  status           :integer
+#  raw_data         :string
+#  analysis_item_id :uuid             not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#
 require 'spec_helper'
 
 RSpec.describe Idwall::Report, type: :model do

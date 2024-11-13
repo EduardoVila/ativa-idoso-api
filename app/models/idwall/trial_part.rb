@@ -4,7 +4,7 @@
 #
 # Table name: idwall_trial_parts
 #
-#  id              :bigint           not null, primary key
+#  id              :uuid             not null, primary key
 #  cnpj            :string
 #  cpf             :string
 #  birth_date      :string
@@ -13,7 +13,7 @@
 #  gender          :string
 #  kind            :string
 #  title           :string
-#  idwall_trial_id :bigint
+#  idwall_trial_id :uuid             not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #

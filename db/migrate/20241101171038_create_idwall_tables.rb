@@ -1,8 +1,8 @@
 class CreateIdwallTables < ActiveRecord::Migration[7.1]
   def change
     create_table :idwall_reports, id: :uuid, default: 'uuid_generate_v4()' do |t|
-      t.string :number
-      t.integer :status
+      t.string :number, null: false
+      t.integer :status, default: 0
       t.string :raw_data
       t.references :analysis_item, type: :uuid, null: false, foreign_key: true, index: true
       t.timestamps

@@ -1,5 +1,23 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: idwall_addresses
+#
+#  id                :uuid             not null, primary key
+#  main              :string
+#  city              :string
+#  state             :string
+#  number            :string
+#  zip_code          :string
+#  street            :string
+#  neighborhood      :string
+#  people_at_address :string
+#  kind              :string
+#  idwall_report_id  :uuid             not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#
 require 'spec_helper'
 
 RSpec.describe Idwall::Address, type: :model do

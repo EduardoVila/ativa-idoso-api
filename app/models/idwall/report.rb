@@ -4,13 +4,13 @@
 #
 # Table name: idwall_reports
 #
-#  id         :bigint           not null, primary key
-#  number     :string           not null
-#  status     :integer          default("processing")
-#  raw_data   :string
-#  analysis_item_id   :bigint
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id               :uuid             not null, primary key
+#  number           :string
+#  status           :integer
+#  raw_data         :string
+#  analysis_item_id :uuid             not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
 module Idwall
   class Report < ApplicationRecord

@@ -1,5 +1,16 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: idwall_trials
+#
+#  id               :uuid             not null, primary key
+#  subject          :string
+#  kind             :string
+#  idwall_report_id :uuid             not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#
 require 'spec_helper'
 
 RSpec.describe Idwall::Trial, type: :model do
