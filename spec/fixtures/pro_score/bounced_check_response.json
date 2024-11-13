@@ -1,0 +1,13 @@
+{
+  "registro": [
+      {
+          "numero_plugin": "111",
+          "codigo_do_banco": "033",
+          "nome_do_banco": "BANCO SANTANDER (BRASIL) S.A.",
+          "numero_da_agencia": "3131",
+          "quantidade_de_ocorrencias": "1",
+          "motivo_da_ocorrencia": "12",
+          "data_da_ultima_ocorrencia": "25/08/2022"
+      }
+  ]
+}

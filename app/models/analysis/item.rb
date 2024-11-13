@@ -32,38 +32,38 @@ module Analysis
 
     before_validation :cpf_normalizer
 
-    enum status: { todo: 0, wip: 1, done: 2, not_found: 3, error: 4 }
-    enum error_status: {
-      none: 0,
-      idwall: 1,
-      boa_vista: 2,
-      pro_score_trials: 3,
-      serasa: 4,
-      pro_score_family_holdings: 5,
-      pro_score_bounced_checks: 6,
-      pro_score_presumed_income: 7,
-      pro_score_commercial_relations: 8,
-      provenir_big_data_corp: 9
-    }, _suffix: true
+    enum :status, %i[todo wip done not_found error]
+    enum :error_status, %i[
+      none
+      idwall
+      boa_vista
+      pro_score_trials
+      serasa
+      pro_score_family_holdings
+      pro_score_bounced_checks
+      pro_score_presumed_income
+      pro_score_commercial_relations
+      provenir_big_data_corp
+    ], suffix: true
 
-    enum disapproval_situation: {
-      debtor: 1, # when has debits with Alpop
-      blocked_negativity: 2, # when has blocked negativity
-      reproved_by_trial: 3,
-      insufficient_income: 4,
-      exceeded_debits: 5,
-      blocked_cpf: 6,
-      reproved_by_relative: 7,
-      reproved_by_bounced_check: 8,
-      reproved_by_age_and_income: 9,
-      reproved_by_obit_indication: 10,
-      reproved_by_protested_title: 11,
-      reproved_by_recent_debit: 12
-    }
+    enum :disapproval_situation, %i[
+      debtor
+      blocked_negativity
+      reproved_by_trial
+      insufficient_income
+      exceeded_debits
+      blocked_cpf
+      reproved_by_relative
+      reproved_by_bounced_check
+      reproved_by_age_and_income
+      reproved_by_obit_indication
+      reproved_by_protested_title
+      reproved_by_recent_deb
+    ]
 
-    enum payment_situation: {
-      unanalyzed: 0, good_payer: 1, no_payer: 2, new_client: 3, late_payer: 4
-    }, _suffix: true
+    enum :payment_situation, %i[
+      unanalyzed good_payer no_payer new_client late_payer
+    ], suffix: true
 
     validates :status, inclusion: { in: statuses.keys }
     validates :error_status, inclusion: { in: error_statuses.keys }
