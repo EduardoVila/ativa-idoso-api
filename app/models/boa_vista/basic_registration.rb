@@ -46,7 +46,6 @@ module BoaVista
     def valid_datetime?(value)
       value.to_datetime
       true
-    
     rescue ArgumentError
       false
     end
