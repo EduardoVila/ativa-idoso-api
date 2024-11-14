@@ -24,7 +24,7 @@ class AddAnalysisTables < ActiveRecord::Migration[7.1]
       t.timestamps
     end
 
-    create_table :analysis_steps, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :analysis_steps do |t|
       t.string :name
       t.integer :command_class
       t.integer :index_order
@@ -32,13 +32,13 @@ class AddAnalysisTables < ActiveRecord::Migration[7.1]
       t.timestamps
     end
 
-    create_table :analysis_item_steps, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :analysis_item_steps do |t|
       t.references :analysis_item, type: :uuid, null: false, foreign_key: true, index: true
-      t.references :analysis_step, type: :uuid, null: false, foreign_key: true, index: true
+      t.references :analysis_step, null: false, foreign_key: true, index: true
       t.timestamps
     end
 
-    create_table :analysis_predictions, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :analysis_predictions do |t|
       t.string :cpf
       t.boolean :approved
       t.float :fee
@@ -48,7 +48,7 @@ class AddAnalysisTables < ActiveRecord::Migration[7.1]
       t.timestamps
     end
 
-    create_table :analysis_tokens, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :analysis_tokens do |t|
       t.string :access_token
       t.string :token_type
       t.integer :expires_in
