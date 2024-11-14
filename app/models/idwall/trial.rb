@@ -39,14 +39,6 @@ module Idwall
     end
 
     def defendant_and_disapproved?
-      # subject_has_disapproved_words = check_disapproved_words?(subject)
-      # kind_has_disapproved_words =  check_disapproved_words?(kind)
-
-      # && (
-      # subject_has_disapproved_words ||
-      # kind_has_disapproved_words
-      # )
-
       own_part_required?
     end
 
@@ -99,21 +91,6 @@ module Idwall
        'EMBARGANTE', 'EXEQUENTE', 'AUTOR DO FATO', 'AGRAVANTE', 'RECORRENTE',
        'TERINTCER', 'LESADO']
     end
-
-    # def check_disapproved_words?(value)
-    #   return if value.blank?
-
-    #   disapproved_words.any? do |word|
-    #     formatted_string(value).include? word
-    #   end
-    # end
-
-    # def disapproved_words
-    #   ['despejo', 'cobranca', 'locacao', 'crime', 'criminal', 'dano material',
-    #    'danos materiais', 'direitos e titulos de credito',
-    #    'alienacao fiduciaria', 'condominio', 'execucao de titulo', 'penal',
-    #    'trafico']
-    # end
 
     def formatted_string(value = '')
       value.downcase.unaccent
