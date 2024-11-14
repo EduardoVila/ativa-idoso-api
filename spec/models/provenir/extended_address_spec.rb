@@ -4,7 +4,7 @@
 #
 # Table name: provenir_extended_addresses
 #
-#  id                          :uuid             not null, primary key
+#  id                          :bigint           not null, primary key
 #  total_addresses             :integer
 #  total_active_addresses      :integer
 #  total_work_addresses        :integer
@@ -14,7 +14,7 @@
 #  total_bad_address_passages  :integer
 #  oldest_address_passage_date :datetime
 #  newest_address_passage_date :datetime
-#  provenir_big_data_corp_id   :uuid             not null
+#  provenir_big_data_corp_id   :bigint           not null
 #  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
 #

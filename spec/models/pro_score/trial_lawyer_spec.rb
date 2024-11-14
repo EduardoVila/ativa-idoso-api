@@ -4,7 +4,7 @@
 #
 # Table name: pro_score_trial_lawyers
 #
-#  id                       :uuid             not null, primary key
+#  id                       :bigint           not null, primary key
 #  numero_plugin            :string
 #  numero_do_processo_unico :string
 #  advogado_nome            :string
@@ -14,7 +14,7 @@
 #  tipo                     :string
 #  oab_numero               :string
 #  oab_uf                   :string
-#  pro_score_trial_id       :uuid             not null
+#  pro_score_trial_id       :bigint           not null
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
 #

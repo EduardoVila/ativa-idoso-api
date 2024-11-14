@@ -4,7 +4,7 @@
 #
 # Table name: boa_vista_protested_titles
 #
-#  id                            :uuid             not null, primary key
+#  id                            :bigint           not null, primary key
 #  register_size                 :string
 #  register_type                 :string
 #  register                      :string
@@ -15,7 +15,7 @@
 #  value                         :string
 #  city                          :string
 #  federative_unit               :string
-#  boa_vista_acerta_essencial_id :uuid             not null
+#  boa_vista_acerta_essencial_id :bigint           not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
 #

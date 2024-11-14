@@ -4,7 +4,7 @@
 #
 # Table name: serasa_check_items
 #
-#  id              :uuid             not null, primary key
+#  id              :bigint           not null, primary key
 #  occurrence_date :date
 #  legal_square    :string
 #  bank_id         :integer
@@ -15,7 +15,7 @@
 #  federal_unit    :string
 #  check_number    :string
 #  alinea          :string
-#  serasa_check_id :uuid             not null
+#  serasa_check_id :bigint           not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #

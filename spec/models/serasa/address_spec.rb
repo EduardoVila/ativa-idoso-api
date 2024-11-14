@@ -4,14 +4,14 @@
 #
 # Table name: serasa_addresses
 #
-#  id                     :uuid             not null, primary key
+#  id                     :bigint           not null, primary key
 #  address_line           :string
 #  district               :string
 #  zip_code               :string
 #  country                :string
 #  city                   :string
 #  state                  :string
-#  serasa_registration_id :uuid             not null
+#  serasa_registration_id :bigint           not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #

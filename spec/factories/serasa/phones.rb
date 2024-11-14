@@ -4,12 +4,12 @@
 #
 # Table name: serasa_phones
 #
-#  id           :uuid             not null, primary key
+#  id           :bigint           not null, primary key
 #  region_code  :string
 #  area_code    :string
 #  phone_number :string
 #  owner_type   :string
-#  owner_id     :uuid
+#  owner_id     :bigint
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #

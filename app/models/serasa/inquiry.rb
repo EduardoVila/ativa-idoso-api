@@ -4,8 +4,8 @@
 #
 # Table name: serasa_inquiries
 #
-#  id             :uuid             not null, primary key
-#  serasa_fact_id :uuid             not null
+#  id             :bigint           not null, primary key
+#  serasa_fact_id :bigint           not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #

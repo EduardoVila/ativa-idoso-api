@@ -4,14 +4,14 @@
 #
 # Table name: serasa_notary_items
 #
-#  id               :uuid             not null, primary key
+#  id               :bigint           not null, primary key
 #  occurrence_date  :date
 #  amount           :float
 #  office_number    :string
 #  office_name      :string
 #  city             :string
 #  federal_unit     :string
-#  serasa_notary_id :uuid             not null
+#  serasa_notary_id :bigint           not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #

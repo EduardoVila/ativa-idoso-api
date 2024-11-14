@@ -4,7 +4,7 @@
 #
 # Table name: provenir_tax_returns
 #
-#  id                          :uuid             not null, primary key
+#  id                          :bigint           not null, primary key
 #  year                        :integer
 #  status                      :string
 #  bank                        :string
@@ -14,7 +14,7 @@
 #  capture_date                :datetime
 #  creation_date               :datetime
 #  last_update_date            :datetime
-#  provenir_financial_datum_id :uuid             not null
+#  provenir_financial_datum_id :bigint           not null
 #  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
 #

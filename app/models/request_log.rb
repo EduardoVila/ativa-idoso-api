@@ -4,7 +4,7 @@
 #
 # Table name: request_logs
 #
-#  id         :uuid             not null, primary key
+#  id         :bigint           not null, primary key
 #  method     :string
 #  path       :string
 #  params     :string

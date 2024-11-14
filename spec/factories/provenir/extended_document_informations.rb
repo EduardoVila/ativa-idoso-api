@@ -4,8 +4,8 @@
 #
 # Table name: provenir_extended_document_informations
 #
-#  id                      :uuid             not null, primary key
-#  provenir_basic_datum_id :uuid             not null
+#  id                      :bigint           not null, primary key
+#  provenir_basic_datum_id :bigint           not null
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #
