@@ -9,8 +9,6 @@ require 'bcrypt'
 RSpec.describe API::V1::TokensController, type: :controller do
   include Rack::Test::Methods
 
-  let(:app) { described_class }
-
   describe 'POST /api/v1/tokens' do
     context 'when the request is valid' do
       let(:json_response) { JSON.parse(last_response.body) }

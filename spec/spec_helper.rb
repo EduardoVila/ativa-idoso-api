@@ -34,8 +34,13 @@ end
 module RSpecMixin
   include Rack::Test::Methods
 
-  def application = Sinatra::Application
-  def settings = application.settings
+  def application
+    Sinatra::Application
+  end
+
+  def settings
+    application.settings
+  end
 end
 
 RSpec.configure do |config|
@@ -69,4 +74,15 @@ RSpec.configure do |config|
   config.mock_with(:rspec) { |mocks| mocks.verify_partial_doubles = true }
 
   Kernel.srand config.seed
+end
+
+RSpec.configure do |config|
+  config.include(
+    Module.new do
+      def app
+        described_class
+      end
+    end,
+    type: :controller
+  )
 end

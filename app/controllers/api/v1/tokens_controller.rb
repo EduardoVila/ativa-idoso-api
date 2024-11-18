@@ -13,7 +13,6 @@ module API
       # Endpoint to generate a JWT token when a client authenticates with
       # client_id and client_secret credentials.
       include Tokenable
-      set :base, '/api/v1/tokens'
 
       before do
         @content_type = request.env['CONTENT_TYPE']
@@ -22,7 +21,7 @@ module API
         @client_secret = params['client_secret']
       end
 
-      post '/' do
+      post '/api/v1/tokens' do
         # Check if the request is a valid client_credentials request
         if @content_type != 'application/x-www-form-urlencoded' ||
            @grant_type != 'client_credentials' ||
