@@ -16,13 +16,7 @@
 #
 module Analysis
   class Report < ApplicationRecord
-    enum :status, %i[
-      todo
-      wip
-      done
-      not_found
-      error
-    ]
+    enum :status, %i[todo wip done not_found error]
     enum :disapproval_situation, [
       :debtor, # when has debits with Alpop
       :blocked_negativity,
