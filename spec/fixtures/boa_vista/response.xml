@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns29:essencial xmlns:tr_108="http://boavistaservicos.com.br/familia/acerta/pf/resumo_ocorrencias_de_debitos" xmlns:tr_111="http://boavistaservicos.com.br/familia/acerta/pf/resumoConsultas_anteriores_90_dias" xmlns:tr_123="http://boavistaservicos.com.br/familia/acerta/pf/informacoes_complementares" xmlns:tr_124="http://boavistaservicos.com.br/familia/acerta/pf/debitos" xmlns:tr_126="http://boavistaservicos.com.br/familia/acerta/pf/consultas_anteriores" xmlns:tr_142="http://boavistaservicos.com.br/familia/acerta/pf/titulos_protestados" xmlns:tr_146="http://boavistaservicos.com.br/familia/acerta/pf/resumo_titulos_protestados" xmlns:tr_211="http://boavistaservicos.com.br/familia/acerta/pf/cheque_talao_sustado" xmlns:tr_214="http://boavistaservicos.com.br/familia/acerta/pf/resumo_devolucoes_informadas_pelo_ccf" xmlns:tr_220="http://boavistaservicos.com.br/familia/acerta/pf/resumo_consultas_anteriores_cheque" xmlns:tr_223="http://boavistaservicos.com.br/familia/acerta/pf/confirmacao_telefone" xmlns:tr_224="http://boavistaservicos.com.br/familia/acerta/pf/endereco_telefones_agencia_bancaria" xmlns:tr_227="http://boavistaservicos.com.br/familia/acerta/pf/confirmacao_cep" xmlns:tr_241="http://boavistaservicos.com.br/familia/acerta/pf/nome_documentos" xmlns:tr_242="http://boavistaservicos.com.br/familia/acerta/pf/relacao_devolucoes_informadas_pelo_ccf" xmlns:tr_243="http://boavistaservicos.com.br/familia/acerta/pf/informacoes_complementares_cheque" xmlns:tr_244="http://boavistaservicos.com.br/familia/acerta/pf/devolucoes_informadas_pelo_usuario" xmlns:tr_245="http://boavistaservicos.com.br/familia/acerta/pf/cheques_sustados_pelo_motivo_21" xmlns:tr_246="http://boavistaservicos.com.br/familia/acerta/pf/historico_cheque_informado" xmlns:tr_247="http://boavistaservicos.com.br/familia/acerta/pf/historico_conta_corrente_informada" xmlns:tr_248="http://boavistaservicos.com.br/familia/acerta/pf/consultas_anteriores_cheque" xmlns:tr_268="http://boavistaservicos.com.br/familia/acerta/pf/resumo_devolucoes_informada_pelo_usuario" xmlns:tr_500="http://boavistaservicos.com.br/familia/acerta/pf/identificacao" xmlns:tr_501="http://boavistaservicos.com.br/familia/acerta/pf/localizacao" xmlns:tr_601="http://boavistaservicos.com.br/familia/acerta/pf/score_classificacao_varios_modelos" xmlns:tr_603="http://boavistaservicos.com.br/familia/acerta/pf/decisao" xmlns:tr_940="http://boavistaservicos.com.br/familia/acerta/pf/mensagem_registro" xmlns:tr_999="http://boavistaservicos.com.br/familia/acerta/pf/erro" xmlns:ns29="http://boavistaservicos.com.br/familia/acerta/pf/essencial/v3">
+    <tr_108:resumo_ocorrencias_de_debitos>
+        <tr_108:tamanhoRegistro>065</tr_108:tamanhoRegistro>
+        <tr_108:tipoRegistro>108</tr_108:tipoRegistro>
+        <tr_108:registro>S</tr_108:registro>
+        <tr_108:totalDevedor>1000</tr_108:totalDevedor>
+        <tr_108:totalAvalista>500</tr_108:totalAvalista>
+        <tr_108:valorAcomulado>10000</tr_108:valorAcomulado>
+        <tr_108:dataPrimeiroDebito>21/12/2020</tr_108:dataPrimeiroDebito>
+        <tr_108:valorPrimeiroDebito>3000</tr_108:valorPrimeiroDebito>
+        <tr_108:dataMaiorDebito>21/12/2020</tr_108:dataMaiorDebito>
+        <tr_108:valorMaiorDebito>10000</tr_108:valorMaiorDebito>
+    </tr_108:resumo_ocorrencias_de_debitos>
+    <tr_111:resumoConsultas_anteriores_90_dias>
+        <tr_111:tamanhoRegistro>49</tr_111:tamanhoRegistro>
+        <tr_111:tipoRegistro>111</tr_111:tipoRegistro>
+        <tr_111:registro>S</tr_111:registro>
+        <tr_111:total>TOTAL</tr_111:total>
+        <tr_111:ano_1>ANO 1</tr_111:ano_1>
+        <tr_111:mes_1>MES 1</tr_111:mes_1>
+        <tr_111:total_1>TOTAL 1</tr_111:total_1>
+        <tr_111:ano_2>ANO 2</tr_111:ano_2>
+        <tr_111:mes_2>MES 2</tr_111:mes_2>
+        <tr_111:total_2>TOTAL 2</tr_111:total_2>
+        <tr_111:ano_3>ANO 3</tr_111:ano_3>
+        <tr_111:mes_3>MES 3</tr_111:mes_3>
+        <tr_111:total_3>TOTAL 3</tr_111:total_3>
+        <tr_111:ano_4>ANO 4</tr_111:ano_4>
+        <tr_111:mes_4>MES 4</tr_111:mes_4>
+        <tr_111:total_4>TOTAL 4</tr_111:total_4>
+    </tr_111:resumoConsultas_anteriores_90_dias>
+    <tr_123:informacoes_complementares>
+        <tr_123:tamanhoRegistro>089</tr_123:tamanhoRegistro>
+        <tr_123:tipoRegistro>123</tr_123:tipoRegistro>
+        <tr_123:registro>S</tr_123:registro>
+        <tr_123:texto>TEXTO</tr_123:texto>
+        <tr_123:origem>ORIGEM</tr_123:origem>
+        <tr_123:ufOrigem>UF</tr_123:ufOrigem>
+        <tr_123:tipo>TIPO</tr_123:tipo>
+    </tr_123:informacoes_complementares>
+    <tr_124:debitos>
+        <tr_124:tamanhoRegistro>138</tr_124:tamanhoRegistro>
+        <tr_124:tipoRegistro>124</tr_124:tipoRegistro>
+        <tr_124:registro>S</tr_124:registro>
+        <tr_124:tipoOcorrencia>TIPO</tr_124:tipoOcorrencia>
+        <tr_124:contrato>CONTRATO</tr_124:contrato>
+        <tr_124:dataOcorrencia>21/11/2020</tr_124:dataOcorrencia>
+        <tr_124:dataDisponibilizacao>21/12/2020</tr_124:dataDisponibilizacao>
+        <tr_124:moeda>R$</tr_124:moeda>
+        <tr_124:valor>VALOR</tr_124:valor>
+        <tr_124:situacao>SITUACAO</tr_124:situacao>
+        <tr_124:informante>INFORMANTE</tr_124:informante>
+        <tr_124:informadoPeloConsulente>INFORMADO</tr_124:informadoPeloConsulente>
+        <tr_124:cidade>CIDADE</tr_124:cidade>
+        <tr_124:uf>UF</tr_124:uf>
+        <tr_124:condicao>CONDICAO</tr_124:condicao>
+        <tr_124:condicaoMunicipio>MUNICIPIO</tr_124:condicaoMunicipio>
+    </tr_124:debitos>
+    <tr_124:debitos>
+        <tr_124:tamanhoRegistro>138</tr_124:tamanhoRegistro>
+        <tr_124:tipoRegistro>124</tr_124:tipoRegistro>
+        <tr_124:registro>S</tr_124:registro>
+        <tr_124:tipoOcorrencia>TIPO</tr_124:tipoOcorrencia>
+        <tr_124:contrato>CONTRATO</tr_124:contrato>
+        <tr_124:dataOcorrencia>21/11/2020</tr_124:dataOcorrencia>
+        <tr_124:dataDisponibilizacao>21/12/2020</tr_124:dataDisponibilizacao>
+        <tr_124:moeda>R$</tr_124:moeda>
+        <tr_124:valor>VALOR</tr_124:valor>
+        <tr_124:situacao>SITUACAO</tr_124:situacao>
+        <tr_124:informante>INFORMANTE</tr_124:informante>
+        <tr_124:informadoPeloConsulente>INFORMADO</tr_124:informadoPeloConsulente>
+        <tr_124:cidade>CIDADE</tr_124:cidade>
+        <tr_124:uf>UF</tr_124:uf>
+        <tr_124:condicao>CONDICAO</tr_124:condicao>
+        <tr_124:condicaoMunicipio>MUNICIPIO</tr_124:condicaoMunicipio>
+    </tr_124:debitos>
+    <tr_126:consultas_anteriores>
+        <tr_126:tamanhoRegistro>66</tr_126:tamanhoRegistro>
+        <tr_126:tipoRegistro>126</tr_126:tipoRegistro>
+        <tr_126:registro>S</tr_126:registro>
+        <tr_126:tipoOcorrência>TIPO OCORRENCIA</tr_126:tipoOcorrência>
+        <tr_126:data>12/05/2021</tr_126:data>
+        <tr_126:moeda>R$</tr_126:moeda>
+        <tr_126:valor>VALOR</tr_126:valor>
+        <tr_126:informante>INFORMANTE</tr_126:informante>
+        <tr_126:produto>PRODUTO</tr_126:produto>
+    </tr_126:consultas_anteriores>
+    <tr_126:consultas_anteriores>
+        <tr_126:tamanhoRegistro>66</tr_126:tamanhoRegistro>
+        <tr_126:tipoRegistro>126</tr_126:tipoRegistro>
+        <tr_126:registro>S</tr_126:registro>
+        <tr_126:tipoOcorrência>TIPO OCORRENCIA</tr_126:tipoOcorrência>
+        <tr_126:data>12/05/2021</tr_126:data>
+        <tr_126:moeda>R$</tr_126:moeda>
+        <tr_126:valor>VALOR</tr_126:valor>
+        <tr_126:informante>INFORMANTE</tr_126:informante>
+        <tr_126:produto>PRODUTO</tr_126:produto>
+    </tr_126:consultas_anteriores>
+    <tr_142:titulos_protestados>
+        <tr_142:tamanhoRegistro>069</tr_142:tamanhoRegistro>
+        <tr_142:tipoRegistro>142</tr_142:tipoRegistro>
+        <tr_142:registro>S</tr_142:registro>
+        <tr_142:tipoOcorrencia>TIPO</tr_142:tipoOcorrencia>
+        <tr_142:cartorio>CARTORIO</tr_142:cartorio>
+        <tr_142:dataOcorrencia>12/05/2021</tr_142:dataOcorrencia>
+        <tr_142:moeda>R$</tr_142:moeda>
+        <tr_142:valor>VALOR</tr_142:valor>
+        <tr_142:cidade>CIDADE</tr_142:cidade>
+        <tr_142:uf>UF</tr_142:uf>
+    </tr_142:titulos_protestados>
+        <tr_142:titulos_protestados>
+        <tr_142:tamanhoRegistro>069</tr_142:tamanhoRegistro>
+        <tr_142:tipoRegistro>142</tr_142:tipoRegistro>
+        <tr_142:registro>S</tr_142:registro>
+        <tr_142:tipoOcorrencia>TIPO</tr_142:tipoOcorrencia>
+        <tr_142:cartorio>CARTORIO</tr_142:cartorio>
+        <tr_142:dataOcorrencia>12/05/2021</tr_142:dataOcorrencia>
+        <tr_142:moeda>R$</tr_142:moeda>
+        <tr_142:valor>VALOR</tr_142:valor>
+        <tr_142:cidade>CIDADE</tr_142:cidade>
+        <tr_142:uf>UF</tr_142:uf>
+    </tr_142:titulos_protestados>
+    <tr_146:resumo_titulos_protestados>
+        <tr_146:tamanhoRegistro>47</tr_146:tamanhoRegistro>
+        <tr_146:tipoRegistro>146</tr_146:tipoRegistro>
+        <tr_146:registro>S</tr_146:registro>
+        <tr_146:total>TOTAL</tr_146:total>
+        <tr_146:uf>UF</tr_146:uf>
+        <tr_146:periodoInicial>12/05/2021</tr_146:periodoInicial>
+        <tr_146:periodoFinal>12/05/2021</tr_146:periodoFinal>
+        <tr_146:moeda>R$</tr_146:moeda>
+        <tr_146:valorAcumulado>VALOR ACUMULADO</tr_146:valorAcumulado>
+    </tr_146:resumo_titulos_protestados>
+    <tr_211:cheque_talao_sustado>
+        <tr_211:tamanhoRegistro>105</tr_211:tamanhoRegistro>
+        <tr_211:tipoRegistro>211</tr_211:tipoRegistro>
+        <tr_211:registro>S</tr_211:registro>
+        <tr_211:tipoOcorrencia>TIPO</tr_211:tipoOcorrencia>
+        <tr_211:tipoDeDocumento>TIPO DOC</tr_211:tipoDeDocumento>
+        <tr_211:numeroDocumento>NUM</tr_211:numeroDocumento>
+        <tr_211:banco>BANCO</tr_211:banco>
+        <tr_211:agencia>AGENCIA</tr_211:agencia>
+        <tr_211:contaCorrente>CONTA CORRENTE</tr_211:contaCorrente>
+        <tr_211:cheque>CHEQUE</tr_211:cheque>
+        <tr_211:alinea>ALINEA</tr_211:alinea>
+        <tr_211:dataOcorrencia>12/05/2021</tr_211:dataOcorrencia>
+        <tr_211:dataDisponibilizacao>12/05/2021</tr_211:dataDisponibilizacao>
+        <tr_211:informante>INFORMANTE</tr_211:informante>
+        <tr_211:indicador>INDICADOR</tr_211:indicador>
+    </tr_211:cheque_talao_sustado>
+    <tr_214:resumo_devolucoes_informadas_pelo_ccf>
+        <tr_214:tamanhoRegistro>099</tr_214:tamanhoRegistro>
+        <tr_214:tipoRegistro>214</tr_214:tipoRegistro>
+        <tr_214:registro>S</tr_214:registro>
+        <tr_214:tipoDocumento>TIPO</tr_214:tipoDocumento>
+        <tr_214:numeroDocumento>NUM DOC</tr_214:numeroDocumento>
+        <tr_214:nome>NOME</tr_214:nome>
+        <tr_214:totalNomes>0</tr_214:totalNomes>
+        <tr_214:totalDevolucoes>0</tr_214:totalDevolucoes>
+        <tr_214:motivo_12>12</tr_214:motivo_12>
+        <tr_214:motivo_13>13</tr_214:motivo_13>
+        <tr_214:motivo_14>14</tr_214:motivo_14>
+        <tr_214:motivo_99>99</tr_214:motivo_99>
+    </tr_214:resumo_devolucoes_informadas_pelo_ccf>
+    <tr_220:resumo_consultas_anteriores_cheque>
+        <tr_220:tamanhoRegistro>073</tr_220:tamanhoRegistro>
+        <tr_220:tipoRegistro>220</tr_220:tipoRegistro>
+        <tr_220:registro>S</tr_220:registro>
+        <tr_220:tipoDocumento>TIPO DOC</tr_220:tipoDocumento>
+        <tr_220:numeroDocumento>NUM</tr_220:numeroDocumento>
+        <tr_220:total>TOTAL</tr_220:total>
+        <tr_220:valor>VALOR</tr_220:valor>
+        <tr_220:dia>12/05/2021</tr_220:dia>
+        <tr_220:valorDia>VALOR DIA</tr_220:valorDia>
+        <tr_220:preDatado>PRE DATADO</tr_220:preDatado>
+        <tr_220:valorPreDatado>VALOR PREDATADO</tr_220:valorPreDatado>
+    </tr_220:resumo_consultas_anteriores_cheque>
+    <tr_223:confirmacao_telefone>
+        <tr_223:tamanhoRegistro>210</tr_223:tamanhoRegistro>
+        <tr_223:tipoRegistro>223</tr_223:tipoRegistro>
+        <tr_223:registro>S</tr_223:registro>
+        <tr_223:ddd>DDD</tr_223:ddd>
+        <tr_223:telefone>TELEFONE</tr_223:telefone>
+        <tr_223:tipoDocumento>1</tr_223:tipoDocumento>
+        <tr_223:numeroDocumento>NUMERO</tr_223:numeroDocumento>
+        <tr_223:nome>NOME</tr_223:nome>
+        <tr_223:bairro>BAIRRO</tr_223:bairro>
+        <tr_223:cep>CEP</tr_223:cep>
+        <tr_223:cidade>CIDADE</tr_223:cidade>
+        <tr_223:uf>UF</tr_223:uf>
+    </tr_223:confirmacao_telefone>
+    <tr_224:endereco_telefones_agencia_bancaria>
+        <tr_224:tamanhoRegistro>280</tr_224:tamanhoRegistro>
+        <tr_224:tipoRegistro>224</tr_224:tipoRegistro>
+        <tr_224:registro>S</tr_224:registro>
+        <tr_224:banco>BANCO</tr_224:banco>
+        <tr_224:nomeBanco>NOME BANCO</tr_224:nomeBanco>
+        <tr_224:agencia>AGENCIA</tr_224:agencia>
+        <tr_224:nomeAgencia>NOME AGENCIA</tr_224:nomeAgencia>
+        <tr_224:endereco>ENDERECO</tr_224:endereco>
+        <tr_224:bairro>BAIRRO</tr_224:bairro>
+        <tr_224:cep>CEP</tr_224:cep>
+        <tr_224:cidade>CIDADE</tr_224:cidade>
+        <tr_224:uf>UF</tr_224:uf>
+        <tr_224:praca>PRAÇA</tr_224:praca>
+        <tr_224:ddd>DDD</tr_224:ddd>
+        <tr_224:telefone_1>TELEFONE1</tr_224:telefone_1>
+        <tr_224:telefone_2>TELEFONE2</tr_224:telefone_2>
+        <tr_224:reservado>RESERVADO</tr_224:reservado>
+    </tr_224:endereco_telefones_agencia_bancaria>
+    <tr_227:confirmacao_cep>
+        <tr_227:tamanhoRegistro>132</tr_227:tamanhoRegistro>
+        <tr_227:tipoRegistro>227</tr_227:tipoRegistro>
+        <tr_227:registro>S</tr_227:registro>
+        <tr_227:cep>CEP</tr_227:cep>
+        <tr_227:endereco>ENDERECO</tr_227:endereco>
+        <tr_227:bairro>BAIRRO</tr_227:bairro>
+        <tr_227:cidade>CIDADE</tr_227:cidade>
+        <tr_227:uf>UF</tr_227:uf>
+    </tr_227:confirmacao_cep>
+    <tr_241:nome_documentos>
+        <tr_241:tamanhoRegistro>117</tr_241:tamanhoRegistro>
+        <tr_241:tipoRegistro>241</tr_241:tipoRegistro>
+        <tr_241:registro>S</tr_241:registro>
+        <tr_241:nome>NOME</tr_241:nome>
+        <tr_241:nascimento>12/05/2021</tr_241:nascimento>
+        <tr_241:tipoDocumento>TIPO</tr_241:tipoDocumento>
+        <tr_241:numeroDocumento>NUM</tr_241:numeroDocumento>
+        <tr_241:documento_2>DOC2</tr_241:documento_2>
+        <tr_241:documento_3>DOC3</tr_241:documento_3>
+    </tr_241:nome_documentos>
+    <tr_242:relacao_devolucoes_informadas_pelo_ccf>
+        <tr_242:tamanhoRegistro>170</tr_242:tamanhoRegistro>
+        <tr_242:tipoRegistro>242</tr_242:tipoRegistro>
+        <tr_242:registro>S</tr_242:registro>
+        <tr_242:tipoDocumento>TIPO DOC</tr_242:tipoDocumento>
+        <tr_242:numeroDocumento>NUM DOC</tr_242:numeroDocumento>
+        <tr_242:nome>NOME</tr_242:nome>
+        <tr_242:banco>BANCO</tr_242:banco>
+        <tr_242:agencia>AGENCIA</tr_242:agencia>
+        <tr_242:motivo_12>12</tr_242:motivo_12>
+        <tr_242:data_ultima_ocorrencia_12>12/05/2021</tr_242:data_ultima_ocorrencia_12>
+        <tr_242:motivo_13>13</tr_242:motivo_13>
+        <tr_242:data_ultima_ocorrencia_13>12/05/2021</tr_242:data_ultima_ocorrencia_13>
+        <tr_242:motivo_14>14</tr_242:motivo_14>
+        <tr_242:data_ultima_ocorrencia_14>12/05/2021</tr_242:data_ultima_ocorrencia_14>
+        <tr_242:motivo_99>99</tr_242:motivo_99>
+        <tr_242:data_ultima_ocorrencia_99>12/05/2021</tr_242:data_ultima_ocorrencia_99>
+        <tr_242:nomeBanco>BANCO</tr_242:nomeBanco>
+    </tr_242:relacao_devolucoes_informadas_pelo_ccf>
+    <tr_243:informacoes_complementares_cheque>
+        <tr_243:tamanhoRegistro>100</tr_243:tamanhoRegistro>
+        <tr_243:tipoDeRegistro>243</tr_243:tipoDeRegistro>
+        <tr_243:registro>S</tr_243:registro>
+        <tr_243:tipoDocumento>TIPO DOC</tr_243:tipoDocumento>
+        <tr_243:numeroDocumento>NUM</tr_243:numeroDocumento>
+        <tr_243:texto>TEXTO</tr_243:texto>
+        <tr_243:tipoDoRegistro>TIPO</tr_243:tipoDoRegistro>
+    </tr_243:informacoes_complementares_cheque>
+    <tr_244:devolucoes_informadas_pelo_usuario>
+        <tr_244:tamanhoRegistro>157</tr_244:tamanhoRegistro>
+        <tr_244:tipoRegistro>244</tr_244:tipoRegistro>
+        <tr_244:registro>S</tr_244:registro>
+        <tr_244:tipoDocumento>TIPO DOC</tr_244:tipoDocumento>
+        <tr_244:documento>DOC</tr_244:documento>
+        <tr_244:banco>BANCO</tr_244:banco>
+        <tr_244:agencia>AGENCIA</tr_244:agencia>
+        <tr_244:contaCorrente>CONTA CORRENTE</tr_244:contaCorrente>
+        <tr_244:chequeInicial>CHEQUE INICIAL</tr_244:chequeInicial>
+        <tr_244:chequeFinal>CHEQUE FINAL</tr_244:chequeFinal>
+        <tr_244:motivo>MOTIVO</tr_244:motivo>
+        <tr_244:alinea>ALINEA</tr_244:alinea>
+        <tr_244:dataOcorrencia>12/05/2021</tr_244:dataOcorrencia>
+        <tr_244:dataRegistro>00/00/000</tr_244:dataRegistro>
+        <tr_244:moeda>R$</tr_244:moeda>
+        <tr_244:valor>VALOR</tr_244:valor>
+        <tr_244:codigoInformante>COD INFORMANTE</tr_244:codigoInformante>
+        <tr_244:informante>INFORMANTE</tr_244:informante>
+        <tr_244:cidade>CIDADE</tr_244:cidade>
+        <tr_244:uf>UF</tr_244:uf>
+    </tr_244:devolucoes_informadas_pelo_usuario>
+    <tr_245:cheques_sustados_pelo_motivo_21>
+        <tr_245:tamanhoRegistro>126</tr_245:tamanhoRegistro>
+        <tr_245:tipoRegistro>245</tr_245:tipoRegistro>
+        <tr_245:registro>S</tr_245:registro>
+        <tr_245:tipoDocumento>TIPO DOC</tr_245:tipoDocumento>
+        <tr_245:numeroDocumento>NUMERO DOC</tr_245:numeroDocumento>
+        <tr_245:banco>BANCO</tr_245:banco>
+        <tr_245:agencia>AGENCIA</tr_245:agencia>
+        <tr_245:contaCorrente>CONTA CORRENTE</tr_245:contaCorrente>
+        <tr_245:chequeInicial>CHEQUE INICIAL</tr_245:chequeInicial>
+        <tr_245:chequeFinal>CHEQUE FINAL</tr_245:chequeFinal>
+        <tr_245:alinea>ALINEA</tr_245:alinea>
+        <tr_245:dataOcorrencia>12/05/2021</tr_245:dataOcorrencia>
+        <tr_245:dataDisponibilizacao>12/05/2021</tr_245:dataDisponibilizacao>
+        <tr_245:moeda>R$</tr_245:moeda>
+        <tr_245:valor>VALOR</tr_245:valor>
+        <tr_245:informante>INFORMANTE</tr_245:informante>
+    </tr_245:cheques_sustados_pelo_motivo_21>
+    <tr_246:historico_cheque_informado>
+        <tr_246:tamanho>63</tr_246:tamanho>
+        <tr_246:tipoRegistro>246</tr_246:tipoRegistro>
+        <tr_246:registro>S</tr_246:registro>
+        <tr_246:tipoDocumento>TIPO DOC</tr_246:tipoDocumento>
+        <tr_246:numeroDocumento>NUM DOC</tr_246:numeroDocumento>
+        <tr_246:banco>BANCO</tr_246:banco>
+        <tr_246:agencia>AGENCIA</tr_246:agencia>
+        <tr_246:contaCorrente>CONTA CORRENTE</tr_246:contaCorrente>
+        <tr_246:cheque>CHEQUE</tr_246:cheque>
+        <tr_246:dataConsulta>12/05/2021</tr_246:dataConsulta>
+        <tr_246:horaConsulta>HORA</tr_246:horaConsulta>
+        <tr_246:rede>REDE</tr_246:rede>
+    </tr_246:historico_cheque_informado>
+    <tr_247:historico_conta_corrente_informada>
+        <tr_247:tamanhoRegistro>055</tr_247:tamanhoRegistro>
+        <tr_247:tipoRegistro>247</tr_247:tipoRegistro>
+        <tr_247:registro>S</tr_247:registro>
+        <tr_247:banco>BANCO</tr_247:banco>
+        <tr_247:agencia>AGENCIA</tr_247:agencia>
+        <tr_247:contaCorrente>CONTA CORRENTE</tr_247:contaCorrente>
+        <tr_247:tipoDocumento>TIPO DOC</tr_247:tipoDocumento>
+        <tr_247:numeroDocumento>NUM DOC</tr_247:numeroDocumento>
+        <tr_247:dataConsulta>21/12/2020</tr_247:dataConsulta>
+        <tr_247:horaConsulta>18:00:00</tr_247:horaConsulta>
+    </tr_247:historico_conta_corrente_informada>
+    <tr_248:consultas_anteriores_cheque>
+        <tr_248:tamanhoRegistro>83</tr_248:tamanhoRegistro>
+        <tr_248:tipoRegistro>TIPO REGISTRO</tr_248:tipoRegistro>
+        <tr_248:registro>S</tr_248:registro>
+        <tr_248:tipoDocumento>TIPO DOC</tr_248:tipoDocumento>
+        <tr_248:numeroDocumento>NUM DOC</tr_248:numeroDocumento>
+        <tr_248:tipo>TIPO</tr_248:tipo>
+        <tr_248:dataCredito>DATA CREDITO</tr_248:dataCredito>
+        <tr_248:horaCredito>HORA CREDITO</tr_248:horaCredito>
+        <tr_248:moeda>R$</tr_248:moeda>
+        <tr_248:valor>VALOR</tr_248:valor>
+        <tr_248:informante>INFORMANTE</tr_248:informante>
+    </tr_248:consultas_anteriores_cheque>
+    <tr_268:resumo_devolucoes_informada_pelo_usuario>
+        <tr_268:tamanhoRegistro>040</tr_268:tamanhoRegistro>
+        <tr_268:tipoRegistro>268</tr_268:tipoRegistro>
+        <tr_268:registro>S</tr_268:registro>
+        <tr_268:tipoDocumento>TIPO DOC</tr_268:tipoDocumento>
+        <tr_268:numeroDocumento>NUM DOC</tr_268:numeroDocumento>
+        <tr_268:total>TOTAL</tr_268:total>
+        <tr_268:dataPrimeiraDevolucao>12/05/2021</tr_268:dataPrimeiraDevolucao>
+        <tr_268:dataUltimaDevolucao>12/05/2021</tr_268:dataUltimaDevolucao>
+    </tr_268:resumo_devolucoes_informada_pelo_usuario>
+    <tr_500:identificacao>
+        <tr_500:tamanhoRegistro>123</tr_500:tamanhoRegistro>
+        <tr_500:registro>REGISTRO</tr_500:registro>
+        <tr_500:documento>00000000000</tr_500:documento>
+        <tr_500:nome>JOÃO ALPOP</tr_500:nome>
+        <tr_500:nomeMae>MARIA ALPOP</tr_500:nomeMae>
+        <tr_500:dataNascimento>21/12/2020</tr_500:dataNascimento>
+        <tr_500:numeroRG>000000000</tr_500:numeroRG>
+        <tr_500:orgaoEmissor>ORGÃO</tr_500:orgaoEmissor>
+        <tr_500:unidadeFedarativaRG>UF</tr_500:unidadeFedarativaRG>
+        <tr_500:dataEmissaoRG>21/12/2020</tr_500:dataEmissaoRG>
+        <tr_500:sexoConsultado>MASCULINO</tr_500:sexoConsultado>
+        <tr_500:cidadeNascimento>CIDADE</tr_500:cidadeNascimento>
+        <tr_500:estadoCivil>SOLTEIRO</tr_500:estadoCivil>
+        <tr_500:numeroDependentes>0</tr_500:numeroDependentes>
+        <tr_500:grauInstrucao>SUPERIOR COMPLETO</tr_500:grauInstrucao>
+        <tr_500:situacaoReceita>REGULAR</tr_500:situacaoReceita>
+        <tr_500:dataAtualizacao>21/12/2020</tr_500:dataAtualizacao>
+        <tr_500:regiaoCpf>SP</tr_500:regiaoCpf>
+        <tr_500:tituloEleitor>TITULO</tr_500:tituloEleitor>
+        <tr_500:obito>FALSE</tr_500:obito>
+    </tr_500:identificacao>
+    <tr_501:localizacao>
+        <tr_501:tamanhoRegistro>323</tr_501:tamanhoRegistro>
+        <tr_501:tipoRegistro>501</tr_501:tipoRegistro>
+        <tr_501:registro>S</tr_501:registro>
+        <tr_501:tipoLogradouro>TIPO</tr_501:tipoLogradouro>
+        <tr_501:nomeLogradouro>NOME LOGRADOURO</tr_501:nomeLogradouro>
+        <tr_501:numeroLogradouro>NUMERO</tr_501:numeroLogradouro>
+        <tr_501:complemento>COMPLEMENTO</tr_501:complemento>
+        <tr_501:bairro>BAIRRO</tr_501:bairro>
+        <tr_501:cidade>CIDADE</tr_501:cidade>
+        <tr_501:unidadeFederativa>UF</tr_501:unidadeFederativa>
+        <tr_501:cep>CEP</tr_501:cep>
+        <tr_501:ddd_1>DDD1</tr_501:ddd_1>
+        <tr_501:telefone_1>TELEFONE1</tr_501:telefone_1>
+        <tr_501:ddd_2>DDD2</tr_501:ddd_2>
+        <tr_501:telefone_2>TELEFONE2</tr_501:telefone_2>
+        <tr_501:ddd_3>DDD3</tr_501:ddd_3>
+        <tr_501:telefone_3>TELEFONE2</tr_501:telefone_3>
+    </tr_501:localizacao>
+    <tr_601:score_classificacao_varios_modelos>
+        <tr_601:tamanhoRegistro>450</tr_601:tamanhoRegistro>
+        <tr_601:tipoRegistro>601</tr_601:tipoRegistro>
+        <tr_601:registro>S</tr_601:registro>
+        <tr_601:tipoScore>TIPO SCORE</tr_601:tipoScore>
+        <tr_601:score>SCORE</tr_601:score>
+        <tr_601:planoExecucao>PLANO EXECUCAO</tr_601:planoExecucao>
+        <tr_601:modeloPlano>MODELO PLANO</tr_601:modeloPlano>
+        <tr_601:nomePlano>NOME PLANO</tr_601:nomePlano>
+        <tr_601:modeloScore>MODELO SCORE</tr_601:modeloScore>
+        <tr_601:nomeScore>NOME SCORE</tr_601:nomeScore>
+        <tr_601:classificacaoNumerica>CLASSIFICACAO NUMERICA</tr_601:classificacaoNumerica>
+        <tr_601:classificacaoAlfabetica>CLASSIFICACAO ALFABETICA</tr_601:classificacaoAlfabetica>
+        <tr_601:probabilidade>PROBABILIDADE</tr_601:probabilidade>
+        <tr_601:texto>TEXTO</tr_601:texto>
+        <tr_601:codigoNaturezaModelo>CODIGO NATUREZA MODELO</tr_601:codigoNaturezaModelo>
+        <tr_601:descricaoNatureza>DESCRICAO MODELO</tr_601:descricaoNatureza>
+        <tr_601:texto2>TEXTO 2</tr_601:texto2>
+    </tr_601:score_classificacao_varios_modelos>
+        <tr_601:score_classificacao_varios_modelos>
+        <tr_601:tamanhoRegistro>450</tr_601:tamanhoRegistro>
+        <tr_601:tipoRegistro>601</tr_601:tipoRegistro>
+        <tr_601:registro>S</tr_601:registro>
+        <tr_601:tipoScore>TIPO SCORE</tr_601:tipoScore>
+        <tr_601:score>SCORE</tr_601:score>
+        <tr_601:planoExecucao>PLANO EXECUCAO</tr_601:planoExecucao>
+        <tr_601:modeloPlano>MODELO PLANO</tr_601:modeloPlano>
+        <tr_601:nomePlano>NOME PLANO</tr_601:nomePlano>
+        <tr_601:modeloScore>MODELO SCORE</tr_601:modeloScore>
+        <tr_601:nomeScore>NOME SCORE</tr_601:nomeScore>
+        <tr_601:classificacaoNumerica>CLASSIFICACAO NUMERICA</tr_601:classificacaoNumerica>
+        <tr_601:classificacaoAlfabetica>CLASSIFICACAO ALFABETICA</tr_601:classificacaoAlfabetica>
+        <tr_601:probabilidade>PROBABILIDADE</tr_601:probabilidade>
+        <tr_601:texto>TEXTO</tr_601:texto>
+        <tr_601:codigoNaturezaModelo>CODIGO NATUREZA MODELO</tr_601:codigoNaturezaModelo>
+        <tr_601:descricaoNatureza>DESCRICAO MODELO</tr_601:descricaoNatureza>
+        <tr_601:texto2>TEXTO 2</tr_601:texto2>
+    </tr_601:score_classificacao_varios_modelos>
+    <tr_603:decisao>
+        <tr_603:tamanhoRegistro>224</tr_603:tamanhoRegistro>
+        <tr_603:tipoRegistro>603</tr_603:tipoRegistro>
+        <tr_603:registro>S</tr_603:registro>
+        <tr_603:tipoDocumento>TIPO DOC</tr_603:tipoDocumento>
+        <tr_603:documento>DOC</tr_603:documento>
+        <tr_603:score>SCORE</tr_603:score>
+        <tr_603:aprova>APROVA</tr_603:aprova>
+        <tr_603:texto>TEXTO</tr_603:texto>
+    </tr_603:decisao>
+    <tr_940:mensagem_registro>
+        <tr_940:tamanhoRegistro>207</tr_940:tamanhoRegistro>
+        <tr_940:tipoRegistro>940</tr_940:tipoRegistro>
+        <tr_940:registro>S</tr_940:registro>
+        <tr_940:registroReferencia>REGISTRO DE REFERENCIA</tr_940:registroReferencia>
+        <tr_940:texto></tr_940:texto>
+    </tr_940:mensagem_registro>
+</ns29:essencial>
