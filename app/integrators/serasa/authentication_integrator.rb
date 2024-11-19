@@ -32,6 +32,7 @@ module Serasa
       serasa_authentication.save && serasa_authentication
     rescue Faraday::ConnectionFailed => e
       ErrorLogger.log e
+
       raise ::Errors::Serasa::ResponseError
     end
 
