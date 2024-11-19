@@ -4,11 +4,11 @@
 #
 # Table name: serasa_summaries
 #
-#  id         :bigint           not null, primary key
+#  id         :uuid             not null, primary key
 #  count      :integer
 #  balance    :float
 #  owner_type :string
-#  owner_id   :bigint
+#  owner_id   :uuid
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #

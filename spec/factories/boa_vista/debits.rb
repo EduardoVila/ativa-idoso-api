@@ -1,5 +1,27 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: boa_vista_debits
+#
+#  id                            :uuid             not null, primary key
+#  register_size                 :string
+#  register_type                 :string
+#  register                      :string
+#  occurrence_type               :string
+#  occurrence_date               :string
+#  contract                      :string
+#  availability_date             :string
+#  currency                      :string           default("0")
+#  value                         :string
+#  condition                     :string
+#  informant                     :string
+#  segment                       :string
+#  informed_by_querent           :string
+#  boa_vista_acerta_essencial_id :uuid             not null
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
+#
 DISAPPROVED_WORDS = [
   'sinistro', 'imob', 'energia', 'eletrica', 'eletro',
   'companhia de energia', 'lojas cem', 'loja', 'havan', 'luizacred',

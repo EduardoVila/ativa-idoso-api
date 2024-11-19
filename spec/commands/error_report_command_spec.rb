@@ -1,15 +1,5 @@
 # frozen_string_literal: true
 
-# require 'sentry-ruby'
-# require 'rspec'
-# # require 'mocha/api'
-
-# def sentry_dsn = 'https://examplePublicKey@o0.ingest.sentry.io/0'
-
-# RSpec.describe 'Sentry Configuration' do
-#
-# end
-
 require 'sentry-ruby'
 require 'rspec'
 require_relative '../../app/commands/error_report_command'
@@ -53,7 +43,6 @@ RSpec.describe ErrorReportCommand do
         config.breadcrumbs_logger = %i[active_support_logger http_logger]
         config.traces_sample_rate = 0.5
       end
-
       expect(sentry_config.enabled_environments).to eq(%w[production])
       expect(sentry_config.dsn.as_json['raw_value']).to eq(sentry_dsn)
       expect(sentry_config.breadcrumbs_logger).to eq(%i[active_support_logger
@@ -63,7 +52,6 @@ RSpec.describe ErrorReportCommand do
 
     it 'raises an error if SENTRY_DSN is not set' do
       ENV.delete('SENTRY_DSN')
-
       expect do
         Sentry.init do |config|
           config.enabled_environments = %w[production]
@@ -82,7 +70,6 @@ RSpec.describe ErrorReportCommand do
         config.breadcrumbs_logger = %i[active_support_logger http_logger]
         config.traces_sample_rate = 0.5
       end
-
       expect(sentry_config.enabled_environments).not_to include('development')
       expect(sentry_config.enabled_environments).not_to include('test')
     end

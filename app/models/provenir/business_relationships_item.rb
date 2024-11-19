@@ -4,7 +4,7 @@
 #
 # Table name: provenir_business_relationships_items
 #
-#  id                                :bigint           not null, primary key
+#  id                                :uuid             not null, primary key
 #  related_entity_tax_id_number      :string
 #  related_entity_tax_id_type        :string
 #  related_entity_tax_id_country     :string
@@ -18,7 +18,7 @@
 #  creation_date                     :datetime
 #  last_update_date                  :datetime
 #  additional_details                :string
-#  provenir_business_relationship_id :bigint           not null
+#  provenir_business_relationship_id :uuid             not null
 #  created_at                        :datetime         not null
 #  updated_at                        :datetime         not null
 #

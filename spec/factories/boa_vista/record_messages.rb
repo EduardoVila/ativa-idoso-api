@@ -1,5 +1,19 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: boa_vista_record_messages
+#
+#  id                            :uuid             not null, primary key
+#  register_size                 :string
+#  register_type                 :string
+#  register                      :string
+#  record_reference              :string
+#  text                          :string
+#  boa_vista_acerta_essencial_id :uuid             not null
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
+#
 FactoryBot.define do
   factory :boa_vista_record_message, class: 'BoaVista::RecordMessage' do
     register_size { '207' }

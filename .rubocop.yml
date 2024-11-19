@@ -209,6 +209,8 @@ RSpec/LetSetup:
 RSpec/IndexedLet:
   Enabled: false
 
+Layout/EndOfLine:
+  Enabled: false
+
 FactoryBot/ConsistentParenthesesStyle:
   EnforcedStyle: omit_parentheses
-

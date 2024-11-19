@@ -4,14 +4,14 @@
 #
 # Table name: provenir_rgs
 #
-#  id                                        :bigint           not null, primary key
+#  id                                        :uuid             not null, primary key
+#  number                                    :string
 #  document_last4_digits                     :string
 #  creation_date                             :datetime
 #  last_update_date                          :datetime
-#  provenir_extended_document_information_id :bigint           not null
+#  provenir_extended_document_information_id :uuid             not null
 #  created_at                                :datetime         not null
 #  updated_at                                :datetime         not null
-#  number                                    :string
 #
 module Provenir
   class Rg < ApplicationRecord

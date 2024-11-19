@@ -53,7 +53,9 @@ RSpec.describe Serasa::AuthenticationService do
           .and_return(integrator)
         allow(integrator).to receive(:authenticate)
           .and_return(new_authentication)
-        allow(new_authentication).to receive(:access_token).and_return(token)
+        allow(new_authentication).to receive_messages(
+          save: true, access_token: token
+        )
       end
 
       it 'generates a new authentication on Serasa API' do
