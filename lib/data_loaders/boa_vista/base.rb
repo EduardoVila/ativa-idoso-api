@@ -12,8 +12,7 @@ module DataLoaders
           return
         end
 
-        klass = to_s
-        object = get_object(klass)
+        object = get_object(to_s)
 
         object.cpf = cpf
         object.credit_type = credit_type
@@ -22,9 +21,11 @@ module DataLoaders
 
         essencials&.keys&.each do |key|
           method_name = "parse_#{key}"
+
           if respond_to? method_name
-            public_send(method_name, essencials,
-                        object)
+            public_send(
+              method_name, essencials, object
+            )
           end
         end
 
@@ -262,37 +263,6 @@ module DataLoaders
 
         object
       end
-
-      # def self.parse_resumo_consultas_anteriores(essencials, object)
-      #   summary_previous_query = essencials['resumo_consultas_anteriores']
-
-      #   return object unless summary_previous_query
-
-      #   register_size = summary_previous_query['tamanhoRegistro']
-      #   register_type = summary_previous_query['tipoRegistro']
-      #   register = summary_previous_query['registro']
-      #   document_type = summary_previous_query['tipoDocumento']
-      #   document_number = summary_previous_query['numeroDocumento']
-      #   total = summary_previous_query['totalDeConsultas']
-      #   initial_period = summary_previous_query['periodoInicial']
-      #   final_period = summary_previous_query['periodoFinal']
-      #   total_last_month = summary_previous_query['totalUltimoMes']
-      #   period = summary_previous_query['periodo']
-      #   total_penultimate_month = summary_previous_query['totalPenultimoMes']
-      #   penultimate_month_period = summary_previous_query['periodoPenultimoMes']
-      #   anti_total_penultimate_month = summary_previous_query['totalAntePenultimoMes']
-      #   anti_penultimate_month_period = summary_previous_query['periodoAntePenultimoMes']
-
-      #   object.summary_previous_query = save_summary_previous_query(
-      #     register_size, register_type, register, document_type,
-      #     document_number, total, initial_period, final_period,
-      #     total_last_month, period, total_penultimate_month,
-      #     penultimate_month_period, anti_total_penultimate_month,
-      #     anti_penultimate_month_period
-      #   )
-
-      #   object
-      # end
 
       def self.parse_resumo_consultas_anteriores_cheque(essencials, object)
         summary_previous_query_cheque = essencials['resumo_consultas_anteriores_cheque']
@@ -808,309 +778,6 @@ module DataLoaders
         )
       end
 
-      # def self.parse_resumo_de_acoes_civeis(essencials, object)
-      #   summary_of_civil_actions = [essencials[
-      #     'resumo_de_acoes_civeis'
-      #   ]].flatten(1)
-
-      #   return object unless summary_of_civil_actions
-
-      #   summary_of_civil_actions.map! do |summary_of_civil_action|
-      #     register_size = summary_of_civil_action['tamanhoRegistro']
-      #     register_type = summary_of_civil_action['tipoRegistro']
-      #     register = summary_of_civil_action['registro']
-      #     amount = summary_of_civil_action['quantidade']
-      #     initial_period = summary_of_civil_action['periodoInicial']
-      #     final_period = summary_of_civil_action['periodoFinal']
-
-      #     summary_of_civil_action = save_summary_of_civil_action(
-      #       register_size, register_type, register, amount, initial_period,
-      #       final_period
-      #     )
-      #   end
-
-      #   object.summary_of_civil_actions = summary_of_civil_actions
-
-      #   object
-      # end
-
-      # def self.parse_relacao_de_acoes_civeis(essencials, object)
-      #   list_of_civil_actions = [essencials[
-      #     'relacao_de_acoes_civeis'
-      #   ]].flatten(1)
-
-      #   return object unless list_of_civil_actions
-
-      #   list_of_civil_actions.map! do |list_of_civil_action|
-      #     register_size = list_of_civil_action['tamanhoRegistro']
-      #     register_type = list_of_civil_action['tipoRegistro']
-      #     register = list_of_civil_action['registro']
-      #     court = list_of_civil_action['vara']
-      #     trial = list_of_civil_action['processo']
-      #     civil_action = list_of_civil_action['acaoCivel']
-      #     distribution_date = list_of_civil_action['dataDistribuicao']
-      #     perpetrator = list_of_civil_action['autor']
-      #     value = list_of_civil_action['valor']
-      #     praam = list_of_civil_action['praca']
-      #     federal_unit = list_of_civil_action['uf']
-      #     county_code = list_of_civil_action['codigoMunicipio']
-
-      #     list_of_civil_action = save_list_of_civil_action(
-      #       register_size, register_type, register, court, trial, civil_action,
-      #       distribution_date, perpetrator, value, praam, federal_unit,
-      #       county_code
-      #     )
-      #   end
-
-      #   object.list_of_civil_actions = list_of_civil_actions
-
-      #   object
-      # end
-
-      # def self.parse_telefone_vinculado_documento_informado(essencials, object)
-      #   linked_phone_informed_documents = [essencials[
-      #     'telefone_vinculado_documento_informado'
-      #   ]].flatten(1)
-
-      #   return object unless linked_phone_informed_documents
-
-      #   linked_phone_informed_documents.map! do |linked_phone_informed_document|
-      #     register_size = linked_phone_informed_document['tamanhoRegistro']
-      #     register_type = linked_phone_informed_document['tipoRegistro']
-      #     register = linked_phone_informed_document['registro']
-      #     ddd = linked_phone_informed_document['ddd']
-      #     phone = linked_phone_informed_document['telefone']
-      #     address = linked_phone_informed_document['endereco']
-      #     neighborhood = linked_phone_informed_document['bairro']
-      #     zip_code = linked_phone_informed_document['cep']
-      #     city = linked_phone_informed_document['cidade']
-      #     federal_unit = linked_phone_informed_document['uf']
-
-      #     linked_phone_informed_document = save_linked_phone_informed_document(
-      #       register_size, register_type, register, ddd, phone, address,
-      #       neighborhood, zip_code, city, federal_unit
-      #     )
-      #   end
-
-      #   object.linked_phone_informed_documents = linked_phone_informed_documents
-
-      #   object
-      # end
-
-      # def self.parse_relacao_consultas_anteriores_credito_segmento(essencials, object)
-      #   relation_of_previous_queries_credit_segments = [essencials[
-      #     'relacao_consultas_anteriores_credito_segmento'
-      #   ]].flatten(1)
-
-      #   return object unless relation_of_previous_queries_credit_segments
-
-      #   relation_of_previous_queries_credit_segments.map! do |relation_of_previous_queries_credit_segment|
-      #     register_size = relation_of_previous_queries_credit_segment['tamanhoRegistro']
-      #     register_type = relation_of_previous_queries_credit_segment['tipoRegistro']
-      #     register = relation_of_previous_queries_credit_segment['registro']
-      #     document_type = relation_of_previous_queries_credit_segment['tipoDocumento']
-      #     document = relation_of_previous_queries_credit_segment['documento']
-      #     occurrence_type = relation_of_previous_queries_credit_segment['tipoOcorrencia']
-      #     date = relation_of_previous_queries_credit_segment['data']
-      #     currency = relation_of_previous_queries_credit_segment['moeda']
-      #     value = relation_of_previous_queries_credit_segment['valor']
-      #     informant = relation_of_previous_queries_credit_segment['informante']
-      #     activity_branch = relation_of_previous_queries_credit_segment['ramoAtividade']
-      #     branch_description = relation_of_previous_queries_credit_segment['descricaoRamo']
-      #     group = relation_of_previous_queries_credit_segment['grupo']
-      #     group_description = relation_of_previous_queries_credit_segment['descricaoGrupo']
-      #     segment = relation_of_previous_queries_credit_segment['segmento']
-      #     segment_description = relation_of_previous_queries_credit_segment['descricaoSegmento']
-
-      #     relation_of_previous_queries_credit_segment = save_relation_of_previous_queries_credit_segment(
-      #       register_size, register_type, register, document_type, document,
-      #       occurrence_type, date, currency, value, informant, activity_branch,
-      #       branch_description, group, group_description, segment,
-      #       segment_description
-      #     )
-      #   end
-
-      #   object.relation_of_previous_queries_credit_segments = relation_of_previous_queries_credit_segments
-
-      #   object
-      # end
-
-      # def self.parse_participacoes_do_documento_consultado(essencials, object)
-      #   participations_of_the_consulted_documents = [essencials[
-      #     'participacoes_do_documento_consultado'
-      #   ]].flatten(1)
-
-      #   return object unless participations_of_the_consulted_documents
-
-      #   participations_of_the_consulted_documents.map! do |participations_of_the_consulted_document|
-      #     register_size = participations_of_the_consulted_document['tamanhoRegistro']
-      #     register_type = participations_of_the_consulted_document['tipoRegistro']
-      #     register = participations_of_the_consulted_document['registro']
-      #     document_type_a = participations_of_the_consulted_document['tipoDocumentoA']
-      #     document_number_a = participations_of_the_consulted_document['numeroDocumentoA']
-      #     company_name = participations_of_the_consulted_document['razaoSocial']
-      #     currency_type = participations_of_the_consulted_document['tipoMoeda']
-      #     value = participations_of_the_consulted_document['valor']
-      #     observation = participations_of_the_consulted_document['observacao']
-      #     percentage_value = participations_of_the_consulted_document['valorEmPercentual']
-      #     initial_date = participations_of_the_consulted_document['dataDeEntrada']
-      #     role = participations_of_the_consulted_document['funcao']
-      #     document_type_b = participations_of_the_consulted_document['tipoDocumentoB']
-      #     document_number_b = participations_of_the_consulted_document['numeroDocumentoB']
-      #     partner_kind = participations_of_the_consulted_document['tipoSocio']
-
-      #     participations_of_the_consulted_document = save_participations_of_the_consulted_document(
-      #       register_size, register_type, register, document_type_a,
-      #       document_number_a, company_name, currency_type, value, observation,
-      #       percentage_value, initial_date, role, document_type_b,
-      #       document_number_b, partner_kind
-      #     )
-      #   end
-
-      #   object.participations_of_the_consulted_documents = participations_of_the_consulted_documents
-
-      #   object
-      # end
-
-      # def self.parse_relacao_falencia_recuperacao_judicial(essencials, object)
-      #   relationship_judicial_recovery_bankruptcies = [essencials[
-      #     'relacao_falencia_recuperacao_judicial'
-      #   ]].flatten(1)
-
-      #   return object unless relationship_judicial_recovery_bankruptcies
-
-      #   relationship_judicial_recovery_bankruptcies.map! do |relationship_judicial_recovery_bankruptcy|
-      #     register_size = relationship_judicial_recovery_bankruptcy['tamanhoRegistro']
-      #     register_type = relationship_judicial_recovery_bankruptcy['tipoRegistro']
-      #     register = relationship_judicial_recovery_bankruptcy['registro']
-      #     document_type = relationship_judicial_recovery_bankruptcy['tipoDocumento']
-      #     document_number = relationship_judicial_recovery_bankruptcy['numeroDocumento']
-      #     company_name = relationship_judicial_recovery_bankruptcy['razaoSocial']
-      #     occurrence_type = relationship_judicial_recovery_bankruptcy['tipoOcorrencia']
-      #     registry = relationship_judicial_recovery_bankruptcy['cartorio']
-      #     occurrence_date = relationship_judicial_recovery_bankruptcy['dataOcorrencia']
-      #     praam = relationship_judicial_recovery_bankruptcy['praca']
-      #     federal_unity = relationship_judicial_recovery_bankruptcy['uf']
-      #     county_code = relationship_judicial_recovery_bankruptcy['codigoMunicipio']
-
-      #     relationship_judicial_recovery_bankruptcy = save_relationship_judicial_recovery_bankruptcy(
-      #       register_size, register_type, register, document_type,
-      #       document_number, company_name, occurrence_type, registry,
-      #       occurrence_date, praam, federal_unity, county_code
-      #     )
-      #   end
-
-      #   object.relationship_judicial_recovery_bankruptcies = relationship_judicial_recovery_bankruptcies
-
-      #   object
-      # end
-
-      # def self.parse_outras_grafias(essencials, object)
-      #   other_spellings = [essencials['outras_grafias']].flatten(1)
-
-      #   return object unless other_spellings
-
-      #   other_spellings.map! do |other_spelling|
-      #     register_size = other_spelling['tamanhoRegistro']
-      #     register_type = other_spelling['tipoRegistro']
-      #     register = other_spelling['registro']
-      #     name = other_spelling['nome']
-      #     cpf = other_spelling['cpf']
-      #     birth_date = other_spelling['dataNascimento']
-      #     rg = other_spelling['rg']
-      #     kind = other_spelling['tipo']
-      #     street = other_spelling['nomeLogradouro']
-      #     number = other_spelling['numero']
-      #     complement = other_spelling['complemento']
-      #     neighborhood = other_spelling['bairro']
-      #     city = other_spelling['cidade']
-      #     federal_unity = other_spelling['uf']
-      #     zip_code = other_spelling['cep']
-      #     ddd_1 = other_spelling['ddd_1']
-      #     phone_1 = other_spelling['telefone_1']
-      #     ddd_2 = other_spelling['ddd_2']
-      #     phone_2 = other_spelling['telefone_2']
-      #     ddd_3 = other_spelling['ddd_3']
-      #     phone_3 = other_spelling['telefone_3']
-
-      #     other_spelling = save_other_spelling(
-      #       register_size, register_type, register, name, cpf, birth_date, rg,
-      #       kind, street, number, complement, neighborhood, city, federal_unity,
-      #       zip_code, ddd_1, phone_1, ddd_2, phone_2, ddd_3, phone_3
-      #     )
-      #   end
-
-      #   object.other_spellings = other_spellings
-
-      #   object
-      # end
-
-      # def self.parse_status_consumidor(essencials, object)
-      #   consumer_status = essencials['status_consumidor']
-
-      #   return object unless consumer_status
-
-      #   message = consumer_status['mensagem']
-
-      #   object.consumer_status = save_consumer_status(message)
-
-      #   object
-      # end
-
-      # def self.parse_painel_controle_positivo(essencials, object)
-      #   positive_control_panel = essencials['painel_controle_positivo']
-
-      #   return object unless positive_control_panel
-
-      #   commitment_score = positive_control_panel['pontuacao_comprometimento']
-      #   punctuality_note = positive_control_panel['nota_pontualidade']
-
-      #   saved_control_panel = save_positive_control_panel
-
-      #   if commitment_score.present?
-      #     saved_commitment_score = save_commitment_score
-
-      #     saved_commitment_score.installment_operation = parse_operacoes_parceladas(commitment_score)
-      #     saved_commitment_score.credit_card_overdraft_and_other_revolving = parse_cartao_credito_cheque_especial_e_outros_rotativos(commitment_score)
-      #     saved_commitment_score.continued_service = parse_servicos_continuados(commitment_score)
-
-      #     saved_control_panel.commitment_score = saved_commitment_score
-      #   end
-
-      #   if punctuality_note.present?
-      #     saved_punctuality_note = save_punctuality_note
-
-      #     saved_punctuality_note.installment_operation = parse_operacoes_parceladas(commitment_score)
-      #     saved_punctuality_note.continued_service = parse_servicos_continuados(commitment_score)
-
-      #     saved_control_panel.punctuality_note = saved_punctuality_note
-      #   end
-
-      #   object.positive_control_panel = saved_control_panel
-
-      #   object
-      # end
-
-      # def self.parse_servicos_continuados(commitment_score)
-      #   continued_service = save_continued_service
-      #   control_panel_items = [commitment_score['servicos_continuados'][
-      #     'item_painel_controle'
-      #   ]].flatten(1)
-
-      #   return continued_service unless control_panel_items
-
-      #   control_panel_items.map! do |item|
-      #     description = item['descricao']
-      #     value = item['valor']
-
-      #     item = save_control_panel_item(description, value)
-      #   end
-
-      #   continued_service.control_panel_items = control_panel_items
-
-      #   continued_service
-      # end
-
       def self.parse_cartao_credito_cheque_especial_e_outros_rotativos(commitment_score)
         credit_card_overdraft_and_other_revolving = save_credit_card_overdraft_and_other_revolving
         control_panel_items = [commitment_score['cartao_credito_cheque_especial_e_outros_rotativos'][
@@ -1133,260 +800,24 @@ module DataLoaders
         credit_card_overdraft_and_other_revolving
       end
 
-      # def self.parse_operacoes_parceladas(commitment_score)
-      #   installment_operation = save_installment_operation
-      #   control_panel_items = [commitment_score['operacoes_parceladas'][
-      #     'item_painel_controle']].flatten(1)
-
-      #   return installment_operation unless control_panel_items
-
-      #   control_panel_items.map! do |item|
-      #     description = item['descricao']
-      #     value = item['valor']
-
-      #     item = save_control_panel_item(description, value)
-      #   end
-
-      #   installment_operation.control_panel_items = control_panel_items
-
-      #   installment_operation
-      # end
-
-      # def self.save_summary_previous_query(
-      #   register_size, register_type, register, document_type,
-      #   document_number, total, initial_period, final_period,
-      #   total_last_month, period, total_penultimate_month,
-      #   penultimate_month_period, anti_total_penultimate_month,
-      #   anti_penultimate_month_period
-      # )
-      #   ::BoaVista::SummaryPreviousQuery.new({
-      #                                          register_size: register_size,
-      #                                          register_type: register_type,
-      #                                          register: register,
-      #                                          document_type: document_type,
-      #                                          total: total,
-      #                                          document_number: document_number,
-      #                                          initial_period: initial_period,
-      #                                          final_period: final_period,
-      #                                          total_last_month: total_last_month,
-      #                                          period: period,
-      #                                          total_penultimate_month: total_penultimate_month,
-      #                                          penultimate_month_period: penultimate_month_period,
-      #                                          anti_total_penultimate_month: anti_total_penultimate_month,
-      #                                          anti_penultimate_month_period: anti_penultimate_month_period
-      #                                        })
-      # end
-
-      # def self.save_punctuality_note
-      #   ::BoaVista::PunctualityNote.new({})
-      # end
-
-      # def self.save_continued_service
-      #   ::BoaVista::ContinuedService.new({})
-      # end
-
-      # def self.save_credit_card_overdraft_and_other_revolving
-      #   ::BoaVista::CreditCardOverdraftAndOtherRevolving.new({})
-      # end
-
-      # def self.save_installment_operation
-      #   ::BoaVista::InstallmentOperation.new({})
-      # end
-
-      # def self.save_control_panel_item(description, value)
-      #   ::BoaVista::ControlPanelItem.new({
-      #                                      description: description,
-      #                                      value: value
-      #                                    })
-      # end
-
-      # def self.save_commitment_score
-      #   ::BoaVista::CommitmentScore.new({})
-      # end
-
-      # def self.save_positive_control_panel
-      #   ::BoaVista::PositiveControlPanel.new({})
-      # end
-
-      # def self.save_consumer_status(message)
-      #   ::BoaVista::ConsumerStatus.new({
-      #                                    message: message
-      #                                  })
-      # end
-
-      # def self.save_other_spelling(
-      #   register_size, register_type, register, name, cpf, birth_date, rg,
-      #   kind, street, number, complement, neighborhood, city, federal_unity,
-      #   zip_code, ddd_1, phone_1, ddd_2, phone_2, ddd_3, phone_3
-      # )
-      #   ::BoaVista::OtherSpelling.new({
-      #                                   register_size: register_size,
-      #                                   register_type: register_type,
-      #                                   register: register,
-      #                                   name: name,
-      #                                   cpf: cpf,
-      #                                   birth_date: birth_date,
-      #                                   rg: rg,
-      #                                   kind: kind,
-      #                                   street: street,
-      #                                   number: number,
-      #                                   complement: complement,
-      #                                   neighborhood: neighborhood,
-      #                                   city: city,
-      #                                   federal_unity: federal_unity,
-      #                                   zip_code: zip_code,
-      #                                   ddd_1: ddd_1,
-      #                                   phone_1: phone_1,
-      #                                   ddd_2: ddd_2,
-      #                                   phone_2: phone_2,
-      #                                   ddd_3: ddd_3,
-      #                                   phone_3: phone_3
-      #                                 })
-      # end
-
-      # def self.save_relationship_judicial_recovery_bankruptcy(
-      #   register_size, register_type, register, document_type,
-      #   document_number, company_name, occurrence_type, registry,
-      #   occurrence_date, praam, federal_unity, county_code
-      # )
-      #   ::BoaVista::RelationshipJudicialRecoveryBankruptcy.new({
-      #                                                            register_size: register_size,
-      #                                                            register_type: register_type,
-      #                                                            register: register,
-      #                                                            document_type: document_type,
-      #                                                            document_number: document_number,
-      #                                                            company_name: company_name,
-      #                                                            occurrence_type: occurrence_type,
-      #                                                            registry: registry,
-      #                                                            occurrence_date: occurrence_date,
-      #                                                            praam: praam,
-      #                                                            federal_unity: federal_unity,
-      #                                                            county_code: county_code
-      #                                                          })
-      # end
-
-      # def self.save_participations_of_the_consulted_document(
-      #   register_size, register_type, register, document_type_a,
-      #   document_number_a, company_name, currency_type, value, observation,
-      #   percentage_value, initial_date, role, document_type_b,
-      #   document_number_b, partner_kind
-      # )
-      #   ::BoaVista::ParticipationsOfTheConsultedDocument.new({
-      #                                                          register_size: register_size,
-      #                                                          register_type: register_type,
-      #                                                          register: register,
-      #                                                          document_type_a: document_type_a,
-      #                                                          document_number_a: document_number_a,
-      #                                                          company_name: company_name,
-      #                                                          currency_type: currency_type,
-      #                                                          value: value,
-      #                                                          observation: observation,
-      #                                                          percentage_value: percentage_value,
-      #                                                          initial_date: initial_date,
-      #                                                          role: role,
-      #                                                          document_type_b: document_type_b,
-      #                                                          document_number_b: document_number_b,
-      #                                                          partner_kind: partner_kind
-      #                                                        })
-      # end
-
-      # def self.save_relation_of_previous_queries_credit_segment(
-      #   register_size, register_type, register, document_type, document,
-      #   occurrence_type, date, currency, value, informant, activity_branch,
-      #   branch_description, group, group_description, segment,
-      #   segment_description
-      # )
-      #   ::BoaVista::RelationOfPreviousQueriesCreditSegment.new(
-      #     {
-      #       register_size: register_size,
-      #       register_type: register_type,
-      #       register: register,
-      #       document_type: document_type,
-      #       document: document,
-      #       occurrence_type: occurrence_type,
-      #       date: date,
-      #       currency: currency,
-      #       value: value,
-      #       informant: informant,
-      #       activity_branch: activity_branch,
-      #       branch_description: branch_description,
-      #       group: group,
-      #       group_description: group_description,
-      #       segment: segment,
-      #       segment_description: segment_description
-      #     }
-      #   )
-      # end
-
-      # def self.save_linked_phone_informed_document(
-      #   register_size, register_type, register, ddd, phone, address,
-      #   neighborhood, zip_code, city, federal_unit
-      # )
-      #   ::BoaVista::LinkedPhoneInformedDocument.new({
-      #                                                 register_size: register_size,
-      #                                                 register_type: register_type,
-      #                                                 register: register,
-      #                                                 ddd: ddd,
-      #                                                 phone: phone,
-      #                                                 address: address,
-      #                                                 neighborhood: neighborhood,
-      #                                                 zip_code: zip_code,
-      #                                                 city: city,
-      #                                                 federal_unit: federal_unit
-      #                                               })
-      # end
-
-      # def self.save_list_of_civil_action(
-      #   register_size, register_type, register, court, trial, civil_action,
-      #   distribution_date, perpetrator, value, praam, federal_unit,
-      #   county_code
-      # )
-      #   ::BoaVista::ListOfCivilAction.new({
-      #                                       register_size: register_size,
-      #                                       register_type: register_type,
-      #                                       register: register,
-      #                                       court: court,
-      #                                       trial: trial,
-      #                                       civil_action: civil_action,
-      #                                       distribution_date: distribution_date,
-      #                                       perpetrator: perpetrator,
-      #                                       value: value,
-      #                                       praam: praam,
-      #                                       federal_unit: federal_unit,
-      #                                       county_code: county_code
-      #                                     })
-      # end
-
-      # def self.save_summary_of_civil_action(
-      #   register_size, register_type, register, amount, initial_period,
-      #   final_period
-      # )
-      #   ::BoaVista::SummaryOfCivilAction.new({
-      #                                          register_size: register_size,
-      #                                          register_type: register_type,
-      #                                          register: register,
-      #                                          amount: amount,
-      #                                          initial_period: initial_period,
-      #                                          final_period: final_period
-      #                                        })
-      # end
-
       def self.save_current_account_historic(
         register_size, register_type, register, bank, agency, current_account,
         document_type, document_number, consultation_date, consultation_hour
       )
-        ::BoaVista::CurrentAccountHistoric.new({
-                                                 register_size: register_size,
-                                                 register_type: register_type,
-                                                 register: register,
-                                                 bank: bank,
-                                                 agency: agency,
-                                                 current_account: current_account,
-                                                 document_type: document_type,
-                                                 document_number: document_number,
-                                                 consultation_date: consultation_date,
-                                                 consultation_hour: consultation_hour
-                                               })
+        ::BoaVista::CurrentAccountHistoric.new(
+          {
+            register_size: register_size,
+            register_type: register_type,
+            register: register,
+            bank: bank,
+            agency: agency,
+            current_account: current_account,
+            document_type: document_type,
+            document_number: document_number,
+            consultation_date: consultation_date,
+            consultation_hour: consultation_hour
+          }
+        )
       end
 
       def self.save_previous90_days_consultation(
@@ -1394,24 +825,26 @@ module DataLoaders
         total_1, year_2, month_2, total_2, year_3, month_3, total_3,
         year_4, month_4, total_4
       )
-        ::BoaVista::Previous90DaysConsultation.new({
-                                                     register_size: register_size,
-                                                     register_type: register_type,
-                                                     register: register,
-                                                     total: total,
-                                                     year_1: year_1,
-                                                     month_1: month_1,
-                                                     total_1: total_1,
-                                                     year_2: year_2,
-                                                     month_2: month_2,
-                                                     total_2: total_2,
-                                                     year_3: year_3,
-                                                     month_3: month_3,
-                                                     total_3: total_3,
-                                                     year_4: year_4,
-                                                     month_4: month_4,
-                                                     total_4: total_4
-                                                   })
+        ::BoaVista::Previous90DaysConsultation.new(
+          {
+            register_size: register_size,
+            register_type: register_type,
+            register: register,
+            total: total,
+            year_1: year_1,
+            month_1: month_1,
+            total_1: total_1,
+            year_2: year_2,
+            month_2: month_2,
+            total_2: total_2,
+            year_3: year_3,
+            month_3: month_3,
+            total_3: total_3,
+            year_4: year_4,
+            month_4: month_4,
+            total_4: total_4
+          }
+        )
       end
 
       def self.save_identification(
@@ -1420,28 +853,30 @@ module DataLoaders
         birth_city, marital_status, dependent_number, educational_level,
         revenue_situation, update_date, cpf_zone, voter_title, death
       )
-        ::BoaVista::Identification.new({
-                                         register_size: register_size,
-                                         register: register,
-                                         document: document,
-                                         name: name,
-                                         mother_name: mother_name,
-                                         birth_date: birth_date,
-                                         rg_number: rg_number,
-                                         emitting_organ: emitting_organ,
-                                         rg_federative_unit: rg_federative_unit,
-                                         rg_emitting_date: rg_emitting_date,
-                                         consulted_gender: consulted_gender,
-                                         birth_city: birth_city,
-                                         marital_status: marital_status,
-                                         dependent_number: dependent_number,
-                                         educational_level: educational_level,
-                                         revenue_situation: revenue_situation,
-                                         update_date: update_date,
-                                         cpf_zone: cpf_zone,
-                                         voter_title: voter_title,
-                                         death: death
-                                       })
+        ::BoaVista::Identification.new(
+          {
+            register_size: register_size,
+            register: register,
+            document: document,
+            name: name,
+            mother_name: mother_name,
+            birth_date: birth_date,
+            rg_number: rg_number,
+            emitting_organ: emitting_organ,
+            rg_federative_unit: rg_federative_unit,
+            rg_emitting_date: rg_emitting_date,
+            consulted_gender: consulted_gender,
+            birth_city: birth_city,
+            marital_status: marital_status,
+            dependent_number: dependent_number,
+            educational_level: educational_level,
+            revenue_situation: revenue_situation,
+            update_date: update_date,
+            cpf_zone: cpf_zone,
+            voter_title: voter_title,
+            death: death
+          }
+        )
       end
 
       def self.save_debit_occurrence(
@@ -1449,32 +884,36 @@ module DataLoaders
         accumulated_value, first_debit_date, first_debit_value,
         biggest_debit_date, biggest_debit_value
       )
-        ::BoaVista::DebitOccurrence.new({
-                                          register_size: register_size,
-                                          register_type: register_type,
-                                          register: register,
-                                          total_debtor: total_debtor,
-                                          total_guarantor: total_guarantor,
-                                          accumulated_value: accumulated_value,
-                                          first_debit_date: first_debit_date,
-                                          first_debit_value: first_debit_value,
-                                          biggest_debit_date: biggest_debit_date,
-                                          biggest_debit_value: biggest_debit_value
-                                        })
+        ::BoaVista::DebitOccurrence.new(
+          {
+            register_size: register_size,
+            register_type: register_type,
+            register: register,
+            total_debtor: total_debtor,
+            total_guarantor: total_guarantor,
+            accumulated_value: accumulated_value,
+            first_debit_date: first_debit_date,
+            first_debit_value: first_debit_value,
+            biggest_debit_date: biggest_debit_date,
+            biggest_debit_value: biggest_debit_value
+          }
+        )
       end
 
       def self.save_additional_information(
         register_size, register_type, register, text, origin, fu_origin, type
       )
-        ::BoaVista::AdditionalInformation.new({
-                                                register_size: register_size,
-                                                register_type: register_type,
-                                                register: register,
-                                                text: text,
-                                                origin: origin,
-                                                fu_origin: fu_origin,
-                                                information_type: type
-                                              })
+        ::BoaVista::AdditionalInformation.new(
+          {
+            register_size: register_size,
+            register_type: register_type,
+            register: register,
+            text: text,
+            origin: origin,
+            fu_origin: fu_origin,
+            information_type: type
+          }
+        )
       end
 
       def self.save_debit(
@@ -1482,21 +921,23 @@ module DataLoaders
         occurrence_date, contract, availability_date, currency, value,
         condition, informant, informed_by_querent, segment
       )
-        ::BoaVista::Debit.new({
-                                register_size: register_size,
-                                register_type: register_type,
-                                register: register,
-                                occurrence_type: occurrence_type,
-                                occurrence_date: occurrence_date,
-                                contract: contract,
-                                availability_date: availability_date,
-                                currency: currency,
-                                value: value,
-                                condition: condition,
-                                informant: informant,
-                                informed_by_querent: informed_by_querent,
-                                segment: segment
-                              })
+        ::BoaVista::Debit.new(
+          {
+            register_size: register_size,
+            register_type: register_type,
+            register: register,
+            occurrence_type: occurrence_type,
+            occurrence_date: occurrence_date,
+            contract: contract,
+            availability_date: availability_date,
+            currency: currency,
+            value: value,
+            condition: condition,
+            informant: informant,
+            informed_by_querent: informed_by_querent,
+            segment: segment
+          }
+        )
       end
 
       def self.save_cheque_stopped(
@@ -1504,75 +945,64 @@ module DataLoaders
         document_number, bank, agency, current_account, cheque, point,
         occurrence_date, availability_date, informant, indicator
       )
-        ::BoaVista::ChequeStopped.new({
-                                        register_size: register_size,
-                                        register_type: register_type,
-                                        register: register,
-                                        occurrence_type: occurrence_type,
-                                        document_type: document_type,
-                                        document_number: document_number,
-                                        bank: bank,
-                                        agency: agency,
-                                        current_account: current_account,
-                                        cheque: cheque,
-                                        point: point,
-                                        occurrence_date: occurrence_date,
-                                        availability_date: availability_date,
-                                        informant: informant,
-                                        indicator: indicator
-                                      })
+        ::BoaVista::ChequeStopped.new(
+          {
+            register_size: register_size,
+            register_type: register_type,
+            register: register,
+            occurrence_type: occurrence_type,
+            document_type: document_type,
+            document_number: document_number,
+            bank: bank,
+            agency: agency,
+            current_account: current_account,
+            cheque: cheque,
+            point: point,
+            occurrence_date: occurrence_date,
+            availability_date: availability_date,
+            informant: informant,
+            indicator: indicator
+          }
+        )
       end
-
-      # def self.save_previous_queries(
-      #   register_size, register_type, register, occurrence_type, date,
-      #   currency, value, informant, product
-      # )
-      #   ::BoaVista::PreviousQuery.new({
-      #                                   register_size: register_size,
-      #                                   register_type: register_type,
-      #                                   register: register,
-      #                                   occurrence_type: occurrence_type,
-      #                                   date: date,
-      #                                   currency: currency,
-      #                                   value: value,
-      #                                   informant: informant,
-      #                                   product: product
-      #                                 })
-      # end
 
       def self.save_protested_title(
         register_size, register_type, register, occurrence_type, registry,
         occurrence_date, currency, value, city, federative_unit
       )
-        ::BoaVista::ProtestedTitle.new({
-                                         register_size: register_size,
-                                         register_type: register_type,
-                                         register: register,
-                                         occurrence_type: occurrence_type,
-                                         registry: registry,
-                                         occurrence_date: occurrence_date,
-                                         currency: currency,
-                                         value: value,
-                                         city: city,
-                                         federative_unit: federative_unit
-                                       })
+        ::BoaVista::ProtestedTitle.new(
+          {
+            register_size: register_size,
+            register_type: register_type,
+            register: register,
+            occurrence_type: occurrence_type,
+            registry: registry,
+            occurrence_date: occurrence_date,
+            currency: currency,
+            value: value,
+            city: city,
+            federative_unit: federative_unit
+          }
+        )
       end
 
       def self.save_protested_title_summary(
         register_size, register_type, register, total, initial_period,
         final_period, currency, accumulated_value, federative_unit
       )
-        ::BoaVista::ProtestedTitleSummary.new({
-                                                register_size: register_size,
-                                                register_type: register_type,
-                                                register: register,
-                                                total: total,
-                                                initial_period: initial_period,
-                                                final_period: final_period,
-                                                currency: currency,
-                                                accumulated_value: accumulated_value,
-                                                federative_unit: federative_unit
-                                              })
+        ::BoaVista::ProtestedTitleSummary.new(
+          {
+            register_size: register_size,
+            register_type: register_type,
+            register: register,
+            total: total,
+            initial_period: initial_period,
+            final_period: final_period,
+            currency: currency,
+            accumulated_value: accumulated_value,
+            federative_unit: federative_unit
+          }
+        )
       end
 
       def self.save_phone_confirmation(
@@ -1580,20 +1010,22 @@ module DataLoaders
         document_type, document_number, name, neighborhood, zip_code, city,
         federative_unit
       )
-        ::BoaVista::PhoneConfirmation.new({
-                                            register_size: register_size,
-                                            register_type: register_type,
-                                            register: register,
-                                            area_code: area_code,
-                                            phone: phone,
-                                            document_type: document_type,
-                                            document_number: document_number,
-                                            name: name,
-                                            neighborhood: neighborhood,
-                                            zip_code: zip_code,
-                                            city: city,
-                                            federative_unit: federative_unit
-                                          })
+        ::BoaVista::PhoneConfirmation.new(
+          {
+            register_size: register_size,
+            register_type: register_type,
+            register: register,
+            area_code: area_code,
+            phone: phone,
+            document_type: document_type,
+            document_number: document_number,
+            name: name,
+            neighborhood: neighborhood,
+            zip_code: zip_code,
+            city: city,
+            federative_unit: federative_unit
+          }
+        )
       end
 
       def self.save_bank_branch_phones_address(
@@ -1601,41 +1033,45 @@ module DataLoaders
         agency_name, address, neighborhood, zip_code, city, federative_unit,
         plaza, area_code, phone_1, phone_2, reserved
       )
-        ::BoaVista::BankBranchPhonesAddress.new({
-                                                  register_size: register_size,
-                                                  register_type: register_type,
-                                                  register: register,
-                                                  bank: bank,
-                                                  bank_name: bank_name,
-                                                  agency: agency,
-                                                  agency_name: agency_name,
-                                                  address: address,
-                                                  neighborhood: neighborhood,
-                                                  zip_code: zip_code,
-                                                  city: city,
-                                                  federative_unit: federative_unit,
-                                                  plaza: plaza,
-                                                  area_code: area_code,
-                                                  phone_1: phone_1,
-                                                  phone_2: phone_2,
-                                                  reserved: reserved
-                                                })
+        ::BoaVista::BankBranchPhonesAddress.new(
+          {
+            register_size: register_size,
+            register_type: register_type,
+            register: register,
+            bank: bank,
+            bank_name: bank_name,
+            agency: agency,
+            agency_name: agency_name,
+            address: address,
+            neighborhood: neighborhood,
+            zip_code: zip_code,
+            city: city,
+            federative_unit: federative_unit,
+            plaza: plaza,
+            area_code: area_code,
+            phone_1: phone_1,
+            phone_2: phone_2,
+            reserved: reserved
+          }
+        )
       end
 
       def self.save_decision(
         register_size, register_type, register, document_type, document,
         score, approves, text
       )
-        ::BoaVista::Decision.new({
-                                   register_size: register_size,
-                                   register_type: register_type,
-                                   register: register,
-                                   document_type: document_type,
-                                   document: document,
-                                   score: score,
-                                   approves: approves,
-                                   text: text
-                                 })
+        ::BoaVista::Decision.new(
+          {
+            register_size: register_size,
+            register_type: register_type,
+            register: register,
+            document_type: document_type,
+            document: document,
+            score: score,
+            approves: approves,
+            text: text
+          }
+        )
       end
 
       def self.save_location(
@@ -1644,73 +1080,81 @@ module DataLoaders
         city, federative_unit, zip_code, ddd_1, phone_1, ddd_2, phone_2,
         ddd_3, phone_3
       )
-        ::BoaVista::Location.new({
-                                   register_size: register_size,
-                                   register_type: register_type,
-                                   register: register,
-                                   public_place_type: public_place_type,
-                                   public_place_name: public_place_name,
-                                   public_place_number: public_place_number,
-                                   complement: complement,
-                                   neighborhood: neighborhood,
-                                   city: city,
-                                   federative_unit: federative_unit,
-                                   zip_code: zip_code,
-                                   ddd_1: ddd_1,
-                                   phone_1: phone_1,
-                                   ddd_2: ddd_2,
-                                   phone_2: phone_2,
-                                   ddd_3: ddd_3,
-                                   phone_3: phone_3
-                                 })
+        ::BoaVista::Location.new(
+          {
+            register_size: register_size,
+            register_type: register_type,
+            register: register,
+            public_place_type: public_place_type,
+            public_place_name: public_place_name,
+            public_place_number: public_place_number,
+            complement: complement,
+            neighborhood: neighborhood,
+            city: city,
+            federative_unit: federative_unit,
+            zip_code: zip_code,
+            ddd_1: ddd_1,
+            phone_1: phone_1,
+            ddd_2: ddd_2,
+            phone_2: phone_2,
+            ddd_3: ddd_3,
+            phone_3: phone_3
+          }
+        )
       end
 
       def self.save_cheque_additional_information(
         register_size, register_type, register, document_type,
         document_number, text, type_of_register
       )
-        ::BoaVista::ChequeAdditionalInformation.new({
-                                                      register_size: register_size,
-                                                      register_type: register_type,
-                                                      register: register,
-                                                      document_type: document_type,
-                                                      document_number: document_number,
-                                                      text: text,
-                                                      type_of_register: type_of_register
-                                                    })
+        ::BoaVista::ChequeAdditionalInformation.new(
+          {
+            register_size: register_size,
+            register_type: register_type,
+            register: register,
+            document_type: document_type,
+            document_number: document_number,
+            text: text,
+            type_of_register: type_of_register
+          }
+        )
       end
 
       def self.save_zip_code_confirmation(
         register_size, register_type, register, zip_code, address,
         neighborhood, city, federative_unit
       )
-        ::BoaVista::ZipCodeConfirmation.new({
-                                              register_size: register_size,
-                                              register_type: register_type,
-                                              register: register,
-                                              zip_code: zip_code,
-                                              address: address,
-                                              neighborhood: neighborhood,
-                                              city: city,
-                                              federative_unit: federative_unit
-                                            })
+        ::BoaVista::ZipCodeConfirmation.new(
+          {
+            register_size: register_size,
+            register_type: register_type,
+            register: register,
+            zip_code: zip_code,
+            address: address,
+            neighborhood: neighborhood,
+            city: city,
+            federative_unit: federative_unit
+          }
+        )
       end
 
       def self.save_documents_name(
         register_size, register_type, register, name, birth_date, document_type,
         document_number, document_2, document_3
       )
-        ::BoaVista::DocumentsName.new({
-                                        register_size: register_size,
-                                        register_type: register_type,
-                                        register: register,
-                                        name: name,
-                                        birth_date: birth_date,
-                                        document_type: document_type,
-                                        document_number: document_number,
-                                        document_2: document_2,
-                                        document_3: document_3
-                                      })
+        ::BoaVista::DocumentsName.new(
+          {
+            register_size: register_size,
+            register_type: register_type,
+            register: register,
+            name: name,
+            birth_date: birth_date,
+            document_type: document_type,
+            document_number: document_number,
+            document_2: document_2,
+            document_3: document_3
+          }
+        )
       end
 
       def self.save_list_of_returns_reported_by_ccf(
@@ -1719,44 +1163,48 @@ module DataLoaders
         last_occurrence_13_date, reason_14, last_occurrence_14_date, reason_99,
         last_occurrence_99_date, bank_name
       )
-        ::BoaVista::ListOfReturnsReportedByCcf.new({
-                                                     register_size: register_size,
-                                                     register_type: register_type,
-                                                     register: register,
-                                                     document_type: document_type,
-                                                     document_number: document_number,
-                                                     name: name,
-                                                     bank: bank,
-                                                     agency: agency,
-                                                     reason_12: reason_12,
-                                                     last_occurrence_12_date: last_occurrence_12_date,
-                                                     reason_13: reason_13,
-                                                     last_occurrence_13_date: last_occurrence_13_date,
-                                                     reason_14: reason_14,
-                                                     last_occurrence_14_date: last_occurrence_14_date,
-                                                     reason_99: reason_99,
-                                                     last_occurrence_99_date: last_occurrence_99_date,
-                                                     bank_name: bank_name
-                                                   })
+        ::BoaVista::ListOfReturnsReportedByCcf.new(
+          {
+            register_size: register_size,
+            register_type: register_type,
+            register: register,
+            document_type: document_type,
+            document_number: document_number,
+            name: name,
+            bank: bank,
+            agency: agency,
+            reason_12: reason_12,
+            last_occurrence_12_date: last_occurrence_12_date,
+            reason_13: reason_13,
+            last_occurrence_13_date: last_occurrence_13_date,
+            reason_14: reason_14,
+            last_occurrence_14_date: last_occurrence_14_date,
+            reason_99: reason_99,
+            last_occurrence_99_date: last_occurrence_99_date,
+            bank_name: bank_name
+          }
+        )
       end
 
       def self.save_summary_previous_query_cheque(
         register_size, register_type, register, document_type, document_number,
         total, value, day, day_value, pre_dated, pre_dated_value
       )
-        ::BoaVista::SummaryPreviousQueryCheque.new({
-                                                     register_size: register_size,
-                                                     register_type: register_type,
-                                                     register: register,
-                                                     document_type: document_type,
-                                                     document_number: document_number,
-                                                     total: total,
-                                                     value: value,
-                                                     day: day,
-                                                     day_value: day_value,
-                                                     pre_dated: pre_dated,
-                                                     pre_dated_value: pre_dated_value
-                                                   })
+        ::BoaVista::SummaryPreviousQueryCheque.new(
+          {
+            register_size: register_size,
+            register_type: register_type,
+            register: register,
+            document_type: document_type,
+            document_number: document_number,
+            total: total,
+            value: value,
+            day: day,
+            day_value: day_value,
+            pre_dated: pre_dated,
+            pre_dated_value: pre_dated_value
+          }
+        )
       end
 
       def self.save_summary_devolution_reported_by_ccf(
@@ -1764,20 +1212,22 @@ module DataLoaders
         document_number, name, names_total, devolution_total, reason_12,
         reason_13, reason_14, reason_99
       )
-        ::BoaVista::SummaryDevolutionReportedByCcf.new({
-                                                         register_size: register_size,
-                                                         register_type: register_type,
-                                                         register: register,
-                                                         document_type: document_type,
-                                                         document_number: document_number,
-                                                         name: name,
-                                                         names_total: names_total,
-                                                         devolution_total: devolution_total,
-                                                         reason_12: reason_12,
-                                                         reason_13: reason_13,
-                                                         reason_14: reason_14,
-                                                         reason_99: reason_99
-                                                       })
+        ::BoaVista::SummaryDevolutionReportedByCcf.new(
+          {
+            register_size: register_size,
+            register_type: register_type,
+            register: register,
+            document_type: document_type,
+            document_number: document_number,
+            name: name,
+            names_total: names_total,
+            devolution_total: devolution_total,
+            reason_12: reason_12,
+            reason_13: reason_13,
+            reason_14: reason_14,
+            reason_99: reason_99
+          }
+        )
       end
 
       def self.save_returns_reported_by_user(
@@ -1786,28 +1236,30 @@ module DataLoaders
         point, occurrence_date, register_date, currency, value, informant_code,
         informant, city, federative_unit
       )
-        ::BoaVista::ReturnsReportedByUser.new({
-                                                register_size: register_size,
-                                                register_type: register_type,
-                                                register: register,
-                                                document_type: document_type,
-                                                document: document,
-                                                bank: bank,
-                                                agency: agency,
-                                                current_account: current_account,
-                                                initial_cheque: initial_cheque,
-                                                final_cheque: final_cheque,
-                                                reason: reason,
-                                                point: point,
-                                                occurrence_date: occurrence_date,
-                                                register_date: register_date,
-                                                currency: currency,
-                                                value: value,
-                                                informant_code: informant_code,
-                                                informant: informant,
-                                                city: city,
-                                                federative_unit: federative_unit
-                                              })
+        ::BoaVista::ReturnsReportedByUser.new(
+          {
+            register_size: register_size,
+            register_type: register_type,
+            register: register,
+            document_type: document_type,
+            document: document,
+            bank: bank,
+            agency: agency,
+            current_account: current_account,
+            initial_cheque: initial_cheque,
+            final_cheque: final_cheque,
+            reason: reason,
+            point: point,
+            occurrence_date: occurrence_date,
+            register_date: register_date,
+            currency: currency,
+            value: value,
+            informant_code: informant_code,
+            informant: informant,
+            city: city,
+            federative_unit: federative_unit
+          }
+        )
       end
 
       def self.save_cheques_stopped_for_reason21(
@@ -1815,24 +1267,26 @@ module DataLoaders
         bank, agency, current_account, initial_cheque, final_cheque, point,
         occurrence_date, availability_date, currency, value, informant
       )
-        ::BoaVista::ChequesStoppedForReason21.new({
-                                                    register_size: register_size,
-                                                    register_type: register_type,
-                                                    register: register,
-                                                    document_type: document_type,
-                                                    document_number: document_number,
-                                                    bank: bank,
-                                                    agency: agency,
-                                                    current_account: current_account,
-                                                    initial_cheque: initial_cheque,
-                                                    final_cheque: final_cheque,
-                                                    point: point,
-                                                    occurrence_date: occurrence_date,
-                                                    availability_date: availability_date,
-                                                    currency: currency,
-                                                    value: value,
-                                                    informant: informant
-                                                  })
+        ::BoaVista::ChequesStoppedForReason21.new(
+          {
+            register_size: register_size,
+            register_type: register_type,
+            register: register,
+            document_type: document_type,
+            document_number: document_number,
+            bank: bank,
+            agency: agency,
+            current_account: current_account,
+            initial_cheque: initial_cheque,
+            final_cheque: final_cheque,
+            point: point,
+            occurrence_date: occurrence_date,
+            availability_date: availability_date,
+            currency: currency,
+            value: value,
+            informant: informant
+          }
+        )
       end
 
       def self.save_historic_informed_cheque(
@@ -1840,55 +1294,61 @@ module DataLoaders
         bank, agency, current_account, cheque, consultation_date,
         consultation_hour, network
       )
-        ::BoaVista::HistoricInformedCheque.new({
-                                                 register_size: register_size,
-                                                 register_type: register_type,
-                                                 register: register,
-                                                 document_type: document_type,
-                                                 document_number: document_number,
-                                                 bank: bank,
-                                                 agency: agency,
-                                                 current_account: current_account,
-                                                 cheque: cheque,
-                                                 consultation_date: consultation_date,
-                                                 consultation_hour: consultation_hour,
-                                                 network: network
-                                               })
+        ::BoaVista::HistoricInformedCheque.new(
+          {
+            register_size: register_size,
+            register_type: register_type,
+            register: register,
+            document_type: document_type,
+            document_number: document_number,
+            bank: bank,
+            agency: agency,
+            current_account: current_account,
+            cheque: cheque,
+            consultation_date: consultation_date,
+            consultation_hour: consultation_hour,
+            network: network
+          }
+        )
       end
 
       def self.save_previous_cheque_consultation(
         register_size, register_type, register, document_type, document_number,
         consultation_type, credit_date, credit_hour, currency, value, informant
       )
-        ::BoaVista::PreviousChequeConsultation.new({
-                                                     register_size: register_size,
-                                                     register_type: register_type,
-                                                     register: register,
-                                                     document_type: document_type,
-                                                     document_number: document_number,
-                                                     consultation_type: consultation_type,
-                                                     credit_date: credit_date,
-                                                     credit_hour: credit_hour,
-                                                     currency: currency,
-                                                     value: value,
-                                                     informant: informant
-                                                   })
+        ::BoaVista::PreviousChequeConsultation.new(
+          {
+            register_size: register_size,
+            register_type: register_type,
+            register: register,
+            document_type: document_type,
+            document_number: document_number,
+            consultation_type: consultation_type,
+            credit_date: credit_date,
+            credit_hour: credit_hour,
+            currency: currency,
+            value: value,
+            informant: informant
+          }
+        )
       end
 
       def self.save_summary_of_returns_reported_by_user(
         register_size, register_type, register, document_type,
         document_number, total, first_devolution_date, last_devolution_date
       )
-        ::BoaVista::SummaryOfReturnsReportedByUser.new({
-                                                         register_size: register_size,
-                                                         register_type: register_type,
-                                                         register: register,
-                                                         document_type: document_type,
-                                                         document_number: document_number,
-                                                         total: total,
-                                                         first_devolution_date: first_devolution_date,
-                                                         last_devolution_date: last_devolution_date
-                                                       })
+        ::BoaVista::SummaryOfReturnsReportedByUser.new(
+          {
+            register_size: register_size,
+            register_type: register_type,
+            register: register,
+            document_type: document_type,
+            document_number: document_number,
+            total: total,
+            first_devolution_date: first_devolution_date,
+            last_devolution_date: last_devolution_date
+          }
+        )
       end
 
       def self.save_score_rating_several_model(
@@ -1897,37 +1357,41 @@ module DataLoaders
         alphabetic_classification, probability, text, code_kind_model,
         kind_description, text_2, value, message
       )
-        ::BoaVista::ScoreRatingSeveralModel.new({
-                                                  register_size: register_size,
-                                                  register_type: register_type,
-                                                  register: register,
-                                                  score_type: score_type,
-                                                  score: score,
-                                                  plan_name: plan_name,
-                                                  score_model: score_model,
-                                                  score_name: score_name,
-                                                  numeric_classification: numeric_classification,
-                                                  alphabetic_classification: alphabetic_classification,
-                                                  probability: probability,
-                                                  text: text,
-                                                  code_kind_model: code_kind_model,
-                                                  kind_description: kind_description,
-                                                  text_2: text_2,
-                                                  value: value,
-                                                  message: message
-                                                })
+        ::BoaVista::ScoreRatingSeveralModel.new(
+          {
+            register_size: register_size,
+            register_type: register_type,
+            register: register,
+            score_type: score_type,
+            score: score,
+            plan_name: plan_name,
+            score_model: score_model,
+            score_name: score_name,
+            numeric_classification: numeric_classification,
+            alphabetic_classification: alphabetic_classification,
+            probability: probability,
+            text: text,
+            code_kind_model: code_kind_model,
+            kind_description: kind_description,
+            text_2: text_2,
+            value: value,
+            message: message
+          }
+        )
       end
 
       def self.save_record_message(
         register_size, register_type, register, record_reference, text
       )
-        ::BoaVista::RecordMessage.new({
-                                        register_size: register_size,
-                                        register_type: register_type,
-                                        register: register,
-                                        record_reference: record_reference,
-                                        text: text
-                                      })
+        ::BoaVista::RecordMessage.new(
+          {
+            register_size: register_size,
+            register_type: register_type,
+            register: register,
+            record_reference: record_reference,
+            text: text
+          }
+        )
       end
 
       def self.exception_handler(message)

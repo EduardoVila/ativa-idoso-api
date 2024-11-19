@@ -13,7 +13,7 @@ module DataLoaders
 
         return if acerta_essencial.blank?
 
-        acerta_essencial.raw_data = data
+        acerta_essencial.update(raw_data: data)
 
         acerta_essencial
       end

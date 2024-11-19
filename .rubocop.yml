@@ -17,7 +17,7 @@ AllCops:
   - 'db/**/*'
   - 'todo/**/*'
   - 'lib/concerns/**/*'
-    # temporary: to be removed after the migration to the new architecture
+    # TODO: to be removed after the migration to the new architecture
   - 'lib/data_loaders/**/*'
   - 'lib/integrators/boa_vista.rb'
   - 'spec/lib/data_loaders/**/*'
