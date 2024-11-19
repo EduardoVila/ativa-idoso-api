@@ -4,22 +4,21 @@
 #
 # Table name: boa_vista_previous_cheque_consultations
 #
-#  id                                                              :bigint           not null, primary key
-#  register_size                                                   :string
-#  register_type                                                   :string
-#  register                                                        :string
-#  document_type                                                   :string
-#  document_number                                                 :string
-#  consultation_type                                               :string
-#  credit_date                                                     :string
-#  credit_hour                                                     :string
-#  currency                                                        :string
-#  value                                                           :string
-#  informant                                                       :string
-#  boa_vista_acerta_essencial_id                                   :bigint
-#  index_boa_vista_previous_cheque_consultations_on_boa_vista_acer :bigint
-#  created_at                                                      :datetime         not null
-#  updated_at                                                      :datetime         not null
+#  id                            :uuid             not null, primary key
+#  register_size                 :string
+#  register_type                 :string
+#  register                      :string
+#  document_type                 :string
+#  document_number               :string
+#  consultation_type             :string
+#  credit_date                   :string
+#  credit_hour                   :string
+#  currency                      :string
+#  value                         :string
+#  informant                     :string
+#  boa_vista_acerta_essencial_id :uuid             not null
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
 #
 module BoaVista
   class PreviousChequeConsultation < ApplicationRecord

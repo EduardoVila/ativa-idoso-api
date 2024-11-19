@@ -4,23 +4,22 @@
 #
 # Table name: boa_vista_phone_confirmations
 #
-#  id                                                              :bigint           not null, primary key
-#  register_size                                                   :string
-#  register_type                                                   :string
-#  register                                                        :string
-#  area_code                                                       :string
-#  phone                                                           :string
-#  document_type                                                   :string
-#  document_number                                                 :string
-#  name                                                            :string
-#  neighborhood                                                    :string
-#  zip_code                                                        :string
-#  city                                                            :string
-#  federative_unit                                                 :string
-#  boa_vista_acerta_essencial_id                                   :bigint
-#  index_boa_vista_phone_confirmations_on_boa_vista_acerta_essenci :bigint
-#  created_at                                                      :datetime         not null
-#  updated_at                                                      :datetime         not null
+#  id                            :uuid             not null, primary key
+#  register_size                 :string
+#  register_type                 :string
+#  register                      :string
+#  area_code                     :string
+#  phone                         :string
+#  document_type                 :string
+#  document_number               :string
+#  name                          :string
+#  neighborhood                  :string
+#  zip_code                      :string
+#  city                          :string
+#  federative_unit               :string
+#  boa_vista_acerta_essencial_id :uuid             not null
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
 #
 module BoaVista
   class PhoneConfirmation < ApplicationRecord

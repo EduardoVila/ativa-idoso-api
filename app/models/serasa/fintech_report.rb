@@ -4,11 +4,11 @@
 #
 # Table name: serasa_fintech_reports
 #
-#  id         :bigint           not null, primary key
-#  raw_data   :string
-#  score_id   :bigint           not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id               :uuid             not null, primary key
+#  raw_data         :string
+#  analysis_item_id :uuid             not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
 module Serasa
   class FintechReport < ApplicationRecord

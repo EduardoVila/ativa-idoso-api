@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require 'spec_helper'
 
 RSpec.describe ProScore::CommercialRelation, type: :model do
   describe 'factories' do

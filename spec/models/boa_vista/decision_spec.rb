@@ -1,5 +1,22 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: boa_vista_decisions
+#
+#  id                            :uuid             not null, primary key
+#  register_size                 :string
+#  register_type                 :string
+#  register                      :string
+#  document_type                 :string
+#  document                      :string
+#  score                         :string
+#  approves                      :string
+#  text                          :string
+#  boa_vista_acerta_essencial_id :uuid             not null
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
+#
 require 'spec_helper'
 
 RSpec.describe BoaVista::Decision, type: :model do

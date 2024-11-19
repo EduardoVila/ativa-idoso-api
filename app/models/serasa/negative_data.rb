@@ -4,8 +4,8 @@
 #
 # Table name: serasa_negative_data
 #
-#  id                       :bigint           not null, primary key
-#  serasa_fintech_report_id :bigint           not null
+#  id                       :uuid             not null, primary key
+#  serasa_fintech_report_id :uuid             not null
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
 #

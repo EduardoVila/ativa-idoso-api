@@ -4,12 +4,12 @@
 #
 # Table name: provenir_sources
 #
-#  id             :bigint           not null, primary key
+#  id             :uuid             not null, primary key
+#  state          :string
 #  ENADE          :string
-#  provenir_rg_id :bigint           not null
+#  provenir_rg_id :uuid             not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  state          :string
 #
 module Provenir
   class Source < ApplicationRecord

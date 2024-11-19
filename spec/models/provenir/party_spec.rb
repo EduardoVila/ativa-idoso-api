@@ -1,5 +1,20 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: provenir_parties
+#
+#  id                  :uuid             not null, primary key
+#  party_doc           :string
+#  is_party_active     :boolean
+#  name                :string
+#  polarity            :string
+#  party_type          :string
+#  last_capture_date   :datetime
+#  provenir_lawsuit_id :uuid             not null
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#
 require 'spec_helper'
 
 RSpec.describe Provenir::Party, type: :model do
