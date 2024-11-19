@@ -4,16 +4,15 @@
 #
 # Table name: boa_vista_record_messages
 #
-#  id                                                              :bigint           not null, primary key
-#  register_size                                                   :string
-#  register_type                                                   :string
-#  register                                                        :string
-#  record_reference                                                :string
-#  text                                                            :string
-#  boa_vista_acerta_essencial_id                                   :bigint
-#  index_boa_vista_record_messages_on_boa_vista_acerta_essencial_i :bigint
-#  created_at                                                      :datetime         not null
-#  updated_at                                                      :datetime         not null
+#  id                            :uuid             not null, primary key
+#  register_size                 :string
+#  register_type                 :string
+#  register                      :string
+#  record_reference              :string
+#  text                          :string
+#  boa_vista_acerta_essencial_id :uuid             not null
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
 #
 module BoaVista
   class RecordMessage < ApplicationRecord

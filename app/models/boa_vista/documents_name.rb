@@ -4,20 +4,19 @@
 #
 # Table name: boa_vista_documents_names
 #
-#  id                                                              :bigint           not null, primary key
-#  register_size                                                   :string
-#  register_type                                                   :string
-#  register                                                        :string
-#  name                                                            :string
-#  birth_date                                                      :string
-#  document_type                                                   :string
-#  document_number                                                 :string
-#  document_2                                                      :string
-#  document_3                                                      :string
-#  boa_vista_acerta_essencial_id                                   :bigint
-#  index_boa_vista_documents_names_on_boa_vista_acerta_essencial_i :bigint
-#  created_at                                                      :datetime         not null
-#  updated_at                                                      :datetime         not null
+#  id                            :uuid             not null, primary key
+#  register_size                 :string
+#  register_type                 :string
+#  register                      :string
+#  name                          :string
+#  birth_date                    :string
+#  document_type                 :string
+#  document_number               :string
+#  document_2                    :string
+#  document_3                    :string
+#  boa_vista_acerta_essencial_id :uuid             not null
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
 #
 module BoaVista
   class DocumentsName < ApplicationRecord

@@ -4,16 +4,16 @@
 #
 # Table name: serasa_registrations
 #
-#  id                       :bigint           not null, primary key
+#  id                       :uuid             not null, primary key
 #  document_number          :string
 #  consumer_name            :string
 #  mother_name              :string
 #  birth_date               :string
 #  status_registration      :string
-#  serasa_fintech_report_id :bigint           not null
+#  status_date              :date
+#  serasa_fintech_report_id :uuid             not null
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
-#  status_date              :date
 #
 module Serasa
   class Registration < ApplicationRecord

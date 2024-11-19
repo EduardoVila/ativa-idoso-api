@@ -1,5 +1,23 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: boa_vista_protested_title_summaries
+#
+#  id                            :uuid             not null, primary key
+#  register_size                 :string
+#  register_type                 :string
+#  register                      :string
+#  total                         :string
+#  initial_period                :string
+#  final_period                  :string
+#  currency                      :string
+#  accumulated_value             :string
+#  federative_unit               :string
+#  boa_vista_acerta_essencial_id :uuid             not null
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
+#
 FactoryBot.define do
   factory :boa_vista_protested_title_summary,
           class: 'BoaVista::ProtestedTitleSummary' do

@@ -1,5 +1,20 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: serasa_addresses
+#
+#  id                     :uuid             not null, primary key
+#  address_line           :string
+#  district               :string
+#  zip_code               :string
+#  country                :string
+#  city                   :string
+#  state                  :string
+#  serasa_registration_id :uuid             not null
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#
 require 'spec_helper'
 
 RSpec.describe Serasa::Address, type: :model do

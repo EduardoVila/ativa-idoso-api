@@ -4,7 +4,7 @@
 #
 # Table name: lawsuit_banned_keywords
 #
-#  id                  :bigint           not null, primary key
+#  id                  :uuid             not null, primary key
 #  keyword             :string
 #  litigation_category :integer          default("criminal")
 #  created_at          :datetime         not null

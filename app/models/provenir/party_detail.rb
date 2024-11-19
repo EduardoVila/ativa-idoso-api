@@ -4,9 +4,9 @@
 #
 # Table name: provenir_party_details
 #
-#  id                :bigint           not null, primary key
+#  id                :uuid             not null, primary key
 #  specific_type     :string
-#  provenir_party_id :bigint           not null
+#  provenir_party_id :uuid             not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #
