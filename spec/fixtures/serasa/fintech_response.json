@@ -1,0 +1,261 @@
+{
+    "reports": [
+        {
+            "registration": {
+                "documentNumber": "00000197041",
+                "consumerName": "VIVIANE RIOS",
+                "motherName": "afvkp wrpbnvpq kxzyqkcgqbn",
+                "birthDate": "2002-07-19",
+                "statusRegistration": "REGULAR",
+                "address": {
+                    "addressLine": "R VIRGEM 716",
+                    "district": "JD SATELITE",
+                    "zipCode": "12230420",
+                    "country": "BRA",
+                    "city": "SAO JOSE DOS CAMPOS",
+                    "state": "SP"
+                },
+                "phone": {
+                    "regionCode": 55,
+                    "areaCode": 11,
+                    "phoneNumber": 974063008
+                }
+            },
+            "negativeData": {
+                "pefin": {
+                    "pefinResponse": [
+                        {
+                            "occurrenceDate": "2021-06-05",
+                            "legalNatureId": "AG",
+                            "legalNature": "EMPRÉSTIMO",
+                            "contractId": "0000000000000000",
+                            "creditorName": "SERASA S/A",
+                            "amount": 8465.2,
+                            "city": "",
+                            "federalUnit": "SP",
+                            "principal": true
+                        },
+                        {
+                            "occurrenceDate": "2021-05-18",
+                            "legalNatureId": "AG",
+                            "legalNature": "EMPRÉSTIMO",
+                            "contractId": "0000000000000000",
+                            "creditorName": "IWETXAFI NICPWLKKTX E K OWPIICUFE",
+                            "amount": 6701.74,
+                            "city": "",
+                            "federalUnit": "SP",
+                            "principal": true
+                        }
+                    ],
+                    "summary": {
+                        "count": 2,
+                        "balance": 15166.94
+                    }
+                },
+                "refin": {
+                    "refinResponse": [
+                        {
+                            "occurrenceDate": "2021-05-18",
+                            "legalNatureId": "FI",
+                            "legalNature": "FINANCIAMENTO",
+                            "contractId": "1111111111111111",
+                            "creditorName": "IWETXAFI NICPWLKKTX E K OWPIICUFE",
+                            "amount": 6938.71,
+                            "city": "",
+                            "federalUnit": "SP",
+                            "principal": true
+                        },
+                        {
+                            "occurrenceDate": "2017-11-28",
+                            "legalNatureId": "FI",
+                            "legalNature": "FINANCIAMENTO",
+                            "contractId": "01140724400000323109",
+                            "amount": 221.17,
+                            "city": "",
+                            "federalUnit": "PR",
+                            "principal": true
+                        },
+                        {
+                            "occurrenceDate": "2017-11-27",
+                            "legalNatureId": "FI",
+                            "legalNature": "FINANCIAMENTO",
+                            "contractId": "01140724400000323109",
+                            "amount": 221.17,
+                            "city": "",
+                            "federalUnit": "PR",
+                            "principal": true
+                        },
+                        {
+                            "occurrenceDate": "2017-11-26",
+                            "legalNatureId": "FI",
+                            "legalNature": "FINANCIAMENTO",
+                            "contractId": "01140724400000323109",
+                            "amount": 221.17,
+                            "city": "",
+                            "federalUnit": "PR",
+                            "principal": true
+                        },
+                        {
+                            "occurrenceDate": "2017-11-25",
+                            "legalNatureId": "FI",
+                            "legalNature": "FINANCIAMENTO",
+                            "contractId": "01140724400000323109",
+                            "creditorName": "TESTE RAZAO CAIXA",
+                            "amount": 221.16,
+                            "city": "",
+                            "federalUnit": "PR",
+                            "principal": true
+                        }
+                    ],
+                    "summary": {
+                        "count": 8,
+                        "balance": 8486.86
+                    }
+                },
+                "notary": {
+                    "notaryResponse": [
+                        {
+                            "occurrenceDate": "2021-05-18",
+                            "amount": 6738.62,
+                            "officeNumber": "01",
+                            "officeName": "CARTORIO DAILY L OLIVEIRA",
+                            "city": "CARANGOLA",
+                            "federalUnit": "MG"
+                        },
+                        {
+                            "occurrenceDate": "2021-01-01",
+                            "amount": 30.0,
+                            "officeNumber": "01",
+                            "officeName": "1 TABELIAO DE PROTESTO DE LETRAS E TITULOS",
+                            "city": "SAO PAULO",
+                            "federalUnit": "SP"
+                        },
+                        {
+                            "occurrenceDate": "2019-12-12",
+                            "amount": 300.0,
+                            "officeNumber": "01",
+                            "officeName": "1 TABELIAO DE PROTESTO DE LETRAS E TITULOS",
+                            "city": "SAO PAULO",
+                            "federalUnit": "SP"
+                        }
+                    ],
+                    "summary": {
+                        "count": 3,
+                        "balance": 7068.62
+                    }
+                },
+                "check": {
+                    "checkResponse": [
+                        {
+                            "occurrenceDate": "2021-05-18",
+                            "legalSquare": "APS",
+                            "bankId": 756,
+                            "bankName": "BANCOOB",
+                            "bankAgencyId": 4393,
+                            "checkCount": 4,
+                            "city": "ARAPONGAS",
+                            "federalUnit": "PR",
+                            "checkNumber": "CCF-BB",
+                            "alinea": 1
+                        },
+                        {
+                            "occurrenceDate": "2021-05-18",
+                            "legalSquare": "APS",
+                            "bankId": 756,
+                            "bankName": "BANCOOB",
+                            "bankAgencyId": 4393,
+                            "checkCount": 4,
+                            "city": "ARAPONGAS",
+                            "federalUnit": "PR",
+                            "checkNumber": "CCF-BB",
+                            "alinea": 2
+                        },
+                        {
+                            "occurrenceDate": "2021-05-18",
+                            "legalSquare": "APS",
+                            "bankId": 756,
+                            "bankName": "BANCOOB",
+                            "bankAgencyId": 4393,
+                            "checkCount": 4,
+                            "city": "ARAPONGAS",
+                            "federalUnit": "PR",
+                            "checkNumber": "CCF-BB",
+                            "alinea": 3
+                        },
+                        {
+                            "occurrenceDate": "2021-05-18",
+                            "legalSquare": "APS",
+                            "bankId": 756,
+                            "bankName": "BANCOOB",
+                            "bankAgencyId": 4393,
+                            "checkCount": 4,
+                            "city": "ARAPONGAS",
+                            "federalUnit": "PR",
+                            "checkNumber": "CCF-BB",
+                            "alinea": 0
+                        }
+                    ],
+                    "summary": {
+                        "count": 4,
+                        "balance": 0
+                    }
+                }
+            },
+            "score": {
+                "score": 500,
+                "scoreModel": "HFIN",
+                "range": "K",
+                "defaultRate": "32,4",
+                "codeMessage": 99,
+                "message": "ESPACO RESERVADO PARA MENSAGEM DA INSTITUICAO                                   "
+            },
+            "facts": {
+                "inquiry": {
+                    "inquiryResponse": [
+                        {
+                            "occurrenceDate": "2022-12-07",
+                            "daysQuantity": 1
+                        },
+                        {
+                            "occurrenceDate": "2022-12-01",
+                            "daysQuantity": 1
+                        },
+                        {
+                            "occurrenceDate": "2022-11-30",
+                            "daysQuantity": 2
+                        },
+                        {
+                            "occurrenceDate": "2022-11-09",
+                            "daysQuantity": 2
+                        }
+                    ],
+                    "summary": {
+                        "count": 4
+                    }
+                },
+                "stolenDocuments": {
+                    "stolenDocumentsResponse": [
+                        {
+                            "occurrenceDate": "2022-07-16",
+                            "inclusionDate": "2022-07-21T09:38:09",
+                            "documentType": "CPF",
+                            "documentNumber": "22053787830",
+                            "issuingAuthority": "SSP",
+                            "detailedReason": "ROUBADO",
+                            "occurrenceState": "SP",
+                            "phoneNumber": {
+                                "regionCode": 55,
+                                "areaCode": 11,
+                                "phoneNumber": 974063008
+                            }
+                        }
+                    ],
+                    "summary": {
+                        "count": 1,
+                        "balance": 0
+                    }
+                }
+            }
+        }
+    ]
+}
