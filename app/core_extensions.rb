@@ -13,5 +13,6 @@ module CoreExtensions; end
 # require_relative 'core_extensions/string'
 
 # auto requiring extensions
-Dir[File.join(__dir__, 'core_extensions', '*.rb')]
-  .sort.each { |extension| require extension } # rubocop:disable Lint/RedundantDirGlobSort
+Dir[File.join(__dir__, 'core_extensions', '*.rb')].each do |extension|
+  require extension
+end

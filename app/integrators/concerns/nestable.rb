@@ -3,8 +3,6 @@
 module Nestable
   extend ActiveSupport::Concern
 
-  private
-
   def initialize_object_with_nested_attributes(parsed_response_body)
     klass_model.new(
       initialize_nested_attributes(parsed_response_body, klass_model.new)
@@ -16,7 +14,7 @@ module Nestable
   end
 
   def klass_name
-    self.class.name.gsub('Integrators', '')
+    self.class.name.gsub('Integrator', '')
   end
 
   def enable_nested_relations

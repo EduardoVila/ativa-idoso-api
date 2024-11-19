@@ -11,12 +11,12 @@ RSpec.describe Serasa::AuthenticationService do
       let(:new_authentication) do
         instance_double(Serasa::Authentication, access_token: 'new_token')
       end
-      let(:integrator) { instance_double(Integrators::Serasa::Authentication) }
+      let(:integrator) { instance_double(Serasa::AuthenticationIntegrator) }
 
       before do
         allow(Serasa::Authentication).to receive(:last)
           .and_return(authentication)
-        allow(Integrators::Serasa::Authentication).to receive(:new)
+        allow(Serasa::AuthenticationIntegrator).to receive(:new)
           .and_return(integrator)
         allow(integrator).to receive(:authenticate)
           .and_return(new_authentication)
@@ -45,11 +45,11 @@ RSpec.describe Serasa::AuthenticationService do
       let(:new_authentication) do
         instance_double(Serasa::Authentication)
       end
-      let(:integrator) { instance_double(Integrators::Serasa::Authentication) }
+      let(:integrator) { instance_double(Serasa::AuthenticationIntegrator) }
 
       before do
         allow(Serasa::Authentication).to receive(:last).and_return(nil)
-        allow(Integrators::Serasa::Authentication).to receive(:new)
+        allow(Serasa::AuthenticationIntegrator).to receive(:new)
           .and_return(integrator)
         allow(integrator).to receive(:authenticate)
           .and_return(new_authentication)

@@ -131,7 +131,7 @@ module CustomJsonParseable
     ]
   end
 
-  def get_parent_data_without_children(parent_hash, children)
+  def get_parent_data_without_children(parent_hash, _children)
     # This method returns a hash with the parent data without the children
     parent_hash&.select do |key, value|
       !value.is_a?(Hash) || !key.starts_with?("#{key}_")

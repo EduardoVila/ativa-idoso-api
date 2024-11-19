@@ -3,14 +3,13 @@
 require 'spec_helper'
 require 'webmock/rspec'
 require 'dotenv/load'
-require 'concerns/integrable'
-require_relative '../../../integrable'
-require_relative '../../../../lib/integrators/provenir/big_data_corp'
-# rubocop:disable Layout/LineLength
-require_relative '../../../../lib/errors/provenir/big_data_corp_post_response_error'
-# rubocop:enable Layout/LineLength
+require_relative '../integrable'
+require_relative '../../../app/integrators/provenir/big_data_corp_integrator'
+# rubocop: disable Layout/LineLength
+require_relative '../../../app/integrators/errors/provenir/big_data_corp_post_response_error'
+# rubocop: enable Layout/LineLength
 
-RSpec.describe Integrators::Provenir::BigDataCorp do
+RSpec.describe Provenir::BigDataCorpIntegrator do
   let(:url) { ENV.fetch('PROVENIR_BIG_DATA_CORP_URL') }
   let(:client_secret) { ENV.fetch('PROVENIR_CLIENT_SECRET') }
   let(:client_id) { ENV.fetch('PROVENIR_CLIENT_ID') }
@@ -30,7 +29,7 @@ RSpec.describe Integrators::Provenir::BigDataCorp do
       let(:json_file) { 'big_data_corp' }
       let(:response_body) do
         File.read(
-          File.join(__dir__, "../../../fixtures/provenir/#{json_file}.json")
+          File.join(__dir__, "../../fixtures/provenir/#{json_file}.json")
         )
       end
 

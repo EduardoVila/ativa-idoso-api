@@ -16,12 +16,10 @@ AllCops:
   - 'bin/**/*'
   - 'db/**/*'
   - 'todo/**/*'
-  - 'lib/concerns/**/*'
-    # TODO: to be removed after the migration to the new architecture
-  - 'lib/data_loaders/**/*'
-  - 'lib/integrators/boa_vista.rb'
-  - 'spec/lib/data_loaders/**/*'
-  - 'spec/lib/integrators/boa_vista_spec.rb'
+    # temporary: to be removed after the migration to the new architecture
+  - 'app/integrators/concerns/custom_parseable.rb'
+  - 'spec/integrators/boa_vista/acerta_essencial_integrator_spec.rb'
+  - 'app/integrators/boa_vista/acerta_essencial_integrator.rb'
 
 Style/Documentation:
   Description: 'Document classes and non-namespace modules.'

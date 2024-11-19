@@ -31,16 +31,6 @@ module ApplicationLoader
 
     require_all app_dir
   end
-
-  def self.load_lib
-    # Add the lib directory to the load path
-    $LOAD_PATH.unshift(File.expand_path('../lib', __dir__))
-
-    # Load all Ruby files in the lib directory
-    lib_dir = File.join(File.dirname(__FILE__), '../lib/**/*.rb')
-
-    require_all lib_dir
-  end
 end
 
 # Database module to set the database configuration

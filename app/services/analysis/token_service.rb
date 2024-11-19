@@ -8,7 +8,7 @@ module Analysis
       last_token = ::Analysis::Token.last
 
       if last_token.blank? || last_token.expired?
-        integrator = Integrators::Analysis::Token.new
+        integrator = Analysis::TokenIntegrator.new
         token = integrator.create_resource
 
         return token

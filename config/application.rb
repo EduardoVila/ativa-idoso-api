@@ -9,7 +9,6 @@ ApplicationLoader.load_gems
 
 # Load the application and lib directories
 ApplicationLoader.load_app
-ApplicationLoader.load_lib
 
 require_relative 'router'
 

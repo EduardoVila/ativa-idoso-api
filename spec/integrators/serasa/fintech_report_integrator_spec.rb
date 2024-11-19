@@ -3,13 +3,11 @@
 require 'spec_helper'
 require 'webmock/rspec'
 require 'dotenv/load'
-require 'concerns/integrable'
-require_relative '../../../integrable'
-require_relative '../../../../lib/integrators/serasa/fintech_report'
-require_relative '../../../../lib/errors/serasa/response_error'
-require_relative '../../../../lib/errors/serasa/not_found_error'
+require_relative '../../../app/integrators/serasa/fintech_report_integrator'
+require_relative '../../../app/integrators/errors/serasa/response_error'
+require_relative '../../../app/integrators/errors/serasa/not_found_error'
 
-RSpec.describe Integrators::Serasa::FintechReport do
+RSpec.describe Serasa::FintechReportIntegrator do
   let(:url) { ENV.fetch('SERASA_FINTECH_REPORT_URL') }
   let(:token) { 'fake_token' }
   let(:headers) do
@@ -36,7 +34,7 @@ RSpec.describe Integrators::Serasa::FintechReport do
       let(:json_file) { 'fintech_response' }
       let(:response_body) do
         File.read(
-          File.join(__dir__, "../../../fixtures/serasa/#{json_file}.json")
+          File.join(__dir__, "../../fixtures/serasa/#{json_file}.json")
         )
       end
 
@@ -60,7 +58,7 @@ RSpec.describe Integrators::Serasa::FintechReport do
       let(:json_file) { 'not_found_response' }
       let(:response_body) do
         File.read(
-          File.join(__dir__, "../../../fixtures/serasa/#{json_file}.json")
+          File.join(__dir__, "../../fixtures/serasa/#{json_file}.json")
         )
       end
 
