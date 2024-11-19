@@ -4,7 +4,7 @@
 #
 # Table name: boa_vista_decisions
 #
-#  id                            :bigint           not null, primary key
+#  id                            :uuid             not null, primary key
 #  register_size                 :string
 #  register_type                 :string
 #  register                      :string
@@ -13,7 +13,7 @@
 #  score                         :string
 #  approves                      :string
 #  text                          :string
-#  boa_vista_acerta_essencial_id :bigint
+#  boa_vista_acerta_essencial_id :uuid             not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
 #

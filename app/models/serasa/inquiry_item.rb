@@ -4,13 +4,13 @@
 #
 # Table name: serasa_inquiry_items
 #
-#  id                  :bigint           not null, primary key
+#  id                  :uuid             not null, primary key
 #  occurrence_date     :date
 #  days_quantity       :integer
-#  serasa_inquiry_id   :bigint           not null
+#  segment_description :string
+#  serasa_inquiry_id   :uuid             not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
-#  segment_description :string
 #
 module Serasa
   class InquiryItem < ApplicationRecord

@@ -4,7 +4,7 @@
 #
 # Table name: provenir_collections
 #
-#  id                                    :bigint           not null, primary key
+#  id                                    :uuid             not null, primary key
 #  is_currently_on_collection            :boolean
 #  last30_days_collection_occurrences    :integer
 #  last90_days_collection_occurrences    :integer
@@ -21,7 +21,7 @@
 #  last_collection_date                  :datetime
 #  collection_occurrences                :integer
 #  collection_origins                    :integer
-#  provenir_big_data_corp_id             :bigint           not null
+#  provenir_big_data_corp_id             :uuid             not null
 #  created_at                            :datetime         not null
 #  updated_at                            :datetime         not null
 #

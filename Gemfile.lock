@@ -60,6 +60,7 @@ GEM
     crack (1.0.0)
       bigdecimal
       rexml
+    crass (1.0.6)
     damerau-levenshtein (1.3.3)
     database_cleaner-active_record (2.2.0)
       activerecord (>= 5.a)
@@ -93,6 +94,7 @@ GEM
     ffi (1.17.0-x86_64-darwin)
     ffi (1.17.0-x86_64-linux-gnu)
     ffi (1.17.0-x86_64-linux-musl)
+    fiddle (1.1.4)
     foreman (0.88.1)
     formatador (1.1.0)
     globalid (1.2.1)
@@ -328,6 +330,7 @@ DEPENDENCIES
   faraday
   faraday-net_http
   faraday-retry
+  fiddle
   foreman
   guard
   guard-rspec

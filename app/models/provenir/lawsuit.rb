@@ -4,7 +4,7 @@
 #
 # Table name: provenir_lawsuits
 #
-#  id                                  :bigint           not null, primary key
+#  id                                  :uuid             not null, primary key
 #  lawsuit_number                      :string
 #  lawsuit_type                        :string
 #  main_subject                        :text
@@ -37,7 +37,7 @@
 #  law_suit_age                        :integer
 #  average_number_of_updates_per_month :float
 #  reason_for_concealed_data           :string
-#  provenir_process_id                 :bigint           not null
+#  provenir_process_id                 :uuid             not null
 #  created_at                          :datetime         not null
 #  updated_at                          :datetime         not null
 #

@@ -4,23 +4,22 @@
 #
 # Table name: boa_vista_historic_informed_cheques
 #
-#  id                                                              :bigint           not null, primary key
-#  register_size                                                   :string
-#  register_type                                                   :string
-#  register                                                        :string
-#  document_type                                                   :string
-#  document_number                                                 :string
-#  bank                                                            :string
-#  agency                                                          :string
-#  current_account                                                 :string
-#  cheque                                                          :string
-#  consultation_date                                               :string
-#  consultation_hour                                               :string
-#  network                                                         :string
-#  boa_vista_acerta_essencial_id                                   :bigint
-#  index_boa_vista_historic_informed_cheques_on_boa_vista_acerta_e :bigint
-#  created_at                                                      :datetime         not null
-#  updated_at                                                      :datetime         not null
+#  id                            :uuid             not null, primary key
+#  register_size                 :string
+#  register_type                 :string
+#  register                      :string
+#  document_type                 :string
+#  document_number               :string
+#  bank                          :string
+#  agency                        :string
+#  current_account               :string
+#  cheque                        :string
+#  consultation_date             :string
+#  consultation_hour             :string
+#  network                       :string
+#  boa_vista_acerta_essencial_id :uuid             not null
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
 #
 module BoaVista
   class HistoricInformedCheque < ApplicationRecord

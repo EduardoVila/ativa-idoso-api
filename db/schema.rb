@@ -619,6 +619,85 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_06_183643) do
     t.index ["boa_vista_acerta_essencial_id"], name: "index_zip_code_confirmations_on_acerta_essencial_id"
   end
 
+  create_table "idwall_addresses", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "main"
+    t.string "city"
+    t.string "state"
+    t.string "number"
+    t.string "zip_code"
+    t.string "street"
+    t.string "neighborhood"
+    t.string "people_at_address"
+    t.string "kind"
+    t.uuid "idwall_report_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["idwall_report_id"], name: "index_idwall_addresses_on_idwall_report_id"
+  end
+
+  create_table "idwall_cpfs", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "gender"
+    t.string "number"
+    t.string "birth_date"
+    t.string "source"
+    t.string "name"
+    t.string "income"
+    t.string "income_tax_situation"
+    t.string "cpf_cadastral_situation"
+    t.string "cpf_subscription_date"
+    t.string "cpf_verifying_digit"
+    t.string "year_of_death"
+    t.string "social_name"
+    t.uuid "idwall_report_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["idwall_report_id"], name: "index_idwall_cpfs_on_idwall_report_id"
+  end
+
+  create_table "idwall_related_people", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "cpf"
+    t.string "name"
+    t.string "kind"
+    t.uuid "idwall_report_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["idwall_report_id"], name: "index_idwall_related_people_on_idwall_report_id"
+  end
+
+  create_table "idwall_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "number", null: false
+    t.integer "status", default: 0
+    t.string "raw_data"
+    t.uuid "analysis_item_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["analysis_item_id"], name: "index_idwall_reports_on_analysis_item_id"
+  end
+
+  create_table "idwall_trial_parts", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "cnpj"
+    t.string "cpf"
+    t.string "birth_date"
+    t.string "name"
+    t.string "rg"
+    t.string "gender"
+    t.string "kind"
+    t.string "title"
+    t.uuid "idwall_trial_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["idwall_trial_id"], name: "index_idwall_trial_parts_on_idwall_trial_id"
+  end
+
+  create_table "idwall_trials", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "subject"
+    t.string "kind"
+    t.uuid "idwall_report_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["idwall_report_id"], name: "index_idwall_trials_on_idwall_report_id"
+  end
+
   create_table "lawsuit_banned_keywords", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "keyword"
     t.integer "litigation_category", default: 0
@@ -1357,6 +1436,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_06_183643) do
   add_foreign_key "boa_vista_summary_of_returns_reported_by_users", "boa_vista_acerta_essencials"
   add_foreign_key "boa_vista_summary_previous_query_cheques", "boa_vista_acerta_essencials"
   add_foreign_key "boa_vista_zip_code_confirmations", "boa_vista_acerta_essencials"
+  add_foreign_key "idwall_addresses", "idwall_reports"
+  add_foreign_key "idwall_cpfs", "idwall_reports"
+  add_foreign_key "idwall_related_people", "idwall_reports"
+  add_foreign_key "idwall_reports", "analysis_items"
+  add_foreign_key "idwall_trial_parts", "idwall_trials"
+  add_foreign_key "idwall_trials", "idwall_reports"
   add_foreign_key "provenir_addresses", "provenir_extended_addresses"
   add_foreign_key "provenir_aliases", "provenir_basic_data"
   add_foreign_key "provenir_alternative_id_numbers", "provenir_basic_data"

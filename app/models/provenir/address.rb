@@ -4,7 +4,7 @@
 #
 # Table name: provenir_addresses
 #
-#  id                                    :bigint           not null, primary key
+#  id                                    :uuid             not null, primary key
 #  typology                              :string
 #  title                                 :string
 #  address_main                          :string
@@ -49,20 +49,20 @@
 #  entity_last_passage_date              :datetime
 #  global_first_passage_date             :datetime
 #  global_last_passage_date              :datetime
-#  creation_date                         :datetime
-#  last_update_date                      :datetime
-#  has_opt_in                            :boolean
-#  latitude                              :float
-#  longitude                             :float
-#  provenir_extended_address_id          :bigint           not null
-#  created_at                            :datetime         not null
-#  updated_at                            :datetime         not null
-#  capture_date                          :integer          default(0)
 #  last3_months_passages                 :integer          default(0)
 #  last6_months_passages                 :integer          default(0)
 #  last12_months_passages                :integer          default(0)
 #  last16_months_passages                :integer          default(0)
 #  match_rate                            :integer          default(0)
+#  creation_date                         :datetime
+#  capture_date                          :datetime
+#  last_update_date                      :datetime
+#  has_opt_in                            :boolean
+#  latitude                              :float
+#  longitude                             :float
+#  provenir_extended_address_id          :uuid             not null
+#  created_at                            :datetime         not null
+#  updated_at                            :datetime         not null
 #
 module Provenir
   class Address < ApplicationRecord

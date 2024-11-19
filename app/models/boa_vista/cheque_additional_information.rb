@@ -4,7 +4,7 @@
 #
 # Table name: boa_vista_cheque_additional_informations
 #
-#  id                            :bigint           not null, primary key
+#  id                            :uuid             not null, primary key
 #  register_size                 :string
 #  register_type                 :string
 #  register                      :string
@@ -12,9 +12,9 @@
 #  document_number               :string
 #  text                          :string
 #  type_of_register              :string
+#  boa_vista_acerta_essencial_id :uuid             not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
-#  boa_vista_acerta_essencial_id :bigint
 #
 module BoaVista
   class ChequeAdditionalInformation < ApplicationRecord

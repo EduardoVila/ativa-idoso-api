@@ -1,5 +1,14 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: serasa_refins
+#
+#  id                      :uuid             not null, primary key
+#  serasa_negative_data_id :uuid             not null
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#
 require 'spec_helper'
 
 RSpec.describe Serasa::Refin, type: :model do
