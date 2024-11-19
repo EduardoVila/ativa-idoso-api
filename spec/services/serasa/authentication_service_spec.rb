@@ -43,7 +43,7 @@ RSpec.describe Serasa::AuthenticationService do
     context 'when there is no last authentication' do
       let(:token) { 'new_token' }
       let(:new_authentication) do
-        instance_double(Serasa::Authentication)
+        instance_double(Serasa::Authentication, access_token: 'new_token')
       end
       let(:integrator) { instance_double(Integrators::Serasa::Authentication) }
 
@@ -57,6 +57,7 @@ RSpec.describe Serasa::AuthenticationService do
       end
 
       it 'generates a new authentication on Serasa API' do
+        byebug
         expect(subject.call).to eq('new_token')
       end
     end
