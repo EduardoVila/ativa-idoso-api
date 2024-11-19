@@ -9,7 +9,7 @@ RSpec.describe Serasa::AuthenticationService do
     context 'when last authentication is expired' do
       let(:authentication) { create :serasa_authentication, :expired }
       let(:new_authentication) do
-        instance_double(Serasa::Authentication, access_token: 'new_token')
+        create :serasa_authentication, access_token: 'foobar'
       end
       let(:integrator) { instance_double(Serasa::AuthenticationIntegrator) }
 
@@ -23,7 +23,7 @@ RSpec.describe Serasa::AuthenticationService do
       end
 
       it 'generates a new authentication on Serasa API' do
-        expect(subject.call).to eq('new_token')
+        expect(subject.call).to eq('foobar')
       end
     end
 
@@ -41,9 +41,9 @@ RSpec.describe Serasa::AuthenticationService do
     end
 
     context 'when there is no last authentication' do
-      let(:token) { 'new_token' }
+      let(:token) { 'foobar' }
       let(:new_authentication) do
-        instance_double(Serasa::Authentication)
+        create :serasa_authentication, access_token: token
       end
       let(:integrator) { instance_double(Serasa::AuthenticationIntegrator) }
 
@@ -53,13 +53,10 @@ RSpec.describe Serasa::AuthenticationService do
           .and_return(integrator)
         allow(integrator).to receive(:authenticate)
           .and_return(new_authentication)
-        allow(new_authentication).to receive_messages(
-          save: true, access_token: token
-        )
       end
 
       it 'generates a new authentication on Serasa API' do
-        expect(subject.call).to eq('new_token')
+        expect(subject.call).to eq('foobar')
       end
     end
   end
