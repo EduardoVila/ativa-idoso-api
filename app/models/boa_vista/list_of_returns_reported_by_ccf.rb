@@ -4,28 +4,27 @@
 #
 # Table name: boa_vista_list_of_returns_reported_by_ccfs
 #
-#  id                                                              :bigint           not null, primary key
-#  register_size                                                   :string
-#  register_type                                                   :string
-#  register                                                        :string
-#  document_type                                                   :string
-#  document_number                                                 :string
-#  name                                                            :string
-#  bank                                                            :string
-#  agency                                                          :string
-#  reason_12                                                       :string
-#  last_occurrence_12_date                                         :string
-#  reason_13                                                       :string
-#  last_occurrence_13_date                                         :string
-#  reason_14                                                       :string
-#  last_occurrence_14_date                                         :string
-#  reason_99                                                       :string
-#  last_occurrence_99_date                                         :string
-#  bank_name                                                       :string
-#  boa_vista_acerta_essencial_id                                   :bigint
-#  index_boa_vista_list_of_returns_reported_by_ccfs_on_boa_vista_a :bigint
-#  created_at                                                      :datetime         not null
-#  updated_at                                                      :datetime         not null
+#  id                            :uuid             not null, primary key
+#  register_size                 :string
+#  register_type                 :string
+#  register                      :string
+#  document_type                 :string
+#  document_number               :string
+#  name                          :string
+#  bank                          :string
+#  agency                        :string
+#  reason_12                     :string
+#  last_occurrence_12_date       :string
+#  reason_13                     :string
+#  last_occurrence_13_date       :string
+#  reason_14                     :string
+#  last_occurrence_14_date       :string
+#  reason_99                     :string
+#  last_occurrence_99_date       :string
+#  bank_name                     :string
+#  boa_vista_acerta_essencial_id :uuid             not null
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
 #
 module BoaVista
   class ListOfReturnsReportedByCcf < ApplicationRecord

@@ -5,8 +5,8 @@
 # Table name: boa_vista_cadastral_locations
 #
 #  id                     :uuid             not null, primary key
-#  cpf                    :string
-#  emails                 :string
+#  cpf                    :string           not null
+#  emails                 :string           is an Array
 #  boa_vista_cadastral_id :uuid             not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null

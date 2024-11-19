@@ -118,6 +118,22 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_06_183643) do
     t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_additional_information_on_acerta_essencial_id"
   end
 
+  create_table "boa_vista_addresses", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "street_type"
+    t.string "street"
+    t.string "number"
+    t.string "neighborhood"
+    t.string "city"
+    t.string "federal_unit"
+    t.string "zip_code"
+    t.string "complement"
+    t.string "address_type"
+    t.uuid "boa_vista_cadastral_location_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_cadastral_location_id"], name: "index_boa_vista_addresses_on_boa_vista_cadastral_location_id"
+  end
+
   create_table "boa_vista_bank_branch_phones_addresses", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "register_size"
     t.string "register_type"
@@ -140,6 +156,46 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_06_183643) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["boa_vista_acerta_essencial_id"], name: "idx_on_boa_vista_acerta_essencial_id_79c1bf7475"
+  end
+
+  create_table "boa_vista_basic_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "cpf"
+    t.string "name"
+    t.string "mother_name"
+    t.string "birth_date"
+    t.string "exposed_person"
+    t.string "cpf_situation"
+    t.uuid "boa_vista_cadastral_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_cadastral_id"], name: "index_boa_vista_basic_registrations_on_boa_vista_cadastral_id"
+  end
+
+  create_table "boa_vista_cadastral_locations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "cpf", null: false
+    t.string "emails", array: true
+    t.uuid "boa_vista_cadastral_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_cadastral_id"], name: "index_boa_vista_cadastral_locations_on_boa_vista_cadastral_id"
+  end
+
+  create_table "boa_vista_cadastral_qualifications", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "cpf", null: false
+    t.string "death"
+    t.uuid "boa_vista_cadastral_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_cadastral_id"], name: "idx_on_boa_vista_cadastral_id_353e336e1f"
+  end
+
+  create_table "boa_vista_cadastrals", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "raw_data"
+    t.string "consumer_type", null: false
+    t.uuid "consumer_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["consumer_type", "consumer_id"], name: "index_boa_vista_cadastrals_on_consumer"
   end
 
   create_table "boa_vista_cheque_additional_informations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -399,6 +455,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_06_183643) do
     t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_phone_confirmations_on_acerta_essencial_id"
   end
 
+  create_table "boa_vista_phones", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "ddd"
+    t.string "number"
+    t.string "phone_type"
+    t.uuid "boa_vista_cadastral_location_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_cadastral_location_id"], name: "index_boa_vista_phones_on_boa_vista_cadastral_location_id"
+  end
+
   create_table "boa_vista_previous90_days_consultations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "register_size"
     t.string "register_type"
@@ -499,6 +565,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_06_183643) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["boa_vista_acerta_essencial_id"], name: "index_record_messages_on_acerta_essencial_id"
+  end
+
+  create_table "boa_vista_related_people", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "degree_of_kinship"
+    t.string "cpf"
+    t.uuid "boa_vista_cadastral_qualification_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["boa_vista_cadastral_qualification_id"], name: "idx_on_boa_vista_cadastral_qualification_id_f3e4c504f2"
   end
 
   create_table "boa_vista_returns_reported_by_users", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -1331,7 +1407,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_06_183643) do
   add_foreign_key "analysis_predictions", "analysis_items"
   add_foreign_key "analysis_reports", "api_clients"
   add_foreign_key "boa_vista_additional_informations", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_addresses", "boa_vista_cadastral_locations"
   add_foreign_key "boa_vista_bank_branch_phones_addresses", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_basic_registrations", "boa_vista_cadastrals"
+  add_foreign_key "boa_vista_cadastral_locations", "boa_vista_cadastrals"
+  add_foreign_key "boa_vista_cadastral_qualifications", "boa_vista_cadastrals"
   add_foreign_key "boa_vista_cheque_additional_informations", "boa_vista_acerta_essencials"
   add_foreign_key "boa_vista_cheque_stoppeds", "boa_vista_acerta_essencials"
   add_foreign_key "boa_vista_cheques_stopped_for_reason21s", "boa_vista_acerta_essencials"
@@ -1345,12 +1425,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_06_183643) do
   add_foreign_key "boa_vista_list_of_returns_reported_by_ccfs", "boa_vista_acerta_essencials"
   add_foreign_key "boa_vista_locations", "boa_vista_acerta_essencials"
   add_foreign_key "boa_vista_phone_confirmations", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_phones", "boa_vista_cadastral_locations"
   add_foreign_key "boa_vista_previous90_days_consultations", "boa_vista_acerta_essencials"
   add_foreign_key "boa_vista_previous_cheque_consultations", "boa_vista_acerta_essencials"
   add_foreign_key "boa_vista_previous_queries", "boa_vista_acerta_essencials"
   add_foreign_key "boa_vista_protested_title_summaries", "boa_vista_acerta_essencials"
   add_foreign_key "boa_vista_protested_titles", "boa_vista_acerta_essencials"
   add_foreign_key "boa_vista_record_messages", "boa_vista_acerta_essencials"
+  add_foreign_key "boa_vista_related_people", "boa_vista_cadastral_qualifications"
   add_foreign_key "boa_vista_returns_reported_by_users", "boa_vista_acerta_essencials"
   add_foreign_key "boa_vista_score_rating_several_models", "boa_vista_acerta_essencials"
   add_foreign_key "boa_vista_summary_devolution_reported_by_ccfs", "boa_vista_acerta_essencials"

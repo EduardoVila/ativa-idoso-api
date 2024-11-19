@@ -5,7 +5,7 @@
 # Table name: boa_vista_cadastral_qualifications
 #
 #  id                     :uuid             not null, primary key
-#  cpf                    :string
+#  cpf                    :string           not null
 #  death                  :string
 #  boa_vista_cadastral_id :uuid             not null
 #  created_at             :datetime         not null

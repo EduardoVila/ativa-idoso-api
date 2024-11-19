@@ -1,5 +1,17 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: serasa_inquiry_items
+#
+#  id                  :uuid             not null, primary key
+#  occurrence_date     :date
+#  days_quantity       :integer
+#  segment_description :string
+#  serasa_inquiry_id   :uuid             not null
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#
 FactoryBot.define do
   factory :serasa_inquiry_item, class: 'Serasa::InquiryItem' do
     occurrence_date { Time.zone.today }

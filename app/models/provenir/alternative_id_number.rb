@@ -4,12 +4,12 @@
 #
 # Table name: provenir_alternative_id_numbers
 #
-#  id                      :bigint           not null, primary key
-#  provenir_basic_datum_id :bigint           not null
-#  created_at              :datetime         not null
-#  updated_at              :datetime         not null
+#  id                      :uuid             not null, primary key
 #  document_type           :string
 #  document_number         :string
+#  provenir_basic_datum_id :uuid             not null
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
 #
 module Provenir
   class AlternativeIdNumber < ApplicationRecord

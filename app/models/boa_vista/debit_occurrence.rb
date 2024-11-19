@@ -4,21 +4,20 @@
 #
 # Table name: boa_vista_debit_occurrences
 #
-#  id                                                              :bigint           not null, primary key
-#  register_size                                                   :string
-#  register_type                                                   :string
-#  register                                                        :string
-#  total_debtor                                                    :string
-#  total_guarantor                                                 :string
-#  accumulated_value                                               :string
-#  first_debit_date                                                :string
-#  first_debit_value                                               :string
-#  biggest_debit_date                                              :string
-#  biggest_debit_value                                             :string
-#  boa_vista_acerta_essencial_id                                   :bigint
-#  index_boa_vista_debit_occurrences_on_boa_vista_acerta_essencial :bigint
-#  created_at                                                      :datetime         not null
-#  updated_at                                                      :datetime         not null
+#  id                            :uuid             not null, primary key
+#  register_size                 :string
+#  register_type                 :string
+#  register                      :string
+#  total_debtor                  :string
+#  total_guarantor               :string
+#  accumulated_value             :string
+#  first_debit_date              :string
+#  first_debit_value             :string
+#  biggest_debit_date            :string
+#  biggest_debit_value           :string
+#  boa_vista_acerta_essencial_id :uuid             not null
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
 #
 module BoaVista
   class DebitOccurrence < ApplicationRecord
