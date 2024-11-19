@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative '../../application_controller'
-require_relative '../../../../app/controllers/api/v1/analysis_reports_controller'
 
 module API
   module V1
@@ -10,12 +9,13 @@ module API
         authenticate_access_token_from request
       end
 
-      post '/api/v1/analysis-reports' do
+      post('/api/v1/analysis-reports') do
+        current_client = Tokenable.current_client(request)
+
         analysis_report = ::Analysis::Report.new(params[:analysis_report])
+        analysis_report.api_client_id = current_client&.id
 
-        analysis_report.api_client_id = Tokenable.current_client(request).id
-
-        if analysis_report.save && analysis_report.persisted?
+        if analysis_report.save && analysis_report.persisted? # TODO: Refactor to add save_and_run method to run job
           status 201
           analysis_report.to_json # TODO: Refactor to use a serializer
         else
@@ -23,9 +23,11 @@ module API
         end
       end
 
-      get '/api/v1/analysis-reports/:uuid' do
+      get('/api/v1/analysis-reports/:uuid') do
+        current_client = Tokenable.current_client(request)
+
         report = ::Analysis::Report.includes(:api_client).find_by(
-          id: params[:uuid], api_client_id: Tokenable.current_client(request).id
+          id: params[:uuid], api_client_id: current_client.id
         )
 
         if report.present?
