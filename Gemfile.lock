@@ -15,6 +15,7 @@ GEM
       timeout (>= 0.4.0)
     activesupport (7.1.3.4)
       base64
+      benchmark (>= 0.3)
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
       connection_pool (>= 2.2.5)
@@ -31,6 +32,7 @@ GEM
     ast (2.4.2)
     base64 (0.2.0)
     bcrypt (3.1.20)
+    benchmark (0.3.0)
     bigdecimal (3.1.8)
     bullet (7.2.0)
       activesupport (>= 3.0.0)
@@ -60,6 +62,7 @@ GEM
     crack (1.0.0)
       bigdecimal
       rexml
+    crass (1.0.6)
     damerau-levenshtein (1.3.3)
     database_cleaner-active_record (2.2.0)
       activerecord (>= 5.a)
@@ -88,11 +91,13 @@ GEM
     ffi (1.17.0-arm-linux-gnu)
     ffi (1.17.0-arm-linux-musl)
     ffi (1.17.0-arm64-darwin)
+    ffi (1.17.0-x64-mingw-ucrt)
     ffi (1.17.0-x86-linux-gnu)
     ffi (1.17.0-x86-linux-musl)
     ffi (1.17.0-x86_64-darwin)
     ffi (1.17.0-x86_64-linux-gnu)
     ffi (1.17.0-x86_64-linux-musl)
+    fiddle (1.1.4)
     foreman (0.88.1)
     formatador (1.1.0)
     globalid (1.2.1)
@@ -132,7 +137,7 @@ GEM
       ruby2_keywords (~> 0.0.1)
     mutex_m (0.2.0)
     nenv (0.3.0)
-    net-http (0.4.1)
+    net-http (0.5.0)
       uri
     nio4r (2.7.4)
     nokogiri (1.16.7-aarch64-linux)
@@ -140,6 +145,8 @@ GEM
     nokogiri (1.16.7-arm-linux)
       racc (~> 1.4)
     nokogiri (1.16.7-arm64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.16.7-x64-mingw-ucrt)
       racc (~> 1.4)
     nokogiri (1.16.7-x86-linux)
       racc (~> 1.4)
@@ -275,9 +282,11 @@ GEM
       sinatra-contrib
     thor (1.3.2)
     tilt (2.4.0)
-    timeout (0.4.1)
+    timeout (0.4.2)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
+    tzinfo-data (1.2024.2)
+      tzinfo (>= 1.0.0)
     unicode-display_width (2.6.0)
     unicode_utils (1.4.0)
     uniform_notifier (1.16.0)
@@ -297,6 +306,7 @@ PLATFORMS
   arm-linux-gnu
   arm-linux-musl
   arm64-darwin
+  x64-mingw-ucrt
   x86-linux
   x86-linux-gnu
   x86-linux-musl
@@ -328,6 +338,7 @@ DEPENDENCIES
   faraday
   faraday-net_http
   faraday-retry
+  fiddle
   foreman
   guard
   guard-rspec
