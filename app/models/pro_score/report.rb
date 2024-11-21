@@ -76,7 +76,10 @@ module ProScore
     validates :raw_data, presence: true
 
     def presumed_income_value
-      presumed_income&.valor_da_renda_presumida&.delete('.')&.tr(',', '.').to_f # rubocop:disable Style/SafeNavigationChainLength
+      return 0.0 unless presumed_income&.valor_da_renda_presumida
+
+      income_value = presumed_income.valor_da_renda_presumida
+      income_value.delete('.').tr(',', '.').to_f
     end
 
     def trials_approved?

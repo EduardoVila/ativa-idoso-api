@@ -6,7 +6,6 @@ require_relative '../application_integrator'
 
 module Analysis
   class PredictionIntegrator < ApplicationIntegrator
-
     def create_resource(analysis_item)
       response = perform_post_request(analysis_item)
 
@@ -20,6 +19,7 @@ module Analysis
       prediction.save && prediction
     rescue Faraday::ConnectionFailed => e
       ErrorLogger.log e
+
       raise ::Errors::Analysis::PredictionPostResponseError
     end
 
@@ -34,6 +34,7 @@ module Analysis
         parsed_response_body
       )
       prediction.item = analysis_item
+
       prediction
     end
 

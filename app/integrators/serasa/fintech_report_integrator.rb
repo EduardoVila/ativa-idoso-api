@@ -29,6 +29,7 @@ module Serasa
       serasa_fintech_report
     rescue Faraday::ConnectionFailed => e
       ErrorLogger.log e
+
       raise ::Errors::Serasa::ResponseError
     end
 

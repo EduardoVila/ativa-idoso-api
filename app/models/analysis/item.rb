@@ -86,6 +86,10 @@ module Analysis
                           foreign_key: 'clone_of_id',
                           optional: true
 
+    has_one :boa_vista_cadastral, class_name: 'BoaVista::Cadastral',
+                                  dependent: :destroy,
+                                  as: :consumer
+
     has_one :boa_vista_acerta_essencial,
             class_name: 'BoaVista::AcertaEssencial',
             inverse_of: :analysis_item,
@@ -103,6 +107,10 @@ module Analysis
     has_one :serasa_fintech_report, class_name: 'Serasa::FintechReport',
                                     inverse_of: :owner,
                                     dependent: :destroy
+
+    has_one :idwall_report, class_name: 'Idwall::Report',
+                            inverse_of: :analysis_item,
+                            dependent: :destroy
 
     has_many :clones, class_name: 'Analysis::Item',
                       inverse_of: :clone_of,
