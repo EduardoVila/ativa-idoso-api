@@ -100,6 +100,10 @@ module Analysis
             dependent: :destroy,
             as: :consumer
 
+    has_one :pro_score_report, class_name: 'ProScore::Report',
+                               inverse_of: :analysis_item,
+                               dependent: :destroy
+
     has_one :provenir_big_data_corp, class_name: 'Provenir::BigDataCorp',
                                      inverse_of: :analysis_item,
                                      dependent: :destroy

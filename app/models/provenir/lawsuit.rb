@@ -41,13 +41,6 @@
 #  created_at                          :datetime         not null
 #  updated_at                          :datetime         not null
 #
-
-require_relative '../concerns/provenir/banned_keywords_analyzable'
-require_relative '../concerns/provenir/defendant_analyzable'
-require_relative '../concerns/provenir/disapproval_analyzable'
-require_relative '../concerns/provenir/lawsuit_exceptionable'
-require_relative '../concerns/name_comparable'
-
 module Provenir
   class Lawsuit < ApplicationRecord
     include DisapprovalAnalyzable

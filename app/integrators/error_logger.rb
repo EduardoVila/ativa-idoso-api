@@ -9,7 +9,7 @@
 # begin
 #   something_critial!
 # rescue => err
-#   ErrorLogger.log err # will send Sentry log file
+#   ErrorLogger.log err # will log to Sentry log file
 # end
 # ```
 #
