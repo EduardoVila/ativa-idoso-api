@@ -20,6 +20,10 @@ AllCops:
   - 'app/integrators/concerns/custom_parseable.rb'
   - 'spec/integrators/boa_vista/acerta_essencial_integrator_spec.rb'
   - 'app/integrators/boa_vista/acerta_essencial_integrator.rb'
+  - 'app/integrators/idwall/base_integrator.rb'
+  - 'app/integrators/idwall/report_integrator.rb'
+  - 'spec/integrators/idwall/base_integrator_spec.rb'
+  - 'spec/integrators/idwall/report_integrator_spec.rb'
 
 Style/Documentation:
   Description: 'Document classes and non-namespace modules.'
