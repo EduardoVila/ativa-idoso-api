@@ -15,7 +15,6 @@
 #
 module ErrorLogger
   extend self # to allow using private methods! (module_function will not allow it)
-
   def log(err)
     # async remote requests
     remote_log(err) if Sinatra::Application.settings.production?
@@ -33,7 +32,6 @@ module ErrorLogger
   def sinatra_log_err(err)
     logger ||= Logger.new($stdout)
     backtrace = err.backtrace
-
     logger.error err.message
     logger.error backtrace.join("\n") if backtrace
   end

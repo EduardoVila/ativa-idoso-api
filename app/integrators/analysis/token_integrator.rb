@@ -9,7 +9,6 @@ require_relative '../error_logger'
 
 module Analysis
   class TokenIntegrator < ApplicationIntegrator
-
     def create_resource
       response = perform_post_request
 
@@ -23,6 +22,7 @@ module Analysis
       token.save && token
     rescue Faraday::ConnectionFailed => e
       ErrorLogger.log e
+
       raise ::Errors::Analysis::TokenPostResponseError
     end
 
