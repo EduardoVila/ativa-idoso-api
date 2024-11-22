@@ -2,7 +2,6 @@
 
 module ProScore
   class BaseSearchIntegrator < ApplicationIntegrator
-
     def load_data(analysis_item)
       response = perform_post_request(analysis_item)
       body = parser(response.body)

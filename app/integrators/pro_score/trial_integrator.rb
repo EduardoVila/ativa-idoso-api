@@ -6,7 +6,6 @@ Dotenv.load
 
 module ProScore
   class TrialIntegrator < ApplicationIntegrator
-
     def load_data(analysis_item)
       response = perform_get_request(analysis_item)
       body = parser(response.body)
