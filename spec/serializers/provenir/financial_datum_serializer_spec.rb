@@ -1,0 +1,29 @@
+# frozen_string_literal: true
+
+require 'spec_helper'
+
+RSpec.describe Provenir::FinancialDatumSerializer do
+  subject(:serialized) { serializer.as_json(root: false) }
+
+  let(:financial_datum) { build :provenir_financial_datum }
+  let(:serializer) { described_class.new financial_datum }
+
+  it { is_expected.to serialize_attribute(:id).from(financial_datum) }
+  it { is_expected.to serialize_attribute(:total_assets).from(financial_datum) }
+
+  describe 'custom method' do
+    describe '#income_estimate' do
+      subject { serialized[:income_estimate] }
+
+      let!(:income_estimate) do
+        create :provenir_income_estimate, financial_datum:
+      end
+
+      let(:serialized_income_estimate) { income_estimate.serialize_record }
+
+      it 'returns the resource serialized' do
+        expect(subject).to eq serialized_income_estimate
+      end
+    end
+  end
+end

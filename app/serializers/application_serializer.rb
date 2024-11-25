@@ -13,4 +13,8 @@ class ApplicationSerializer < ActiveModel::Serializer
 
     array.map { |hash| hash.as_json.symbolize_keys }
   end
+
+  def serialize_record(record)
+    record&.serialize_record || {}
+  end
 end
