@@ -4,7 +4,7 @@
 #
 # Table name: boa_vista_current_account_historics
 #
-#  id                            :uuid             not null, primary key
+#  id                            :bigint           not null, primary key
 #  register_size                 :string
 #  register_type                 :string
 #  register                      :string
@@ -15,7 +15,7 @@
 #  document_number               :string
 #  consultation_date             :string
 #  consultation_hour             :string
-#  boa_vista_acerta_essencial_id :uuid             not null
+#  boa_vista_acerta_essencial_id :bigint           not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
 #

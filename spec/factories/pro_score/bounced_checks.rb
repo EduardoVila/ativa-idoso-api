@@ -4,7 +4,7 @@
 #
 # Table name: pro_score_bounced_checks
 #
-#  id                        :uuid             not null, primary key
+#  id                        :bigint           not null, primary key
 #  numero_plugin             :string
 #  codigo_do_banco           :string
 #  nome_do_banco             :string
@@ -12,7 +12,7 @@
 #  quantidade_de_ocorrencias :string
 #  motivo_da_ocorrencia      :string
 #  data_da_ultima_ocorrencia :string
-#  pro_score_report_id       :uuid             not null
+#  pro_score_report_id       :bigint           not null
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
 #

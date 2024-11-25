@@ -4,7 +4,7 @@
 #
 # Table name: response_logs
 #
-#  id            :uuid             not null, primary key
+#  id            :bigint           not null, primary key
 #  table         :string           not null
 #  table_pointer :string
 #  path          :string           not null

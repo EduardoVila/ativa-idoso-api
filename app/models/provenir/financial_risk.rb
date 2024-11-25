@@ -4,7 +4,7 @@
 #
 # Table name: provenir_financial_risks
 #
-#  id                                    :uuid             not null, primary key
+#  id                                    :bigint           not null, primary key
 #  total_assets                          :string
 #  estimated_income_range                :string
 #  is_currently_employed                 :boolean
@@ -16,7 +16,7 @@
 #  is_currently_receiving_assistance     :boolean
 #  financial_risk_score                  :integer
 #  financial_risk_level                  :string
-#  provenir_big_data_corp_id             :uuid             not null
+#  provenir_big_data_corp_id             :bigint           not null
 #  created_at                            :datetime         not null
 #  updated_at                            :datetime         not null
 #

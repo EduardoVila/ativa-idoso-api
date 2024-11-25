@@ -4,7 +4,7 @@
 #
 # Table name: idwall_cpfs
 #
-#  id                      :uuid             not null, primary key
+#  id                      :bigint           not null, primary key
 #  gender                  :string
 #  number                  :string
 #  birth_date              :string
@@ -17,7 +17,7 @@
 #  cpf_verifying_digit     :string
 #  year_of_death           :string
 #  social_name             :string
-#  idwall_report_id        :uuid             not null
+#  idwall_report_id        :bigint           not null
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #

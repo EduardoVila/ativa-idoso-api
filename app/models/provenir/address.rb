@@ -4,7 +4,7 @@
 #
 # Table name: provenir_addresses
 #
-#  id                                    :uuid             not null, primary key
+#  id                                    :bigint           not null, primary key
 #  typology                              :string
 #  title                                 :string
 #  address_main                          :string
@@ -60,7 +60,7 @@
 #  has_opt_in                            :boolean
 #  latitude                              :float
 #  longitude                             :float
-#  provenir_extended_address_id          :uuid             not null
+#  provenir_extended_address_id          :bigint           not null
 #  created_at                            :datetime         not null
 #  updated_at                            :datetime         not null
 #

@@ -4,7 +4,7 @@
 #
 # Table name: pro_score_trials
 #
-#  id                       :uuid             not null, primary key
+#  id                       :bigint           not null, primary key
 #  numero_plugin            :string
 #  numero_do_processo_unico :string
 #  data_distribuicao        :datetime
@@ -21,7 +21,7 @@
 #  classe_processual_nome   :string
 #  orgao_julgador           :string
 #  juiz                     :string
-#  pro_score_report_id      :uuid             not null
+#  pro_score_report_id      :bigint           not null
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
 #

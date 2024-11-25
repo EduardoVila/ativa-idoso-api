@@ -4,7 +4,7 @@
 #
 # Table name: serasa_negative_items
 #
-#  id              :uuid             not null, primary key
+#  id              :bigint           not null, primary key
 #  occurrence_date :date
 #  legal_nature_id :string
 #  legal_nature    :string
@@ -15,7 +15,7 @@
 #  federal_unit    :string
 #  principal       :boolean
 #  owner_type      :string
-#  owner_id        :uuid
+#  owner_id        :bigint
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #

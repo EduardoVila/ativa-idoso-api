@@ -1,12 +1,12 @@
 class AddProvenirTables < ActiveRecord::Migration[7.1]
   def change
-    create_table :provenir_big_data_corps, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :provenir_big_data_corps do |t|
       t.string :raw_data
       t.references :analysis_item, type: :uuid, null: false, index: true, foreign_key: true
       t.timestamps
     end
 
-    create_table :provenir_basic_data, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :provenir_basic_data do |t|
       t.string :tax_id_number
       t.string :tax_id_country
       t.string :name
@@ -32,46 +32,46 @@ class AddProvenirTables < ActiveRecord::Migration[7.1]
       t.datetime :tax_id_status_registration_date
       t.datetime :creation_date
       t.datetime :last_update_date
-      t.references :provenir_big_data_corp, type: :uuid,  null: false, foreign_key: true, index: { name: :index_provenir_basic_datum_big_data_corp_id }
+      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: { name: :index_provenir_basic_datum_big_data_corp_id }
       t.timestamps
     end
 
-    create_table :provenir_alternative_id_numbers, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :provenir_alternative_id_numbers do |t|
       t.string :document_type
       t.string :document_number
-      t.references :provenir_basic_datum, type: :uuid, null: false, foreign_key: true, index: { name: :index_provenir_alternative_id_number_basic_datum_id }
+      t.references :provenir_basic_datum, null: false, foreign_key: true, index: { name: :index_provenir_alternative_id_number_basic_datum_id }
       t.timestamps
     end
 
-    create_table :provenir_extended_document_informations, id: :uuid, default: 'uuid_generate_v4()' do |t|
-      t.references :provenir_basic_datum, type: :uuid, null: false, foreign_key: true, index: { name: :index_provenir_extended_document_information_basic_datum_id }
+    create_table :provenir_extended_document_informations do |t|
+      t.references :provenir_basic_datum, null: false, foreign_key: true, index: { name: :index_provenir_extended_document_information_basic_datum_id }
       t.timestamps
     end
 
-    create_table :provenir_rgs, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :provenir_rgs do |t|
       t.string :number
       t.string :document_last4_digits
       t.datetime :creation_date
       t.datetime :last_update_date
-      t.references :provenir_extended_document_information, type: :uuid, null: false, foreign_key: true, index: { name: :index_big_data_rg_extended_document_information_id }
+      t.references :provenir_extended_document_information, null: false, foreign_key: true, index: { name: :index_big_data_rg_extended_document_information_id }
       t.timestamps
     end
 
-    create_table :provenir_sources, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :provenir_sources do |t|
       t.string :state
       t.string :ENADE
-      t.references :provenir_rg, type: :uuid, null: false, foreign_key: true, index: { name: :index_provenir_source_rg_id }
+      t.references :provenir_rg, null: false, foreign_key: true, index: { name: :index_provenir_source_rg_id }
       t.timestamps
     end
 
-    create_table :provenir_aliases, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :provenir_aliases do |t|
       t.string :common_name
       t.string :standardized_name
-      t.references :provenir_basic_datum, type: :uuid, null: false, foreign_key: true, index: { name: :index_provenir_alias_basic_datum_id }
+      t.references :provenir_basic_datum, null: false, foreign_key: true, index: { name: :index_provenir_alias_basic_datum_id }
       t.timestamps
     end
 
-    create_table :provenir_extended_addresses, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :provenir_extended_addresses do |t|
       t.integer :total_addresses
       t.integer :total_active_addresses
       t.integer :total_work_addresses
@@ -81,11 +81,11 @@ class AddProvenirTables < ActiveRecord::Migration[7.1]
       t.integer :total_bad_address_passages
       t.datetime :oldest_address_passage_date
       t.datetime :newest_address_passage_date
-      t.references :provenir_big_data_corp, type: :uuid, null: false, foreign_key: true, index: { name: :index_provenir_extended_address_big_data_corp_id }
+      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: { name: :index_provenir_extended_address_big_data_corp_id }
       t.timestamps
     end
 
-    create_table :provenir_addresses, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :provenir_addresses do |t|
       t.string :typology
       t.string :title
       t.string :address_main
@@ -141,11 +141,11 @@ class AddProvenirTables < ActiveRecord::Migration[7.1]
       t.boolean :has_opt_in
       t.float :latitude
       t.float :longitude
-      t.references :provenir_extended_address, type: :uuid, null: false, foreign_key: true, index: { name: :index_provenir_address_extended_address_id }
+      t.references :provenir_extended_address, null: false, foreign_key: true, index: { name: :index_provenir_address_extended_address_id }
       t.timestamps
     end
 
-    create_table :provenir_extended_phones, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :provenir_extended_phones do |t|
       t.integer :total_phones
       t.integer :total_active_phones
       t.integer :total_work_phones
@@ -160,11 +160,11 @@ class AddProvenirTables < ActiveRecord::Migration[7.1]
       t.integer :total_last18_months_passages
       t.datetime :oldest_phone_passage_date
       t.datetime :newest_phone_passage_date
-      t.references :provenir_big_data_corp, type: :uuid, null: false, foreign_key: true, index: { name: :index_provenir_extended_phone_big_data_corp_id }
+      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: { name: :index_provenir_extended_phone_big_data_corp_id }
       t.timestamps
     end
 
-    create_table :provenir_phones, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :provenir_phones do |t|
       t.string :number
       t.string :complement
       t.string :area_code
@@ -223,19 +223,19 @@ class AddProvenirTables < ActiveRecord::Migration[7.1]
       t.boolean :is_in_do_not_call_list
       t.boolean :has_opt_in, default: false
       t.string :current_carrier
-      t.references :provenir_extended_phone, type: :uuid, null: false, foreign_key: true, index: { name: :index_provenir_phone_extended_phone_id }
+      t.references :provenir_extended_phone, null: false, foreign_key: true, index: { name: :index_provenir_phone_extended_phone_id }
       t.timestamps
     end
 
-    create_table :provenir_financial_data, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :provenir_financial_data do |t|
       t.string :total_assets
       t.datetime :creation_date
       t.datetime :last_update_date
-      t.references :provenir_big_data_corp, type: :uuid, null: false, foreign_key: true, index: { name: :index_provenir_financial_datum_big_data_corp_id }
+      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: { name: :index_provenir_financial_datum_big_data_corp_id }
       t.timestamps
     end
 
-    create_table :provenir_tax_returns, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :provenir_tax_returns do |t|
       t.integer :year
       t.string :status
       t.string :bank
@@ -245,21 +245,21 @@ class AddProvenirTables < ActiveRecord::Migration[7.1]
       t.datetime :capture_date
       t.datetime :creation_date
       t.datetime :last_update_date
-      t.references :provenir_financial_datum, type: :uuid, null: false, foreign_key: true, index: { name: :index_provenir_tax_return_financial_datum_id }
+      t.references :provenir_financial_datum, null: false, foreign_key: true, index: { name: :index_provenir_tax_return_financial_datum_id }
       t.timestamps
     end
 
-    create_table :provenir_income_estimates, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :provenir_income_estimates do |t|
       t.string :mte
       t.string :company_ownership
       t.string :ibge
       t.string :bigdata
       t.string :bigdata_v2
-      t.references :provenir_financial_datum, type: :uuid, null: false, foreign_key: true, index: { name: :index_provenir_income_estimate_financial_datum_id }
+      t.references :provenir_financial_datum, null: false, foreign_key: true, index: { name: :index_provenir_income_estimate_financial_datum_id }
       t.timestamps
     end
 
-    create_table :provenir_financial_risks, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :provenir_financial_risks do |t|
       t.string :total_assets
       t.string :estimated_income_range
       t.boolean :is_currently_employed
@@ -271,19 +271,19 @@ class AddProvenirTables < ActiveRecord::Migration[7.1]
       t.boolean :is_currently_receiving_assistance
       t.integer :financial_risk_score
       t.string :financial_risk_level
-      t.references :provenir_big_data_corp, type: :uuid, null: false, foreign_key: true, index: { name: :index_provenir_financial_risk_big_data_corp_id }
+      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: { name: :index_provenir_financial_risk_big_data_corp_id }
       t.timestamps
     end
 
-    create_table :provenir_processes, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :provenir_processes do |t|
       t.integer :lawsuits_total
       t.integer :defendant_lawsuits_total
       t.integer :plaintiff_lawsuits_total
-      t.references :provenir_big_data_corp, type: :uuid, null: false, foreign_key: true, index: { name: :index_provenir_process_big_data_corp_id }
+      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: { name: :index_provenir_process_big_data_corp_id }
       t.timestamps
     end
 
-    create_table :provenir_lawsuits, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :provenir_lawsuits do |t|
       t.string :lawsuit_number
       t.string :lawsuit_type
       t.text :main_subject, limit: 1000
@@ -316,48 +316,48 @@ class AddProvenirTables < ActiveRecord::Migration[7.1]
       t.integer :law_suit_age
       t.float :average_number_of_updates_per_month
       t.string :reason_for_concealed_data
-      t.references :provenir_process, type: :uuid, null: false, foreign_key: true, index: { name: :index_provenir_lawsuit_process_id }
+      t.references :provenir_process, null: false, foreign_key: true, index: { name: :index_provenir_lawsuit_process_id }
       t.timestamps
     end
 
-    create_table :provenir_decisions, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :provenir_decisions do |t|
       t.text :decision_content, limit: 1000
       t.datetime :decision_date
-      t.references :provenir_lawsuit, type: :uuid, null: false, foreign_key: true, index: { name: :index_provenir_decision_lawsuit_id }
+      t.references :provenir_lawsuit, null: false, foreign_key: true, index: { name: :index_provenir_decision_lawsuit_id }
       t.timestamps
     end
 
-    create_table :provenir_parties, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :provenir_parties do |t|
       t.string :party_doc
       t.boolean :is_party_active
       t.string :name
       t.string :polarity
       t.string :party_type
       t.datetime :last_capture_date
-      t.references :provenir_lawsuit, type: :uuid, null: false, foreign_key: true, index: { name: :index_provenir_party_lawsuit_id }
+      t.references :provenir_lawsuit, null: false, foreign_key: true, index: { name: :index_provenir_party_lawsuit_id }
       t.timestamps
     end
 
-    create_table :provenir_party_details, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :provenir_party_details do |t|
       t.string :specific_type
-      t.references :provenir_party, type: :uuid, null: false, foreign_key: true, index: { name: :index_provenir_party_detail_party_id }
+      t.references :provenir_party, null: false, foreign_key: true, index: { name: :index_provenir_party_detail_party_id }
       t.timestamps
     end
 
-    create_table :provenir_petitions, id: :uuid, default: 'uuid_generate_v4()' do |t|
-      t.references :provenir_lawsuit, type: :uuid, null: false, foreign_key: true, index: { name: :index_provenir_petition_lawsuit_id }
+    create_table :provenir_petitions do |t|
+      t.references :provenir_lawsuit, null: false, foreign_key: true, index: { name: :index_provenir_petition_lawsuit_id }
       t.timestamps
     end
 
-    create_table :provenir_updates, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :provenir_updates do |t|
       t.text :content, limit: 1000
       t.datetime :publish_date
       t.datetime :capture_date
-      t.references :provenir_lawsuit, type: :uuid, null: false, foreign_key: true, index: { name: :index_provenir_update_lawsuit_id }
+      t.references :provenir_lawsuit, null: false, foreign_key: true, index: { name: :index_provenir_update_lawsuit_id }
       t.timestamps
     end
 
-    create_table :provenir_related_people, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :provenir_related_people do |t|
       t.integer :total_relationships
       t.integer :total_relatives
       t.integer :total_neighbors
@@ -366,11 +366,11 @@ class AddProvenirTables < ActiveRecord::Migration[7.1]
       t.integer :total_household
       t.integer :total_partners
       t.integer :total_college_class
-      t.references :provenir_big_data_corp, type: :uuid, null: false, foreign_key: true, index: { name: :index_provenir_related_person_big_data_corp_id }
+      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: { name: :index_provenir_related_person_big_data_corp_id }
       t.timestamps
     end
 
-    create_table :provenir_personal_relationships, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :provenir_personal_relationships do |t|
       t.string :related_entity_tax_id_number
       t.string :related_entity_tax_id_type
       t.string :related_entity_tax_id_country
@@ -381,11 +381,11 @@ class AddProvenirTables < ActiveRecord::Migration[7.1]
       t.datetime :relationship_end_date
       t.datetime :creation_date
       t.datetime :last_update_date
-      t.references :provenir_related_person, type: :uuid, null: false, foreign_key: true, index: { name: :index_provenir_personal_relationship_related_person_id }
+      t.references :provenir_related_person, null: false, foreign_key: true, index: { name: :index_provenir_personal_relationship_related_person_id }
       t.timestamps
     end
 
-    create_table :provenir_collections, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :provenir_collections do |t|
       t.boolean :is_currently_on_collection
       t.integer :last30_days_collection_occurrences
       t.integer :last90_days_collection_occurrences
@@ -402,22 +402,22 @@ class AddProvenirTables < ActiveRecord::Migration[7.1]
       t.datetime :last_collection_date
       t.integer :collection_occurrences
       t.integer :collection_origins
-      t.references :provenir_big_data_corp, type: :uuid, null: false, foreign_key: true, index: { name: :index_provenir_collection_big_data_corp_id }
+      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: { name: :index_provenir_collection_big_data_corp_id }
       t.timestamps
     end
 
-    create_table :provenir_business_relationships, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :provenir_business_relationships do |t|
       t.integer :total_relationships
       t.integer :total_ownerships
       t.integer :total_employments
       t.integer :total_partners
       t.integer :total_clients
       t.integer :total_suppliers
-      t.references :provenir_big_data_corp, type: :uuid, null: false, foreign_key: true, index: { name: :index_provenir_business_relationship_big_data_corp_id }
+      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: { name: :index_provenir_business_relationship_big_data_corp_id }
       t.timestamps
     end
 
-    create_table :provenir_business_relationships_items, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :provenir_business_relationships_items do |t|
       t.string :related_entity_tax_id_number
       t.string :related_entity_tax_id_type
       t.string :related_entity_tax_id_country
@@ -431,11 +431,11 @@ class AddProvenirTables < ActiveRecord::Migration[7.1]
       t.datetime :creation_date
       t.datetime :last_update_date
       t.string :additional_details
-      t.references :provenir_business_relationship, type: :uuid, null: false, foreign_key: true, index: { name: :index_provenir_bus_rel_items_business_relationship_id }
+      t.references :provenir_business_relationship, null: false, foreign_key: true, index: { name: :index_provenir_bus_rel_items_business_relationship_id }
       t.timestamps
     end
 
-    create_table :lawsuit_banned_keywords, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :lawsuit_banned_keywords do |t|
       t.string :keyword
       t.integer :litigation_category, default: 0
       t.timestamps

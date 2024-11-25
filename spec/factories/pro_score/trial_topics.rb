@@ -4,12 +4,12 @@
 #
 # Table name: pro_score_trial_topics
 #
-#  id                       :uuid             not null, primary key
+#  id                       :bigint           not null, primary key
 #  numero_plugin            :string
 #  numero_do_processo_unico :string
 #  codigo_cnpj              :string
 #  titulo                   :string
-#  pro_score_trial_id       :uuid             not null
+#  pro_score_trial_id       :bigint           not null
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
 #

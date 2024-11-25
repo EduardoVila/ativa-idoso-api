@@ -4,11 +4,11 @@
 #
 # Table name: provenir_updates
 #
-#  id                  :uuid             not null, primary key
+#  id                  :bigint           not null, primary key
 #  content             :text
 #  publish_date        :datetime
 #  capture_date        :datetime
-#  provenir_lawsuit_id :uuid             not null
+#  provenir_lawsuit_id :bigint           not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #

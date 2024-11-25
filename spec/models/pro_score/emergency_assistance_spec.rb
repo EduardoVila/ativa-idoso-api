@@ -4,7 +4,7 @@
 #
 # Table name: pro_score_emergency_assistances
 #
-#  id                  :uuid             not null, primary key
+#  id                  :bigint           not null, primary key
 #  numero_plugin       :string
 #  mes_disponibilizado :string
 #  codigo_do_municipio :string
@@ -14,7 +14,7 @@
 #  valor               :string
 #  enquadramento       :string
 #  observacao          :string
-#  pro_score_report_id :uuid             not null
+#  pro_score_report_id :bigint           not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #

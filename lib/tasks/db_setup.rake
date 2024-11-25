@@ -17,6 +17,7 @@ namespace :db do
     # rubocop:disable Layout/LineLength
     system('APP_ENV=development bundle exec rake db:environment:set db:drop db:create db:migrate')
     # rubocop:enable Layout/LineLength
+    system('bundle exec annotate --models')
   end
 
   desc 'Drop, create and migrate both test and development databases'
