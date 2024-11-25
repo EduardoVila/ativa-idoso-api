@@ -1,23 +1,15 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-require 'webmock/rspec'
-require 'dotenv/load'
-require_relative '../integrable'
-require_relative '../../../app/integrators/idwall/base_integrator'
-require_relative '../../../app/integrators/idwall/report_integrator'
-# rubocop: disable Layout/LineLength
-require_relative '../../../app/integrators/errors/idwall/response_error'
-
+module DataLoaders
   module Idwall
-    class ReportIntegrator < BaseIntegrator
-      def create_report(cpf, states)
+    class Report < Base
+      def self.create_report(cpf, states)
         data = Integrators::Idwall.create_report(cpf, states)
 
         data['result']
       end
 
-      def check_status(number)
+      def self.check_status(number)
         data = Integrators::Idwall.report_status(number)
         result = data['result']
         report = ::Idwall::Report.find_by_number(number)
@@ -34,7 +26,7 @@ require_relative '../../../app/integrators/errors/idwall/response_error'
         status
       end
 
-      def load(number)
+      def self.load(number)
         report = ::Idwall::Report.find_by_number(number)
         return unless report && report.status == 'processed'
 
