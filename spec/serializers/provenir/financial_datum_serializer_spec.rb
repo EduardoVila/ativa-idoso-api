@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe Provenir::FinancialDatumSerializer do
-  subject(:serialized) { serializer.as_json(root: false) }
+  subject(:serialized) { serializer.serializable_hash }
 
   let(:financial_datum) { build :provenir_financial_datum }
   let(:serializer) { described_class.new financial_datum }

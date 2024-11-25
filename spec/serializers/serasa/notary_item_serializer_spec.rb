@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe Serasa::NotaryItemSerializer do
-  subject(:serialized) { serializer.as_json(root: false) }
+  subject(:serialized) { serializer.serializable_hash }
 
   let(:notary_item) { build :serasa_notary_item }
   let(:serializer) { described_class.new notary_item }

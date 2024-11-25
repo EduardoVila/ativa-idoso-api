@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe Provenir::BigDataCorpSerializer do
-  subject(:serialized) { serializer.as_json(root: false) }
+  subject(:serialized) { serializer.serializable_hash }
 
   let(:big_data_corp) { build :provenir_big_data_corp }
   let(:serializer) { described_class.new big_data_corp }

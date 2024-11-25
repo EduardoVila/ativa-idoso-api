@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe Provenir::BusinessRelationshipSerializer do
-  subject(:serialized) { serializer.as_json(root: false) }
+  subject(:serialized) { serializer.serializable_hash }
 
   let(:business_relationship) { build :provenir_business_relationship }
   let(:serializer) { described_class.new business_relationship }
@@ -52,7 +52,7 @@ RSpec.describe Provenir::BusinessRelationshipSerializer do
         )
       end
       let(:serializer) { described_class.new business_relationship }
-      let(:serialized) { serializer.as_json(root: false) }
+      let(:serialized) { serializer.serializable_hash }
       let(:serialized_business_relationships_item) do
         business_relationships_item.serialize_record(
           with: Provenir::BusinessRelationshipsItemSerializer

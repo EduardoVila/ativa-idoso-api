@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe Serasa::FintechReportSerializer do
-  subject(:serialized) { serializer.as_json(root: false) }
+  subject(:serialized) { serializer.serializable_hash }
 
   let(:fintech_report) { create :serasa_fintech_report }
   let(:serializer) { described_class.new fintech_report }

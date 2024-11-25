@@ -50,6 +50,8 @@ class ApplicationRecord < ActiveRecord::Base
   def serialize_record(with: nil)
     serializer_class = with || "#{self.class.name}Serializer".constantize
 
-    serializer_class.new(self).as_json(root: false).deep_stringify_keys
+    record_serializer = serializer_class.new(self)
+
+    record_serializer.serializable_hash
   end
 end

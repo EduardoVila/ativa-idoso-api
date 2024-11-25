@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe Provenir::LawsuitSerializer do
-  subject(:serialized) { serializer.as_json(root: false) }
+  subject(:serialized) { serializer.serializable_hash }
 
   let(:lawsuit) { build :provenir_lawsuit }
   let(:serializer) { described_class.new lawsuit }

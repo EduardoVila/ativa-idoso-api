@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe Provenir::IncomeEstimateSerializer do
-  subject(:serialized) { serializer.as_json(root: false) }
+  subject(:serialized) { serializer.serializable_hash }
 
   let(:income_estimate) { build :provenir_income_estimate }
   let(:serializer) { described_class.new income_estimate }

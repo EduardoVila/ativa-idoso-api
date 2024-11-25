@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe Serasa::NegativeItemSerializer do
-  subject(:serialized) { serializer.as_json(root: false) }
+  subject(:serialized) { serializer.serializable_hash }
 
   let(:negative_item) { build :serasa_negative_item }
   let(:serializer) { described_class.new negative_item }

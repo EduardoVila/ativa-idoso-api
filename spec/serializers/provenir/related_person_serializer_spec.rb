@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe Provenir::RelatedPersonSerializer do
-  subject(:serialized) { serializer.as_json(root: false) }
+  subject(:serialized) { serializer.serializable_hash }
 
   let(:related_person) { build :provenir_related_person }
   let(:serializer) { described_class.new related_person }
@@ -57,7 +57,7 @@ RSpec.describe Provenir::RelatedPersonSerializer do
         create :provenir_personal_relationship, related_person:
       end
       let(:serializer) { described_class.new related_person }
-      let(:serialized) { serializer.as_json(root: false) }
+      let(:serialized) { serializer.serializable_hash }
       let(:serialized_personal_relationship) do
         personal_relationship.serialize_record(
           with: Provenir::PersonalRelationshipSerializer

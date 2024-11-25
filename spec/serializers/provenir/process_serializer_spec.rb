@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe Provenir::ProcessSerializer do
-  subject(:serialized) { serializer.as_json(root: false) }
+  subject(:serialized) { serializer.serializable_hash }
 
   let(:process) { build :provenir_process }
   let(:serializer) { described_class.new process }
@@ -18,7 +18,7 @@ RSpec.describe Provenir::ProcessSerializer do
       let(:process) { create :provenir_process }
       let!(:lawsuit) { create :provenir_lawsuit, process: }
       let(:serializer) { described_class.new process }
-      let(:serialized) { serializer.as_json(root: false) }
+      let(:serialized) { serializer.serializable_hash }
       let(:serialized_lawsuit) do
         lawsuit.serialize_record(with: Provenir::LawsuitSerializer)
       end
