@@ -4,7 +4,7 @@
 #
 # Table name: pro_score_authentications
 #
-#  id            :uuid             not null, primary key
+#  id            :bigint           not null, primary key
 #  token_type    :string
 #  refresh_token :string
 #  access_token  :string

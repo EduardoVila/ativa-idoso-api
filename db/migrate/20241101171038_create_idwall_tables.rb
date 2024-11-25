@@ -1,6 +1,6 @@
 class CreateIdwallTables < ActiveRecord::Migration[7.1]
   def change
-    create_table :idwall_reports, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :idwall_reports do |t|
       t.string :number, null: false
       t.integer :status, default: 0
       t.string :raw_data
@@ -8,7 +8,7 @@ class CreateIdwallTables < ActiveRecord::Migration[7.1]
       t.timestamps
     end
 
-    create_table :idwall_addresses, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :idwall_addresses do |t|
       t.string :main
       t.string :city
       t.string :state
@@ -18,11 +18,11 @@ class CreateIdwallTables < ActiveRecord::Migration[7.1]
       t.string :neighborhood
       t.string :people_at_address
       t.string :kind
-      t.references :idwall_report, type: :uuid, null: false, foreign_key: true, index: true
+      t.references :idwall_report, null: false, foreign_key: true, index: true
       t.timestamps
     end
 
-    create_table :idwall_cpfs, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :idwall_cpfs do |t|
       t.string :gender
       t.string :number
       t.string :birth_date
@@ -35,26 +35,26 @@ class CreateIdwallTables < ActiveRecord::Migration[7.1]
       t.string :cpf_verifying_digit
       t.string :year_of_death
       t.string :social_name
-      t.references :idwall_report, type: :uuid, null: false, foreign_key: true, index: true
+      t.references :idwall_report, null: false, foreign_key: true, index: true
       t.timestamps
     end
 
-    create_table :idwall_related_people, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :idwall_related_people do |t|
       t.string :cpf
       t.string :name
       t.string :kind
-      t.references :idwall_report, type: :uuid, null: false, foreign_key: true, index: true
+      t.references :idwall_report, null: false, foreign_key: true, index: true
       t.timestamps
     end
 
-    create_table :idwall_trials, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :idwall_trials do |t|
       t.string :subject
       t.string :kind
-      t.references :idwall_report, type: :uuid, null: false, foreign_key: true, index: true
+      t.references :idwall_report, null: false, foreign_key: true, index: true
       t.timestamps
     end
-    
-    create_table :idwall_trial_parts, id: :uuid, default: 'uuid_generate_v4()' do |t|
+
+    create_table :idwall_trial_parts do |t|
       t.string :cnpj
       t.string :cpf
       t.string :birth_date
@@ -63,7 +63,7 @@ class CreateIdwallTables < ActiveRecord::Migration[7.1]
       t.string :gender
       t.string :kind
       t.string :title
-      t.references :idwall_trial, type: :uuid, null: false, foreign_key: true, index: true
+      t.references :idwall_trial, null: false, foreign_key: true, index: true
       t.timestamps
     end
   end

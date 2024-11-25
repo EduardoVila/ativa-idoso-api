@@ -4,11 +4,11 @@
 #
 # Table name: pro_score_commercial_relations
 #
-#  id                  :uuid             not null, primary key
+#  id                  :bigint           not null, primary key
 #  numero_plugin       :string
 #  cpfcnpj             :string
 #  razao_social        :string
-#  pro_score_report_id :uuid             not null
+#  pro_score_report_id :bigint           not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #

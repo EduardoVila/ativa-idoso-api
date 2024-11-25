@@ -4,7 +4,7 @@
 #
 # Table name: analysis_tokens
 #
-#  id           :uuid             not null, primary key
+#  id           :bigint           not null, primary key
 #  access_token :string
 #  token_type   :string
 #  expires_in   :integer

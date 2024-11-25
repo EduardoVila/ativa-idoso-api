@@ -4,7 +4,7 @@
 #
 # Table name: serasa_stolen_documents
 #
-#  id                :uuid             not null, primary key
+#  id                :bigint           not null, primary key
 #  occurrence_date   :date
 #  inclusion_date    :datetime
 #  document_type     :string
@@ -12,7 +12,7 @@
 #  issuing_authority :string
 #  detailed_reason   :string
 #  occurrence_state  :string
-#  serasa_fact_id    :uuid             not null
+#  serasa_fact_id    :bigint           not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #

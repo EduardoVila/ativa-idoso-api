@@ -4,7 +4,7 @@
 #
 # Table name: boa_vista_addresses
 #
-#  id                              :uuid             not null, primary key
+#  id                              :bigint           not null, primary key
 #  street_type                     :string
 #  street                          :string
 #  number                          :string
@@ -14,7 +14,7 @@
 #  zip_code                        :string
 #  complement                      :string
 #  address_type                    :string
-#  boa_vista_cadastral_location_id :uuid             not null
+#  boa_vista_cadastral_location_id :bigint           not null
 #  created_at                      :datetime         not null
 #  updated_at                      :datetime         not null
 #

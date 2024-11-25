@@ -4,11 +4,11 @@
 #
 # Table name: serasa_inquiry_items
 #
-#  id                  :uuid             not null, primary key
+#  id                  :bigint           not null, primary key
 #  occurrence_date     :date
 #  days_quantity       :integer
 #  segment_description :string
-#  serasa_inquiry_id   :uuid             not null
+#  serasa_inquiry_id   :bigint           not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #

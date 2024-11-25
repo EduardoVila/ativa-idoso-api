@@ -4,7 +4,7 @@
 #
 # Table name: pro_score_reports
 #
-#  id                 :uuid             not null, primary key
+#  id                 :bigint           not null, primary key
 #  raw_data           :string
 #  performed_searches :text             default([]), is an Array
 #  analysis_item_id   :uuid             not null

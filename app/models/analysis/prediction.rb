@@ -4,7 +4,7 @@
 #
 # Table name: analysis_predictions
 #
-#  id               :uuid             not null, primary key
+#  id               :bigint           not null, primary key
 #  cpf              :string
 #  approved         :boolean
 #  fee              :float

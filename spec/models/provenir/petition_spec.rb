@@ -4,8 +4,8 @@
 #
 # Table name: provenir_petitions
 #
-#  id                  :uuid             not null, primary key
-#  provenir_lawsuit_id :uuid             not null
+#  id                  :bigint           not null, primary key
+#  provenir_lawsuit_id :bigint           not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #

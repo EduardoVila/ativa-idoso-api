@@ -4,7 +4,7 @@
 #
 # Table name: boa_vista_cadastrals
 #
-#  id            :uuid             not null, primary key
+#  id            :bigint           not null, primary key
 #  raw_data      :string
 #  consumer_type :string           not null
 #  consumer_id   :uuid             not null

@@ -4,14 +4,14 @@
 #
 # Table name: boa_vista_basic_registrations
 #
-#  id                     :uuid             not null, primary key
+#  id                     :bigint           not null, primary key
 #  cpf                    :string
 #  name                   :string
 #  mother_name            :string
 #  birth_date             :string
 #  exposed_person         :string
 #  cpf_situation          :string
-#  boa_vista_cadastral_id :uuid             not null
+#  boa_vista_cadastral_id :bigint           not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #

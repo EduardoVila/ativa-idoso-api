@@ -4,7 +4,7 @@
 #
 # Table name: provenir_basic_data
 #
-#  id                                   :uuid             not null, primary key
+#  id                                   :bigint           not null, primary key
 #  tax_id_number                        :string
 #  tax_id_country                       :string
 #  name                                 :string
@@ -30,7 +30,7 @@
 #  tax_id_status_registration_date      :datetime
 #  creation_date                        :datetime
 #  last_update_date                     :datetime
-#  provenir_big_data_corp_id            :uuid             not null
+#  provenir_big_data_corp_id            :bigint           not null
 #  created_at                           :datetime         not null
 #  updated_at                           :datetime         not null
 #

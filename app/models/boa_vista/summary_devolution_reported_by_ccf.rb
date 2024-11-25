@@ -4,7 +4,7 @@
 #
 # Table name: boa_vista_summary_devolution_reported_by_ccfs
 #
-#  id                            :uuid             not null, primary key
+#  id                            :bigint           not null, primary key
 #  register_size                 :string
 #  register_type                 :string
 #  register                      :string
@@ -17,7 +17,7 @@
 #  reason_13                     :string
 #  reason_14                     :string
 #  reason_99                     :string
-#  boa_vista_acerta_essencial_id :uuid             not null
+#  boa_vista_acerta_essencial_id :bigint           not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
 #

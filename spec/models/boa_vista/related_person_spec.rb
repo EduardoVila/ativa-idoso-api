@@ -4,11 +4,11 @@
 #
 # Table name: boa_vista_related_people
 #
-#  id                                   :uuid             not null, primary key
+#  id                                   :bigint           not null, primary key
 #  name                                 :string
 #  degree_of_kinship                    :string
 #  cpf                                  :string
-#  boa_vista_cadastral_qualification_id :uuid             not null
+#  boa_vista_cadastral_qualification_id :bigint           not null
 #  created_at                           :datetime         not null
 #  updated_at                           :datetime         not null
 #

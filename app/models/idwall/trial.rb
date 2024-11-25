@@ -4,10 +4,10 @@
 #
 # Table name: idwall_trials
 #
-#  id               :uuid             not null, primary key
+#  id               :bigint           not null, primary key
 #  subject          :string
 #  kind             :string
-#  idwall_report_id :uuid             not null
+#  idwall_report_id :bigint           not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
