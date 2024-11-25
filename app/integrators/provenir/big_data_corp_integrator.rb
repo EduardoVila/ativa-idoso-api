@@ -57,6 +57,7 @@ module Provenir
         json_root, big_data_corp
       )
       big_data_corp.raw_data = raw_data
+
       big_data_corp
     end
 

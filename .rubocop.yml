@@ -16,7 +16,7 @@ AllCops:
   - 'bin/**/*'
   - 'db/**/*'
   - 'todo/**/*'
-    # temporary: to be removed after the migration to the new architecture
+    # TODO: to be removed after the migration to the new architecture
   - 'app/integrators/concerns/custom_parseable.rb'
   - 'spec/integrators/boa_vista/acerta_essencial_integrator_spec.rb'
   - 'app/integrators/boa_vista/acerta_essencial_integrator.rb'
@@ -209,6 +209,8 @@ RSpec/LetSetup:
 RSpec/IndexedLet:
   Enabled: false
 
+Layout/EndOfLine:
+  Enabled: false
+
 FactoryBot/ConsistentParenthesesStyle:
   EnforcedStyle: omit_parentheses
-

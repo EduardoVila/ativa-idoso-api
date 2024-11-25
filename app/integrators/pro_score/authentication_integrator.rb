@@ -2,7 +2,6 @@
 
 module ProScore
   class AuthenticationIntegrator < ApplicationIntegrator
-
     def authenticate
       response = perform_post_request
 
