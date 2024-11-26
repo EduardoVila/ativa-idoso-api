@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe ProScore::TrialSerializer do
-  subject(:serialized) { serializer.as_json(root: false) }
+  subject(:serialized) { serializer.serializable_hash }
 
   let(:trial) { build :pro_score_trial }
   let(:serializer) { described_class.new trial }
