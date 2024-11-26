@@ -8,6 +8,7 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
   include Rack::Test::Methods
 
   describe 'POST /api/v1/analysis-reports' do
+    let(:route) { '/api/v1/analysis-reports' }
     let(:current_client) { create :api_client }
     let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
     let(:analysis_report) { create :analysis_report }
@@ -23,7 +24,7 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
       end
 
       it 'returns a 201 Created status' do
-        post '/api/v1/analysis-reports', params.to_json, headers
+        post(route, params.to_json, headers)
 
         expect(last_response.status).to eq(201)
       end
@@ -35,7 +36,7 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
       end
 
       it 'returns a 401 Unauthorized status' do
-        post '/api/v1/analysis-reports', {}.to_json, headers
+        post(route, {}.to_json, headers)
 
         expect(last_response.status).to eq(401)
       end
@@ -43,6 +44,7 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
   end
 
   describe 'GET /api/v1/analysis-reports/:uuid' do
+    let(:base_route) { '/api/v1/analysis-reports' }
     let(:current_client) { create :api_client }
     let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
     let(:analysis_report) do
@@ -58,9 +60,10 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
       end
 
       it 'returns the analysis report' do
-        get "/api/v1/analysis-reports/#{analysis_report.id}", {}, headers
+        get("#{base_route}/#{analysis_report.id}", {}, headers)
 
         expect(last_response.status).to eq(200)
+
         response_body = JSON.parse(last_response.body)
         expect(response_body['id']).to eq(analysis_report.id)
       end
@@ -75,17 +78,17 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
       end
 
       it 'returns a 404 error' do
-        get '/api/v1/analysis-reports/foo', {}, headers
+        get("#{base_route}/foo", {}, headers)
 
         expect(last_response.status).to eq(404)
         response_body = JSON.parse(last_response.body)
-        expect(response_body['error']).to eq('Analysis::Report foo not found')
+        expect(response_body['error']).to eq('Analysis report foo not found')
       end
     end
 
     context 'when authentication fails' do
       it 'returns a 401 Unauthorized error' do
-        get '/api/v1/analysis-reports/some-uuid', {}, headers
+        get("#{base_route}/some-uuid", {}, headers)
 
         expect(last_response.status).to eq(401)
       end
