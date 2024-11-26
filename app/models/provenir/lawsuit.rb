@@ -81,6 +81,9 @@ module Provenir
     alias_attribute :type, :lawsuit_type
     alias_attribute :number, :lawsuit_number
 
+    alias_method :defendant, :defendant?
+    alias_method :disapproved, :disapproved?
+
     accepts_nested_attributes_for :decisions, :parties, :petitions, :updates
   end
 end

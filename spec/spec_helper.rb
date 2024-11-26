@@ -5,6 +5,8 @@ ENV['APP_ENV'] = 'test'
 require 'simplecov'
 require 'simplecov-lcov'
 require_relative '../config/application'
+require_relative 'helpers/serializers/serialize_attribute'
+require_relative 'helpers/serializers/match_serialized_records'
 
 SimpleCov::Formatter::LcovFormatter.config.report_with_single_file = true
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
@@ -74,6 +76,26 @@ RSpec.configure do |config|
   config.mock_with(:rspec) { |mocks| mocks.verify_partial_doubles = true }
 
   Kernel.srand config.seed
+
+  # Controller config
+  config.include(
+    Module.new do
+      def app
+        described_class
+      end
+    end,
+    type: :controller
+  )
+
+  # Job config
+  config.include ActiveJob::TestHelper, type: :job
+
+  # Serializers config
+  config.include MatchSerializerRecordSupportMatcher
+  config.include SerializeAttributeSupportMatcher, type: :serializer
+  config.define_derived_metadata(file_path: %r{/spec/serializers}) do |metadata|
+    metadata[:type] = :serializer
+  end
 end
 
 RSpec.configure do |config|

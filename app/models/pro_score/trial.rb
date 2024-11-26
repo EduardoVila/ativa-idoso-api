@@ -63,6 +63,9 @@ module ProScore
 
     validates :numero_do_processo_unico, uniqueness: { scope: :report }
 
+    alias_attribute :defendant, :defendant?
+    alias_attribute :defendant_and_disapproved, :defendant_and_disapproved?
+
     def name
       report.analysis_item.name
     end
