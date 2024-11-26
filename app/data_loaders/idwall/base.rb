@@ -9,9 +9,10 @@ module DataLoaders
         return unless results
 
         # Parse response
-        results&.keys&.each do |key|
+        results.keys.each do |key|
           method_name = "parse_#{key}"
           public_send(method_name, results, report) if respond_to? method_name
+
         end
 
         report
@@ -135,23 +136,23 @@ module DataLoaders
         year_of_death, social_name
       )
         ::Idwall::CPF.new({
-                            gender: gender,
-                            number: number,
-                            birth_date: birth_date,
-                            source: source,
-                            name: name,
-                            income: income,
-                            income_tax_situation: income_tax_situation,
-                            cpf_cadastral_situation: cpf_cadastral_situation,
-                            cpf_subscription_date: cpf_subscription_date,
-                            cpf_verifying_digit: cpf_verifying_digit,
-                            year_of_death: year_of_death,
-                            social_name: social_name
-                          })
+          gender:,
+          number:,
+          birth_date:,
+          source:,
+          name:,
+          income:,
+          income_tax_situation:,
+          cpf_cadastral_situation:,
+          cpf_subscription_date:,
+          cpf_verifying_digit:,
+          year_of_death:,
+          social_name:
+        })
       end
 
       def self.save_trial(subject, kind)
-        ::Idwall::Trial.new({ subject: subject, kind: kind })
+        ::Idwall::Trial.new({ subject:, kind: })
       end
 
       def self.save_address(
@@ -159,25 +160,25 @@ module DataLoaders
         neighborhood, people_at_address, kind
       )
         ::Idwall::Address.new({
-                                main: main, city: city, number: number, zip_code: zip_code,
-                                state: state, street: street, neighborhood: neighborhood,
-                                people_at_address: people_at_address, kind: kind
-                              })
+          main:, city:, number:, zip_code:,
+          state:, street:, neighborhood:,
+          people_at_address:, kind:
+        })
       end
 
       def self.save_related_person(cpf, name, kind)
         ::Idwall::RelatedPerson.new({
-                                      cpf: cpf, name: name, kind: kind
-                                    })
+          cpf:, name:, kind:
+        })
       end
 
       def self.save_trial_part(
         cnpj, cpf, birth_date, name, rg, gender, kind, title
       )
         ::Idwall::TrialPart.new({
-                                  cnpj: cnpj, cpf: cpf, birth_date: birth_date, name: name, rg: rg,
-                                  gender: gender, kind: kind, title: title
-                                })
+          cnpj:, cpf:, birth_date:, name:, rg:,
+          gender:, kind:, title:
+        })
       end
     end
   end
