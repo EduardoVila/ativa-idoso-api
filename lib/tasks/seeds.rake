@@ -6,11 +6,13 @@ namespace :db do
   task populate: :environment do
     require_relative '../../config/environments' # Environment setup
     require_relative '../../config/application' # Application setup
+    require 'colorize'
 
     quantity = ENV['QTY'] || 1
-    quantity.to_i.times do |seed|
+    quantity.to_i.times do
       api_client = API::Client.create!
 
+      # Analysis module
       analysis_report = Analysis::Report.create!(
         {
           cpfs: [Faker::CPF.pretty, Faker::CPF.pretty],
@@ -38,6 +40,7 @@ namespace :db do
         }
       )
 
+      # BoaVista module
       acerta_essencial = BoaVista::AcertaEssencial.create!(
         {
           cpf: Faker::CPF.pretty,
@@ -48,7 +51,6 @@ namespace :db do
         }
       )
 
-      # BoaVista module
       BoaVista::AdditionalInformation.create!(
         {
           register_size: Faker::Number.number(digits: 2).to_s,
@@ -171,12 +173,12 @@ namespace :db do
           city: Faker::Address.city,
           federative_unit: Faker::Address.state_abbr,
           zip_code: Faker::Address.zip_code,
-          ddd_1: Faker::Number.number(digits: 2).to_s,
-          phone_1: Faker::PhoneNumber.phone_number,
-          ddd_2: Faker::Number.number(digits: 2).to_s,
-          phone_2: Faker::PhoneNumber.phone_number,
-          ddd_3: Faker::Number.number(digits: 2).to_s,
-          phone_3: Faker::PhoneNumber.phone_number,
+          ddd_1: Faker::Number.number(digits: 2).to_s, # rubocop:disable Naming/VariableNumber
+          phone_1: Faker::PhoneNumber.phone_number, # rubocop:disable Naming/VariableNumber
+          ddd_2: Faker::Number.number(digits: 2).to_s, # rubocop:disable Naming/VariableNumber
+          phone_2: Faker::PhoneNumber.phone_number, # rubocop:disable Naming/VariableNumber
+          ddd_3: Faker::Number.number(digits: 2).to_s, # rubocop:disable Naming/VariableNumber
+          phone_3: Faker::PhoneNumber.phone_number, # rubocop:disable Naming/VariableNumber
           boa_vista_acerta_essencial_id: acerta_essencial.id
         }
       )
@@ -248,8 +250,8 @@ namespace :db do
           birth_date: Faker::Date.backward.to_s,
           document_type: Faker::Lorem.word,
           document_number: Faker::Number.number(digits: 10).to_s,
-          document_2: Faker::Number.number(digits: 10).to_s,
-          document_3: Faker::Number.number(digits: 10).to_s,
+          document_2: Faker::Number.number(digits: 10).to_s, # rubocop:disable Naming/VariableNumber
+          document_3: Faker::Number.number(digits: 10).to_s, # rubocop:disable Naming/VariableNumber
           boa_vista_acerta_essencial_id: acerta_essencial.id
         }
       )
@@ -264,13 +266,13 @@ namespace :db do
           name: Faker::Name.name,
           bank: Faker::Bank.name,
           agency: Faker::Bank.name,
-          reason_12: Faker::Lorem.word,
+          reason_12: Faker::Lorem.word, # rubocop:disable Naming/VariableNumber
           last_occurrence_12_date: Faker::Date.backward.to_s,
-          reason_13: Faker::Lorem.word,
+          reason_13: Faker::Lorem.word, # rubocop:disable Naming/VariableNumber
           last_occurrence_13_date: Faker::Date.backward.to_s,
-          reason_14: Faker::Lorem.word,
+          reason_14: Faker::Lorem.word, # rubocop:disable Naming/VariableNumber
           last_occurrence_14_date: Faker::Date.backward.to_s,
-          reason_99: Faker::Lorem.word,
+          reason_99: Faker::Lorem.word, # rubocop:disable Naming/VariableNumber
           last_occurrence_99_date: Faker::Date.backward.to_s,
           bank_name: Faker::Bank.name,
           boa_vista_acerta_essencial_id: acerta_essencial.id
@@ -390,7 +392,7 @@ namespace :db do
           text: Faker::Lorem.sentence,
           code_kind_model: Faker::Lorem.word,
           kind_description: Faker::Lorem.word,
-          text_2: Faker::Lorem.sentence,
+          text_2: Faker::Lorem.sentence, # rubocop:disable Naming/VariableNumber
           value: Faker::Number.decimal(l_digits: 3, r_digits: 2).to_s,
           message: Faker::Lorem.sentence,
           boa_vista_acerta_essencial_id: acerta_essencial.id
@@ -414,18 +416,18 @@ namespace :db do
           register_type: Faker::Lorem.word,
           register: Faker::Lorem.word,
           total: Faker::Number.number(digits: 2).to_s,
-          year_1: Faker::Number.number(digits: 4).to_s,
-          month_1: Faker::Number.number(digits: 2).to_s,
-          total_1: Faker::Number.number(digits: 2).to_s,
-          year_2: Faker::Number.number(digits: 4).to_s,
-          month_2: Faker::Number.number(digits: 2).to_s,
-          total_2: Faker::Number.number(digits: 2).to_s,
-          year_3: Faker::Number.number(digits: 4).to_s,
-          month_3: Faker::Number.number(digits: 2).to_s,
-          total_3: Faker::Number.number(digits: 2).to_s,
-          year_4: Faker::Number.number(digits: 4).to_s,
-          month_4: Faker::Number.number(digits: 2).to_s,
-          total_4: Faker::Number.number(digits: 2).to_s,
+          year_1: Faker::Number.number(digits: 4).to_s, # rubocop:disable Naming/VariableNumber
+          month_1: Faker::Number.number(digits: 2).to_s, # rubocop:disable Naming/VariableNumber
+          total_1: Faker::Number.number(digits: 2).to_s, # rubocop:disable Naming/VariableNumber
+          year_2: Faker::Number.number(digits: 4).to_s, # rubocop:disable Naming/VariableNumber
+          month_2: Faker::Number.number(digits: 2).to_s, # rubocop:disable Naming/VariableNumber
+          total_2: Faker::Number.number(digits: 2).to_s, # rubocop:disable Naming/VariableNumber
+          year_3: Faker::Number.number(digits: 4).to_s, # rubocop:disable Naming/VariableNumber
+          month_3: Faker::Number.number(digits: 2).to_s, # rubocop:disable Naming/VariableNumber
+          total_3: Faker::Number.number(digits: 2).to_s, # rubocop:disable Naming/VariableNumber
+          year_4: Faker::Number.number(digits: 4).to_s, # rubocop:disable Naming/VariableNumber
+          month_4: Faker::Number.number(digits: 2).to_s, # rubocop:disable Naming/VariableNumber
+          total_4: Faker::Number.number(digits: 2).to_s, # rubocop:disable Naming/VariableNumber
           boa_vista_acerta_essencial_id: acerta_essencial.id
         }
       )
@@ -461,10 +463,10 @@ namespace :db do
           name: Faker::Name.name,
           names_total: Faker::Number.number(digits: 2).to_s,
           devolution_total: Faker::Number.number(digits: 2).to_s,
-          reason_12: Faker::Lorem.word,
-          reason_13: Faker::Lorem.word,
-          reason_14: Faker::Lorem.word,
-          reason_99: Faker::Lorem.word,
+          reason_12: Faker::Lorem.word,  # rubocop:disable Naming/VariableNumber
+          reason_13: Faker::Lorem.word,  # rubocop:disable Naming/VariableNumber
+          reason_14: Faker::Lorem.word,  # rubocop:disable Naming/VariableNumber
+          reason_99: Faker::Lorem.word,  # rubocop:disable Naming/VariableNumber
           boa_vista_acerta_essencial_id: acerta_essencial.id
         }
       )
@@ -520,8 +522,8 @@ namespace :db do
           federative_unit: Faker::Address.state_abbr,
           plaza: Faker::Lorem.word,
           area_code: Faker::Number.number(digits: 2).to_s,
-          phone_1: Faker::PhoneNumber.phone_number,
-          phone_2: Faker::PhoneNumber.phone_number,
+          phone_1: Faker::PhoneNumber.phone_number,  # rubocop:disable Naming/VariableNumber
+          phone_2: Faker::PhoneNumber.phone_number,  # rubocop:disable Naming/VariableNumber
           reserved: Faker::Lorem.word,
           boa_vista_acerta_essencial_id: acerta_essencial.id
         }
@@ -959,17 +961,23 @@ namespace :db do
                 address_entity_age: Faker::Number.number(digits: 3),
                 address_entity_total_passages: Faker::Number.number(digits: 2),
                 address_entity_bad_passages: Faker::Number.number(digits: 2),
-                address_entity_crawling_passages: Faker::Number.number(digits: 2),
-                address_entity_validation_passages: Faker::Number.number(digits: 2),
+                address_entity_crawling_passages: Faker::Number
+                  .number(digits: 2),
+                address_entity_validation_passages: Faker::Number
+                  .number(digits: 2),
                 address_entity_query_passages: Faker::Number.number(digits: 2),
-                address_entity_month_average_passages: Faker::Number.number(digits: 2),
+                address_entity_month_average_passages: Faker::Number
+                  .number(digits: 2),
                 address_global_age: Faker::Number.number(digits: 2),
                 address_global_total_passages: Faker::Number.number(digits: 2),
                 address_global_bad_passages: Faker::Number.number(digits: 2),
-                address_global_crawling_passages: Faker::Number.number(digits: 2),
-                address_global_validation_passages: Faker::Number.number(digits: 2),
+                address_global_crawling_passages: Faker::Number
+                  .number(digits: 2),
+                address_global_validation_passages: Faker::Number
+                  .number(digits: 2),
                 address_global_query_passages: Faker::Number.number(digits: 2),
-                address_global_month_average_passages: Faker::Number.number(digits: 2),
+                address_global_month_average_passages: Faker::Number
+                  .number(digits: 2),
                 address_number_of_entities: Faker::Number.number(digits: 2),
                 priority: Faker::Number.number(digits: 1),
                 is_main_for_entity: Faker::Boolean.boolean,
@@ -1010,17 +1018,23 @@ namespace :db do
                 address_entity_age: Faker::Number.number(digits: 3),
                 address_entity_total_passages: Faker::Number.number(digits: 2),
                 address_entity_bad_passages: Faker::Number.number(digits: 2),
-                address_entity_crawling_passages: Faker::Number.number(digits: 2),
-                address_entity_validation_passages: Faker::Number.number(digits: 2),
+                address_entity_crawling_passages: Faker::Number
+                  .number(digits: 2),
+                address_entity_validation_passages: Faker::Number
+                  .number(digits: 2),
                 address_entity_query_passages: Faker::Number.number(digits: 2),
-                address_entity_month_average_passages: Faker::Number.number(digits: 2),
+                address_entity_month_average_passages: Faker::Number
+                  .number(digits: 2),
                 address_global_age: Faker::Number.number(digits: 2),
                 address_global_total_passages: Faker::Number.number(digits: 2),
                 address_global_bad_passages: Faker::Number.number(digits: 2),
-                address_global_crawling_passages: Faker::Number.number(digits: 2),
-                address_global_validation_passages: Faker::Number.number(digits: 2),
+                address_global_crawling_passages: Faker::Number
+                  .number(digits: 2),
+                address_global_validation_passages: Faker::Number
+                  .number(digits: 2),
                 address_global_query_passages: Faker::Number.number(digits: 2),
-                address_global_month_average_passages: Faker::Number.number(digits: 2),
+                address_global_month_average_passages: Faker::Number
+                  .number(digits: 2),
                 address_number_of_entities: Faker::Number.number(digits: 2),
                 priority: Faker::Number.number(digits: 1),
                 is_main_for_entity: Faker::Boolean.boolean,
@@ -1080,23 +1094,29 @@ namespace :db do
                 phone_entity_total_passages: Faker::Number.number(digits: 2),
                 phone_entity_bad_passages: Faker::Number.number(digits: 2),
                 phone_entity_crawling_passages: Faker::Number.number(digits: 2),
-                phone_entity_validation_passages: Faker::Number.number(digits: 2),
+                phone_entity_validation_passages: Faker::Number
+                  .number(digits: 2),
                 phone_entity_query_passages: Faker::Number.number(digits: 2),
-                phone_entity_month_average_passages: Faker::Number.number(digits: 2),
+                phone_entity_month_average_passages: Faker::Number
+                  .number(digits: 2),
                 phone_global_age: Faker::Number.number(digits: 2),
                 phone_global_total_passages: Faker::Number.number(digits: 2),
                 phone_global_bad_passages: Faker::Number.number(digits: 2),
                 phone_global_crawling_passages: Faker::Number.number(digits: 2),
-                phone_global_validation_passages: Faker::Number.number(digits: 2),
+                phone_global_validation_passages: Faker::Number
+                  .number(digits: 2),
                 phone_global_query_passages: Faker::Number.number(digits: 2),
-                phone_global_month_average_passages: Faker::Number.number(digits: 2),
+                phone_global_month_average_passages: Faker::Number
+                  .number(digits: 2),
                 last3_months_passages: Faker::Number.number(digits: 2),
                 last6_months_passages: Faker::Number.number(digits: 2),
                 last12_months_passages: Faker::Number.number(digits: 2),
                 last18_months_passages: Faker::Number.number(digits: 2),
                 phone_number_of_entities: Faker::Number.number(digits: 2),
-                phone_number_of_family_related_entities: Faker::Number.number(digits: 2),
-                phone_number_of_related_entities: Faker::Number.number(digits: 2),
+                phone_number_of_family_related_entities: Faker::Number
+                  .number(digits: 2),
+                phone_number_of_related_entities: Faker::Number
+                  .number(digits: 2),
                 priority: Faker::Number.number(digits: 1),
                 is_main_for_entity: Faker::Boolean.boolean,
                 is_recent_for_entity: Faker::Boolean.boolean,
@@ -1129,23 +1149,29 @@ namespace :db do
                 phone_entity_total_passages: Faker::Number.number(digits: 2),
                 phone_entity_bad_passages: Faker::Number.number(digits: 2),
                 phone_entity_crawling_passages: Faker::Number.number(digits: 2),
-                phone_entity_validation_passages: Faker::Number.number(digits: 2),
+                phone_entity_validation_passages: Faker::Number
+                  .number(digits: 2),
                 phone_entity_query_passages: Faker::Number.number(digits: 2),
-                phone_entity_month_average_passages: Faker::Number.number(digits: 2),
+                phone_entity_month_average_passages: Faker::Number
+                  .number(digits: 2),
                 phone_global_age: Faker::Number.number(digits: 2),
                 phone_global_total_passages: Faker::Number.number(digits: 2),
                 phone_global_bad_passages: Faker::Number.number(digits: 2),
                 phone_global_crawling_passages: Faker::Number.number(digits: 2),
-                phone_global_validation_passages: Faker::Number.number(digits: 2),
+                phone_global_validation_passages: Faker::Number
+                  .number(digits: 2),
                 phone_global_query_passages: Faker::Number.number(digits: 2),
-                phone_global_month_average_passages: Faker::Number.number(digits: 2),
+                phone_global_month_average_passages: Faker::Number
+                  .number(digits: 2),
                 last3_months_passages: Faker::Number.number(digits: 2),
                 last6_months_passages: Faker::Number.number(digits: 2),
                 last12_months_passages: Faker::Number.number(digits: 2),
                 last18_months_passages: Faker::Number.number(digits: 2),
                 phone_number_of_entities: Faker::Number.number(digits: 2),
-                phone_number_of_family_related_entities: Faker::Number.number(digits: 2),
-                phone_number_of_related_entities: Faker::Number.number(digits: 2),
+                phone_number_of_family_related_entities: Faker::Number
+                  .number(digits: 2),
+                phone_number_of_related_entities: Faker::Number
+                  .number(digits: 2),
                 priority: Faker::Number.number(digits: 1),
                 is_main_for_entity: Faker::Boolean.boolean,
                 is_recent_for_entity: Faker::Boolean.boolean,
@@ -1238,8 +1264,10 @@ namespace :db do
             is_currently_owner: Faker::Boolean.boolean,
             last_occupation_start_date: Faker::Date.backward,
             is_currently_on_collection: Faker::Boolean.boolean,
-            last365_days_collection_occurrences: Faker::Number.number(digits: 1),
-            current_consecutive_collection_months: Faker::Number.number(digits: 1),
+            last365_days_collection_occurrences: Faker::Number
+              .number(digits: 1),
+            current_consecutive_collection_months: Faker::Number
+              .number(digits: 1),
             is_currently_receiving_assistance: Faker::Boolean.boolean,
             financial_risk_score: Faker::Number.number(digits: 3),
             financial_risk_level: Faker::Lorem.word
@@ -1277,7 +1305,8 @@ namespace :db do
                 number_of_parties: 5,
                 number_of_updates: 5,
                 law_suit_age: Faker::Number.number(digits: 4),
-                average_number_of_updates_per_month: Faker::Number.number(digits: 1),
+                average_number_of_updates_per_month: Faker::Number
+                  .number(digits: 1),
                 reason_for_concealed_data: Faker::Number.number(digits: 1),
                 decisions_attributes: [
                   {
@@ -1470,14 +1499,17 @@ namespace :db do
             is_currently_on_collection: Faker::Boolean.boolean,
             last30_days_collection_occurrences: Faker::Number.number(digits: 1),
             last90_days_collection_occurrences: Faker::Number.number(digits: 1),
-            last180_days_collection_occurrences: Faker::Number.number(digits: 1),
-            last365_days_collection_occurrences: Faker::Number.number(digits: 1),
+            last180_days_collection_occurrences: Faker::Number
+              .number(digits: 1),
+            last365_days_collection_occurrences: Faker::Number
+              .number(digits: 1),
             last30_days_collection_origins: Faker::Number.number(digits: 1),
             last90_days_collection_origins: Faker::Number.number(digits: 1),
             last180_days_collection_origins: Faker::Number.number(digits: 1),
             last365_days_collection_origins: Faker::Number.number(digits: 1),
             total_collection_months: Faker::Number.number(digits: 1),
-            current_consecutive_collection_months: Faker::Number.number(digits: 1),
+            current_consecutive_collection_months: Faker::Number
+              .number(digits: 1),
             max_consecutive_collection_months: Faker::Number.number(digits: 1),
             first_collection_date: Faker::Date.backward,
             last_collection_date: Faker::Date.forward,
@@ -1587,5 +1619,7 @@ namespace :db do
         }
       )
     end
+
+    puts('Database populated successfully!'.green.bold)
   end
 end
