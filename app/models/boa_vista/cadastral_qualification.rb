@@ -25,7 +25,7 @@ module BoaVista
     accepts_nested_attributes_for :related_people
 
     alias_attribute :obito, :death
-    alias_method :pessoas_relacionada, :related_people
+    alias_attribute :pessoas_relacionada, :related_people
 
     # Adds suport for creating fact associations via alias attributes
     # Required to import data from BoaVista API

@@ -191,8 +191,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_07_163255) do
 
   create_table "boa_vista_cadastrals", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "raw_data"
-    t.string "consumer_type", null: false
-    t.uuid "consumer_id", null: false
+    t.string "consumer_type"
+    t.uuid "consumer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["consumer_type", "consumer_id"], name: "index_boa_vista_cadastrals_on_consumer"

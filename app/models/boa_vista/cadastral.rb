@@ -40,9 +40,9 @@ module BoaVista
     accepts_nested_attributes_for :cadastral_location
     accepts_nested_attributes_for :cadastral_qualification
 
-    alias_method :qualificacao, :cadastral_qualification
-    alias_method :localizacao, :cadastral_location
-    alias_method :cadastro_basico, :basic_registration
+    alias_attribute :qualificacao, :cadastral_qualification
+    alias_attribute :localizacao, :cadastral_location
+    alias_attribute :cadastro_basico, :basic_registration
 
     delegate :name, :age, to: :basic_registration, allow_nil: true
 
