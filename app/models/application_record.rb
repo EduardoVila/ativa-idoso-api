@@ -46,4 +46,12 @@ class ApplicationRecord < ActiveRecord::Base
       end
     end
   end
+
+  def serialize_record(with: nil)
+    serializer_class = with || "#{self.class.name}Serializer".constantize
+
+    record_serializer = serializer_class.new(self)
+
+    record_serializer.serializable_hash
+  end
 end

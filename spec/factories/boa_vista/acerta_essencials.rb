@@ -4,7 +4,7 @@
 #
 # Table name: boa_vista_acerta_essencials
 #
-#  id            :uuid             not null, primary key
+#  id            :bigint           not null, primary key
 #  cpf           :string           not null
 #  credit_type   :integer          default("CC"), not null
 #  raw_data      :string

@@ -46,27 +46,23 @@ module Analysis
       provenir_big_data_corp
     ], suffix: true
 
-    enum :disapproval_situation, [
-      :debtor, # when has debits with Alpop
-      :blocked_negativity, # when has blocked negativity
-      :reproved_by_trial,
-      :insufficient_income,
-      :exceeded_debits,
-      :blocked_cpf,
-      :reproved_by_relative,
-      :reproved_by_bounced_check,
-      :reproved_by_age_and_income,
-      :reproved_by_obit_indication,
-      :reproved_by_protested_title,
-      :reproved_by_recent_debit
+    enum :disapproval_situation, %i[
+      debtor
+      blocked_negativity
+      reproved_by_trial
+      insufficient_income
+      exceeded_debits
+      blocked_cpf
+      reproved_by_relative
+      reproved_by_bounced_check
+      reproved_by_age_and_income
+      reproved_by_obit_indication
+      reproved_by_protested_title
+      reproved_by_recent_deb
     ]
 
     enum :payment_situation, %i[
-      unanalyzed
-      good_payer
-      no_payer
-      new_client
-      late_payer
+      unanalyzed good_payer no_payer new_client late_payer
     ], suffix: true
 
     validates :status, inclusion: { in: statuses.keys }
@@ -99,6 +95,10 @@ module Analysis
             inverse_of: :analysis_item,
             dependent: :destroy,
             as: :consumer
+
+    has_one :pro_score_report, class_name: 'ProScore::Report',
+                               inverse_of: :analysis_item,
+                               dependent: :destroy
 
     has_one :provenir_big_data_corp, class_name: 'Provenir::BigDataCorp',
                                      inverse_of: :analysis_item,

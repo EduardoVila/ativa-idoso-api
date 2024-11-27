@@ -4,7 +4,7 @@
 #
 # Table name: provenir_extended_phones
 #
-#  id                           :uuid             not null, primary key
+#  id                           :bigint           not null, primary key
 #  total_phones                 :integer
 #  total_active_phones          :integer
 #  total_work_phones            :integer
@@ -19,7 +19,7 @@
 #  total_last18_months_passages :integer
 #  oldest_phone_passage_date    :datetime
 #  newest_phone_passage_date    :datetime
-#  provenir_big_data_corp_id    :uuid             not null
+#  provenir_big_data_corp_id    :bigint           not null
 #  created_at                   :datetime         not null
 #  updated_at                   :datetime         not null
 #

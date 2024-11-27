@@ -4,10 +4,10 @@
 #
 # Table name: provenir_decisions
 #
-#  id                  :uuid             not null, primary key
+#  id                  :bigint           not null, primary key
 #  decision_content    :text
 #  decision_date       :datetime
-#  provenir_lawsuit_id :uuid             not null
+#  provenir_lawsuit_id :bigint           not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #

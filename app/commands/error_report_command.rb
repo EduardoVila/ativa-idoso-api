@@ -18,7 +18,6 @@ class ErrorReportCommand < ApplicationCommand
     # In a thread to avoid delaying/blocking request response.
     Thread.new do
       sentry_report @err
-      # new_relic_report err
     end
   end
 

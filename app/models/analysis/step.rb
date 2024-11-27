@@ -4,7 +4,7 @@
 #
 # Table name: analysis_steps
 #
-#  id            :uuid             not null, primary key
+#  id            :bigint           not null, primary key
 #  name          :string
 #  command_class :integer
 #  index_order   :integer

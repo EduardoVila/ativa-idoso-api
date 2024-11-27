@@ -1,0 +1,19 @@
+{
+  "registro": [
+      {
+          "numero_plugin": "404",
+          "codigo": "514",
+          "titulo": "TRABALHADORES NOS SERVICOS DE ADMINISTRACAO, CONSERVACAO E MANUTENCAO DE EDIFICIOS E LOGRADOUROS"
+      },
+      {
+          "numero_plugin": "412",
+          "codigo_da_faixa_salarial": "3",
+          "faixa_salarial": "E",
+          "descricao_da_faixa": "de 02 a 03 salarios minimos"
+      },
+      {
+          "numero_plugin": "411",
+          "valor_da_renda_presumida": "2.254,71"
+      }
+  ]
+}

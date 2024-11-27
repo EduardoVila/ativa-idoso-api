@@ -4,7 +4,7 @@
 #
 # Table name: boa_vista_summary_of_returns_reported_by_users
 #
-#  id                            :uuid             not null, primary key
+#  id                            :bigint           not null, primary key
 #  register_size                 :string
 #  register_type                 :string
 #  register                      :string
@@ -13,7 +13,7 @@
 #  total                         :string
 #  first_devolution_date         :string
 #  last_devolution_date          :string
-#  boa_vista_acerta_essencial_id :uuid             not null
+#  boa_vista_acerta_essencial_id :bigint           not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
 #

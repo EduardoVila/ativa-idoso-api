@@ -4,7 +4,7 @@
 #
 # Table name: provenir_lawsuits
 #
-#  id                                  :uuid             not null, primary key
+#  id                                  :bigint           not null, primary key
 #  lawsuit_number                      :string
 #  lawsuit_type                        :string
 #  main_subject                        :text
@@ -37,17 +37,10 @@
 #  law_suit_age                        :integer
 #  average_number_of_updates_per_month :float
 #  reason_for_concealed_data           :string
-#  provenir_process_id                 :uuid             not null
+#  provenir_process_id                 :bigint           not null
 #  created_at                          :datetime         not null
 #  updated_at                          :datetime         not null
 #
-
-require_relative '../concerns/provenir/banned_keywords_analyzable'
-require_relative '../concerns/provenir/defendant_analyzable'
-require_relative '../concerns/provenir/disapproval_analyzable'
-require_relative '../concerns/provenir/lawsuit_exceptionable'
-require_relative '../concerns/name_comparable'
-
 module Provenir
   class Lawsuit < ApplicationRecord
     include DisapprovalAnalyzable
@@ -87,6 +80,9 @@ module Provenir
 
     alias_attribute :type, :lawsuit_type
     alias_attribute :number, :lawsuit_number
+
+    alias_method :defendant, :defendant?
+    alias_method :disapproved, :disapproved?
 
     accepts_nested_attributes_for :decisions, :parties, :petitions, :updates
   end

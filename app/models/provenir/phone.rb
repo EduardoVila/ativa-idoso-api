@@ -4,7 +4,7 @@
 #
 # Table name: provenir_phones
 #
-#  id                                      :uuid             not null, primary key
+#  id                                      :bigint           not null, primary key
 #  number                                  :string
 #  complement                              :string
 #  area_code                               :string
@@ -63,7 +63,7 @@
 #  is_in_do_not_call_list                  :boolean
 #  has_opt_in                              :boolean          default(FALSE)
 #  current_carrier                         :string
-#  provenir_extended_phone_id              :uuid             not null
+#  provenir_extended_phone_id              :bigint           not null
 #  created_at                              :datetime         not null
 #  updated_at                              :datetime         not null
 #

@@ -4,11 +4,11 @@
 #
 # Table name: boa_vista_phones
 #
-#  id                              :uuid             not null, primary key
+#  id                              :bigint           not null, primary key
 #  ddd                             :string
 #  number                          :string
 #  phone_type                      :string
-#  boa_vista_cadastral_location_id :uuid             not null
+#  boa_vista_cadastral_location_id :bigint           not null
 #  created_at                      :datetime         not null
 #  updated_at                      :datetime         not null
 #
