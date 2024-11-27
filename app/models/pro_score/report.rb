@@ -57,21 +57,21 @@ module ProScore
                                     foreign_key: 'pro_score_report_id',
                                     inverse_of: :report
 
-    has_one :proprable_professions, class_name: 'ProScore::ProprableProfession',
-                                    dependent: :destroy,
-                                    foreign_key: 'pro_score_report_id',
-                                    inverse_of: :report
+    has_one :proprable_profession, class_name: 'ProScore::ProprableProfession',
+                                   dependent: :destroy,
+                                   foreign_key: 'pro_score_report_id',
+                                   inverse_of: :report
 
-    has_one :presumed_salary_ranges,
+    has_one :presumed_salary_range,
             class_name: 'ProScore::PresumedSalaryRange',
             dependent: :destroy,
             foreign_key: 'pro_score_report_id',
             inverse_of: :report
 
-    has_one :presumed_incomes, class_name: 'ProScore::PresumedIncome',
-                               dependent: :destroy,
-                               foreign_key: 'pro_score_report_id',
-                               inverse_of: :report
+    has_one :presumed_income, class_name: 'ProScore::PresumedIncome',
+                              dependent: :destroy,
+                              foreign_key: 'pro_score_report_id',
+                              inverse_of: :report
 
     validates :raw_data, presence: true
 

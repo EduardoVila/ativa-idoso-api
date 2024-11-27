@@ -1,5 +1,19 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: analysis_reports
+#
+#  id                    :uuid             not null, primary key
+#  cpfs                  :string           is an Array
+#  status                :integer
+#  fee                   :float
+#  approved              :boolean
+#  disapproval_situation :integer
+#  api_client_id         :uuid             not null
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#
 require 'spec_helper'
 
 RSpec.describe Analysis::ReportSerializer do

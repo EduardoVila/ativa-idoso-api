@@ -1,5 +1,30 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: pro_score_trials
+#
+#  id                       :bigint           not null, primary key
+#  numero_plugin            :string
+#  numero_do_processo_unico :string
+#  data_distribuicao        :datetime
+#  area                     :string
+#  causa_moeda              :string
+#  causa_valor              :string
+#  unidade_origem           :string
+#  url_processo             :string
+#  sistema                  :string
+#  data_processamento       :datetime
+#  tribunal                 :string
+#  uf                       :string
+#  segmento                 :string
+#  classe_processual_nome   :string
+#  orgao_julgador           :string
+#  juiz                     :string
+#  pro_score_report_id      :bigint           not null
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
+#
 require 'spec_helper'
 
 RSpec.describe ProScore::TrialSerializer do
