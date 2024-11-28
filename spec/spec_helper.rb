@@ -7,6 +7,7 @@ require 'simplecov-lcov'
 require_relative '../config/application'
 require_relative 'helpers/serializers/serialize_attribute'
 require_relative 'helpers/serializers/match_serialized_records'
+require 'active_support/testing/assertions'
 
 SimpleCov::Formatter::LcovFormatter.config.report_with_single_file = true
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
@@ -58,9 +59,13 @@ RSpec.configure do |config|
     FactoryBot.find_definitions
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with :truncation
+    ActiveJob::Base.queue_adapter = :test
   end
 
-  config.before { DatabaseCleaner.start }
+  config.before do
+    DatabaseCleaner.start
+  end
+
   config.after { DatabaseCleaner.clean }
 
   config.order = :random
@@ -84,6 +89,7 @@ RSpec.configure do |config|
 
   # Job config
   config.include ActiveJob::TestHelper, type: :job
+  config.include ActiveSupport::Testing::Assertions
 
   # Serializers config
   config.include MatchSerializerRecordSupportMatcher
