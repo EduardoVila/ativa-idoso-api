@@ -4,31 +4,35 @@ require 'spec_helper'
 
 RSpec.describe AnalysisReportRunnerCommand, type: :command do
   describe '#call' do
-    context 'when status is done' do
+    context 'when status is :done' do
       let(:analysis_report) do
         create :analysis_report, :done, cpfs: [Faker::CPF.pretty]
       end
 
-      it 'does not call analysis_item run_command' do
-        expect_any_instance_of(Analysis::Item).not_to receive(:run_command) # rubocop:disable RSpec/AnyInstance
+      it 'does not call Analysis Item Runner Command' do
+        allow(AnalysisItemRunnerCommand).to receive(:call)
 
-        described_class.new(analysis_report).call
+        described_class.call(analysis_report)
+
+        expect(AnalysisItemRunnerCommand).not_to have_received(:call)
       end
     end
 
-    context 'when status is not_found' do
+    context 'when status is :not_found' do
       let(:analysis_report) do
         create :analysis_report, :not_found, cpfs: [Faker::CPF.pretty]
       end
 
-      it 'does not call analysis_item run' do
-        expect_any_instance_of(Analysis::Item).not_to receive(:run_command) # rubocop:disable RSpec/AnyInstance
+      it 'does not call Analysis Item Runner Command' do
+        allow(AnalysisItemRunnerCommand).to receive(:call)
 
-        described_class.new(analysis_report).call
+        described_class.call(analysis_report)
+
+        expect(AnalysisItemRunnerCommand).not_to have_received(:call)
       end
     end
 
-    context 'when status is todo' do
+    context 'when status is :todo' do
       let(:analysis_report) { create :analysis_report, :todo }
       let(:analysis_item) { create :analysis_item, report: analysis_report }
 
@@ -36,9 +40,16 @@ RSpec.describe AnalysisReportRunnerCommand, type: :command do
         allow(Analysis::CreateAnalysisItemsService).to receive(:call)
           .with(analysis_report).and_return(analysis_item)
 
-        expect_any_instance_of(Analysis::Item).to receive(:run_command).once # rubocop:disable RSpec/AnyInstance
+        allow(AnalysisItemRunnerCommand).to receive(:call).with(analysis_item)
+          .and_return(analysis_item)
 
-        described_class.new(analysis_report).call
+        described_class.call(analysis_report)
+
+        expect(Analysis::CreateAnalysisItemsService).to have_received(:call)
+          .with(analysis_report)
+
+        expect(AnalysisItemRunnerCommand).to have_received(:call)
+          .with(analysis_item)
       end
     end
   end
