@@ -10,7 +10,6 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
-
 require 'spec_helper'
 
 RSpec.describe Analysis::ItemStep, type: :model do

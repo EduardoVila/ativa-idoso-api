@@ -10,5 +10,6 @@ class Router < Sinatra::Base
   def self.init(app)
     app.use HealthController
     app.use API::V1::TokensController
+    app.use API::V1::AnalysisReportsController
   end
 end
