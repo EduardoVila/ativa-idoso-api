@@ -15,7 +15,8 @@ module Analysis
       return if analysis_report.items.any?
 
       cpfs.each do |cpf|
-        previous_analysis_item = find_previous_analysis_item(cpf)
+        formatted_cpf = CPF::Formatter.format(cpf)
+        previous_analysis_item = find_previous_analysis_item(formatted_cpf)
 
         if previous_analysis_item.present?
           clone_analysis_item(previous_analysis_item)
@@ -23,7 +24,7 @@ module Analysis
           next
         end
 
-        create_analysis_item(analysis_report, cpf)
+        analysis_report.items.create(cpf: formatted_cpf)
       end
     end
 
@@ -39,26 +40,12 @@ module Analysis
       )
     end
 
-    def find_previous_analysis_item(cpf)
+    def find_previous_analysis_item(formatted_cpf)
       Analysis::Item.where(status: :done, clone_of_id: nil).where(
         'cpf = :cpf AND analysis_items.created_at >= :date',
-        cpf:,
+        cpf: formatted_cpf,
         date: Time.zone.today - 30.days
       ).last
-    end
-
-    def create_analysis_item(analysis_report, cpf)
-      analysis_report.items.create(
-        cpf: CPF::Formatter.format(cpf)
-      )
-    end
-
-    def cpfs_to_array
-      return [] unless cpfs
-
-      value = cpfs.tr('"', '\'').delete("'")
-
-      value[1..-2].split(',')
     end
   end
 end
