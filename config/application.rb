@@ -4,6 +4,7 @@
 
 # Load the application loader and environments
 require_relative 'environments'
+
 # Load gems according to the environment
 ApplicationLoader.load_gems
 
