@@ -36,8 +36,13 @@ end
 module RSpecMixin
   include Rack::Test::Methods
 
-  def application = Sinatra::Application
-  def settings = application.settings
+  def application
+    Sinatra::Application
+  end
+
+  def settings
+    application.settings
+  end
 end
 
 RSpec.configure do |config|
@@ -91,4 +96,15 @@ RSpec.configure do |config|
   config.define_derived_metadata(file_path: %r{/spec/serializers}) do |metadata|
     metadata[:type] = :serializer
   end
+end
+
+RSpec.configure do |config|
+  config.include(
+    Module.new do
+      def app
+        described_class
+      end
+    end,
+    type: :controller
+  )
 end
