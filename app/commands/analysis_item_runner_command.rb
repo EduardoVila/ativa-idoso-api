@@ -21,54 +21,68 @@ class AnalysisItemRunnerCommand < ApplicationCommand
 
     # run_boa_vista_cadastral TODO
 
-    # process_cpf unless score.error_status.eql? 'boa_vista' TODO
+    return if analysis_item.error_status.eql? 'boa_vista'
+
+    analyze_cpf(analysis_item)
 
     #  AnalysisReportSyncCommand.call(score_report) TODO
   end
 
-  # private
+  private
 
-  # def process_cpf
-  #   running_score = score.clone_of || score
+  def analyze_cpf(analysis_item)
+    current_analysis = analysis_item.clone_of || analysis_item
 
-  #   Analysis::Step.enabled.order(:index_order).each do |step|
-  #     score.steps << step
+    Analysis::Step.enabled.order(:index_order).each do |step|
+      analysis_item.steps << step
 
-  #     command_class = step.command_class
-  #     proccess_module(command_class, running_score)
+      analysis_modules_runner(
+        step.command_class, current_analysis, analysis_item
+      )
 
-  #     next if score.status.eql? 'wip'
+      next if analysis_item.status.eql? 'wip'
 
-  #     break
-  #   end
-  # end
+      break
+    end
+  end
 
-  # def proccess_module(command_class, running_score)
-  #   if command_class == 'ScoreModules::PredictionCommand'
-  #     return prediction_command_handler(running_score)
-  #   end
+  def analysis_modules_runner(command_class, current_analysis, analysis_item)
+    if command_class == 'AnalysisModules::PredictionCommand'
+      return prediction_command_handler(current_analysis)
+    end
 
-  #   result = Object.const_get(command_class).call(running_score)
+    result = Object.const_get(command_class).call(current_analysis)
 
-  #   return if result[:approved]
+    return if result[:approved]
 
-  #   if command_class == 'ScoreModules::PrePredictionCommand'
-  #     create_pre_prediction
-  #   end
+    # TODO
+    # if command_class == 'AnalysisModules::PrePredictionCommand'
+    #   create_pre_prediction
+    # end
 
-  #   update_score(result)
-  # end
+    update_analysis_item(result, analysis_item)
+  end
 
-  # def update_score(result)
-  #   return score.update(status: :error) if result[:status] == 'failure'
-  #   return score.update(status: :not_found) if result[:status] == 'not_found'
+  def prediction_command_handler(current_analysis, analysis_item)
+    AnalysisModules::PredictionCommand.call(current_analysis)
 
-  #   score.update(
-  #     status: :done,
-  #     disapproval_situation: result[:disapproval_situation]
-  #   )
-  # end
+    analysis_item.update(status: :done)
+  end
 
+  def update_analysis_item(result, analysis_item)
+    return analysis_item.update(status: :error) if result[:status] == 'failure'
+
+    if result[:status] == 'not_found'
+      return analysis_item.update(status: :not_found)
+    end
+
+    analysis_item.update(
+      status: :done,
+      disapproval_situation: result[:disapproval_situation]
+    )
+  end
+
+  # TODO
   # def create_pre_prediction
   #   Prediction.create(
   #     label: 'pre_prediction',
@@ -77,13 +91,7 @@ class AnalysisItemRunnerCommand < ApplicationCommand
   #   )
   # end
 
-  # def prediction_command_handler(running_score)
-  #   prediction = ScoreModules::PredictionCommand.call(running_score)
-
-  #   prediction.update(score:)
-  #   score.update(status: :done)
-  # end
-
+  # TODO
   # def run_boa_vista_cadastral
   #   return if score.name.present?
 
