@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe ProScore::CommercialRelationSerializer do
-  subject(:serialized) { serializer.as_json(root: false) }
+  subject(:serialized) { serializer.serializable_hash }
 
   let(:commercial_relation) { build :pro_score_commercial_relation }
   let(:serializer) do

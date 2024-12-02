@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe ProScore::FamilyHoldingSerializer do
-  subject(:serialized) { serializer.as_json(root: false) }
+  subject(:serialized) { serializer.serializable_hash }
 
   let(:family_holding) { create :pro_score_family_holding }
   let(:serializer) do

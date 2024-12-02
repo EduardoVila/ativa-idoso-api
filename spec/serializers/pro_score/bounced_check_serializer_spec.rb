@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe ProScore::BouncedCheckSerializer do
-  subject(:serialized) { serializer.as_json(root: false) }
+  subject(:serialized) { serializer.serializable_hash }
 
   let(:bounced_check) { build :pro_score_bounced_check }
   let(:serializer) do
