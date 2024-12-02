@@ -77,7 +77,7 @@ module BoaVista
     end
 
     def post_url
-      'https://consumer.bvsnet.com.br/dadoscadastrais/v01/people/search'
+      ENV.fetch('BOA_VISTA_CADASTRAL_URL')
     end
   end
 end
