@@ -16,18 +16,23 @@ AllCops:
   - 'bin/**/*'
   - 'db/**/*'
   - 'todo/**/*'
+
     # TODO: to be removed after the migration to the new architecture
-  - 'app/integrators/concerns/custom_parseable.rb'
-  - 'spec/integrators/boa_vista/acerta_essencial_integrator_spec.rb'
-  - 'app/integrators/boa_vista/acerta_essencial_integrator.rb'
   - 'app/integrators/idwall.rb'
-  - 'spec/integrators/idwall/base_spec.rb'
-  - 'spec/integrators/idwall/report_spec.rb'
-  - 'spec/integrators/idwall/idwall_spec.rb'
   - 'app/data_loaders/idwall/base.rb'
   - 'app/data_loaders/idwall/report.rb'
-  - 'spec/data_loaders/idwall/base.rb'
-  - 'spec/data_loaders/idwall/report.rb'
+
+  - 'app/integrators/boa_vista.rb'
+  - 'app/data_loaders/boa_vista/base.rb'
+  - 'app/data_loaders/boa_vista/report.rb'
+
+  - 'spec/integrators/idwall_spec.rb'
+  - 'spec/data_loaders/idwall/base_spec.rb'
+  - 'spec/data_loaders/idwall/report_spec.rb'
+
+  - 'spec/integrators/boa_vista_spec.rb'
+  - 'spec/data_loaders/boa_vista/base_spec.rb'
+  - 'spec/data_loaders/boa_vista/report_spec.rb'
 
 Style/Documentation:
   Description: 'Document classes and non-namespace modules.'

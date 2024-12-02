@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../../data_loaders/idwall/base'
-require_relative '../../data_loaders/idwall/report'
+require 'spec_helper'
 
 RSpec.describe DataLoaders::Idwall::Base do
   describe '.parse' do
