@@ -23,5 +23,7 @@ module Analysis
                      class_name: 'Analysis::Item',
                      inverse_of: :steps
 
+    scope :enabled, -> { where enabled: true }
+    scope :disabled, -> { where enabled: false }
   end
 end
