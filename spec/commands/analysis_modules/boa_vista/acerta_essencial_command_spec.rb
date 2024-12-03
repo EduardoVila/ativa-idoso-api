@@ -23,10 +23,13 @@ RSpec.describe(
     end
 
     context 'when it already has acerta essencial' do
-      before { create :boa_vista_acerta_essencial, consumer: analysis_item }
+      before do
+        allow(acerta_essencial_data_loader).to receive(:load)
+        create :boa_vista_acerta_essencial, consumer: analysis_item
+      end
 
       it 'does not calls acerta essencial data loader' do
-        expect(acerta_essencial_data_loader).not_to receive(:load)
+        expect(acerta_essencial_data_loader).not_to have_received(:load)
       end
 
       it 'returns the correct hash data' do
@@ -54,7 +57,7 @@ RSpec.describe(
             before { analysis_item.update(error_status: 'boa_vista') }
 
             it 'changes score error_status to none' do
-              expect { command_call }.to change { analysis_item.error_status }
+              expect { command_call }.to change(analysis_item, :error_status)
                 .from('boa_vista').to('none')
             end
           end
@@ -85,7 +88,7 @@ RSpec.describe(
         end
 
         it 'changes score error_status to boa_vista' do
-          expect { command_call }.to change { analysis_item.error_status }
+          expect { command_call }.to change(analysis_item, :error_status)
             .from('none').to('boa_vista')
         end
       end
