@@ -19,7 +19,7 @@ class AnalysisItemRunnerCommand < ApplicationCommand
 
     analysis_item.update(status: :wip)
 
-    # run_boa_vista_cadastral TODO
+    run_boa_vista_cadastral_job(analysis_item)
 
     return if analysis_item.error_status.eql? 'boa_vista'
 
@@ -91,10 +91,9 @@ class AnalysisItemRunnerCommand < ApplicationCommand
   #   )
   # end
 
-  # TODO
-  # def run_boa_vista_cadastral
-  #   return if score.name.present?
+  def run_boa_vista_cadastral_job(analysis_item)
+    return if analysis_item.name.present?
 
-  #   BoaVistaCadastralJob.perform_now(score)
-  # end
+    BoaVistaCadastralJob.perform_now(analysis_item.serialize_record)
+  end
 end
