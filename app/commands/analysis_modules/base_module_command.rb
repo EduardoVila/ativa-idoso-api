@@ -6,6 +6,8 @@ module AnalysisModules
   class BaseModuleCommand
     include ::CommandResultsHash
 
+    attr_reader :analysis_item
+
     def call
       raise NotImplementedError
     end
@@ -14,11 +16,6 @@ module AnalysisModules
 
     # def performed?
     #   raise NotImplementedError
-    # end
-
-    # TODO: PRO_SCORE MODULES
-    # def performed_searches
-    #   analysis_item.reload.pro_score_report&.performed_searches || []
     # end
 
     # def reprove_score
