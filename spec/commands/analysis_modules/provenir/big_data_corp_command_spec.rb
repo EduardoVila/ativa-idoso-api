@@ -21,12 +21,12 @@ RSpec.describe AnalysisModules::Provenir::BigDataCorpCommand, type: :command do
       end
 
       it 'does not call big data corp integrator' do
-        described_class.new.call(analysis_item)
+        described_class.call(analysis_item)
         expect(integrator).not_to have_received(:create_resource)
       end
 
       it 'returns the correct hash data' do
-        expect(described_class.new.call(analysis_item)).to eq(success_hash)
+        expect(described_class.call(analysis_item)).to eq(success_hash)
       end
     end
 
@@ -50,13 +50,13 @@ RSpec.describe AnalysisModules::Provenir::BigDataCorpCommand, type: :command do
         end
 
         it 'calls big data corp integrator' do
-          described_class.new.call(analysis_item)
+          described_class.call(analysis_item)
           expect(integrator).to have_received(:create_resource)
             .with(analysis_item)
         end
 
         it 'returns the correct hash data' do
-          expect(described_class.new.call(analysis_item)).to eq(success_hash)
+          expect(described_class.call(analysis_item)).to eq(success_hash)
         end
 
         context 'when analysis_item has error status' do
@@ -69,7 +69,7 @@ RSpec.describe AnalysisModules::Provenir::BigDataCorpCommand, type: :command do
           end
 
           it 'changes analysis_item error_status to none' do
-            described_class.new.call(analysis_item)
+            described_class.call(analysis_item)
             expect(analysis_item).to have_received(:update)
               .with(error_status: :none)
           end
@@ -86,11 +86,11 @@ RSpec.describe AnalysisModules::Provenir::BigDataCorpCommand, type: :command do
         end
 
         it 'returns the correct hash data' do
-          expect(described_class.new.call(analysis_item)).to eq(failure_hash)
+          expect(described_class.call(analysis_item)).to eq(failure_hash)
         end
 
         it 'changes analysis_item error_status to provenir_big_data_corp' do
-          described_class.new.call(analysis_item)
+          described_class.call(analysis_item)
           expect(analysis_item).to have_received(:update)
             .with(error_status: :provenir_big_data_corp)
         end

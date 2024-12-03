@@ -20,13 +20,13 @@ RSpec.describe AnalysisModules::PredictionCommand, type: :command do
     end
 
     it 'calls the Analysis::PredictionIntegrator' do
-      described_class.new.call(analysis_item)
+      described_class.call(analysis_item)
 
       expect(integrator).to have_received(:create_resource).with(analysis_item)
     end
 
     it 'returns a Prediction object' do
-      expect(described_class.new.call(analysis_item))
+      expect(described_class.call(analysis_item))
         .to be_a(Analysis::Prediction)
     end
   end

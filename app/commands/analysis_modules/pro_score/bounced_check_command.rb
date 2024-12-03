@@ -5,9 +5,7 @@ module AnalysisModules
     class BouncedCheckCommand < AnalysisModules::BaseModuleCommand
       attr_reader :analysis_item
 
-      def call(analysis_item)
-        @analysis_item = analysis_item
-
+      def call
         if performed_searches.include?('bounced_check')
           return reproved_hash(:reproved_by_bounced_check) if bounced_check?
 

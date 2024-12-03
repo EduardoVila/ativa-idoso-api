@@ -5,7 +5,7 @@ require 'webmock/rspec'
 
 RSpec.describe AnalysisModules::ProScore::BouncedCheckCommand, type: :command do
   describe '#call' do
-    let(:command_call) { described_class.new.call(analysis_item) }
+    let(:command_call) { described_class.call(analysis_item) }
     let(:bounced_check_integrator) do
       instance_double(ProScore::BouncedCheckIntegrator)
     end
