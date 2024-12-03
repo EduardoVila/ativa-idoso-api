@@ -51,7 +51,7 @@ class AnalysisItemRunnerCommand < ApplicationCommand
       return prediction_command_handler(current_analysis)
     end
 
-    result = Object.const_get(command_class).new.call(current_analysis)
+    result = Object.const_get(command_class).call(current_analysis)
 
     return if result[:approved]
 
@@ -64,7 +64,7 @@ class AnalysisItemRunnerCommand < ApplicationCommand
   end
 
   def prediction_command_handler(current_analysis, analysis_item)
-    AnalysisModules::PredictionCommand.new.call(current_analysis)
+    AnalysisModules::PredictionCommand.call(current_analysis)
 
     analysis_item.update(status: :done)
   end
