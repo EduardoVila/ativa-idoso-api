@@ -26,7 +26,7 @@ RSpec.describe ProScore::PresumedSalaryRange, type: :model do
     it {
       expect(subject).to belong_to(:report)
         .class_name('ProScore::Report')
-        .inverse_of(:presumed_salary_ranges)
+        .inverse_of(:presumed_salary_range)
     }
   end
 end
