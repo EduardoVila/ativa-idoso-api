@@ -17,8 +17,8 @@ FactoryBot.define do
     name { Faker::Name.name }
     command_class do
       [
-        'ScoreModules::ProScore::FamilyHoldingCommand',
-        'ScoreModules::ProScore::BouncedCheckCommand'
+        'AnalysisModules::ProScore::FamilyHoldingCommand',
+        'AnalysisModules::ProScore::BouncedCheckCommand'
       ].sample
     end
     index_order { rand(1..1000) }
