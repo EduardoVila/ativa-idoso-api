@@ -15,6 +15,6 @@ module ProScore
   class PresumedIncome < ApplicationRecord
     belongs_to :report, class_name: 'ProScore::Report',
                         foreign_key: 'pro_score_report_id',
-                        inverse_of: :presumed_incomes
+                        inverse_of: :presumed_income
   end
 end
