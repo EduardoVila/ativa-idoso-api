@@ -89,6 +89,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_12_122544) do
   create_table "api_clients", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "client_id", null: false
     t.string "client_secret", null: false
+    t.text "validators", default: ["blocked_negativity_validator", "exceeded_debits_validator", "protested_titles_validator", "provenir_has_obit_indication_validator", "provenir_family_holding_validator", "provenir_process_validator", "provenir_age_and_income_validator"], array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

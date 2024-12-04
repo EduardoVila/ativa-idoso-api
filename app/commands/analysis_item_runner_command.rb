@@ -55,10 +55,9 @@ class AnalysisItemRunnerCommand < ApplicationCommand
 
     return if result[:approved]
 
-    # TODO
-    # if command_class == 'AnalysisModules::PrePredictionCommand'
-    #   create_pre_prediction
-    # end
+    if command_class == 'AnalysisModules::PrePredictionCommand'
+      create_pre_prediction
+    end
 
     update_analysis_item(result, analysis_item)
   end
@@ -82,14 +81,13 @@ class AnalysisItemRunnerCommand < ApplicationCommand
     )
   end
 
-  # TODO
-  # def create_pre_prediction
-  #   Prediction.create(
-  #     label: 'pre_prediction',
-  #     score:,
-  #     approved: false
-  #   )
-  # end
+  def create_pre_prediction
+    Analysis::Prediction.create(
+      label: 'pre_prediction',
+      item: analysis_item,
+      approved: false
+    )
+  end
 
   def run_boa_vista_cadastral_job(analysis_item)
     return if analysis_item.name.present?

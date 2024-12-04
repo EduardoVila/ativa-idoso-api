@@ -7,6 +7,7 @@
 #  id            :uuid             not null, primary key
 #  client_id     :string           not null
 #  client_secret :string           not null
+#  validators    :text             default(["\"blocked_negativity_validator\"", "\"exceeded_debits_validator\"", "\"protested_titles_validator\"", "\"provenir_has_obit_indication_validator\"", "\"provenir_family_holding_validator\"", "\"provenir_process_validator\"", "\"provenir_age_and_income_validator\""]), is an Array
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
