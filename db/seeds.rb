@@ -19,6 +19,6 @@ analysis_steps = [
   { :name => :predictions, :command_class => 'AnalysisModules::PredictionCommand', :index_order => 6 }
 ]
 
-analysis_steps.each do |score_step|
-  Analysis::Step.find_or_create_by(score_step)
+analysis_steps.each do |analysis_step|
+  Analysis::Step.find_or_create_by(analysis_step)
 end
