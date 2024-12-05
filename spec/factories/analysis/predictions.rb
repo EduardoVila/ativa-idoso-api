@@ -18,10 +18,19 @@ FactoryBot.define do
   factory :analysis_prediction, class: 'Analysis::Prediction' do
     cpf { Faker::CPF.pretty }
     approved { [true, false].sample }
-    fee { Faker::Number.decimal(l_digits: 2) }
     label { Faker::Name.name }
     input_data { { 'key' => 'value' } }
 
     item factory: :analysis_item
+
+    trait :approved do
+      approved { true }
+      fee { Faker::Number.decimal(l_digits: 2) }
+    end
+
+    trait :unapproved do
+      approved { false }
+      fee { nil }
+    end
   end
 end

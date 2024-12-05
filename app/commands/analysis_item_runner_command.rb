@@ -12,7 +12,7 @@ class AnalysisItemRunnerCommand < ApplicationCommand
 
   def call
     if %w[done not_found].include?(analysis_item.status)
-      # AnalysisReportSyncCommand.call(score_report) TODO
+      AnalysisReportSyncCommand.call(analysis_report)
 
       return
     end
@@ -25,7 +25,7 @@ class AnalysisItemRunnerCommand < ApplicationCommand
 
     analyze_cpf(analysis_item)
 
-    #  AnalysisReportSyncCommand.call(score_report) TODO
+    AnalysisReportSyncCommand.call(analysis_report)
   end
 
   private

@@ -62,6 +62,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_12_122544) do
     t.float "fee"
     t.boolean "approved"
     t.integer "disapproval_situation"
+    t.string "payload"
     t.uuid "api_client_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
