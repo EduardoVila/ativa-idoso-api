@@ -14,7 +14,7 @@ class AnalysisReportRunnerCommand < ApplicationCommand
 
     analysis_report.update(status: :wip)
 
-    create_analysis_items(analysis_report) && run_items_command(analysis_report)
+    create_analysis_items(analysis_report) && command_runner(analysis_report)
   end
 
   private
@@ -23,7 +23,7 @@ class AnalysisReportRunnerCommand < ApplicationCommand
     Analysis::CreateAnalysisItemsService.call(analysis_report)
   end
 
-  def run_items_command(analysis_report)
-    analysis_report.items.each(&:run_command)
+  def command_runner(analysis_report)
+    analysis_report.items.each { |item| AnalysisItemRunnerCommand.call(item) }
   end
 end

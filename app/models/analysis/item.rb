@@ -133,11 +133,6 @@ module Analysis
       self.cpf = CPF::Formatter.format cpf if cpf.present?
     end
 
-    def run_command
-      nil
-      # ScoreRunnerCommand.call(self) TODO
-    end
-
     private
 
     def validate_monthly_score_limit
