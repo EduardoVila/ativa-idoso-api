@@ -1,5 +1,20 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: provenir_business_relationships
+#
+#  id                        :bigint           not null, primary key
+#  total_relationships       :integer
+#  total_ownerships          :integer
+#  total_employments         :integer
+#  total_partners            :integer
+#  total_clients             :integer
+#  total_suppliers           :integer
+#  provenir_big_data_corp_id :bigint           not null
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#
 require_relative '../application_serializer'
 
 module Provenir
