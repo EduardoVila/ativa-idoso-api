@@ -6,7 +6,6 @@ module AnalysisModules
   class BaseModuleCommand
     include ::CommandResultsHash
 
-<<<<<<< HEAD
     attr_reader :analysis_item
 
     def initialize(analysis_item)
@@ -17,34 +16,20 @@ module AnalysisModules
       new(*).call
     end
 
-=======
->>>>>>> dev
     def call
       raise NotImplementedError
     end
 
-<<<<<<< HEAD
     private
 
     def performed_searches
       analysis_item.reload.pro_score_report&.performed_searches || []
     end
-=======
-    # private
->>>>>>> dev
 
     # def performed?
     #   raise NotImplementedError
     # end
 
-<<<<<<< HEAD
-=======
-    # TODO: PRO_SCORE MODULES
-    # def performed_searches
-    #   analysis_item.reload.pro_score_report&.performed_searches || []
-    # end
-
->>>>>>> dev
     # def reprove_score
     #   Prediction.create(
     #     label: 'pre_validation',
