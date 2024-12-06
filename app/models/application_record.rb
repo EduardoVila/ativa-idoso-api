@@ -54,4 +54,8 @@ class ApplicationRecord < ActiveRecord::Base
 
     record_serializer.serializable_hash
   end
+
+  def self.deserialize_record(serialized_data)
+    find(serialized_data[:id])
+  end
 end
