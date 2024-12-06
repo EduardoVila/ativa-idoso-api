@@ -6,6 +6,16 @@ module AnalysisModules
   class BaseModuleCommand
     include ::CommandResultsHash
 
+    attr_reader :analysis_item
+
+    def initialize(analysis_item)
+      @analysis_item = analysis_item
+    end
+
+    def self.call(*)
+      new(*).call
+    end
+
     def call
       raise NotImplementedError
     end

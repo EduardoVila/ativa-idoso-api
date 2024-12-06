@@ -3,7 +3,9 @@
 module AnalysisModules
   module Provenir
     class BigDataCorpCommand < AnalysisModules::BaseModuleCommand
-      def call(analysis_item)
+      attr_reader :analysis_item
+
+      def call
         return success_hash if analysis_item.provenir_big_data_corp.present?
 
         if analysis_item.provenir_big_data_corp_error_status?
