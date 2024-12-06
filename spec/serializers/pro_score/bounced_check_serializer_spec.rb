@@ -1,9 +1,25 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: pro_score_bounced_checks
+#
+#  id                        :bigint           not null, primary key
+#  numero_plugin             :string
+#  codigo_do_banco           :string
+#  nome_do_banco             :string
+#  numero_da_agencia         :string
+#  quantidade_de_ocorrencias :string
+#  motivo_da_ocorrencia      :string
+#  data_da_ultima_ocorrencia :string
+#  pro_score_report_id       :bigint           not null
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#
 require 'spec_helper'
 
 RSpec.describe ProScore::BouncedCheckSerializer do
-  subject(:serialized) { serializer.as_json(root: false) }
+  subject(:serialized) { serializer.serializable_hash }
 
   let(:bounced_check) { build :pro_score_bounced_check }
   let(:serializer) do

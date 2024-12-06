@@ -16,6 +16,6 @@ module ProScore
   class ProprableProfession < ApplicationRecord
     belongs_to :report, class_name: 'ProScore::Report',
                         foreign_key: 'pro_score_report_id',
-                        inverse_of: :proprable_professions
+                        inverse_of: :proprable_profession
   end
 end

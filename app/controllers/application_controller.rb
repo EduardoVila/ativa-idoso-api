@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 require 'sinatra'
+require 'sinatra/activerecord'
+require 'sinatra/base'
+require 'json'
+require 'base64'
 require_relative 'concerns/tokenable'
 
 class ApplicationController < Sinatra::Base
-  before do
-    content_type :json
-    request.path_info =
-      "/#{request.path_info.sub(%r{\A/?#{settings.base}}, '')}"
-  end
+  before { content_type :json }
 
   def authenticate_access_token_from(request)
     http_status = Tokenable.authenticate_access_token(request)

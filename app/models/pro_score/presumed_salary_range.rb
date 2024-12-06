@@ -17,6 +17,6 @@ module ProScore
   class PresumedSalaryRange < ApplicationRecord
     belongs_to :report, class_name: 'ProScore::Report',
                         foreign_key: 'pro_score_report_id',
-                        inverse_of: :presumed_salary_ranges
+                        inverse_of: :presumed_salary_range
   end
 end

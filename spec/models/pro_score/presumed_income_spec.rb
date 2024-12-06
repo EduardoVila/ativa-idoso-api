@@ -24,7 +24,7 @@ RSpec.describe ProScore::PresumedIncome, type: :model do
     it {
       expect(subject).to belong_to(:report)
         .class_name('ProScore::Report')
-        .inverse_of(:presumed_incomes)
+        .inverse_of(:presumed_income)
     }
   end
 end

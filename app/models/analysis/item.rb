@@ -92,7 +92,7 @@ module Analysis
 
     has_one :boa_vista_acerta_essencial,
             class_name: 'BoaVista::AcertaEssencial',
-            inverse_of: :analysis_item,
+            inverse_of: :consumer,
             dependent: :destroy,
             as: :consumer
 

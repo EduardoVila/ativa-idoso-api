@@ -7,6 +7,7 @@ require 'simplecov-lcov'
 require_relative '../config/application'
 require_relative 'helpers/serializers/serialize_attribute'
 require_relative 'helpers/serializers/match_serialized_records'
+require 'active_support/testing/assertions'
 
 SimpleCov::Formatter::LcovFormatter.config.report_with_single_file = true
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
@@ -36,8 +37,13 @@ end
 module RSpecMixin
   include Rack::Test::Methods
 
-  def application = Sinatra::Application
-  def settings = application.settings
+  def application
+    Sinatra::Application
+  end
+
+  def settings
+    application.settings
+  end
 end
 
 RSpec.configure do |config|
@@ -58,9 +64,13 @@ RSpec.configure do |config|
     FactoryBot.find_definitions
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with :truncation
+    ActiveJob::Base.queue_adapter = :test
   end
 
-  config.before { DatabaseCleaner.start }
+  config.before do
+    DatabaseCleaner.start
+  end
+
   config.after { DatabaseCleaner.clean }
 
   config.order = :random
@@ -84,6 +94,7 @@ RSpec.configure do |config|
 
   # Job config
   config.include ActiveJob::TestHelper, type: :job
+  config.include ActiveSupport::Testing::Assertions
 
   # Serializers config
   config.include MatchSerializerRecordSupportMatcher
@@ -91,4 +102,15 @@ RSpec.configure do |config|
   config.define_derived_metadata(file_path: %r{/spec/serializers}) do |metadata|
     metadata[:type] = :serializer
   end
+end
+
+RSpec.configure do |config|
+  config.include(
+    Module.new do
+      def app
+        described_class
+      end
+    end,
+    type: :controller
+  )
 end
