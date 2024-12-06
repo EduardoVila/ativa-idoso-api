@@ -29,7 +29,6 @@ module AnalysisModules
       def approved?
         @analysis_item.pro_score_trials_approved?
       end
-
     end
   end
 end
