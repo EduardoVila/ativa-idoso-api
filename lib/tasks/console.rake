@@ -9,7 +9,7 @@ task c: 'console:start'
 # Define a task to start the Pry console
 namespace :console do
   desc 'Start the Pry console'
-  task start: :environment do
+  task :start do
     require_relative '../../config/environments' # Environment setup
     require_relative '../../config/application' # Application setup
     # require_relative '../../spec/spec_helper' # RSpec setup

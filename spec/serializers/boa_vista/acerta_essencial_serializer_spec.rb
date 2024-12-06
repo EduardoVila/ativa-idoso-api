@@ -1,5 +1,18 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: boa_vista_acerta_essencials
+#
+#  id            :bigint           not null, primary key
+#  cpf           :string           not null
+#  credit_type   :integer          default("CC"), not null
+#  raw_data      :string
+#  consumer_type :string
+#  consumer_id   :uuid
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
 require 'spec_helper'
 
 RSpec.describe BoaVista::AcertaEssencialSerializer, type: :serializer do

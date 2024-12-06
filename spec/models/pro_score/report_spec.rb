@@ -79,19 +79,19 @@ RSpec.describe ProScore::Report, type: :model do
     }
 
     it {
-      expect(subject).to have_one(:proprable_professions)
+      expect(subject).to have_one(:proprable_profession)
         .class_name('ProScore::ProprableProfession')
         .inverse_of(:report)
     }
 
     it {
-      expect(subject).to have_one(:presumed_salary_ranges)
+      expect(subject).to have_one(:presumed_salary_range)
         .class_name('ProScore::PresumedSalaryRange')
         .inverse_of(:report)
     }
 
     it {
-      expect(subject).to have_one(:presumed_incomes)
+      expect(subject).to have_one(:presumed_income)
         .class_name('ProScore::PresumedIncome')
         .inverse_of(:report)
     }

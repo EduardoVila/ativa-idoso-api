@@ -25,7 +25,7 @@ RSpec.describe ProScore::ProprableProfession, type: :model do
     it {
       expect(subject).to belong_to(:report)
         .class_name('ProScore::Report')
-        .inverse_of(:proprable_professions)
+        .inverse_of(:proprable_profession)
     }
   end
 end
