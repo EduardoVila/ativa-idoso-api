@@ -2,7 +2,9 @@
 
 module AnalysisModules
   class PredictionCommand < BaseModuleCommand
-    def call(analysis_item)
+    attr_reader :analysis_item
+
+    def call
       Analysis::PredictionIntegrator.new.create_resource(analysis_item)
     end
   end
