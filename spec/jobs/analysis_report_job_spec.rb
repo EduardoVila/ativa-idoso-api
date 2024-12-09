@@ -5,7 +5,7 @@ require 'webmock/rspec'
 
 RSpec.describe AnalysisReportJob, type: :job do
   before do
-    allow(AnalysisReportRunnerCommand).to receive(:call).with(analysis_report)
+    allow(Analysis::ReportRunnerCommand).to receive(:call).with(analysis_report)
   end
 
   after do
@@ -30,7 +30,7 @@ RSpec.describe AnalysisReportJob, type: :job do
     it 'performs the job when processed' do
       perform_later_job.perform_now
 
-      expect(AnalysisReportRunnerCommand).to have_received(:call)
+      expect(Analysis::ReportRunnerCommand).to have_received(:call)
         .with(analysis_report)
     end
   end
@@ -42,8 +42,8 @@ RSpec.describe AnalysisReportJob, type: :job do
 
     before { perform_now_job }
 
-    it 'calls AnalysisReportRunnerCommand with the given analysis_report' do
-      expect(AnalysisReportRunnerCommand).to have_received(:call)
+    it 'calls Analysis::ReportRunnerCommand with the given analysis_report' do
+      expect(Analysis::ReportRunnerCommand).to have_received(:call)
         .with(analysis_report)
     end
 
