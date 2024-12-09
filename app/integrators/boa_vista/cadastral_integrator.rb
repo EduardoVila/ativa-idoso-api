@@ -4,8 +4,8 @@ require_relative '../errors/integrators/boa_vista_response_error'
 
 module BoaVista
   class CadastralIntegrator < ApplicationIntegrator
-    def load_data(cpf, products = %w[LO QA CB])
-      unmasked_cpf = CPF::Formatter.strip cpf
+    def create_resource(analysis_item, products = %w[LO QA CB])
+      unmasked_cpf = CPF::Formatter.strip analysis_item.cpf
 
       response = perform_post_request(unmasked_cpf, products)
 
@@ -16,7 +16,7 @@ module BoaVista
       end
 
       cadastral = build_cadastral(
-        parsed_response_body, response.body
+        analysis_item, parsed_response_body, response.body
       )
 
       cadastral.save && cadastral
@@ -32,8 +32,8 @@ module BoaVista
       do_request(:post, post_url, post_headers, post_body(cpf, products))
     end
 
-    def build_cadastral(parsed_response_body, response_body)
-      cadastral = klass_model.new
+    def build_cadastral(analysis_item, parsed_response_body, response_body)
+      cadastral = klass_model.new(consumer: analysis_item)
 
       begin
         cadastral.attributes = initialize_nested_attributes(

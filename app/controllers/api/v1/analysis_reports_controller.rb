@@ -20,6 +20,8 @@ module API
           AnalysisReportJob.perform_later(analysis_report.serialize_record)
 
           status(201)
+
+          analysis_report.serialize_record.to_json
         else
           halt(422)
         end

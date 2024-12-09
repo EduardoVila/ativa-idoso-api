@@ -50,7 +50,7 @@ module Analysis
 
     def analysis_modules_runner(command_class, current_analysis, analysis_item)
       if command_class == 'Analysis::PredictionCommand'
-        return prediction_command_handler(current_analysis)
+        return prediction_command_handler(current_analysis, analysis_item)
       end
 
       result = Object.const_get(command_class).call(current_analysis)
