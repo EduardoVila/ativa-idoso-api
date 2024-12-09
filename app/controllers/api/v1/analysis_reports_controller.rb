@@ -16,29 +16,30 @@ module API
         analysis_report = ::Analysis::Report.new(body_params['analysis_report'])
         analysis_report.api_client_id = current_client&.id
 
-        if analysis_report.save && analysis_report.persisted? # TODO: Refactor to add save_and_run method to run job
-          status 201
+        if analysis_report.save && analysis_report.persisted?
+          AnalysisReportJob.perform_later(analysis_report)
 
-          analysis_report.to_json # TODO: Refactor to use a serializer
+          status(201)
+
+          analysis_report.serialize_record.to_json
         else
-          status 422
+          halt(422)
         end
       end
 
       get('/api/v1/analysis-reports/:uuid') do
         current_client = Tokenable.current_client(request)
 
-        report = ::Analysis::Report.includes(:api_client).find_by(
+        analysis_report = ::Analysis::Report.includes(:api_client).find_by(
           id: params[:uuid], api_client_id: current_client.id
         )
 
-        if report.present?
-          status 200
+        if analysis_report.present?
+          status(200)
 
-          report.to_json # TODO: Refactor to use a serializer
+          analysis_report.serialize_record.to_json
         else
-          halt 404,
-               { error: "Analysis report #{params[:uuid]} not found" }.to_json
+          halt(404)
         end
       end
     end
