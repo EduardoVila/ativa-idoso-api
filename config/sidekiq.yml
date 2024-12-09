@@ -16,6 +16,7 @@
 # http://www.mikeperham.com/2013/11/13/advanced-sidekiq-host-specific-queues/
 :queues:
   - default
+  - analysis_report
 
 # custom property read by config/sidekiq.rb
 :redis_url: 'redis://localhost:6379'

@@ -23,11 +23,11 @@ class BoaVistaCadastralJob < ApplicationJob
     rescue BoaVistaResponseError
       analysis_item.update(status: :error, error_status: :boa_vista)
 
-      # AnalysisReportSyncCommand.call(analysis_item.score_report)
+      Analysis::ReportSyncCommand.call(analysis_item.report)
     rescue StandardError
       analysis_item.update(status: :not_found, error_status: :boa_vista)
 
-      # AnalysisReportSyncCommand.call(score.score_report)
+      Analysis::ReportSyncCommand.call(analysis_item.report)
     end
   end
 end

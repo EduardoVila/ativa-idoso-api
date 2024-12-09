@@ -17,11 +17,9 @@ module API
         analysis_report.api_client_id = current_client&.id
 
         if analysis_report.save && analysis_report.persisted?
-          AnalysisReportJob.perform_later(analysis_report)
+          AnalysisReportJob.perform_later(analysis_report.serialize_record)
 
           status(201)
-
-          analysis_report.serialize_record.to_json
         else
           halt(422)
         end

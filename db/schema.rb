@@ -71,7 +71,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_12_122544) do
 
   create_table "analysis_steps", force: :cascade do |t|
     t.string "name"
-    t.integer "command_class"
+    t.string "command_class"
     t.integer "index_order"
     t.boolean "enabled", default: true
     t.datetime "created_at", null: false

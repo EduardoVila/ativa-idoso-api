@@ -27,7 +27,7 @@ class AddAnalysisTables < ActiveRecord::Migration[7.1]
 
     create_table :analysis_steps do |t|
       t.string :name
-      t.integer :command_class
+      t.string :command_class
       t.integer :index_order
       t.boolean :enabled, default: true
       t.timestamps
