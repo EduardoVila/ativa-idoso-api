@@ -32,8 +32,8 @@ module BoaVista
     accepts_nested_attributes_for :addresses
     accepts_nested_attributes_for :phones
 
-    alias_method :enderecos, :addresses
-    alias_method :telefones, :phones
+    alias_attribute :enderecos, :addresses
+    alias_attribute :telefones, :phones
 
     # Adds suport for creating fact associations via alias attributes
     # Required to import data from BoaVista API
