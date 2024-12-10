@@ -10,6 +10,7 @@
 #  fee                   :float
 #  approved              :boolean
 #  disapproval_situation :integer
+#  payload               :string
 #  api_client_id         :uuid             not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
@@ -18,8 +19,12 @@ require_relative '../application_serializer'
 
 module Analysis
   class ReportSerializer < ApplicationSerializer
-    attributes :id, :status, :result, :valid_until,
+    attributes :id, :cpfs, :status, :result, :valid_until,
                :created_by, :created_at, :fee, :items
+
+    def cpfs
+      [] if object.cpfs.blank?
+    end
 
     def items
       object.items.map do |analysis_item|
