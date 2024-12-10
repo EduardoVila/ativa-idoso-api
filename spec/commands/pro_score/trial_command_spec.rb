@@ -3,7 +3,7 @@
 require 'spec_helper'
 require 'webmock/rspec'
 
-RSpec.describe AnalysisModules::ProScore::TrialCommand, type: :command do
+RSpec.describe ProScore::TrialCommand, type: :command do
   subject do
     described_class.new(analysis_item)
   end
