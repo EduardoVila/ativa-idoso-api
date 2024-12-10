@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../integrators/concerns/custom_parseable'
 require_relative '../integrators/error_logger'
 require_relative '../integrators/errors/invalid_response_error'
 require_relative '../integrators/request_logger'

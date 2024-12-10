@@ -1,11 +1,7 @@
 # frozen_string_literal: true
 
+require 'spec_helper'
 require 'webmock/rspec'
-
-require_relative '../../data_loaders/idwall/base'
-require_relative '../../data_loaders/idwall/report'
-require_relative '../../../app/integrators/idwall'
-require_relative '../../../app/integrators/errors/integrators/idwall_response_error'
 
 RSpec.describe DataLoaders::Idwall::Report do
   let(:credentials) { Integrators::Idwall.credentials }
