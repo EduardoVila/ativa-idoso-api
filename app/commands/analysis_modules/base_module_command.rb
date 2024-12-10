@@ -39,5 +39,11 @@ module AnalysisModules
 
     #   score.update(status: :done)
     # end
+
+    private
+
+    def performed_searches
+      analysis_item.reload.pro_score_report&.performed_searches || []
+    end
   end
 end
