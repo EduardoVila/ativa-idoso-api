@@ -7,7 +7,7 @@ RSpec.describe(
   AnalysisModules::BoaVista::AcertaEssencialCommand, type: :command
 ) do
   describe '#call' do
-    let(:command_call) { described_class.new.call(analysis_item) }
+    let(:command_call) { described_class.call(analysis_item) }
     let(:acerta_essencial_data_loader) do
       DataLoaders::BoaVista::AcertaEssencial
     end

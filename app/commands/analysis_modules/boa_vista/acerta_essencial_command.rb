@@ -5,7 +5,7 @@ module AnalysisModules
     class AcertaEssencialCommand < AnalysisModules::BaseModuleCommand
       attr_reader :analysis_item
 
-      def call(analysis_item)
+      def call
         return success_hash if analysis_item.boa_vista_acerta_essencial.present?
 
         if analysis_item.error_status == 'boa_vista'

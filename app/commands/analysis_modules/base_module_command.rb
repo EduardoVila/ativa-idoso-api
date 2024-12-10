@@ -20,15 +20,14 @@ module AnalysisModules
       raise NotImplementedError
     end
 
-    # private
+    private
+
+    def performed_searches
+      analysis_item.reload.pro_score_report&.performed_searches || []
+    end
 
     # def performed?
     #   raise NotImplementedError
-    # end
-
-    # TODO: PRO_SCORE MODULES
-    # def performed_searches
-    #   analysis_item.reload.pro_score_report&.performed_searches || []
     # end
 
     # def reprove_score
