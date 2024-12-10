@@ -9,6 +9,6 @@ class AnalysisReportJob < ApplicationJob
     analysis_report = Analysis::Report
       .deserialize_record(serialized_analysis_report)
 
-    AnalysisReportRunnerCommand.call(analysis_report)
+    Analysis::ReportRunnerCommand.call(analysis_report)
   end
 end
