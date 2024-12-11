@@ -39,10 +39,6 @@ module Provenir
 
     private
 
-    def enable_nested_relations
-      true
-    end
-
     def enable_log_response
       true
     end
@@ -53,6 +49,7 @@ module Provenir
 
     def build_big_data_corp(analysis_item, json_root, raw_data)
       big_data_corp = klass_model.new(analysis_item: analysis_item)
+
       big_data_corp.attributes = initialize_nested_attributes(
         json_root, big_data_corp
       )

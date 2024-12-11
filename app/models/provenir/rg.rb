@@ -15,6 +15,12 @@
 #
 module Provenir
   class Rg < ApplicationRecord
+    include AssociationAliasable
+
+    ASSOCIATION_ALIASES = {
+      sources: :source
+    }.freeze
+
     belongs_to :extended_document_information,
                class_name: 'Provenir::ExtendedDocumentInformation',
                foreign_key: 'provenir_extended_document_information_id',
@@ -28,7 +34,7 @@ module Provenir
 
     accepts_nested_attributes_for :source
 
-    alias_attribute :sources, :source
+    alias sources source
 
     def sources_attributes=(params)
       self.source_attributes = params
