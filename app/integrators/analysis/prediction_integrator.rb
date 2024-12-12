@@ -47,7 +47,7 @@ module Analysis
       {
         'Accept' => '*/*',
         'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-        'User-Agent' => 'Faraday v2.12.0',
+        'User-Agent' => 'Faraday v2.12.2',
         'Content-Type' => 'application/json',
         'Authorization' => "Bearer #{access_token64}"
       }

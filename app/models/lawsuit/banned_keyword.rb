@@ -18,14 +18,14 @@ module Lawsuit
       validates :litigation_category
     end
 
-    enum litigation_category: {
-      criminal: 0, # Criminal ou penal.
-      lease_agreement: 1, # Locação: ações de despejo, revisionais, renovatórias, consignatórias, etc.
-      execution: 2, # Execução: títulos de execução extrajudicial e judicial.
-      warranty: 3, # Garantias: ações de cobrança, alienação fiduciária, busca e apreensão, etc.
-      real_estate: 4, # Imobiliário: ações de usucapião, reintegração de posse, fornecimento de água, etc.
-      negotiable_instrument: 5 # Títulos de crédito: ações de cobrança de cheques, duplicatas, etc.
-    }
+    enum :litigation_category, [
+      :criminal, # Criminal ou penal.
+      :lease_agreement, # Locação: ações de despejo revisionais renovatórias consignatórias etc.
+      :execution, # Execução: títulos de execução extrajudicial e judicial.
+      :warranty, # Garantias: ações de cobrança alienação fiduciária busca e apreensão etc.
+      :real_estate, # Imobiliário: ações de usucapião reintegração de posse fornecimento de água etc.
+      :negotiable_instrument # Títulos de crédito: ações de cobrança de cheques duplicatas etc.
+    ]
 
     validates :litigation_category,
               inclusion: { in: litigation_categories.keys }

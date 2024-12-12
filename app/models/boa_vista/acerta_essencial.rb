@@ -15,7 +15,7 @@
 #
 module BoaVista
   class AcertaEssencial < ApplicationRecord
-    enum credit_type: { CC: 0, CD: 1, CG: 2, CH: 3, CP: 4, CV: 5, OU: 6 }
+    enum :credit_type, %i[CC CD CG CH CP CV OU]
 
     validates :cpf, presence: true
     validates :credit_type, presence: true
