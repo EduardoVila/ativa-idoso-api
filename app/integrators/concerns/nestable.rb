@@ -76,7 +76,9 @@ module Nestable
   end
 
   def init_object_within_collection(object, item)
-    object.attributes = initialize_nested_attributes(item, object)
+    attr_hash = initialize_nested_attributes(item, object)
+
+    object.attributes = attr_hash if attr_hash.present?
     object.raw_data = item if object.respond_to?(:raw_data)
 
     object

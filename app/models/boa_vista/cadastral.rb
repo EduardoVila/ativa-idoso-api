@@ -6,8 +6,8 @@
 #
 #  id            :bigint           not null, primary key
 #  raw_data      :string
-#  consumer_type :string           not null
-#  consumer_id   :uuid             not null
+#  consumer_type :string
+#  consumer_id   :uuid
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
