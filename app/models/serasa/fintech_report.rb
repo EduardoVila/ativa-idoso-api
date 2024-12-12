@@ -12,6 +12,12 @@
 #
 module Serasa
   class FintechReport < ApplicationRecord
+    include AssociationAliasable
+
+    ASSOCIATION_ALIASES = {
+      facts: :fact
+    }.freeze
+
     belongs_to :owner,
                class_name: '::Analysis::Item',
                inverse_of: :serasa_fintech_report,
@@ -46,7 +52,7 @@ module Serasa
     accepts_nested_attributes_for :negative_data
     accepts_nested_attributes_for :fact
 
-    alias_attribute :facts, :fact
+    alias facts fact
 
     # Adds suport for creating fact associations via `facts_attributes`
     # This is in addition to `fact_attributes=value` method provided by

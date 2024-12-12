@@ -12,6 +12,11 @@
 module Serasa
   class Notary < ApplicationRecord
     include ::Serasa::NegativeItemMethods
+    include AssociationAliasable
+
+    ASSOCIATION_ALIASES = {
+      notary_response: :items
+    }.freeze
 
     belongs_to :negative_data,
                class_name: 'Serasa::NegativeData',
@@ -33,7 +38,7 @@ module Serasa
     accepts_nested_attributes_for :items
     accepts_nested_attributes_for :summary
 
-    alias_attribute :notary_response, :items
+    alias notary_response items
 
     # Adds suport for creating items associations via `notary_response_attributes`
     # This is in addition to `items_attributes=value` method provided by

@@ -13,6 +13,12 @@
 #
 module BoaVista
   class CadastralQualification < ApplicationRecord
+    include AssociationAliasable
+
+    ASSOCIATION_ALIASES = {
+      pessoas_relacionada: :related_people
+    }.freeze
+
     belongs_to :boa_vista_cadastral,
                class_name: 'BoaVista::Cadastral'
 
@@ -25,7 +31,8 @@ module BoaVista
     accepts_nested_attributes_for :related_people
 
     alias_attribute :obito, :death
-    alias_attribute :pessoas_relacionada, :related_people
+
+    alias pessoas_relacionada related_people
 
     # Adds suport for creating fact associations via alias attributes
     # Required to import data from BoaVista API

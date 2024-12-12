@@ -71,7 +71,7 @@ module Provenir
                                   :alias
 
     alias alternative_id_numbers alternative_id_number
-    alias :aliases :alias
+    alias :aliases :alias # symbol to avoid conflict with alias method
 
     def alternative_id_numbers_attributes=(params)
       self.alternative_id_number_attributes = params

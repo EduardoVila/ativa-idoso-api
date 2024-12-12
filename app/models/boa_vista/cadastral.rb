@@ -11,8 +11,19 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
+
+require_relative '../concerns/association_aliasable'
+
 module BoaVista
   class Cadastral < ApplicationRecord
+    include AssociationAliasable
+
+    ASSOCIATION_ALIASES = {
+      qualificacao: :cadastral_qualification,
+      localizacao: :cadastral_location,
+      cadastro_basico: :basic_registration
+    }.freeze
+
     belongs_to :consumer, polymorphic: true, optional: true
 
     has_one :basic_registration,
@@ -40,14 +51,12 @@ module BoaVista
     accepts_nested_attributes_for :cadastral_location
     accepts_nested_attributes_for :cadastral_qualification
 
-    alias_attribute :qualificacao, :cadastral_qualification
-    alias_attribute :localizacao, :cadastral_location
-    alias_attribute :cadastro_basico, :basic_registration
+    alias qualificacao cadastral_qualification
+    alias localizacao cadastral_location
+    alias cadastro_basico basic_registration
 
     delegate :name, :age, to: :basic_registration, allow_nil: true
-
     delegate :count, to: :addresses, prefix: true
-
     delegate :count, to: :phones, prefix: true
 
     # Adds suport for creating fact associations via alias attributes
