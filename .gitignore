@@ -60,3 +60,6 @@ coverage/
 # Ruby gems
 .byebug_history
 bundle/
+
+# Redis
+dump.rdb

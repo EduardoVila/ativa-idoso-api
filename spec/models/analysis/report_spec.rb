@@ -43,7 +43,6 @@ RSpec.describe Analysis::Report, type: :model do
   describe 'associations' do
     it {
       expect(subject).to belong_to(:api_client).class_name('API::Client')
-
     }
 
     it {

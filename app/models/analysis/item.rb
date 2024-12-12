@@ -21,6 +21,7 @@
 require 'require_all'
 
 require_all 'app/models/concerns/delegators'
+require_relative '../concerns/featurable'
 
 module Analysis
   class Item < ApplicationRecord
@@ -29,6 +30,7 @@ module Analysis
     include Delegators::BoaVistaAcertaEssencial
     include Delegators::BoaVistaCadastral
     include Delegators::Provenir
+    include ::Featurable
 
     before_validation :cpf_normalizer
 
@@ -57,8 +59,6 @@ module Analysis
       reproved_by_bounced_check
       reproved_by_age_and_income
       reproved_by_obit_indication
-      reproved_by_protested_title
-      reproved_by_recent_deb
     ]
 
     enum :payment_situation, %i[

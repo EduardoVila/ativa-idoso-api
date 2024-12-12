@@ -22,10 +22,6 @@ module Analysis
     attributes :id, :cpfs, :status, :result, :valid_until,
                :created_by, :created_at, :fee, :items
 
-    def cpfs
-      [] if object.cpfs.blank?
-    end
-
     def items
       object.items.map do |analysis_item|
         analysis_item.serialize_record(

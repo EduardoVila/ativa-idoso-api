@@ -6,7 +6,7 @@
 #
 #  id            :bigint           not null, primary key
 #  name          :string
-#  command_class :integer
+#  command_class :string
 #  index_order   :integer
 #  enabled       :boolean          default(TRUE)
 #  created_at    :datetime         not null

@@ -4,8 +4,13 @@ require 'spec_helper'
 require 'webmock/rspec'
 
 RSpec.describe BoaVistaCadastralJob, type: :job do
-  before do # rubocop:disable RSpec/EmptyHook
-    # allow(Integrators::BoaVistaCadastral).to receive(:load_data)
+  let(:integrator) { instance_double(BoaVista::CadastralIntegrator) }
+
+  before do
+    allow(BoaVista::CadastralIntegrator).to receive(:new)
+      .and_return(integrator)
+
+    allow(integrator).to receive(:create_resource)
   end
 
   after do
@@ -31,11 +36,10 @@ RSpec.describe BoaVistaCadastralJob, type: :job do
       expect(perform_later_job.arguments).to eq([serialized_analysis_item])
     end
 
-    it 'performs the job when processed' do # rubocop:disable RSpec/NoExpectationExample
+    it 'performs the job when processed' do
       perform_later_job.perform_now
 
-      # expect(Integrators::BoaVistaCadastral).to have_received(:load_data)
-      #   .with(analysis_item.cpf)
+      expect(integrator).to have_received(:create_resource).with(analysis_item)
     end
   end
 
@@ -46,14 +50,10 @@ RSpec.describe BoaVistaCadastralJob, type: :job do
       described_class.perform_now(serialized_analysis_item)
     end
 
-    before { perform_now_job }
+    it 'calls Integrators::BoaVistaCadastral with the given analysis_item' do
+      perform_now_job
 
-    it 'calls Integrators::BoaVistaCadastral with the given analysis_item' do # rubocop:disable RSpec/NoExpectationExample
-      # expect(Integrators::BoaVistaCadastral).to have_received(:load_data)
-      #   .with(analysis_item.cpf)
-    end
-
-    it 'does not enqueue a job' do
+      expect(integrator).to have_received(:create_resource).with(analysis_item)
       expect(enqueued_jobs.size).to eq(0)
     end
   end
