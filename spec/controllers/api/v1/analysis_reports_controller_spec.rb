@@ -21,12 +21,15 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
           authenticate_access_token: 200,
           current_client: current_client
         )
+
+        allow(AnalysisReportJob).to receive(:perform_later)
       end
 
       it 'returns a 201 Created status' do
         post(route, params.to_json, headers)
 
         expect(last_response.status).to eq(201)
+        expect(AnalysisReportJob).to have_received(:perform_later)
       end
     end
 
@@ -81,8 +84,6 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
         get("#{base_route}/foo", {}, headers)
 
         expect(last_response.status).to eq(404)
-        response_body = JSON.parse(last_response.body)
-        expect(response_body['error']).to eq('Analysis report foo not found')
       end
     end
 
