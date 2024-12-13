@@ -84,7 +84,7 @@ RSpec.describe ProScore::FamilyHoldingCommand, type: :command do
 
         it 'calls family_holdings integrator' do
           subject.call
-          
+
           expect(family_holding_integrator).to have_received(:load_data)
         end
       end
