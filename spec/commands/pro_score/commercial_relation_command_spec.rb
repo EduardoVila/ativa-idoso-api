@@ -3,11 +3,8 @@
 require 'spec_helper'
 require 'webmock/rspec'
 
-RSpec.describe ProScore::CommercialRelationCommand,
-               type: :command do
-  subject do
-    described_class.new(analysis_item)
-  end
+RSpec.describe ProScore::CommercialRelationCommand, type: :command do
+  subject { described_class.new(analysis_item) }
 
   let(:analysis_item) { create :analysis_item }
 

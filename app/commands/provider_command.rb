@@ -21,21 +21,19 @@ class ProviderCommand
 
   private
 
+  # Useful in ProScore Commands
   def performed_searches
     analysis_item.reload.pro_score_report&.performed_searches || []
   end
 
-  # def performed?
-  #   raise NotImplementedError
-  # end
+  # Useful in ProScore Commands
+  def reprove_by_pre_validation(analysis_item)
+    Analysis::Prediction.create(
+      label: 'pre_validation',
+      item: analysis_item,
+      approved: false
+    )
 
-  # def reprove_score
-  #   Prediction.create(
-  #     label: 'pre_validation',
-  #     score:,
-  #     approved: false
-  #   )
-
-  #   score.update(status: :done)
-  # end
+    analysis_item.update(status: :done)
+  end
 end
