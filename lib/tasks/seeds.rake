@@ -1620,6 +1620,6 @@ namespace :db do
       )
     end
 
-    puts('Database populated successfully!'.green.bold)
+    puts('Database populated successfully!'.cyan.bold)
   end
 end
