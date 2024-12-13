@@ -27,19 +27,19 @@ RSpec.describe ProScore::TrialCommand, type: :command do
         report.update(performed_searches: ['trial'])
       end
 
-      xcontext 'when the score is reproved' do # rubocop:disable RSpec/PendingWithoutReason
+      context 'when the score is reproved' do
         before do
           create :pro_score_trial, report:
         end
 
         it 'creates a prediction' do
-          expect { subject.call }.to change(Prediction, :count).by(1)
+          expect { subject.call }.to change(Analysis::Prediction, :count).by(1)
         end
       end
 
-      xcontext 'when the score is approved' do # rubocop:disable RSpec/PendingWithoutReason
+      context 'when the score is approved' do
         it 'does not create a prediction' do
-          expect { subject.call }.not_to change(Prediction, :count)
+          expect { subject.call }.not_to change(Analysis::Prediction, :count)
         end
       end
     end
