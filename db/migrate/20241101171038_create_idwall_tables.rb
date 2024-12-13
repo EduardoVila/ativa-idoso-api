@@ -1,4 +1,4 @@
-class CreateIdwallTables < ActiveRecord::Migration[7.1]
+class CreateIdwallTables < ActiveRecord::Migration[8.0]
   def change
     create_table :idwall_reports do |t|
       t.string :number, null: false

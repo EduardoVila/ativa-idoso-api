@@ -1,4 +1,4 @@
-class CreateBoaVistaTables < ActiveRecord::Migration[7.1]
+class CreateBoaVistaTables < ActiveRecord::Migration[8.0]
   def change
     create_table :boa_vista_cadastrals do |t|
       t.string :raw_data

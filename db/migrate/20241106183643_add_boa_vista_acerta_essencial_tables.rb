@@ -1,4 +1,4 @@
-class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[7.1]
+class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
   def change
     create_table :boa_vista_acerta_essencials do |t|
       t.string :cpf, null: false

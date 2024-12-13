@@ -1,4 +1,4 @@
-class AddSerasaTables < ActiveRecord::Migration[7.1]
+class AddSerasaTables < ActiveRecord::Migration[8.0]
   def change
     create_table :serasa_fintech_reports do |t|
       t.string :raw_data

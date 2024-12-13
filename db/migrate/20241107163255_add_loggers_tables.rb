@@ -1,4 +1,4 @@
-class AddLoggersTables < ActiveRecord::Migration[7.1]
+class AddLoggersTables < ActiveRecord::Migration[8.0]
   def change
     create_table :request_logs do |t|
       t.string :method

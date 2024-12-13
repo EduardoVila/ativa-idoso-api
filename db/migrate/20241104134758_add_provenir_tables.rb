@@ -1,4 +1,4 @@
-class AddProvenirTables < ActiveRecord::Migration[7.1]
+class AddProvenirTables < ActiveRecord::Migration[8.0]
   def change
     create_table :provenir_big_data_corps do |t|
       t.string :raw_data

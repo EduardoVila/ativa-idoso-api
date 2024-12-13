@@ -1,4 +1,4 @@
-class AddProScoreTables < ActiveRecord::Migration[7.1]
+class AddProScoreTables < ActiveRecord::Migration[8.0]
   def change
     create_table :pro_score_reports do |t|
       t.string :raw_data
