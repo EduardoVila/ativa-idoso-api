@@ -10,12 +10,17 @@
 #  fee                   :float
 #  approved              :boolean
 #  disapproval_situation :integer
+#  payload               :string
 #  api_client_id         :uuid             not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #
+
+require_relative '../concerns/analysis_report_values_setter'
 module Analysis
   class Report < ApplicationRecord
+    include ::AnalysisReportValuesSetter
+
     enum :status, %i[todo wip done not_found error]
     enum :disapproval_situation, [
       :debtor, # when has debits with Alpop

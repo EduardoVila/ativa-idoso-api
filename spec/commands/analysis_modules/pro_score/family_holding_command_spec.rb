@@ -3,7 +3,7 @@
 require 'spec_helper'
 require 'webmock/rspec'
 
-RSpec.describe AnalysisModules::ProScore::FamilyHoldingCommand, type: :command do
+RSpec.describe ProScore::FamilyHoldingCommand, type: :command do
   subject do
     described_class.new(analysis_item)
   end
@@ -14,7 +14,7 @@ RSpec.describe AnalysisModules::ProScore::FamilyHoldingCommand, type: :command d
     let(:family_holding_integrator) do
       instance_double(ProScore::FamilyHoldingIntegrator)
     end
-    
+
     let!(:report) { create :pro_score_report, analysis_item: }
 
     context 'when already has family_holding' do
@@ -36,7 +36,7 @@ RSpec.describe AnalysisModules::ProScore::FamilyHoldingCommand, type: :command d
               status: :done
             )
           end
- 
+
           before do
             create :analysis_prediction, item: analysis_item1, approved: false
           end
@@ -60,7 +60,9 @@ RSpec.describe AnalysisModules::ProScore::FamilyHoldingCommand, type: :command d
           end
 
           it 'creates a prediction' do
-            expect { subject.call }.to change(Analysis::Prediction, :count).by(1)
+            expect do
+              subject.call
+            end.to change(Analysis::Prediction, :count).by(1)
           end
         end
       end
@@ -74,37 +76,41 @@ RSpec.describe AnalysisModules::ProScore::FamilyHoldingCommand, type: :command d
 
     context 'when has not family_holding' do
       context 'when integrator performs correctly' do
-        before do 
+        before do
           allow(ProScore::FamilyHoldingIntegrator).to receive(:new)
             .and_return(family_holding_integrator)
         end
-        
-        it 'calls family_holdings integrator' do
-          expect(family_holding_integrator).to receive(:load_data)
-            .once.and_return([])
 
+        it 'calls family_holdings integrator' do
           subject.call
+
+          expect(family_holding_integrator).to have_received(:load_data)
         end
       end
 
       context 'when it has error status' do
-        let(:analysis_item) { create :analysis_item, error_status: 'pro_score_family_holdings' }
+        let!(:analysis_item) do
+          create :analysis_item, error_status: 'pro_score_family_holdings'
+        end
+
         before do
           allow(ProScore::FamilyHoldingIntegrator).to receive(:new)
             .and_return(family_holding_integrator)
           allow(family_holding_integrator).to receive(:load_data)
-            .and_raise(Errors::ProScore::ResponseError)
+            .and_return([])
         end
 
         it 'sets the error status as none' do
-          expect { subject.call }.to change { analysis_item.reload.error_status }
+          expect { subject.call }.to change {
+            analysis_item.reload.error_status
+          }
             .from('pro_score_family_holdings').to('none')
         end
       end
 
       context 'when integrator performs with error' do
-        let(:analysis_item) { create :analysis_item, error_status: 'none' }
- 
+        let!(:analysis_item) { create :analysis_item, error_status: 'none' }
+
         before do
           allow(ProScore::FamilyHoldingIntegrator).to receive(:new)
             .and_return(family_holding_integrator)
@@ -113,7 +119,9 @@ RSpec.describe AnalysisModules::ProScore::FamilyHoldingCommand, type: :command d
         end
 
         it 'updates score to error' do
-          expect { subject.call }.to change { analysis_item.reload.error_status }
+          expect { subject.call }.to change {
+            analysis_item.reload.error_status
+          }
             .from('none').to('pro_score_family_holdings')
         end
       end

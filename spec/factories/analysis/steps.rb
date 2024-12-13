@@ -6,7 +6,7 @@
 #
 #  id            :bigint           not null, primary key
 #  name          :string
-#  command_class :integer
+#  command_class :string
 #  index_order   :integer
 #  enabled       :boolean          default(TRUE)
 #  created_at    :datetime         not null
@@ -17,8 +17,8 @@ FactoryBot.define do
     name { Faker::Name.name }
     command_class do
       [
-        'ScoreModules::ProScore::FamilyHoldingCommand',
-        'ScoreModules::ProScore::BouncedCheckCommand'
+        'ProScore::FamilyHoldingCommand',
+        'ProScore::BouncedCheckCommand'
       ].sample
     end
     index_order { rand(1..1000) }

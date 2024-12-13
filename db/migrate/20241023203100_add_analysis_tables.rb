@@ -6,6 +6,7 @@ class AddAnalysisTables < ActiveRecord::Migration[7.1]
       t.float :fee
       t.boolean :approved
       t.integer :disapproval_situation
+      t.string :payload
       t.references :api_client, type: :uuid, null: false, foreign_key: true, index: true
       t.timestamps
     end
@@ -26,7 +27,7 @@ class AddAnalysisTables < ActiveRecord::Migration[7.1]
 
     create_table :analysis_steps do |t|
       t.string :name
-      t.integer :command_class
+      t.string :command_class
       t.integer :index_order
       t.boolean :enabled, default: true
       t.timestamps

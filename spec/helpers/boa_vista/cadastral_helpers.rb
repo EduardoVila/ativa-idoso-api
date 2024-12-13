@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module CadastralHelpers
-  def request_body(cpf, products = %w[LO QA CB])
-    unmasked_cpf = CPF::Formatter.strip cpf
+  def request_body(analysis_item, products = %w[LO QA CB])
+    unmasked_cpf = CPF::Formatter.strip analysis_item.cpf
 
     {
       'cpf' => unmasked_cpf,

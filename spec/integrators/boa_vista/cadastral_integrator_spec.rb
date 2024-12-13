@@ -10,7 +10,7 @@ RSpec.configure do |c|
 end
 
 RSpec.describe BoaVista::CadastralIntegrator, :cadastral_helpers do
-  let(:cpf) { Faker::CPF.pretty }
+  let(:analysis_item) { create :analysis_item }
   let(:url) { ENV.fetch('BOA_VISTA_CADASTRAL_URL') }
   let(:success) { 200 }
   let(:headers) do
@@ -23,8 +23,8 @@ RSpec.describe BoaVista::CadastralIntegrator, :cadastral_helpers do
 
   it_behaves_like 'integrable', described_class
 
-  describe '.load_data' do
-    subject { described_class.new.load_data(cpf) }
+  describe '#create_resource' do
+    subject(:response) { described_class.new.create_resource(analysis_item) }
 
     before do
       WebMock.disable_net_connect!
@@ -34,7 +34,7 @@ RSpec.describe BoaVista::CadastralIntegrator, :cadastral_helpers do
       before do
         stub_request(:post, url).with(
           headers:,
-          body: request_body(cpf)
+          body: request_body(analysis_item)
         ).to_return(
           status: success,
           body: success_body
@@ -42,7 +42,7 @@ RSpec.describe BoaVista::CadastralIntegrator, :cadastral_helpers do
       end
 
       it 'creates boa vista cadastral correctly' do
-        expect { subject }.to change(BoaVista::Cadastral, :count).by(1)
+        expect { response }.to change(BoaVista::Cadastral, :count).by(1)
       end
     end
 
@@ -50,7 +50,7 @@ RSpec.describe BoaVista::CadastralIntegrator, :cadastral_helpers do
       before do
         stub_request(:post, url).with(
           headers:,
-          body: request_body(cpf)
+          body: request_body(analysis_item)
         ).to_return(
           status: success,
           body: not_found_body
@@ -58,7 +58,7 @@ RSpec.describe BoaVista::CadastralIntegrator, :cadastral_helpers do
       end
 
       it 'raises a StandardError' do
-        expect { subject }.to raise_error(StandardError)
+        expect { response }.to raise_error(StandardError)
       end
     end
 
@@ -66,7 +66,7 @@ RSpec.describe BoaVista::CadastralIntegrator, :cadastral_helpers do
       before do
         stub_request(:post, url).with(
           headers:,
-          body: request_body(cpf)
+          body: request_body(analysis_item)
         ).to_return(
           status: success,
           body: '{}'
@@ -74,7 +74,7 @@ RSpec.describe BoaVista::CadastralIntegrator, :cadastral_helpers do
       end
 
       it 'raises ProScoreResponseError' do
-        expect { subject }.to raise_error(BoaVistaResponseError)
+        expect { response }.to raise_error(BoaVistaResponseError)
       end
     end
   end
