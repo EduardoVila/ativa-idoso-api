@@ -15,8 +15,8 @@
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #
-
 require_relative '../concerns/analysis_report_values_setter'
+
 module Analysis
   class Report < ApplicationRecord
     include ::AnalysisReportValuesSetter

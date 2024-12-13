@@ -23,7 +23,7 @@ RSpec.describe ResponseLogger do
         .with(
           headers: {
             'Accept' => '*/*',
-            'User-Agent' => 'Faraday v2.12.0',
+            'User-Agent' => 'Faraday v2.12.2',
             'Content-Type' => 'application/json'
           }
         )

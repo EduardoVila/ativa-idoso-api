@@ -47,7 +47,7 @@ module ProScore
     end
 
     def request_url
-      ENV.fetch('PRO_SCORE_OAUTH_TOKEN_URL')
+      'https://api.proscore.com.br/oauth/token'
     end
   end
 end
