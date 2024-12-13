@@ -13,6 +13,13 @@
 #
 module BoaVista
   class CadastralLocation < ApplicationRecord
+    include AssociationAliasable
+
+    ASSOCIATION_ALIASES = {
+      enderecos: :addresses,
+      telefones: :phones
+    }.freeze
+
     belongs_to :boa_vista_cadastral,
                class_name: 'BoaVista::Cadastral',
                inverse_of: :cadastral_location
@@ -32,8 +39,8 @@ module BoaVista
     accepts_nested_attributes_for :addresses
     accepts_nested_attributes_for :phones
 
-    alias_attribute :enderecos, :addresses
-    alias_attribute :telefones, :phones
+    alias enderecos addresses
+    alias telefones phones
 
     # Adds suport for creating fact associations via alias attributes
     # Required to import data from BoaVista API

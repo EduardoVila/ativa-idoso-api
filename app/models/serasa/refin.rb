@@ -12,6 +12,11 @@
 module Serasa
   class Refin < ApplicationRecord
     include ::Serasa::NegativeItemMethods
+    include AssociationAliasable
+
+    ASSOCIATION_ALIASES = {
+      refin_response: :items
+    }.freeze
 
     belongs_to :negative_data,
                class_name: 'Serasa::NegativeData',
@@ -29,7 +34,7 @@ module Serasa
     accepts_nested_attributes_for :items
     accepts_nested_attributes_for :summary
 
-    alias_attribute :refin_response, :items
+    alias refin_response items
 
     # Adds suport for creating items associations via `refin_response_attributes`
     # This is in addition to `items_attributes=value` method provided by

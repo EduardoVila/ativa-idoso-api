@@ -59,6 +59,8 @@ module Analysis
       reproved_by_bounced_check
       reproved_by_age_and_income
       reproved_by_obit_indication
+      reproved_by_protested_title
+      reproved_by_recent_debit
     ]
 
     enum :payment_situation, %i[

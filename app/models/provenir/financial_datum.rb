@@ -14,6 +14,12 @@
 #
 module Provenir
   class FinancialDatum < ApplicationRecord
+    include AssociationAliasable
+
+    ASSOCIATION_ALIASES = {
+      income_estimates: :income_estimate
+    }.freeze
+
     belongs_to :big_data_corp,
                class_name: 'Provenir::BigDataCorp',
                foreign_key: 'provenir_big_data_corp_id',
@@ -33,7 +39,7 @@ module Provenir
 
     accepts_nested_attributes_for :income_estimate, :tax_returns
 
-    alias_attribute :income_estimates, :income_estimate
+    alias income_estimates income_estimate
 
     def income_estimates_attributes=(params)
       self.income_estimate_attributes = params

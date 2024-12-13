@@ -36,6 +36,13 @@
 #
 module Provenir
   class BasicDatum < ApplicationRecord
+    include AssociationAliasable
+
+    ASSOCIATION_ALIASES = {
+      alternative_id_numbers: :alternative_id_number,
+      aliases: :alias
+    }.freeze
+
     belongs_to :big_data_corp,
                class_name: 'Provenir::BigDataCorp',
                foreign_key: 'provenir_big_data_corp_id',
@@ -63,8 +70,8 @@ module Provenir
                                   :extended_document_information,
                                   :alias
 
-    alias_attribute :alternative_id_numbers, :alternative_id_number
-    alias_attribute :aliases, :alias
+    alias alternative_id_numbers alternative_id_number
+    alias :aliases :alias # symbol to avoid conflict with alias method
 
     def alternative_id_numbers_attributes=(params)
       self.alternative_id_number_attributes = params

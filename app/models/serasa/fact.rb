@@ -11,6 +11,12 @@
 #
 module Serasa
   class Fact < ApplicationRecord
+    include AssociationAliasable
+
+    ASSOCIATION_ALIASES = {
+      stolen_documents: :stolen_document
+    }.freeze
+
     belongs_to :fintech_report,
                class_name: 'Serasa::FintechReport',
                foreign_key: 'serasa_fintech_report_id',
@@ -31,7 +37,7 @@ module Serasa
     accepts_nested_attributes_for :inquiry
     accepts_nested_attributes_for :stolen_document
 
-    alias_attribute :stolen_documents, :stolen_document
+    alias stolen_documents stolen_document
 
     # Adds suport for creating stolen_document associations via `stolen_documents_attributes`
     # This is in addition to `stolen_document_attributes=value` method provided by

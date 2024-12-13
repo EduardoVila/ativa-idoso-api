@@ -17,6 +17,12 @@
 #
 module Provenir
   class BusinessRelationship < ApplicationRecord
+    include AssociationAliasable
+
+    ASSOCIATION_ALIASES = {
+      business_relationships_array: :business_relationships_items
+    }.freeze
+
     belongs_to :big_data_corp,
                class_name: 'Provenir::BigDataCorp',
                foreign_key: 'provenir_big_data_corp_id',
@@ -30,7 +36,7 @@ module Provenir
 
     accepts_nested_attributes_for :business_relationships_items
 
-    alias_attribute :business_relationships_array, :business_relationships_items
+    alias business_relationships_array business_relationships_items
 
     def business_relationships_array_attributes=(params)
       self.business_relationships_items_attributes = params
