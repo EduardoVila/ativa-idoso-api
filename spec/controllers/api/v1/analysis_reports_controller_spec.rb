@@ -14,6 +14,7 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
     let(:analysis_report) { create :analysis_report }
     let(:analysis_report_params) { attributes_for :analysis_report }
     let(:params) { { analysis_report: analysis_report_params } }
+    let(:job_double) { instance_double(AnalysisReportJob) }
 
     context 'when the request is successful' do
       before do
@@ -23,6 +24,9 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
         )
 
         allow(AnalysisReportJob).to receive(:perform_later)
+          .and_return(job_double)
+        allow(API::WebhookEvent).to receive(:create)
+        allow(job_double).to receive(:job_id).and_return('1234')
       end
 
       it 'returns a 201 Created status' do
@@ -30,6 +34,7 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
 
         expect(last_response.status).to eq(201)
         expect(AnalysisReportJob).to have_received(:perform_later)
+        expect(API::WebhookEvent).to have_received(:create)
       end
     end
 

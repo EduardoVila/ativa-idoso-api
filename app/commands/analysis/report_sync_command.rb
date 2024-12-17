@@ -21,6 +21,8 @@ module Analysis
 
       generate_result
       send_payload
+
+      analysis_report
     end
 
     private

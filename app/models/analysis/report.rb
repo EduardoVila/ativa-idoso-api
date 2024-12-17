@@ -15,11 +15,11 @@
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #
-require_relative '../concerns/analysis_report_values_setter'
+require_relative '../concerns/analysis_report_fee_computable'
 
 module Analysis
   class Report < ApplicationRecord
-    include ::AnalysisReportValuesSetter
+    include ::AnalysisReportFeeComputable
 
     enum :status, %i[todo wip done not_found error]
     enum :disapproval_situation, [

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_12_122544) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_17_163855) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -93,6 +93,20 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_12_122544) do
     t.text "validators", default: ["blocked_negativity_validator", "exceeded_debits_validator", "protested_titles_validator", "provenir_has_obit_indication_validator", "provenir_family_holding_validator", "provenir_process_validator", "provenir_age_and_income_validator"], array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "api_webhook_events", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "callback_url"
+    t.string "event_type"
+    t.string "event_id"
+    t.string "job_id"
+    t.integer "status"
+    t.jsonb "payload"
+    t.jsonb "response"
+    t.uuid "api_client_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["api_client_id"], name: "index_api_webhook_events_on_api_client_id"
   end
 
   create_table "boa_vista_acerta_essencials", force: :cascade do |t|
@@ -1723,6 +1737,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_12_122544) do
   add_foreign_key "analysis_items", "analysis_reports"
   add_foreign_key "analysis_predictions", "analysis_items"
   add_foreign_key "analysis_reports", "api_clients"
+  add_foreign_key "api_webhook_events", "api_clients"
   add_foreign_key "boa_vista_additional_informations", "boa_vista_acerta_essencials"
   add_foreign_key "boa_vista_addresses", "boa_vista_cadastral_locations"
   add_foreign_key "boa_vista_bank_branch_phones_addresses", "boa_vista_acerta_essencials"

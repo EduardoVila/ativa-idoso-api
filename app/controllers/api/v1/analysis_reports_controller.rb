@@ -17,7 +17,16 @@ module API
         analysis_report.api_client_id = current_client&.id
 
         if analysis_report.save && analysis_report.persisted?
-          AnalysisReportJob.perform_later(analysis_report.serialize_record)
+          job = AnalysisReportJob.perform_later(analysis_report.id)
+
+          API::WebhookEvent.create(
+            callback_url: body_params['callback_url'],
+            event_type: 'analysis_report',
+            event_id: analysis_report.id,
+            job_id: job.job_id,
+            status: 'received',
+            api_client_id: current_client.id
+          )
 
           status(201)
 

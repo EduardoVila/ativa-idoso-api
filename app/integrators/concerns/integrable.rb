@@ -25,6 +25,7 @@ module Integrable
     response = connection.public_send(verb) do |req|
       req.url url
       req.headers.update(headers) if headers
+      req.headers['Idempotency-Key'] = SecureRandom.uuid if verb == :post # ensure idempotency on POST requests
       req.body = params if params
 
       RequestLogger.log(req) if enable_log_request
