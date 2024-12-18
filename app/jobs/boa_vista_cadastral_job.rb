@@ -5,8 +5,8 @@ require_relative 'application_job'
 class BoaVistaCadastralJob < ApplicationJob
   queue_as :boa_vista
 
-  def perform(serialized_analysis_item)
-    analysis_item = Analysis::Item.deserialize_record(serialized_analysis_item)
+  def perform(analysis_item_id)
+    analysis_item = Analysis::Item.find(analysis_item_id)
 
     return if analysis_item.boa_vista_cadastral.present?
 

@@ -44,7 +44,9 @@ module API
       webhook_event.update(status: :processed, response: parsed_response_body)
 
       webhook_event
-    rescue Faraday::ConnectionFailed, API::WebhookTriggerCommandError => e
+    rescue Faraday::ConnectionFailed,
+           API::WebhookTriggerCommandError,
+           StandardError => e
       ErrorLogger.log(e)
 
       webhook_event.update(status: :error, response: e.message)

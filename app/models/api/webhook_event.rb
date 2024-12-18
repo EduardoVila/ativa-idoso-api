@@ -13,6 +13,9 @@ module API
     enum :status, %i[received processing processed error]
 
     validates :status, inclusion: { in: statuses.keys }
+    validates :callback_url,
+              presence: true,
+              format: { with: URI::DEFAULT_PARSER.make_regexp }
 
     private
 

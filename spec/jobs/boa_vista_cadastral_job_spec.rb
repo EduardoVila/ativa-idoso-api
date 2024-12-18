@@ -22,18 +22,15 @@ RSpec.describe BoaVistaCadastralJob, type: :job do
 
   describe '#perform_later' do
     let(:analysis_item) { create :analysis_item }
-    let(:serialized_analysis_item) { analysis_item.serialize_record }
-    let(:perform_later_job) do
-      described_class.perform_later(serialized_analysis_item)
-    end
+    let(:perform_later_job) { described_class.perform_later(analysis_item.id) }
 
     it 'enqueues a job on the boa_vista queue' do
       expect(perform_later_job.queue_name).to eq('boa_vista')
       expect(enqueued_jobs.size).to eq(1)
     end
 
-    it 'enqueues a job with the given serialized_analysis_item' do
-      expect(perform_later_job.arguments).to eq([serialized_analysis_item])
+    it 'enqueues a job with the given analysis_item id' do
+      expect(perform_later_job.arguments).to eq([analysis_item.id])
     end
 
     it 'performs the job when processed' do
@@ -45,10 +42,7 @@ RSpec.describe BoaVistaCadastralJob, type: :job do
 
   describe '#perform_now' do
     let(:analysis_item) { create :analysis_item }
-    let(:serialized_analysis_item) { analysis_item.serialize_record }
-    let(:perform_now_job) do
-      described_class.perform_now(serialized_analysis_item)
-    end
+    let(:perform_now_job) { described_class.perform_now(analysis_item.id) }
 
     it 'calls Integrators::BoaVistaCadastral with the given analysis_item' do
       perform_now_job

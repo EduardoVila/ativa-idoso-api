@@ -13,7 +13,12 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
     let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
     let(:analysis_report) { create :analysis_report }
     let(:analysis_report_params) { attributes_for :analysis_report }
-    let(:params) { { analysis_report: analysis_report_params } }
+    let(:params) do
+      {
+        analysis_report: analysis_report_params,
+        callback_url: Faker::Internet.url
+      }
+    end
     let(:job_double) { instance_double(AnalysisReportJob) }
 
     context 'when the request is successful' do
@@ -47,6 +52,21 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
         post(route, {}.to_json, headers)
 
         expect(last_response.status).to eq(401)
+      end
+    end
+
+    context 'when the request is invalid' do
+      before do
+        allow(Tokenable).to receive_messages(
+          authenticate_access_token: 200,
+          current_client: current_client
+        )
+      end
+
+      it 'returns a 400 Bad Request status' do
+        post(route, {}.to_json, headers)
+
+        expect(last_response.status).to eq(400)
       end
     end
   end

@@ -30,7 +30,7 @@ RSpec.describe AnalysisReportJob, type: :job do
       expect(enqueued_jobs.size).to eq(1)
     end
 
-    it 'enqueues a job with the given serialized_analysis_report' do
+    it 'enqueues a job with the given analysis_report id' do
       expect(perform_later_job.arguments).to eq(
         [analysis_report.id]
       )

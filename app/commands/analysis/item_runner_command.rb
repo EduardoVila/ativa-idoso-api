@@ -92,7 +92,7 @@ module Analysis
     def run_boa_vista_cadastral_job(analysis_item)
       return if analysis_item.name.present?
 
-      BoaVistaCadastralJob.perform_now(analysis_item.serialize_record)
+      BoaVistaCadastralJob.perform_now(analysis_item.id)
     end
   end
 end

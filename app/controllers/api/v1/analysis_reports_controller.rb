@@ -38,28 +38,33 @@ module API
         current_client = Tokenable.current_client(request)
         body_params = JSON.parse(request.body.read)
 
+        # Validates the presence of the analysis report and callback URL.
+        if body_params['analysis_report'].blank? ||
+           body_params['callback_url'] !~ URI::DEFAULT_PARSER.make_regexp # TODO: improve regex
+          halt(400, { message: 'Invalid parameters' }.to_json)
+        end
+
         analysis_report = ::Analysis::Report.new(
           **body_params['analysis_report'], api_client_id: current_client&.id
         )
 
         if analysis_report.save && analysis_report.persisted?
-          job = AnalysisReportJob.perform_later(analysis_report.id)
-
           API::WebhookEvent.create(
             callback_url: body_params['callback_url'],
             event_type: 'analysis_report',
             event_id: analysis_report.id,
-            job_id: job.job_id,
             status: 'received',
             access_token: request.env['HTTP_AUTHORIZATION'],
             api_client_id: current_client.id
           )
 
+          AnalysisReportJob.perform_later(analysis_report.id)
+
           status(201)
 
           analysis_report.serialize_record.to_json
         else
-          halt(422)
+          halt(422, { message: 'Analysis report could not be saved' }.to_json)
         end
       end
 
@@ -75,7 +80,7 @@ module API
 
           analysis_report.serialize_record.to_json
         else
-          halt(404)
+          halt(404, { message: 'Analysis report not found' }.to_json)
         end
       end
     end

@@ -53,8 +53,6 @@ module ProScore
         )
 
         Analysis::ReportSyncCommand.call(analysis_item.report)
-
-        []
       end
     end
   end

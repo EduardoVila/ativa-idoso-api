@@ -42,6 +42,24 @@ bundle exec rake db:migrate
 bundle exec rspec
 ```
 
+* To run local server in `localhost:3000`
+
+```sh
+bundle exec puma
+```
+
+* To start server and sidekiq/redis (needed to test jobs) in `localhost:5000`:
+
+```sh
+bundle exec foreman start
+```
+
+* To stop redis server in case of error when uploading server/sidekiq:
+
+```sh
+sudo service redis-server stop
+```
+
 ### Contribution guidelines ###
 
 * Writing tests:

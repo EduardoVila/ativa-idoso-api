@@ -11,11 +11,11 @@ class AnalysisReportJob < ApplicationJob
 
     return unless webhook_event
 
-    webhook_event.update(status: 'processing')
+    webhook_event.update(status: 'processing', job_id: job_id)
 
-    sync_analysis_report = Analysis::ReportRunnerCommand.call(analysis_report)
+    Analysis::ReportRunnerCommand.call(analysis_report)
 
-    webhook_event.update(payload: sync_analysis_report.serialize_record)
+    webhook_event.update(payload: analysis_report.reload.serialize_record)
 
     API::WebhookTriggerCommand.call(webhook_event)
   end
