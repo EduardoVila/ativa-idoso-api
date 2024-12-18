@@ -51,6 +51,7 @@ module API
             event_id: analysis_report.id,
             job_id: job.job_id,
             status: 'received',
+            access_token: request.env['HTTP_AUTHORIZATION'],
             api_client_id: current_client.id
           )
 

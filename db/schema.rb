@@ -103,6 +103,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_17_163855) do
     t.integer "status"
     t.jsonb "payload"
     t.jsonb "response"
+    t.string "access_token"
     t.uuid "api_client_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

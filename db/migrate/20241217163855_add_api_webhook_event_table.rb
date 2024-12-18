@@ -8,6 +8,7 @@ class AddApiWebhookEventTable < ActiveRecord::Migration[8.0]
       t.integer :status
       t.jsonb :payload
       t.jsonb :response
+      t.string :access_token
       t.references :api_client, type: :uuid, null: false, foreign_key: true, index: true
       t.timestamps
     end
