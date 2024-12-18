@@ -2,6 +2,7 @@
 
 require_relative '../../integrators/concerns/integrable'
 require_relative '../../integrators/concerns/parseable'
+require_relative 'webhook_trigger_command_error'
 
 module API
   class WebhookTriggerCommand < ApplicationCommand
@@ -16,18 +17,18 @@ module API
     end
 
     def call
-      return if webhook_event.success?
+      return if webhook_event.processed? # Guard clause to avoid unnecessary calls
 
       response = perform_post_request(webhook_event)
 
-      raise WebhookTriggerCommandError unless response.success?
+      raise API::WebhookTriggerCommandError unless response.success?
 
       parsed_response_body = parser(response.body)
 
-      webhook_event.update(status: :success, response: parsed_response_body)
+      webhook_event.update(status: :processed, response: parsed_response_body)
 
       webhook_event
-    rescue Faraday::ConnectionFailed, WebhookTriggerCommandError => e
+    rescue Faraday::ConnectionFailed, API::WebhookTriggerCommandError => e
       ErrorLogger.log(e)
 
       webhook_event.update(status: :error, response: e.message)
@@ -58,6 +59,4 @@ module API
       webhook_event.payload.to_json
     end
   end
-
-  class WebhookTriggerCommandError < StandardError; end
 end

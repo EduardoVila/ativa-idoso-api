@@ -7,7 +7,7 @@ module API
     belongs_to :client, class_name: 'API::Client',
                         foreign_key: 'api_client_id'
 
-    enum :status, %i[received processing success error]
+    enum :status, %i[received processing processed error]
 
     validates :status, inclusion: { in: statuses.keys }
   end
