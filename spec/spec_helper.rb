@@ -31,6 +31,8 @@ SimpleCov.start do
   add_filter 'app/controllers/concerns'
 
   add_filter 'app/core_extensions'
+
+  add_filter 'spec/helpers'
 end
 
 SimpleCov::Formatter::LcovFormatter.config.report_with_single_file = true
