@@ -2,18 +2,9 @@
 
 ENV['APP_ENV'] = 'test'
 
+# Set up SimpleCov - must be done before requiring any of the application code
 require 'simplecov'
 require 'simplecov-lcov'
-require_relative '../config/application'
-require_relative 'helpers/serializers/serialize_attribute'
-require_relative 'helpers/serializers/match_serialized_records'
-require 'active_support/testing/assertions'
-
-SimpleCov::Formatter::LcovFormatter.config.report_with_single_file = true
-SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
-  SimpleCov::Formatter::LcovFormatter,
-  SimpleCov::Formatter::HTMLFormatter
-])
 
 SimpleCov.start do
   add_group 'Commands', 'app/commands'
@@ -21,18 +12,43 @@ SimpleCov.start do
   add_group 'Jobs', 'app/jobs'
   add_group 'Models', 'app/models'
   add_group 'Services', 'app/services'
+  add_group 'Integrators', 'app/integrators'
+  add_group 'Data Loaders', 'app/data_loaders'
+  add_group 'Serializers', 'app/serializers'
 
-  add_filter '/config'
-  add_filter '/lib/concerns'
-  add_filter '/app/models/application_record.rb'
-  add_filter '/app/models/concerns'
-  add_filter '/app/serializers/application_serializer.rb'
+  add_filter 'config'
+  add_filter 'lib/concerns'
+
+  add_filter 'app/models/application_record.rb'
+  add_filter 'app/controllers/application_controller.rb'
+  add_filter 'app/commands/application_command.rb'
+  add_filter 'app/jobs/application_job.rb'
+  add_filter 'app/services/application_service.rb'
+  add_filter 'app/integrators/application_integrator.rb'
+  add_filter 'app/serializers/application_serializer.rb'
+
+  add_filter 'app/models/concerns'
+  add_filter 'app/controllers/concerns'
+
+  add_filter 'app/core_extensions'
 end
+
+SimpleCov::Formatter::LcovFormatter.config.report_with_single_file = true
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
+  SimpleCov::Formatter::LcovFormatter,
+  SimpleCov::Formatter::HTMLFormatter
+])
 
 SimpleCov.at_exit do
   SimpleCov.result.format!
   SimpleCov.minimum_coverage 98
 end
+
+# Loading the application code after SimpleCov is set up
+require_relative '../config/application'
+require_relative 'helpers/serializers/serialize_attribute'
+require_relative 'helpers/serializers/match_serialized_records'
+require 'active_support/testing/assertions'
 
 module RSpecMixin
   include Rack::Test::Methods

@@ -23,7 +23,29 @@ FactoryBot.define do
     name { Faker::Name.name }
     cpf { Faker::CPF.pretty }
     status { %i[todo wip done not_found error].sample }
-
+    features do
+      {
+        provenir_age: 28,
+        provenir_total_phones: 0,
+        provenir_total_addresses: nil,
+        provenir_tax_returns_count: 0,
+        provenir_total_assets_class: 1,
+        provenir_presumed_income_class: 1,
+        provenir_collection_occurrences: 0,
+        provenir_business_total_partners: 0,
+        provenir_business_total_ownerships: 0,
+        provenir_business_total_employments: 0,
+        provenir_business_total_relationships: 0,
+        boa_vista_acerta_essencial_debits_total_value: 0,
+        boa_vista_acerta_essencial_debit_with_maximum_value: nil,
+        boa_vista_acerta_essencial_debit_with_minimum_value: nil,
+        boa_vista_acerta_essencial_days_since_the_last_debit: nil,
+        boa_vista_acerta_essencial_protested_titles_total_value: 0,
+        boa_vista_acerta_essencial_protested_title_with_maximum_value: nil,
+        boa_vista_acerta_essencial_protested_title_with_minimum_value: nil,
+        boa_vista_acerta_essencial_days_since_the_last_protested_title: nil
+      }
+    end
     error_status do
       %i[
         none idwall boa_vista pro_score_trials serasa
