@@ -2,29 +2,54 @@
 
 require 'spec_helper'
 
-RSpec.describe Analysis::Token do
-  describe 'factories' do
-    subject { build :analysis_token }
+RSpec.describe Analysis::TokenService do
+  subject { described_class.call }
 
-    it { is_expected.to be_valid }
-  end
+  describe '.call' do
+    let(:integrator_double) do
+      instance_double(Analysis::TokenIntegrator)
+    end
 
-  describe 'custom methods' do
-    describe '#expired?' do
-      context 'when created_at in older than the current date' do
-        subject { create :analysis_token, :expired }
+    before do
+      allow(Analysis::TokenIntegrator).to receive(:new)
+        .and_return(integrator_double)
+    end
 
-        it 'returns true' do
-          expect(subject.expired?).to be(true)
-        end
+    context 'when last authentication is expired' do
+      let(:token) { create :analysis_token }
+
+      before { create :analysis_token, :expired }
+
+      it 'generates a new authentication on Pro Score API' do
+        allow(integrator_double).to receive(:create_resource).once
+          .and_return(token)
+
+        expect(subject).to eq(token)
       end
+    end
 
-      context 'when created_at is newer than the current date' do
-        subject { create :analysis_token }
+    context 'when last authentication is not expired' do
+      let!(:token) { create :analysis_token }
 
-        it 'returns false' do
-          expect(subject.expired?).to be(false)
-        end
+      it 'returns the api token' do
+        allow(integrator_double).to receive(:create_resource).once
+
+        expect(subject).to eq(token)
+
+        expect(integrator_double).not_to have_received(:create_resource)
+      end
+    end
+
+    context 'when there is no authentication' do
+      let(:token) { create :analysis_token }
+
+      before { token.delete }
+
+      it 'returns the api token' do
+        allow(integrator_double).to receive(:create_resource).once
+          .and_return(token)
+
+        expect(subject).to eq(token)
       end
     end
   end

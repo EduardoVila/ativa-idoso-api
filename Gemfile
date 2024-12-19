@@ -59,7 +59,7 @@ group :development, :test do
   gem 'rspec' # Testing framework
   gem 'shoulda-matchers' # Matchers for common Rails functionality
   gem 'simplecov' # Code coverage reporting
-  gem 'simplecov-lcov' # Lcov output for coverage reports
+  gem 'simplecov-lcov', require: 'simplecov' # Lcov output for coverage reports
   gem 'sinatra-reloader', require: 'sinatra/reloader' # Reloading during development
   gem 'webmock' # Stubbing HTTP requests in tests
 end
