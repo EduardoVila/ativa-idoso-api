@@ -121,14 +121,3 @@ RSpec.configure do |config|
     metadata[:type] = :serializer
   end
 end
-
-RSpec.configure do |config|
-  config.include(
-    Module.new do
-      def app
-        described_class
-      end
-    end,
-    type: :controller
-  )
-end
