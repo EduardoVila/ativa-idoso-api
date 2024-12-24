@@ -22,7 +22,9 @@ module ProScore
           status: :error, error_status: :pro_score_presumed_income
         )
 
-        Analysis::ReportSyncCommand.call(analysis_item.report)
+        InvokerCommand.execute(
+          :report_sync_command, analysis_item.report
+        )
       end
 
       return if analysis_item.pro_score_presumed_income.blank? || income_valid?

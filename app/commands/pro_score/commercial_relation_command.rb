@@ -22,7 +22,9 @@ module ProScore
           status: :error, error_status: :pro_score_commercial_relations
         )
 
-        Analysis::ReportSyncCommand.call(analysis_item.report)
+        InvokerCommand.execute(
+          :analysis_report_sync_command, analysis_item.report
+        )
       end
     end
   end
