@@ -13,7 +13,7 @@ module Analysis
       Analysis::Step.enabled.order(:index_order).each do |step|
         analysis_item.steps << step
 
-        invoke_steps(step.command_class, current_analysis, analysis_item)
+        invoke_steps(step.command_class, current_analysis)
 
         next if analysis_item.status.eql?('wip')
 
@@ -23,7 +23,7 @@ module Analysis
 
     private
 
-    def invoke_steps(command_class, current_analysis, analysis_item)
+    def invoke_steps(command_class, current_analysis)
       if command_class == 'Analysis::PredictionCommand'
         InvokerCommand.execute(:a_step, current_analysis, command_class)
 
@@ -36,24 +36,24 @@ module Analysis
 
       create_analysis_prediction if command_class == 'PrePredictionCommand'
 
-      update_analysis_item(result, analysis_item)
+      update_analysis_item(result)
     end
 
-    def update_analysis_item(result, analysis_item)
+    def update_analysis_item(result)
       case result[:status]
       when 'error'
-        return analysis_item.update(status: :error)
+        analysis_item.update(status: :error)
       when 'not_found'
-        return analysis_item.update(status: :not_found)
+        analysis_item.update(status: :not_found)
+      else
+        analysis_item.update(
+          status: :done,
+          disapproval_situation: result[:disapproval_situation]
+        )
       end
-
-      analysis_item.update(
-        status: :done,
-        disapproval_situation: result[:disapproval_situation]
-      )
     end
 
-    def create_analysis_prediction(analysis_item)
+    def create_analysis_prediction
       Analysis::Prediction.create(
         label: 'pre_prediction',
         item: analysis_item,

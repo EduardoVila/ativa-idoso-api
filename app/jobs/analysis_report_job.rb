@@ -17,23 +17,54 @@ class AnalysisReportJob < ApplicationJob
   queue_as :analysis_report
 
   def perform(analysis_report_id)
-    analysis_report = Analysis::Report.find(analysis_report_id)
-    webhook_event = API::WebhookEvent.find_by(event_id: analysis_report.id)
+    analysis_report = find_analysis_report(analysis_report_id)
+    webhook_event = find_webhook_event(analysis_report.id)
 
     return unless webhook_event
 
+    process_webhook_event(webhook_event)
+    run_analysis_report(analysis_report)
+
+    return if analysis_report_done_or_not_found?(analysis_report)
+
+    process_analysis_items(analysis_report)
+    update_webhook_event_payload(webhook_event, analysis_report)
+    trigger_webhook_event(webhook_event)
+  end
+
+  private
+
+  def find_analysis_report(analysis_report_id)
+    Analysis::Report.find(analysis_report_id)
+  end
+
+  def find_webhook_event(analysis_report_id)
+    API::WebhookEvent.find_by(event_id: analysis_report_id)
+  end
+
+  def process_webhook_event(webhook_event)
     webhook_event.update(status: 'processing', job_id: job_id)
+  end
 
+  def run_analysis_report(analysis_report)
     InvokerCommand.execute(:analysis_report_runner_command, analysis_report)
+  end
 
-    return if %w[done not_found].include?(analysis_report.status)
+  def analysis_report_done_or_not_found?(analysis_report)
+    %w[done not_found].include?(analysis_report.status)
+  end
 
+  def process_analysis_items(analysis_report)
     analysis_report.reload.items.each do |item|
       InvokerCommand.execute(:analysis_item_runner_command, item)
     end
+  end
 
+  def update_webhook_event_payload(webhook_event, analysis_report)
     webhook_event.update(payload: analysis_report.reload.serialize_record)
+  end
 
+  def trigger_webhook_event(webhook_event)
     InvokerCommand.execute(:webhook_trigger_command, webhook_event)
   end
 end
