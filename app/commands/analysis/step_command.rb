@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Analysis
   class StepCommand < ApplicationCommand
     attr_reader :analysis_item
@@ -25,12 +27,12 @@ module Analysis
 
     def invoke_steps(command_class, current_analysis)
       if command_class == 'Analysis::PredictionCommand'
-        InvokerCommand.execute(:a_step, current_analysis, command_class)
+        Invoker.execute(:a_step, current_analysis, command_class)
 
         return analysis_item.update(status: :done)
       end
 
-      result = InvokerCommand.execute(:a_step, current_analysis, command_class)
+      result = Invoker.execute(:a_step, current_analysis, command_class)
 
       return if result[:approved]
 

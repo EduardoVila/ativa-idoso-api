@@ -16,13 +16,11 @@ module BoaVista
       rescue BoaVistaResponseError
         analysis_item.update(status: :error, error_status: :boa_vista)
 
-        InvokerCommand.execute(
-          :analysis_report_sync_command, analysis_item.report
-        )
+        Invoker.execute(:analysis_report_sync_command, analysis_item.report)
       rescue StandardError
         analysis_item.update(status: :not_found, error_status: :boa_vista)
 
-        InvokerCommand.execute(:report_sync_command, analysis_item.report)
+        Invoker.execute(:analysis_report_sync_command, analysis_item.report)
       end
     end
   end

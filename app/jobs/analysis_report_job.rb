@@ -47,7 +47,7 @@ class AnalysisReportJob < ApplicationJob
   end
 
   def run_analysis_report(analysis_report)
-    InvokerCommand.execute(:analysis_report_runner_command, analysis_report)
+    Invoker.execute(:analysis_report_runner_command, analysis_report)
   end
 
   def analysis_report_done_or_not_found?(analysis_report)
@@ -56,7 +56,7 @@ class AnalysisReportJob < ApplicationJob
 
   def process_analysis_items(analysis_report)
     analysis_report.reload.items.each do |item|
-      InvokerCommand.execute(:analysis_item_runner_command, item)
+      Invoker.execute(:analysis_item_runner_command, item)
     end
   end
 
@@ -65,6 +65,6 @@ class AnalysisReportJob < ApplicationJob
   end
 
   def trigger_webhook_event(webhook_event)
-    InvokerCommand.execute(:webhook_trigger_command, webhook_event)
+    Invoker.execute(:api_webhook_trigger_command, webhook_event)
   end
 end

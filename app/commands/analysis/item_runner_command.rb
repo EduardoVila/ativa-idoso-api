@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../application_command'
 
 module Analysis
@@ -11,7 +13,7 @@ module Analysis
     end
 
     def call
-      return sync_report if done_or_not_found?
+      return sync_analysis_report if analysis_item_done_or_not_found?
 
       analysis_item.update(status: :wip)
 
@@ -19,30 +21,30 @@ module Analysis
 
       return if boa_vista_error?
 
-      run_analysis_step
-      sync_report
+      analyze_item_step_by_step
+      sync_analysis_report
     end
 
     private
 
-    def done_or_not_found?
+    def analysis_item_done_or_not_found?
       %w[done not_found].include?(analysis_item.status)
     end
 
-    def sync_report
-      InvokerCommand.execute(:analysis_report_sync_command, analysis_report)
+    def sync_analysis_report
+      Invoker.execute(:analysis_report_sync_command, analysis_report)
     end
 
     def run_boa_vista_cadastral
-      InvokerCommand.execute(:boa_vista_cadastral_command, analysis_item)
+      Invoker.execute(:boa_vista_cadastral_command, analysis_item)
     end
 
     def boa_vista_error?
       analysis_item.error_status.eql?('boa_vista')
     end
 
-    def run_analysis_step
-      InvokerCommand.execute(:analysis_step_command, analysis_item)
+    def analyze_item_step_by_step
+      Invoker.execute(:analysis_step_command, analysis_item)
     end
   end
 end

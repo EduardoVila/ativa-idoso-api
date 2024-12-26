@@ -4,70 +4,97 @@ require 'spec_helper'
 require 'webmock/rspec'
 
 RSpec.describe AnalysisReportJob, type: :job do
-  before do
-    allow(Analysis::ReportRunnerCommand).to receive(:call).with(analysis_report)
-      .and_return(analysis_report)
-    allow(API::WebhookTriggerCommand).to receive(:call).with(webhook_event)
-  end
-
   after do
     clear_enqueued_jobs
     clear_performed_jobs
   end
 
-  describe '#perform_later' do
+  describe '#perform' do
     let(:analysis_report) { create :analysis_report, status: :todo }
-    let(:perform_later_job) do
-      described_class.perform_later(analysis_report.id)
-    end
     let(:webhook_event) do
-      create :api_webhook_event, event_id: analysis_report.id,
-                                 client: analysis_report.api_client
+      create :api_webhook_event,
+             event_id: analysis_report.id,
+             client: analysis_report.api_client
     end
 
-    it 'enqueues a job on the analysis_report queue' do
-      expect(perform_later_job.queue_name).to eq('analysis_report')
-      expect(enqueued_jobs.size).to eq(1)
+    before do
+      allow(Analysis::Report).to receive(:find).with(analysis_report.id)
+        .and_return(analysis_report)
+      allow(API::WebhookEvent).to receive(:find_by)
+        .with(event_id: analysis_report.id)
+        .and_return(webhook_event)
+      allow(Invoker).to receive(:execute)
     end
 
-    it 'enqueues a job with the given analysis_report id' do
-      expect(perform_later_job.arguments).to eq(
-        [analysis_report.id]
-      )
+    context 'when webhook_event is not found' do
+      before do
+        allow(API::WebhookEvent).to receive(:find_by)
+          .with(event_id: analysis_report.id)
+          .and_return(nil)
+      end
+
+      it 'does not process the job' do
+        described_class.new.perform(analysis_report.id)
+        expect(Invoker).not_to have_received(:execute)
+      end
     end
 
-    it 'performs the job when processed' do
-      perform_later_job.perform_now
+    context 'when webhook_event is found' do
+      it 'processes the webhook event' do
+        described_class.new.perform(analysis_report.id)
+        expect(webhook_event.reload.status).to eq('processing')
+        expect(webhook_event.reload.job_id).not_to be_nil
+      end
 
-      expect(Analysis::ReportRunnerCommand).to have_received(:call)
-        .with(analysis_report)
-      expect(API::WebhookTriggerCommand).to have_received(:call)
-        .with(webhook_event)
-    end
-  end
+      it 'runs the analysis report' do
+        described_class.new.perform(analysis_report.id)
+        expect(Invoker).to have_received(:execute)
+          .with(:analysis_report_runner_command, analysis_report)
+      end
 
-  describe '#perform_now' do
-    let(:analysis_report) { create :analysis_report, status: :todo }
-    let(:perform_now_job) { described_class.perform_now(analysis_report.id) }
-    let(:webhook_event) do
-      create :api_webhook_event, event_id: analysis_report.id,
-                                 client: analysis_report.api_client
-    end
+      context 'when analysis report is done or not found' do
+        before do
+          allow(analysis_report).to receive(:status).and_return('done')
+        end
 
-    before { perform_now_job }
+        it 'does not process analysis items' do
+          described_class.new.perform(analysis_report.id)
+          expect(Invoker).not_to have_received(:execute)
+            .with(:analysis_item_runner_command, anything)
+        end
+      end
 
-    it 'calls Analysis::ReportRunnerCommand with the given analysis_report' do
-      expect(Analysis::ReportRunnerCommand).to have_received(:call)
-        .with(analysis_report)
-    end
+      context 'when analysis report is not done or not found' do
+        let!(:analysis_items) do
+          create_list :analysis_item, 2, report: analysis_report
+        end
 
-    it 'calls API::WebhookTriggerCommand with the given webhook_event' do
-      expect(API::WebhookTriggerCommand).to have_received(:call)
-        .with(webhook_event)
-    end
+        before do
+          allow(analysis_report).to receive_messages(
+            status: 'todo', reload: analysis_report, items: analysis_items
+          )
+        end
 
-    it 'does not enqueue a job' do
-      expect(enqueued_jobs.size).to eq(0)
+        it 'processes analysis items' do
+          described_class.new.perform(analysis_report.id)
+          analysis_items.each do |item|
+            expect(Invoker).to have_received(:execute)
+              .with(:analysis_item_runner_command, item)
+          end
+        end
+
+        it 'updates the webhook event payload' do
+          described_class.new.perform(analysis_report.id)
+          expect(webhook_event.reload.payload)
+            .to eq(analysis_report.serialize_record.as_json)
+        end
+
+        it 'triggers the webhook event' do
+          described_class.new.perform(analysis_report.id)
+          expect(Invoker).to have_received(:execute)
+            .with(:api_webhook_trigger_command, webhook_event)
+        end
+      end
     end
   end
 end

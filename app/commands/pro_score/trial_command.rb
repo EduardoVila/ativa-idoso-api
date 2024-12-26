@@ -20,9 +20,7 @@ module ProScore
       rescue Errors::ProScore::ResponseError, Faraday::ConnectionFailed
         analysis_item.update(status: :error, error_status: :pro_score_trials)
 
-        InvokerCommand.execute(
-          :analysis_report_sync_command, analysis_item.report
-        )
+        Invoker.execute(:analysis_report_sync_command, analysis_item.report)
       end
 
       return if analysis_item.pro_score_trials.blank? || approved?
