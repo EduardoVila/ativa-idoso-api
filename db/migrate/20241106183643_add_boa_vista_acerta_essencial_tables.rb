@@ -67,7 +67,7 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :currency
       t.string :accumulated_value
       t.string :federative_unit
-      t.references :boa_vista_acerta_essencial, null: false, index: true, foreign_key: { unique: true }
+      t.references :boa_vista_acerta_essencial, null: false, index: { unique: true }, foreign_key: true
       t.timestamps
     end
 
@@ -135,7 +135,7 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :phone_2
       t.string :ddd_3
       t.string :phone_3
-      t.references :boa_vista_acerta_essencial, null: false, index: true, foreign_key: { unique: true }
+      t.references :boa_vista_acerta_essencial, null: false, index: { unique: true }, foreign_key: true
       t.timestamps
     end
 
@@ -197,7 +197,7 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :score
       t.string :approves
       t.string :text
-      t.references :boa_vista_acerta_essencial, null: false, index: true, foreign_key: { unique: true }
+      t.references :boa_vista_acerta_essencial, null: false, index: { unique: true }, foreign_key: true
       t.timestamps
     end
 
@@ -526,7 +526,7 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :phone_1
       t.string :phone_2
       t.string :reserved
-      t.references :boa_vista_acerta_essencial, null: false, index: true, foreign_key: { unique: true }
+      t.references :boa_vista_acerta_essencial, null: false, index: { unique: true }, foreign_key: true
       t.timestamps
     end
   end

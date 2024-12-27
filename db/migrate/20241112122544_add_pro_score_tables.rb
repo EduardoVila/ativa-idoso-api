@@ -3,7 +3,7 @@ class AddProScoreTables < ActiveRecord::Migration[8.0]
     create_table :pro_score_reports do |t|
       t.string :raw_data
       t.text :performed_searches, default: [], array: true
-      t.references :analysis_item, type: :uuid, null: false, index: true, foreign_key: { unique: true }
+      t.references :analysis_item, type: :uuid, null: false, index: { unique: true }, foreign_key: true
       t.timestamps
     end
 
@@ -87,7 +87,7 @@ class AddProScoreTables < ActiveRecord::Migration[8.0]
       t.string :numero_plugin
       t.string :codigo
       t.string :titulo
-      t.references :pro_score_report, null: false, index: true, foreign_key: { unique: true }
+      t.references :pro_score_report, null: false, index: { unique: true }, foreign_key: true
       t.timestamps
     end
 
@@ -96,14 +96,14 @@ class AddProScoreTables < ActiveRecord::Migration[8.0]
       t.string :codigo_da_faixa_salarial
       t.string :faixa_salarial
       t.string :descricao_da_faixa
-      t.references :pro_score_report, null: false, index: true, foreign_key: { unique: true }
+      t.references :pro_score_report, null: false, index: { unique: true }, foreign_key: true
       t.timestamps
     end
 
     create_table :pro_score_presumed_incomes do |t|
       t.string :numero_plugin
       t.string :valor_da_renda_presumida
-      t.references :pro_score_report, null: false, index: true, foreign_key: { unique: true}
+      t.references :pro_score_report, null: false, index: { unique: true }, foreign_key: true
       t.timestamps
     end
 
