@@ -22,7 +22,14 @@ RSpec.describe Idwall::Report, type: :model do
   end
 
   describe 'validations' do
+    subject { create :idwall_report }
+
     it { is_expected.to validate_presence_of :number }
+
+    it {
+      expect(subject).to validate_uniqueness_of(:analysis_item_id)
+        .ignoring_case_sensitivity
+    }
   end
 
   describe 'associations' do

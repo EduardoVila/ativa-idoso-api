@@ -23,8 +23,16 @@ RSpec.describe BoaVista::AcertaEssencial, type: :model do
   end
 
   describe 'validations' do
+    subject { create :boa_vista_acerta_essencial }
+
     it { is_expected.to validate_presence_of :cpf }
     it { is_expected.to validate_presence_of :credit_type }
+
+    it {
+      expect(subject).to validate_uniqueness_of(:consumer_id)
+        .scoped_to(:consumer_type)
+        .ignoring_case_sensitivity
+    }
   end
 
   describe 'associations' do

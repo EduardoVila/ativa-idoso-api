@@ -31,6 +31,8 @@ module Provenir
              inverse_of: :extended_address,
              dependent: :destroy
 
+    validates :provenir_big_data_corp_id, uniqueness: true
+
     accepts_nested_attributes_for :addresses
   end
 end

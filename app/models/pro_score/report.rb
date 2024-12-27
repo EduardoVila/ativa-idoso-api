@@ -16,6 +16,22 @@ module ProScore
     belongs_to :analysis_item, class_name: 'Analysis::Item',
                                foreign_key: 'analysis_item_id'
 
+    has_one :proprable_profession, class_name: 'ProScore::ProprableProfession',
+                                   dependent: :destroy,
+                                   foreign_key: 'pro_score_report_id',
+                                   inverse_of: :report
+
+    has_one :presumed_salary_range,
+            class_name: 'ProScore::PresumedSalaryRange',
+            dependent: :destroy,
+            foreign_key: 'pro_score_report_id',
+            inverse_of: :report
+
+    has_one :presumed_income, class_name: 'ProScore::PresumedIncome',
+                              dependent: :destroy,
+                              foreign_key: 'pro_score_report_id',
+                              inverse_of: :report
+
     has_many :trials, class_name: 'ProScore::Trial',
                       dependent: :destroy,
                       foreign_key: 'pro_score_report_id',
@@ -57,23 +73,8 @@ module ProScore
                                     foreign_key: 'pro_score_report_id',
                                     inverse_of: :report
 
-    has_one :proprable_profession, class_name: 'ProScore::ProprableProfession',
-                                   dependent: :destroy,
-                                   foreign_key: 'pro_score_report_id',
-                                   inverse_of: :report
-
-    has_one :presumed_salary_range,
-            class_name: 'ProScore::PresumedSalaryRange',
-            dependent: :destroy,
-            foreign_key: 'pro_score_report_id',
-            inverse_of: :report
-
-    has_one :presumed_income, class_name: 'ProScore::PresumedIncome',
-                              dependent: :destroy,
-                              foreign_key: 'pro_score_report_id',
-                              inverse_of: :report
-
     validates :raw_data, presence: true
+    validates :analysis_item_id, uniqueness: true
 
     def presumed_income_value
       return 0.0 unless presumed_income&.valor_da_renda_presumida

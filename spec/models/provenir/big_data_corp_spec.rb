@@ -98,6 +98,15 @@ RSpec.describe Provenir::BigDataCorp, type: :model do
     end
   end
 
+  describe 'validations' do
+    subject { create :provenir_big_data_corp }
+
+    it {
+      expect(subject).to validate_uniqueness_of(:analysis_item_id)
+        .ignoring_case_sensitivity
+    }
+  end
+
   describe 'nested_attributes' do
     it { is_expected.to accept_nested_attributes_for(:basic_datum) }
     it { is_expected.to accept_nested_attributes_for(:extended_address) }

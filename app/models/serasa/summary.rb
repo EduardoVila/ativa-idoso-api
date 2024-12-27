@@ -15,5 +15,7 @@
 module Serasa
   class Summary < ApplicationRecord
     belongs_to :owner, polymorphic: true
+
+    validates :owner_id, uniqueness: { scope: :owner_type }
   end
 end

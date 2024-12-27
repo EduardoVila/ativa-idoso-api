@@ -32,6 +32,8 @@ module Provenir
             inverse_of: :rg,
             dependent: :destroy
 
+    validates :provenir_extended_document_information_id, uniqueness: true
+
     accepts_nested_attributes_for :source
 
     alias sources source

@@ -34,6 +34,8 @@ module Serasa
             foreign_key: 'serasa_fact_id',
             inverse_of: :fact
 
+    validates :serasa_fintech_report_id, uniqueness: true
+
     accepts_nested_attributes_for :inquiry
     accepts_nested_attributes_for :stolen_document
 

@@ -21,5 +21,7 @@ module Serasa
                class_name: 'Serasa::Registration',
                foreign_key: 'serasa_registration_id',
                inverse_of: :address
+
+    validates :serasa_registration_id, uniqueness: true
   end
 end

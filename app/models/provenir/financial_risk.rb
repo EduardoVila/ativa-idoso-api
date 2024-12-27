@@ -26,5 +26,7 @@ module Provenir
                class_name: 'Provenir::BigDataCorp',
                foreign_key: 'provenir_big_data_corp_id',
                inverse_of: :financial_risk
+
+    validates :provenir_big_data_corp_id, uniqueness: true
   end
 end

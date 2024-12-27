@@ -16,5 +16,7 @@ module Provenir
                class_name: 'Provenir::Party',
                foreign_key: 'provenir_party_id',
                inverse_of: :party_detail
+
+    validates :provenir_party_id, uniqueness: true
   end
 end

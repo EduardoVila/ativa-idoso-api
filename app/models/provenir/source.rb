@@ -17,5 +17,7 @@ module Provenir
                class_name: 'Provenir::Rg',
                foreign_key: 'provenir_rg_id',
                inverse_of: :source
+
+    validates :provenir_rg_id, uniqueness: true
   end
 end

@@ -47,6 +47,8 @@ module BoaVista
     has_many :addresses, through: :cadastral_location
     has_many :phones, through: :cadastral_location
 
+    validates :consumer_id, uniqueness: { scope: :consumer_type }
+
     accepts_nested_attributes_for :basic_registration
     accepts_nested_attributes_for :cadastral_location
     accepts_nested_attributes_for :cadastral_qualification
