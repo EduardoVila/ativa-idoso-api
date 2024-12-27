@@ -66,6 +66,8 @@ module Provenir
             inverse_of: :basic_datum,
             dependent: :destroy
 
+    validates :provenir_big_data_corp_id, uniqueness: true
+
     accepts_nested_attributes_for :alternative_id_number,
                                   :extended_document_information,
                                   :alias

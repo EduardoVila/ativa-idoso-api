@@ -17,5 +17,7 @@ module Provenir
                class_name: 'Provenir::BasicDatum',
                foreign_key: 'provenir_basic_datum_id',
                inverse_of: :alias
+
+    validates :provenir_basic_datum_id, uniqueness: true
   end
 end

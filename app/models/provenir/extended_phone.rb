@@ -36,6 +36,8 @@ module Provenir
              inverse_of: :extended_phone,
              dependent: :destroy
 
+    validates :provenir_big_data_corp_id, uniqueness: true
+
     accepts_nested_attributes_for :phones
   end
 end

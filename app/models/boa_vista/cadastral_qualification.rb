@@ -28,6 +28,8 @@ module BoaVista
              foreign_key: 'boa_vista_cadastral_qualification_id',
              inverse_of: :boa_vista_cadastral_qualification
 
+    validates :boa_vista_cadastral_id, uniqueness: true
+
     accepts_nested_attributes_for :related_people
 
     alias_attribute :obito, :death

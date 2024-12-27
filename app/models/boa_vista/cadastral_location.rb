@@ -36,6 +36,8 @@ module BoaVista
              foreign_key: 'boa_vista_cadastral_location_id',
              inverse_of: :boa_vista_cadastral_location
 
+    validates :boa_vista_cadastral_id, uniqueness: true
+
     accepts_nested_attributes_for :addresses
     accepts_nested_attributes_for :phones
 

@@ -40,6 +40,8 @@ module Serasa
             foreign_key: 'serasa_negative_data_id',
             inverse_of: :negative_data
 
+    validates :serasa_fintech_report_id, uniqueness: true
+
     accepts_nested_attributes_for :pefin
     accepts_nested_attributes_for :refin
     accepts_nested_attributes_for :notary

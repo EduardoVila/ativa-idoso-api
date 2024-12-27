@@ -23,5 +23,7 @@ module Provenir
             dependent: :destroy
 
     accepts_nested_attributes_for :rg
+
+    validates :provenir_basic_datum_id, uniqueness: true
   end
 end

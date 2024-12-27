@@ -21,5 +21,7 @@ module Serasa
                class_name: 'Serasa::FintechReport',
                foreign_key: 'serasa_fintech_report_id',
                inverse_of: :score
+
+    validates :serasa_fintech_report_id, uniqueness: true
   end
 end

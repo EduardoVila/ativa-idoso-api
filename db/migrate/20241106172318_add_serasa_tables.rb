@@ -2,7 +2,7 @@ class AddSerasaTables < ActiveRecord::Migration[8.0]
   def change
     create_table :serasa_fintech_reports do |t|
       t.string :raw_data
-      t.references :analysis_item, type: :uuid, null: false, index: true, foreign_key: true
+      t.references :analysis_item, type: :uuid, null: false, index:  { unique: true }, foreign_key: true
       t.timestamps
     end
 
@@ -13,12 +13,12 @@ class AddSerasaTables < ActiveRecord::Migration[8.0]
       t.string :birth_date
       t.string :status_registration
       t.date :status_date
-      t.references :serasa_fintech_report, null: false, index: true, foreign_key: true
+      t.references :serasa_fintech_report, null: false, index: { unique: true }, foreign_key: true
       t.timestamps
     end
 
     create_table :serasa_negative_data do |t|
-      t.references :serasa_fintech_report, null: false, index: true, foreign_key: true
+      t.references :serasa_fintech_report, null: false, index:  { unique: true }, foreign_key: true
       t.timestamps
     end
 
@@ -29,12 +29,12 @@ class AddSerasaTables < ActiveRecord::Migration[8.0]
       t.string :default_rate
       t.integer :code_message
       t.string :message
-      t.references :serasa_fintech_report, null: false, index: true, foreign_key: true
+      t.references :serasa_fintech_report, null: false, index: { unique: true }, foreign_key: true
       t.timestamps
     end
 
     create_table :serasa_facts do |t|
-      t.references :serasa_fintech_report, null: false, index: true, foreign_key: true
+      t.references :serasa_fintech_report, null: false, index: { unique: true }, foreign_key: true
       t.timestamps
     end
 
@@ -45,7 +45,7 @@ class AddSerasaTables < ActiveRecord::Migration[8.0]
       t.string :country
       t.string :city
       t.string :state
-      t.references :serasa_registration, null: false, index: true, foreign_key: true
+      t.references :serasa_registration, null: false, index: { unique: true }, foreign_key: true
       t.timestamps
     end
 
@@ -53,32 +53,32 @@ class AddSerasaTables < ActiveRecord::Migration[8.0]
       t.string :region_code
       t.string :area_code
       t.string :phone_number
-      t.references :owner, polymorphic: true, index: true
+      t.references :owner, polymorphic: true, index: { unique: true }
       t.timestamps
     end
 
     create_table :serasa_pefins do |t|
-      t.references :serasa_negative_data, null: false, index: true, foreign_key: true
+      t.references :serasa_negative_data, null: false, index: { unique: true }, foreign_key: true
       t.timestamps
     end
 
     create_table :serasa_refins do |t|
-      t.references :serasa_negative_data, null: false, index: true, foreign_key: true
+      t.references :serasa_negative_data, null: false, index: { unique: true }, foreign_key: true
       t.timestamps
     end
 
     create_table :serasa_notaries do |t|
-      t.references :serasa_negative_data, null: false, index: true, foreign_key: true
+      t.references :serasa_negative_data, null: false, index: { unique: true }, foreign_key: true
       t.timestamps
     end
 
     create_table :serasa_checks do |t|
-      t.references :serasa_negative_data, null: false, index: true, foreign_key: true
+      t.references :serasa_negative_data, null: false, index: { unique: true }, foreign_key: true
       t.timestamps
     end
 
     create_table :serasa_inquiries do |t|
-      t.references :serasa_fact, null: false, index: true, foreign_key: true
+      t.references :serasa_fact, null: false, index: { unique: true }, foreign_key: true
       t.timestamps
     end
 
@@ -98,7 +98,7 @@ class AddSerasaTables < ActiveRecord::Migration[8.0]
       t.string :issuing_authority
       t.string :detailed_reason
       t.string :occurrence_state
-      t.references :serasa_fact, null: false, index: true, foreign_key: true
+      t.references :serasa_fact, null: false, index: { unique: true }, foreign_key: true
       t.timestamps
     end
 
@@ -157,7 +157,7 @@ class AddSerasaTables < ActiveRecord::Migration[8.0]
     create_table :serasa_summaries do |t|
       t.integer :count
       t.float :balance
-      t.references :owner, polymorphic: true, index: true
+      t.references :owner, polymorphic: true, index: { unique: true }
       t.timestamps
     end
 

@@ -16,8 +16,6 @@ module Idwall
   class Report < ApplicationRecord
     enum :status, %i[processing processed]
 
-    validates :number, presence: true
-
     belongs_to :analysis_item, class_name: 'Analysis::Item',
                                foreign_key: 'analysis_item_id',
                                inverse_of: :idwall_report
@@ -41,6 +39,9 @@ module Idwall
                               dependent: :destroy,
                               foreign_key: 'idwall_report_id',
                               inverse_of: :idwall_report
+
+    validates :number, presence: true
+    validates :analysis_item_id, uniqueness: true
 
     delegate :name, to: :cpf
 

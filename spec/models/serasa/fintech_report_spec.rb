@@ -19,6 +19,15 @@ RSpec.describe Serasa::FintechReport, type: :model do
     it { is_expected.to be_valid }
   end
 
+  describe 'validations' do
+    subject { create :serasa_fintech_report }
+
+    it {
+      expect(subject).to validate_uniqueness_of(:analysis_item_id)
+        .ignoring_case_sensitivity
+    }
+  end
+
   describe 'associations' do
     it { is_expected.to belong_to :owner }
     it { is_expected.to have_one :registration }

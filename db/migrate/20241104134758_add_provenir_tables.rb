@@ -2,7 +2,7 @@ class AddProvenirTables < ActiveRecord::Migration[8.0]
   def change
     create_table :provenir_big_data_corps do |t|
       t.string :raw_data
-      t.references :analysis_item, type: :uuid, null: false, index: true, foreign_key: true
+      t.references :analysis_item, type: :uuid, null: false, index: { unique: true }, foreign_key: true
       t.timestamps
     end
 
@@ -32,7 +32,10 @@ class AddProvenirTables < ActiveRecord::Migration[8.0]
       t.datetime :tax_id_status_registration_date
       t.datetime :creation_date
       t.datetime :last_update_date
-      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: { name: :index_provenir_basic_datum_big_data_corp_id }
+      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: {
+        unique: true,
+        name: :index_provenir_basic_datum_big_data_corp_id
+      }
       t.timestamps
     end
 
@@ -53,14 +56,20 @@ class AddProvenirTables < ActiveRecord::Migration[8.0]
       t.string :document_last4_digits
       t.datetime :creation_date
       t.datetime :last_update_date
-      t.references :provenir_extended_document_information, null: false, foreign_key: true, index: { name: :index_big_data_rg_extended_document_information_id }
+      t.references :provenir_extended_document_information, null: false, foreign_key: true, index: {
+        unique: true,
+        name: :index_big_data_rg_extended_document_information_id
+      }
       t.timestamps
     end
 
     create_table :provenir_sources do |t|
       t.string :state
       t.string :ENADE
-      t.references :provenir_rg, null: false, foreign_key: true, index: { name: :index_provenir_source_rg_id }
+      t.references :provenir_rg, null: false, foreign_key: true, index: {
+        unique: true,
+        name: :index_provenir_source_rg_id
+      }
       t.timestamps
     end
 
@@ -81,7 +90,10 @@ class AddProvenirTables < ActiveRecord::Migration[8.0]
       t.integer :total_bad_address_passages
       t.datetime :oldest_address_passage_date
       t.datetime :newest_address_passage_date
-      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: { name: :index_provenir_extended_address_big_data_corp_id }
+      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: {
+        unique: true,
+        name: :index_provenir_extended_address_big_data_corp_id
+      }
       t.timestamps
     end
 
@@ -160,7 +172,10 @@ class AddProvenirTables < ActiveRecord::Migration[8.0]
       t.integer :total_last18_months_passages
       t.datetime :oldest_phone_passage_date
       t.datetime :newest_phone_passage_date
-      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: { name: :index_provenir_extended_phone_big_data_corp_id }
+      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: {
+        unique: true,
+        name: :index_provenir_extended_phone_big_data_corp_id
+      }
       t.timestamps
     end
 
@@ -231,7 +246,10 @@ class AddProvenirTables < ActiveRecord::Migration[8.0]
       t.string :total_assets
       t.datetime :creation_date
       t.datetime :last_update_date
-      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: { name: :index_provenir_financial_datum_big_data_corp_id }
+      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: {
+        unique: true,
+        name: :index_provenir_financial_datum_big_data_corp_id
+      }
       t.timestamps
     end
 
@@ -255,7 +273,10 @@ class AddProvenirTables < ActiveRecord::Migration[8.0]
       t.string :ibge
       t.string :bigdata
       t.string :bigdata_v2
-      t.references :provenir_financial_datum, null: false, foreign_key: true, index: { name: :index_provenir_income_estimate_financial_datum_id }
+      t.references :provenir_financial_datum, null: false, foreign_key: true, index: {
+        unique: true,
+        name: :index_provenir_income_estimate_financial_datum_id
+      }
       t.timestamps
     end
 
@@ -271,7 +292,10 @@ class AddProvenirTables < ActiveRecord::Migration[8.0]
       t.boolean :is_currently_receiving_assistance
       t.integer :financial_risk_score
       t.string :financial_risk_level
-      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: { name: :index_provenir_financial_risk_big_data_corp_id }
+      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: {
+        unique: true,
+        name: :index_provenir_financial_risk_big_data_corp_id
+      }
       t.timestamps
     end
 
@@ -279,7 +303,10 @@ class AddProvenirTables < ActiveRecord::Migration[8.0]
       t.integer :lawsuits_total
       t.integer :defendant_lawsuits_total
       t.integer :plaintiff_lawsuits_total
-      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: { name: :index_provenir_process_big_data_corp_id }
+      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: {
+        unique: true,
+        name: :index_provenir_process_big_data_corp_id
+      }
       t.timestamps
     end
 
@@ -340,7 +367,10 @@ class AddProvenirTables < ActiveRecord::Migration[8.0]
 
     create_table :provenir_party_details do |t|
       t.string :specific_type
-      t.references :provenir_party, null: false, foreign_key: true, index: { name: :index_provenir_party_detail_party_id }
+      t.references :provenir_party, null: false, foreign_key: true, index: {
+        unique: true,
+        name: :index_provenir_party_detail_party_id
+      }
       t.timestamps
     end
 
@@ -366,7 +396,10 @@ class AddProvenirTables < ActiveRecord::Migration[8.0]
       t.integer :total_household
       t.integer :total_partners
       t.integer :total_college_class
-      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: { name: :index_provenir_related_person_big_data_corp_id }
+      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: {
+        unique: true,
+        name: :index_provenir_related_person_big_data_corp_id
+      }
       t.timestamps
     end
 
@@ -402,7 +435,10 @@ class AddProvenirTables < ActiveRecord::Migration[8.0]
       t.datetime :last_collection_date
       t.integer :collection_occurrences
       t.integer :collection_origins
-      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: { name: :index_provenir_collection_big_data_corp_id }
+      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: {
+        unique: true,
+        name: :index_provenir_collection_big_data_corp_id
+      }
       t.timestamps
     end
 
@@ -413,7 +449,10 @@ class AddProvenirTables < ActiveRecord::Migration[8.0]
       t.integer :total_partners
       t.integer :total_clients
       t.integer :total_suppliers
-      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: { name: :index_provenir_business_relationship_big_data_corp_id }
+      t.references :provenir_big_data_corp, null: false, foreign_key: true, index: {
+        unique: true,
+        name: :index_provenir_business_relationship_big_data_corp_id
+      }
       t.timestamps
     end
 

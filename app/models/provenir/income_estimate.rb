@@ -21,5 +21,6 @@ module Provenir
                foreign_key: 'provenir_financial_datum_id',
                inverse_of: :income_estimate
 
+    validates :provenir_financial_datum_id, uniqueness: true
   end
 end

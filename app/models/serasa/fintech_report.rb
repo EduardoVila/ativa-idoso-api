@@ -47,6 +47,8 @@ module Serasa
             foreign_key: 'serasa_fintech_report_id',
             inverse_of: :fintech_report
 
+    validates :analysis_item_id, uniqueness: true
+
     accepts_nested_attributes_for :registration
     accepts_nested_attributes_for :score
     accepts_nested_attributes_for :negative_data

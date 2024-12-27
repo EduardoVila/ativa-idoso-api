@@ -4,7 +4,7 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :cpf, null: false
       t.integer :credit_type, null: false, default: 0
       t.string :raw_data
-      t.references :consumer, polymorphic: true, type: :uuid, index: true
+      t.references :consumer, polymorphic: true, type: :uuid, index: { unique: true }
       t.timestamps
     end
 
@@ -17,7 +17,7 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :fu_origin
       t.string :information_type
       t.references :boa_vista_acerta_essencial, null: false, index: {
-        name: "index_boa_vista_additional_information_on_acerta_essencial_id",
+        name: :index_boa_vista_additional_information_on_acerta_essencial_id,
       }, foreign_key: true
       t.timestamps
     end
@@ -67,7 +67,7 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :currency
       t.string :accumulated_value
       t.string :federative_unit
-      t.references :boa_vista_acerta_essencial, null: false, index: true, foreign_key: true
+      t.references :boa_vista_acerta_essencial, null: false, index: { unique: true }, foreign_key: true
       t.timestamps
     end
 
@@ -93,6 +93,7 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :voter_title
       t.string :death
       t.references :boa_vista_acerta_essencial, null: false, index:  {
+        unique: true,
         name: :index_boa_vista_identifications_on_acerta_essencial_id
       }, foreign_key: true
       t.timestamps
@@ -110,6 +111,7 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :biggest_debit_date
       t.string :biggest_debit_value
       t.references :boa_vista_acerta_essencial, null: false, index: {
+        unique: true,
         name: :index_boa_vista_debit_occurrences_on_acerta_essencial_id
       }, foreign_key: true
       t.timestamps
@@ -133,7 +135,7 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :phone_2
       t.string :ddd_3
       t.string :phone_3
-      t.references :boa_vista_acerta_essencial, null: false, index: true, foreign_key: true
+      t.references :boa_vista_acerta_essencial, null: false, index: { unique: true }, foreign_key: true
       t.timestamps
     end
 
@@ -162,7 +164,8 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :text
       t.string :type_of_register
       t.references :boa_vista_acerta_essencial, null: false, index: {
-        name: "index_boa_vista_cheque_additional_info_on_acerta_essencial_id",
+        unique: true,
+        name: :index_boa_vista_cheque_additional_info_on_acerta_essencial_id,
       }, foreign_key: true
       t.timestamps
     end
@@ -179,6 +182,7 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :consultation_date
       t.string :consultation_hour
       t.references :boa_vista_acerta_essencial, null: false, index: {
+        unique: true,
         name: :index_boa_vista_current_account_historic_on_acerta_essencial_id
       }, foreign_key: true
       t.timestamps
@@ -193,7 +197,7 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :score
       t.string :approves
       t.string :text
-      t.references :boa_vista_acerta_essencial, null: false, index: true, foreign_key: true
+      t.references :boa_vista_acerta_essencial, null: false, index: { unique: true }, foreign_key: true
       t.timestamps
     end
 
@@ -207,6 +211,7 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :city
       t.string :federative_unit
       t.references :boa_vista_acerta_essencial, null: false, index: {
+        unique: true,
         name: :index_zip_code_confirmations_on_acerta_essencial_id
       }, foreign_key: true
       t.timestamps
@@ -223,6 +228,7 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :document_2
       t.string :document_3
       t.references :boa_vista_acerta_essencial, null: false, index: {
+        unique: true,
         name: :index_boa_vista_documents_names_on_acerta_essencial_id
       }, foreign_key: true
       t.timestamps
@@ -274,6 +280,7 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :city
       t.string :federative_unit
       t.references :boa_vista_acerta_essencial, null: false, index: {
+        unique: true,
         name: :index_returns_reported_by_users_on_acerta_essencial_id
       }, foreign_key: true
       t.timestamps
@@ -297,7 +304,8 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :value
       t.string :informant
       t.references :boa_vista_acerta_essencial, null: false, index: {
-        name: "index_cheques_stopped_for_reason21_on_acerta_essencial_id",
+        unique: true,
+        name: :index_cheques_stopped_for_reason21_on_acerta_essencial_id,
       }, foreign_key: true
       t.timestamps
     end
@@ -316,6 +324,7 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :consultation_hour
       t.string :network
       t.references :boa_vista_acerta_essencial, null: false, index: {
+        unique: true,
         name: :index_boa_vista_historic_informed_cheque_on_acerta_essencial_id
       }, foreign_key: true
       t.timestamps
@@ -334,6 +343,7 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :value
       t.string :informant
       t.references :boa_vista_acerta_essencial, null: false, index: {
+        unique: true,
         name: :index_previous_cheque_consultations_on_acerta_essencial_id
       }, foreign_key: true
       t.timestamps
@@ -349,6 +359,7 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :first_devolution_date
       t.string :last_devolution_date
       t.references :boa_vista_acerta_essencial, null: false, index: {
+        unique: true,
         name: :index_summary_of_return_reported_by_user_on_acerta_essencial_id
       }, foreign_key: true
       t.timestamps
@@ -385,6 +396,7 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :record_reference
       t.string :text
       t.references :boa_vista_acerta_essencial, null: false, index: {
+        unique: true,
         name: :index_record_messages_on_acerta_essencial_id
       }, foreign_key: true
       t.timestamps
@@ -408,6 +420,7 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :month_4
       t.string :total_4
       t.references :boa_vista_acerta_essencial, null: false, index: {
+        unique: true,
         name: :index_previous90_days_consultations_on_acerta_essencial_id
       }, foreign_key: true
       t.timestamps
@@ -430,7 +443,8 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :informant
       t.string :indicator
       t.references :boa_vista_acerta_essencial, null: false, index: {
-        name: "index_boa_vista_cheque_stopped_on_acerta_essencial_id",
+        unique: true,
+        name: :index_boa_vista_cheque_stopped_on_acerta_essencial_id,
       }, foreign_key: true
       t.timestamps
     end
@@ -449,6 +463,7 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :reason_14
       t.string :reason_99
       t.references :boa_vista_acerta_essencial, null: false, index: {
+        unique: true,
         name: :index_summary_devolution_reported_by_ccf_on_acerta_essencial_id
       }, foreign_key: true
       t.timestamps
@@ -467,6 +482,7 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :pre_dated
       t.string :pre_dated_value
       t.references :boa_vista_acerta_essencial, null: false, index: {
+        unique: true,
         name: :index_summary_previous_query_cheques_on_acerta_essencial_id
       }, foreign_key: true
       t.timestamps
@@ -486,6 +502,7 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :city
       t.string :federative_unit
       t.references :boa_vista_acerta_essencial, null: false, index: {
+        unique: true,
         name: :index_boa_vista_phone_confirmations_on_acerta_essencial_id
       }, foreign_key: true
       t.timestamps
@@ -509,7 +526,7 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :phone_1
       t.string :phone_2
       t.string :reserved
-      t.references :boa_vista_acerta_essencial, null: false, index: true, foreign_key: true
+      t.references :boa_vista_acerta_essencial, null: false, index: { unique: true }, foreign_key: true
       t.timestamps
     end
   end

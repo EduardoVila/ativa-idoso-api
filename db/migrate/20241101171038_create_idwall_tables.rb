@@ -4,7 +4,7 @@ class CreateIdwallTables < ActiveRecord::Migration[8.0]
       t.string :number, null: false
       t.integer :status, default: 0
       t.string :raw_data
-      t.references :analysis_item, type: :uuid, null: false, foreign_key: true, index: true
+      t.references :analysis_item, type: :uuid, null: false, foreign_key: true, index: { unique: true }
       t.timestamps
     end
 
@@ -35,7 +35,7 @@ class CreateIdwallTables < ActiveRecord::Migration[8.0]
       t.string :cpf_verifying_digit
       t.string :year_of_death
       t.string :social_name
-      t.references :idwall_report, null: false, foreign_key: true, index: true
+      t.references :idwall_report, null: false, foreign_key: true, index: { unique: true }
       t.timestamps
     end
 

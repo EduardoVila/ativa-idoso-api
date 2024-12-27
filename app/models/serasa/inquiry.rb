@@ -28,6 +28,8 @@ module Serasa
             dependent: :destroy,
             inverse_of: :owner
 
+    validates :serasa_fact_id, uniqueness: true
+
     accepts_nested_attributes_for :items
     accepts_nested_attributes_for :summary
 

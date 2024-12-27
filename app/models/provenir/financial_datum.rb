@@ -37,6 +37,8 @@ module Provenir
              inverse_of: :financial_datum,
              dependent: :destroy
 
+    validates :provenir_big_data_corp_id, uniqueness: true
+
     accepts_nested_attributes_for :income_estimate, :tax_returns
 
     alias income_estimates income_estimate
