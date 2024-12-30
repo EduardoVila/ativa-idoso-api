@@ -19,7 +19,6 @@ module Integrable
         exceptions: [Faraday::ConnectionFailed, Faraday::TimeoutError]
       )
       f.adapter :net_http
-      f.response :raise_error # raises an error for 4xx and 5xx responses
     end
   end
 
