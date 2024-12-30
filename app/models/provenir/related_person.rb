@@ -30,6 +30,8 @@ module Provenir
              inverse_of: :related_person,
              dependent: :destroy
 
+    validates :provenir_big_data_corp_id, uniqueness: true
+
     accepts_nested_attributes_for :personal_relationships
   end
 end

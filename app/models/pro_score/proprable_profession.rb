@@ -17,5 +17,7 @@ module ProScore
     belongs_to :report, class_name: 'ProScore::Report',
                         foreign_key: 'pro_score_report_id',
                         inverse_of: :proprable_profession
+
+    validates :pro_score_report_id, uniqueness: true
   end
 end

@@ -24,5 +24,7 @@
 module Idwall
   class CPF < ApplicationRecord
     belongs_to :idwall_report, class_name: 'Idwall::Report'
+
+    validates :idwall_report_id, uniqueness: true
   end
 end

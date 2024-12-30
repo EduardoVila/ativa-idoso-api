@@ -21,6 +21,8 @@ module BoaVista
                class_name: 'BoaVista::Cadastral',
                inverse_of: :basic_registration
 
+    validates :boa_vista_cadastral_id, uniqueness: true
+
     alias_attribute :nome, :name
     alias_attribute :nome_mae, :mother_name
     alias_attribute :data_nascimento, :birth_date

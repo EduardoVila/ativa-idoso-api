@@ -86,6 +86,8 @@ module Provenir
             inverse_of: :big_data_corp,
             dependent: :destroy
 
+    validates :analysis_item_id, uniqueness: true
+
     accepts_nested_attributes_for :basic_datum, allow_destroy: true
     accepts_nested_attributes_for :extended_address, allow_destroy: true
     accepts_nested_attributes_for :extended_phone, allow_destroy: true

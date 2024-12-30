@@ -34,6 +34,8 @@ module Provenir
              inverse_of: :business_relationship,
              dependent: :destroy
 
+    validates :provenir_big_data_corp_id, uniqueness: true
+
     accepts_nested_attributes_for :business_relationships_items
 
     alias business_relationships_array business_relationships_items

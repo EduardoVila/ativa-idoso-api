@@ -19,5 +19,7 @@ module Serasa
                polymorphic: true,
                foreign_type: :owner_type,
                inverse_of: :phone
+
+    validates :owner_id, uniqueness: { scope: :owner_type }
   end
 end

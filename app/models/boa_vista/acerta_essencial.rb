@@ -184,6 +184,8 @@ module BoaVista
             foreign_key: 'boa_vista_acerta_essencial_id',
             inverse_of: :boa_vista_acerta_essencial
 
+    validates :consumer_id, uniqueness: { scope: :consumer_type }
+
     delegate :name, to: :identification, prefix: true, allow_nil: true
     delegate :birth_date, to: :identification, prefix: true, allow_nil: true
 

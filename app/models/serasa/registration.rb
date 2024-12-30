@@ -33,6 +33,8 @@ module Serasa
                     dependent: :destroy,
                     inverse_of: :owner
 
+    validates :serasa_fintech_report_id, uniqueness: true
+
     accepts_nested_attributes_for :address
     accepts_nested_attributes_for :phone
   end

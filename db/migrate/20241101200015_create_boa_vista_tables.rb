@@ -2,14 +2,14 @@ class CreateBoaVistaTables < ActiveRecord::Migration[8.0]
   def change
     create_table :boa_vista_cadastrals do |t|
       t.string :raw_data
-      t.references :consumer, polymorphic: true, type: :uuid, null: true, index: true
+      t.references :consumer, polymorphic: true, type: :uuid, null: true, index: { unique: true }
       t.timestamps
     end
 
     create_table :boa_vista_cadastral_locations do |t|
       t.string :cpf, null: false
       t.string :emails, array: true
-      t.references :boa_vista_cadastral, null: false, foreign_key: true, index: true
+      t.references :boa_vista_cadastral, null: false, foreign_key: true, index: { unique: true }
       t.timestamps
     end
 
@@ -34,14 +34,14 @@ class CreateBoaVistaTables < ActiveRecord::Migration[8.0]
       t.string :birth_date
       t.string :exposed_person
       t.string :cpf_situation
-      t.references :boa_vista_cadastral, null: false, foreign_key: true, index: true
+      t.references :boa_vista_cadastral, null: false, foreign_key: true, index: { unique: true }
       t.timestamps
     end
 
     create_table :boa_vista_cadastral_qualifications do |t|
       t.string :cpf, null: false
       t.string :death
-      t.references :boa_vista_cadastral, null: false, foreign_key: true, index: true
+      t.references :boa_vista_cadastral, null: false, foreign_key: true, index: { unique: true }
       t.timestamps
     end
 
