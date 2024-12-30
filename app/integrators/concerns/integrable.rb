@@ -13,7 +13,9 @@ module Integrable
       f.request(
         :retry,
         max: 9,
-        interval: ->(retry_count) { (0.5 * (2**retry_count)) + rand(0..0.1) },
+        interval: 0.1,
+        interval_randomness: 0.5,
+        backoff_factor: 2,
         exceptions: [Faraday::ConnectionFailed, Faraday::TimeoutError]
       )
       f.adapter :net_http
