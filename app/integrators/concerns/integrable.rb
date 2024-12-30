@@ -13,10 +13,11 @@ module Integrable
       f.request(
         :retry,
         max: 9,
-        interval: 0.1,
-        exceptions: [Faraday::ConnectionFailed]
+        interval: ->(retry_count) { (0.5 * (2**retry_count)) + rand(0..0.1) },
+        exceptions: [Faraday::ConnectionFailed, Faraday::TimeoutError]
       )
       f.adapter :net_http
+      f.response :raise_error # raises an error for 4xx and 5xx responses
     end
   end
 
