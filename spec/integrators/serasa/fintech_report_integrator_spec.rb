@@ -69,8 +69,8 @@ RSpec.describe Serasa::FintechReportIntegrator do
         ).to_return(status: 404, body: response_body, headers: response_headers)
       end
 
-      it 'raises a Errors::Serasa::NotFoundError' do
-        expect { response }.to raise_error(Errors::Serasa::NotFoundError)
+      it 'raises a Faraday::ResourceNotFound' do
+        expect { response }.to raise_error(Faraday::ResourceNotFound)
       end
     end
 
@@ -82,8 +82,8 @@ RSpec.describe Serasa::FintechReportIntegrator do
         ).to_return(status: 500, body: '', headers: response_headers)
       end
 
-      it 'raises a Errors::Serasa::ResponseError with the response status' do
-        expect { response }.to raise_error(Errors::Serasa::ResponseError)
+      it 'raises a Faraday::ServerError with the response status' do
+        expect { response }.to raise_error(Faraday::ServerError)
       end
     end
 

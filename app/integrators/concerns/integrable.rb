@@ -9,16 +9,10 @@ module Integrable
 
   def conn(proxy: nil)
     ::Faraday.new(ssl: ssl_options, proxy: proxy) do |f|
-      f.request :url_encoded
-      f.request(
-        :retry,
-        max: 9,
-        interval: 0.1,
-        interval_randomness: 0.5,
-        backoff_factor: 2,
-        exceptions: [Faraday::ConnectionFailed, Faraday::TimeoutError]
-      )
-      f.adapter :net_http
+      f.request(:url_encoded) # Encode request params as "application/x-www-form-urlencoded"
+      f.request(:retry, retry_options) # Retry requests on failure
+      f.adapter(:net_http) # Use the Net::HTTP adapter
+      f.response(:raise_error) # Raise exceptions on 4xx and 5xx responses
     end
   end
 
@@ -36,9 +30,37 @@ module Integrable
     ResponseLogger.log(response, 'integrable', params) if enable_log_response
 
     response
+  rescue Faraday::Error => e # Rescue Faraday errors and log them
+    ErrorLogger.log(e)
+
+    raise e
   end
 
   private
+
+  # Returns a hash of options for configuring retry behavior in Faraday.
+  #
+  # @return [Hash] the retry options
+  # @option options [Integer] :max (2) the maximum number of retry attempts
+  # @option options [Float] :interval (0.1) the base interval between retries in seconds
+  # @option options [Float] :interval_randomness (0.5) the maximum random interval added to the base interval
+  # @option options [Float] :backoff_factor (2) the factor by which the interval increases after each retry
+  # @option options [Array<Symbol>] :methods (%i[get post put delete]) the HTTP methods that should be retried
+  # @option options [Proc] :retry_if a lambda that determines whether a retry should be attempted based on the response
+  # @option options [Array<Class>] :exceptions the exceptions that should trigger a retry, including Faraday::ConnectionFailed
+  def retry_options
+    {
+      max: 9,
+      interval: 0.1,
+      interval_randomness: 0.5,
+      backoff_factor: 2,
+      methods: %i[get post put delete],
+      retry_if: ->(env, _exc) { env.body[:success] == 'false' }, # retry if response is not successful
+      exceptions: Faraday::Retry::Middleware::DEFAULT_EXCEPTIONS + [
+        Faraday::ConnectionFailed
+      ]
+    }
+  end
 
   def enable_log_response
     false

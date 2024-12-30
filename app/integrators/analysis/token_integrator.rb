@@ -47,15 +47,13 @@ module Analysis
     end
 
     def post_body
-      URI.encode_www_form(
-        'client_id' => Base64.strict_encode64(
-          ENV.fetch('PREDICTION_CLIENT_ID')
-        ),
-        'client_secret' => Base64.strict_encode64(
+      {
+        client_id: Base64.strict_encode64(ENV.fetch('PREDICTION_CLIENT_ID')),
+        client_secret: Base64.strict_encode64(
           ENV.fetch('PREDICTION_CLIENT_SECRET')
         ),
-        'grant_type' => 'client_credentials'
-      )
+        grant_type: 'client_credentials'
+      }
     end
   end
 end
