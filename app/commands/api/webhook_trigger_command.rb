@@ -35,7 +35,7 @@ module API
     def call
       return if webhook_event.processed? # Guard clause to avoid unnecessary calls
 
-      response = perform_post_request(webhook_event)
+      response = perform_post_request
 
       raise API::WebhookTriggerCommandError unless response.success?
 
@@ -64,11 +64,13 @@ module API
     # @option webhook_event [Hash] :payload The payload to be sent in the body of the POST request, which will be converted to JSON.
     #
     # @return [Faraday::Response] The response object from the HTTP request.
-    def perform_post_request(webhook_event)
-      do_request :post,
-                 webhook_event.callback_url,
-                 headers(Base64.strict_encode64(webhook_event.access_token)),
-                 webhook_event.payload.to_json
+    def perform_post_request
+      do_request(
+        :post,
+        webhook_event.callback_url,
+        headers,
+        webhook_event.payload.to_json
+      )
     end
 
     # Generates a hash of HTTP headers for an API request.
@@ -80,13 +82,17 @@ module API
     # At client side, the encoded_access_token_hash must be strictly_decoded64,
     # and since it is a hashed token, it must be compared with the
     # hashed token in the client database to authenticate the request.
-    def headers(encoded_access_token_hash)
+    def headers
       {
         'Content-Type' => 'application/json',
         'Accept' => 'application/json',
         'Strict-Transport-Security' => 'max-age=63072000; includeSubDomains; preload', # HSTS header
         'Authorization' => "Bearer #{encoded_access_token_hash}"
       }
+    end
+
+    def encoded_access_token_hash
+      Base64.strict_encode64(webhook_event.access_token)
     end
   end
 end
