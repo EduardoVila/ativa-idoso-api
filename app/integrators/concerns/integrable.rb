@@ -38,16 +38,6 @@ module Integrable
 
   private
 
-  # Returns a hash of options for configuring retry behavior in Faraday.
-  #
-  # @return [Hash] the retry options
-  # @option options [Integer] :max (2) the maximum number of retry attempts
-  # @option options [Float] :interval (0.1) the base interval between retries in seconds
-  # @option options [Float] :interval_randomness (0.5) the maximum random interval added to the base interval
-  # @option options [Float] :backoff_factor (2) the factor by which the interval increases after each retry
-  # @option options [Array<Symbol>] :methods (%i[get post put delete]) the HTTP methods that should be retried
-  # @option options [Proc] :retry_if a lambda that determines whether a retry should be attempted based on the response
-  # @option options [Array<Class>] :exceptions the exceptions that should trigger a retry, including Faraday::ConnectionFailed
   def retry_options
     {
       max: 9,
@@ -56,10 +46,16 @@ module Integrable
       backoff_factor: 2,
       methods: %i[get post put delete],
       retry_if: ->(env, _exc) { env.body[:success] == 'false' }, # retry if response is not successful
-      exceptions: Faraday::Retry::Middleware::DEFAULT_EXCEPTIONS + [
-        Faraday::ConnectionFailed
-      ]
+      exceptions: retry_exceptions
     }
+  end
+
+  def retry_exceptions
+    if ENV.fetch('APP_ENV') == 'test'
+      return Faraday::Retry::Middleware::DEFAULT_EXCEPTIONS
+    end
+
+    Faraday::Retry::Middleware::DEFAULT_EXCEPTIONS + [Faraday::ConnectionFailed]
   end
 
   def enable_log_response

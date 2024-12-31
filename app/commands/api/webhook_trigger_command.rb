@@ -16,22 +16,6 @@ module API
       @webhook_event = webhook_event
     end
 
-    # Executes the webhook trigger command.
-    #
-    # This method performs the following steps:
-    # 1. Checks if the webhook event has already been processed. If so, it returns immediately.
-    # 2. Performs a POST request to trigger the webhook event.
-    # 3. Raises an error if the response is not successful.
-    # 4. Parses the response body.
-    # 5. Updates the webhook event status to `processed` and stores the parsed response.
-    # 6. Returns the updated webhook event.
-    #
-    # If a `Faraday::ConnectionFailed` or `API::WebhookTriggerCommandError` exception is raised,
-    # it logs the error, updates the webhook event status to `error` with the error message,
-    # and returns the updated webhook event.
-    #
-    # @return [WebhookEvent] the updated webhook event
-    # @raise [API::WebhookTriggerCommandError] if the response from the POST request is not successful
     def call
       return if webhook_event.processed? # Guard clause to avoid unnecessary calls
 
@@ -43,7 +27,7 @@ module API
     rescue Faraday::Error => e
       ErrorLogger.log(e)
 
-      webhook_event.update(status: :error, response: e)
+      webhook_event.update(status: :error, response: e.message)
 
       webhook_event
     end
