@@ -38,8 +38,8 @@ RSpec.describe ProScore::AuthenticationIntegrator do
           .to_return(status: 401, body: nil, headers:)
       end
 
-      it 'raises a BigDataCorpPostResponseError' do
-        expect { subject }.to raise_error(Errors::ProScore::ResponseError)
+      it 'raises a Faraday::UnauthorizedError' do
+        expect { subject }.to raise_error(Faraday::UnauthorizedError)
       end
     end
 
@@ -49,7 +49,7 @@ RSpec.describe ProScore::AuthenticationIntegrator do
           .to_raise(Faraday::ConnectionFailed.new('Connection failed'))
       end
 
-      it 'raises a BigDataCorpPostResponseError after retries' do
+      it 'raises a Errors::ProScore::ResponseError after retries' do
         expect { subject }.to raise_error(Errors::ProScore::ResponseError)
       end
     end

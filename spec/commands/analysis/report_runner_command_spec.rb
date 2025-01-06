@@ -3,18 +3,22 @@
 require 'spec_helper'
 
 RSpec.describe Analysis::ReportRunnerCommand, type: :command do
+  subject(:command) { described_class.new(analysis_report) }
+
   describe '#call' do
+    before do
+      allow(Analysis::CreateAnalysisItemsService).to receive(:call)
+    end
+
     context 'when status is :done' do
       let(:analysis_report) do
         create :analysis_report, :done, cpfs: [Faker::CPF.pretty]
       end
 
-      it 'does not call Analysis Item Runner Command' do
-        allow(Analysis::ItemRunnerCommand).to receive(:call)
+      it 'does not call Analysis::CreateAnalysisItemsService' do
+        command.call
 
-        described_class.call(analysis_report)
-
-        expect(Analysis::ItemRunnerCommand).not_to have_received(:call)
+        expect(Analysis::CreateAnalysisItemsService).not_to have_received(:call)
       end
     end
 
@@ -23,12 +27,10 @@ RSpec.describe Analysis::ReportRunnerCommand, type: :command do
         create :analysis_report, :not_found, cpfs: [Faker::CPF.pretty]
       end
 
-      it 'does not call Analysis Item Runner Command' do
-        allow(Analysis::ItemRunnerCommand).to receive(:call)
+      it 'does not call Analysis::CreateAnalysisItemsService' do
+        command.call
 
-        described_class.call(analysis_report)
-
-        expect(Analysis::ItemRunnerCommand).not_to have_received(:call)
+        expect(Analysis::CreateAnalysisItemsService).not_to have_received(:call)
       end
     end
 
@@ -40,16 +42,16 @@ RSpec.describe Analysis::ReportRunnerCommand, type: :command do
         allow(Analysis::CreateAnalysisItemsService).to receive(:call)
           .with(analysis_report).and_return(analysis_item)
 
-        allow(Analysis::ItemRunnerCommand).to receive(:call).with(analysis_item)
-          .and_return(analysis_item)
-
-        described_class.call(analysis_report)
+        command.call
 
         expect(Analysis::CreateAnalysisItemsService).to have_received(:call)
           .with(analysis_report)
+      end
 
-        expect(Analysis::ItemRunnerCommand).to have_received(:call)
-          .with(analysis_item)
+      it 'updates the status to :wip' do
+        command.call
+
+        expect(analysis_report.reload.status).to eq('wip')
       end
     end
   end

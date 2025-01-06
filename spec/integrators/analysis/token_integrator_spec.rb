@@ -61,9 +61,7 @@ RSpec.describe Analysis::TokenIntegrator do
       end
 
       it 'raises a PredictionPostResponseError' do
-        expect { response }.to raise_error(
-          Errors::Analysis::TokenPostResponseError
-        )
+        expect { response }.to raise_error(Faraday::ForbiddenError)
       end
     end
 

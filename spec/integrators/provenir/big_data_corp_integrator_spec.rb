@@ -58,9 +58,7 @@ RSpec.describe Provenir::BigDataCorpIntegrator do
       end
 
       it 'raises a BigDataCorpPostResponseError' do
-        expect { response }.to raise_error(
-          Errors::Provenir::BigDataCorpPostResponseError
-        )
+        expect { response }.to raise_error(Faraday::ForbiddenError)
       end
     end
 

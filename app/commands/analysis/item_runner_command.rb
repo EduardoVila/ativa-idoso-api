@@ -13,86 +13,38 @@ module Analysis
     end
 
     def call
-      if %w[done not_found].include?(analysis_item.status)
-        Analysis::ReportSyncCommand.call(analysis_report)
-
-        return
-      end
+      return sync_analysis_report if analysis_item_done_or_not_found?
 
       analysis_item.update(status: :wip)
 
-      run_boa_vista_cadastral_job(analysis_item)
+      run_boa_vista_cadastral unless analysis_item.name.present?
 
-      return if analysis_item.error_status.eql? 'boa_vista'
+      return if boa_vista_error?
 
-      analyze_cpf(analysis_item)
-
-      Analysis::ReportSyncCommand.call(analysis_report)
+      analyze_item_step_by_step
+      sync_analysis_report
     end
 
     private
 
-    def analyze_cpf(analysis_item)
-      current_analysis = analysis_item.clone_of || analysis_item
-
-      Analysis::Step.enabled.order(:index_order).each do |step|
-        analysis_item.steps << step
-
-        analysis_modules_runner(
-          step.command_class, current_analysis, analysis_item
-        )
-
-        next if analysis_item.status.eql? 'wip'
-
-        break
-      end
+    def analysis_item_done_or_not_found?
+      %w[done not_found].include?(analysis_item.status)
     end
 
-    def analysis_modules_runner(command_class, current_analysis, analysis_item)
-      if command_class == 'Analysis::PredictionCommand'
-        return prediction_command_handler(current_analysis, analysis_item)
-      end
-
-      result = Object.const_get(command_class).call(current_analysis)
-
-      return if result[:approved]
-
-      if command_class == 'PrePredictionCommand'
-        Analysis::Prediction.create(
-          label: 'pre_prediction',
-          item: analysis_item,
-          approved: false
-        )
-      end
-
-      update_analysis_item(result, analysis_item)
+    def sync_analysis_report
+      Invoker.execute(:analysis_report_sync_command, analysis_report)
     end
 
-    def prediction_command_handler(current_analysis, analysis_item)
-      Analysis::PredictionCommand.call(current_analysis)
-
-      analysis_item.update(status: :done)
+    def run_boa_vista_cadastral
+      Invoker.execute(:boa_vista_cadastral_command, analysis_item)
     end
 
-    def update_analysis_item(result, analysis_item)
-      if result[:status] == 'failure'
-        return analysis_item.update(status: :error)
-      end
-
-      if result[:status] == 'not_found'
-        return analysis_item.update(status: :not_found)
-      end
-
-      analysis_item.update(
-        status: :done,
-        disapproval_situation: result[:disapproval_situation]
-      )
+    def boa_vista_error?
+      analysis_item.error_status.eql?('boa_vista')
     end
 
-    def run_boa_vista_cadastral_job(analysis_item)
-      return if analysis_item.name.present?
-
-      BoaVistaCadastralJob.perform_now(analysis_item.id)
+    def analyze_item_step_by_step
+      Invoker.execute(:analysis_step_command, analysis_item)
     end
   end
 end

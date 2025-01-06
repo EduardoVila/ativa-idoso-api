@@ -16,19 +16,9 @@ module Analysis
 
       analysis_report.update(status: :wip)
 
-      create_analysis_items(analysis_report) && command_runner(analysis_report)
-    end
-
-    private
-
-    def create_analysis_items(analysis_report)
       Analysis::CreateAnalysisItemsService.call(analysis_report)
-    end
 
-    def command_runner(analysis_report)
-      analysis_report.items.each do |item|
-        Analysis::ItemRunnerCommand.call(item)
-      end
+      analysis_report
     end
   end
 end

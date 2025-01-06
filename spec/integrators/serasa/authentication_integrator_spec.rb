@@ -70,7 +70,7 @@ RSpec.describe Serasa::AuthenticationIntegrator do
       end
 
       it 'raises a Errors::Serasa::ResponseError with the response status' do
-        expect { response }.to raise_error(Errors::Serasa::ResponseError)
+        expect { response }.to raise_error(Faraday::UnauthorizedError)
       end
     end
 

@@ -68,10 +68,8 @@ RSpec.describe Analysis::PredictionIntegrator do
         ).to_return(status: 403, body: nil, headers: response_headers)
       end
 
-      it 'raises a PredictionPostResponseError' do
-        expect { response }.to raise_error(
-          Errors::Analysis::PredictionPostResponseError
-        )
+      it 'raises a Faraday::ForbiddenError' do
+        expect { response }.to raise_error(Faraday::ForbiddenError)
       end
     end
 

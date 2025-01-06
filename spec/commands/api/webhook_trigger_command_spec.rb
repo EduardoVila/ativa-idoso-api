@@ -21,38 +21,35 @@ RSpec.describe API::WebhookTriggerCommand, type: :command do
 
     context 'when the webhook event is not processed yet' do
       let(:response) do
-        instance_double(Faraday::Response, success?: true, body: '{}')
+        instance_double(Faraday::Response, status: 200, body: '{}')
       end
 
       before do
         allow(webhook_event).to receive(:processed?).and_return(false)
         allow(webhook_event).to receive(:update)
-        allow(command).to receive(:perform_post_request).with(webhook_event)
-          .and_return(response)
+        allow(command).to receive(:perform_post_request).and_return(response)
         allow(command).to receive(:parser).with('{}').and_return({})
       end
 
       it 'performs the post request' do
         command.call
         expect(command).to have_received(:perform_post_request)
-          .with(webhook_event)
       end
 
       it 'updates the webhook event status to processed' do
         command.call
         expect(webhook_event).to have_received(:update)
-          .with(status: :processed, response: {})
+          .with(status: :processed, response: 200)
       end
     end
 
     context 'when the post request fails' do
       before do
-        allow(command).to receive(:call)
-          .and_raise(API::WebhookTriggerCommandError)
+        allow(command).to receive(:call).and_raise(Faraday::Error)
       end
 
-      it 'raises a WebhookTriggerCommandError' do
-        expect { command.call }.to raise_error(API::WebhookTriggerCommandError)
+      it 'raises a Faraday::Error' do
+        expect { command.call }.to raise_error(Faraday::Error)
       end
     end
 

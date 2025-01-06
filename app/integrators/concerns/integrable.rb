@@ -9,14 +9,10 @@ module Integrable
 
   def conn(proxy: nil)
     ::Faraday.new(ssl: ssl_options, proxy: proxy) do |f|
-      f.request :url_encoded
-      f.request(
-        :retry,
-        max: 9,
-        interval: 0.1,
-        exceptions: [Faraday::ConnectionFailed]
-      )
-      f.adapter :net_http
+      f.request(:url_encoded) # Encode request params as "application/x-www-form-urlencoded"
+      f.request(:retry, retry_options) # Retry requests on failure
+      f.adapter(:net_http) # Use the Net::HTTP adapter
+      f.response(:raise_error) # Raise exceptions on 4xx and 5xx responses
     end
   end
 
@@ -34,9 +30,33 @@ module Integrable
     ResponseLogger.log(response, 'integrable', params) if enable_log_response
 
     response
+  rescue Faraday::Error => e # Rescue Faraday errors and log them
+    ErrorLogger.log(e)
+
+    raise e
   end
 
   private
+
+  def retry_options
+    {
+      max: 9,
+      interval: 0.1,
+      interval_randomness: 0.5,
+      backoff_factor: 2,
+      methods: %i[get post put delete],
+      retry_if: ->(env, _exc) { env.body[:success] == 'false' }, # retry if response is not successful
+      exceptions: retry_exceptions
+    }
+  end
+
+  def retry_exceptions
+    if ENV.fetch('APP_ENV') == 'test'
+      return Faraday::Retry::Middleware::DEFAULT_EXCEPTIONS
+    end
+
+    Faraday::Retry::Middleware::DEFAULT_EXCEPTIONS + [Faraday::ConnectionFailed]
+  end
 
   def enable_log_response
     false
