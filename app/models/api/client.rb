@@ -12,9 +12,10 @@
 #  updated_at    :datetime         not null
 #
 require 'bcrypt'
-require_relative '../application_record'
 require 'logger'
 require 'colorize'
+require_relative '../application_record'
+
 module API
   class Client < ::ApplicationRecord
     before_validation :set_client_credentials, on: :create
@@ -22,6 +23,10 @@ module API
     has_many :analysis_reports, class_name: 'Analysis::Report',
                                 inverse_of: :api_client,
                                 dependent: :destroy
+
+    has_many :webhook_events, class_name: 'API::WebhookEvent',
+                              inverse_of: :client,
+                              dependent: :destroy
 
     validates :client_id, presence: true, uniqueness: true
     validates :client_secret, presence: true

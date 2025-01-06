@@ -32,8 +32,7 @@ module ProScore
           analysis_items.created_at >= :date
         ", cpf: formatted_cpf, date:).where.not(
           analysis_report_id: @analysis_item.analysis_report_id
-        )
-          .present?
+        ).present?
       end.include? true
     end
 

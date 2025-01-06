@@ -22,9 +22,7 @@ RSpec.describe BoaVistaCadastralJob, type: :job do
 
   describe '#perform_later' do
     let(:analysis_item) { create :analysis_item }
-    let(:perform_later_job) do
-      described_class.perform_later(analysis_item.id)
-    end
+    let(:perform_later_job) { described_class.perform_later(analysis_item.id) }
 
     it 'enqueues a job on the boa_vista queue' do
       expect(perform_later_job.queue_name).to eq('boa_vista')
@@ -44,9 +42,7 @@ RSpec.describe BoaVistaCadastralJob, type: :job do
 
   describe '#perform_now' do
     let(:analysis_item) { create :analysis_item }
-    let(:perform_now_job) do
-      described_class.perform_now(analysis_item.id)
-    end
+    let(:perform_now_job) { described_class.perform_now(analysis_item.id) }
 
     it 'calls Integrators::BoaVistaCadastral with the given analysis_item id' do
       perform_now_job

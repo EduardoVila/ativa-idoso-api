@@ -1,20 +1,7 @@
 # frozen_string_literal: true
 
-module AnalysisReportValuesSetter
+module AnalysisReportFeeComputable
   extend ActiveSupport::Concern
-
-  CONTRACT_VALUES = {
-    '120' => 119.00,
-    '105' => 99.00,
-    '95' => 89.00,
-    '85' => 59.00,
-    '75' => 45.00,
-    '65' => 29.00
-  }.freeze
-
-  def relate_opening_value(fee)
-    CONTRACT_VALUES[fee.to_s.delete('.')]
-  end
 
   included do
     # TODO: correct the fee calculation
