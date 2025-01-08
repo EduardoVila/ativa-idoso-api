@@ -29,6 +29,8 @@ module API
 
       webhook_event.update(status: :error, response: e.message)
 
+      Analysis::Report.find(webhook_event.event_id).update(status: :error)
+
       webhook_event
     end
 

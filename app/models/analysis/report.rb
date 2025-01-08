@@ -44,6 +44,22 @@ module Analysis
                      inverse_of: :report,
                      dependent: :destroy
 
+    validate :cpfs_validation
+
     scope :approved, -> { where(approved: true) }
+
+    private
+
+    def cpfs_validation
+      return if cpfs.blank?
+
+      cpfs.each do |cpf|
+        cpf = CPF::Formatter.format cpf
+
+        next if CPF.valid? cpf
+
+        errors.add(:cpfs, message: cpf)
+      end
+    end
   end
 end
