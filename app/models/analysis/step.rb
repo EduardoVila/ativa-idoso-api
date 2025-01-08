@@ -23,7 +23,21 @@ module Analysis
                      class_name: 'Analysis::Item',
                      inverse_of: :steps
 
+    with_options presence: true do
+      validates :name
+      validates :command_class
+      validates :index_order
+    end
+
     scope :enabled, -> { where enabled: true }
     scope :disabled, -> { where enabled: false }
+
+    private
+
+    def validate_command_class
+      Module.const_get(command_class) if command_class.present?
+    rescue NameError
+      errors.add(:command_class, :not_found)
+    end
   end
 end

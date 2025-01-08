@@ -40,6 +40,10 @@ RSpec.describe Analysis::Report, type: :model do
     end
   end
 
+  describe 'behaviors' do
+    it { is_expected.to be_auditable }
+  end
+
   describe 'associations' do
     it {
       expect(subject).to belong_to(:api_client).class_name('API::Client')
@@ -54,6 +58,16 @@ RSpec.describe Analysis::Report, type: :model do
   describe 'validations' do
     it 'is valid with valid attributes' do
       report = described_class.new
+      expect(report).to be_valid
+    end
+
+    it 'is not valid with invalid cpfs' do
+      report = described_class.new(cpfs: ['12345678901'])
+      expect(report).not_to be_valid
+    end
+
+    it 'is valid with valid cpfs' do
+      report = described_class.new(cpfs: [Faker::CPF.pretty])
       expect(report).to be_valid
     end
   end

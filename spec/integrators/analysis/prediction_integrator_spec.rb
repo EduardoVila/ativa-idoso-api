@@ -10,11 +10,16 @@ require_relative '../../../app/integrators/errors/analysis/prediction_post_respo
 # rubocop: enable Layout/LineLength
 
 RSpec.describe Analysis::PredictionIntegrator do
-  let(:url) { "#{ENV.fetch('PREDICTION_URL')}/api/v1/predictions" }
-  let(:client_secret) { ENV.fetch('PREDICTION_CLIENT_SECRET') }
-  let(:client_id) { ENV.fetch('PREDICTION_CLIENT_ID') }
-  let(:token) { create :analysis_token }
-  let(:access_token) { Base64.strict_encode64(token.access_token) }
+  let!(:token) { create :analysis_token }
+  let(:url) { ENV.fetch('PREDICTION_URL') }
+  let(:request_headers) do
+    {
+      'Accept' => '*/*',
+      'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+      'User-Agent' => 'Faraday v2.12.2',
+      'Content-Type' => 'application/json'
+    }
+  end
   let(:response_headers) { { 'Content-Type' => 'application/json' } }
 
   before { WebMock.disable_net_connect! }
@@ -36,17 +41,11 @@ RSpec.describe Analysis::PredictionIntegrator do
 
       before do
         stub_request(:post, url).with(
+          headers: request_headers,
           body: {
             cpf: analysis_item.cpf,
-            features: analysis_item.features
-          }.to_json,
-          headers: {
-            'Accept' => '*/*',
-            'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            'User-Agent' => 'Faraday v2.12.2',
-            'Content-Type' => 'application/json',
-            'Authorization' => "Bearer #{access_token}"
-          }
+            features: analysis_item.featurable
+          }.to_json
         ).to_return(status: 200, body: response_body, headers: response_headers)
       end
 
@@ -57,15 +56,8 @@ RSpec.describe Analysis::PredictionIntegrator do
 
     context 'when the response is unsuccessful' do
       before do
-        stub_request(:post, url).with(
-          headers: {
-            'Accept' => '*/*',
-            'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            'User-Agent' => 'Faraday v2.12.2',
-            'Content-Type' => 'application/json',
-            'Authorization' => "Bearer #{access_token}"
-          }
-        ).to_return(status: 403, body: nil, headers: response_headers)
+        stub_request(:post, url).with(headers: request_headers)
+          .to_return(status: 403, body: nil, headers: response_headers)
       end
 
       it 'raises a Faraday::ForbiddenError' do
@@ -75,15 +67,8 @@ RSpec.describe Analysis::PredictionIntegrator do
 
     context 'when a Faraday::ConnectionFailed error occurs' do
       before do
-        stub_request(:post, url).with(
-          headers: {
-            'Accept' => '*/*',
-            'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            'User-Agent' => 'Faraday v2.12.2',
-            'Content-Type' => 'application/json',
-            'Authorization' => "Bearer #{access_token}"
-          }
-        ).to_raise(Faraday::ConnectionFailed.new('Connection failed'))
+        stub_request(:post, url).with(headers: request_headers)
+          .to_raise(Faraday::ConnectionFailed.new('Connection failed'))
       end
 
       it 'raises a PredictionPostResponseError after retries' do

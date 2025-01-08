@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_17_163855) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -108,6 +108,23 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_17_163855) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["api_client_id"], name: "index_api_webhook_events_on_api_client_id"
+  end
+
+  create_table "audits", force: :cascade do |t|
+    t.string "item_type", null: false
+    t.integer "item_id", null: false
+    t.string "event", null: false
+    t.string "whodunnit"
+    t.text "object"
+    t.datetime "created_at"
+    t.string "owner_type"
+    t.bigint "owner_id"
+    t.string "ip"
+    t.string "user_agent"
+    t.string "class_name", null: false
+    t.index ["class_name"], name: "index_audits_on_class_name"
+    t.index ["item_type", "item_id"], name: "index_audits_on_item_type_and_item_id"
+    t.index ["owner_type", "owner_id"], name: "index_audits_on_owner"
   end
 
   create_table "boa_vista_acerta_essencials", force: :cascade do |t|

@@ -120,4 +120,11 @@ RSpec.configure do |config|
   config.define_derived_metadata(file_path: %r{/spec/serializers}) do |metadata|
     metadata[:type] = :serializer
   end
+
+  # Auditable config (concern) - checks if the model is auditable
+  RSpec::Matchers.define :be_auditable do
+    match do |actual|
+      expect(Auditable.models).to include actual.class
+    end
+  end
 end

@@ -52,6 +52,10 @@ module Analysis
       provider_trials&.map(&:serialize_record)
     end
 
+    def name
+      object.boa_vista_cadastral_name
+    end
+
     def age
       object.boa_vista_cadastral_age
     end

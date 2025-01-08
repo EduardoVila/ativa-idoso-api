@@ -7,11 +7,11 @@ source 'https://rubygems.org'
 ruby '3.3.5'
 
 # Core Gems
-gem 'activejob', '~> 8.0' # Background job processing
-gem 'activemodel', '~> 8.0' # Model framework for ActiveRecord
+gem 'activejob', '~> 8' # Background job processing
+gem 'activemodel', '~> 8' # Model framework for ActiveRecord
 gem 'active_model_serializers' # JSON serialization for models
-gem 'activerecord', '~> 8.0' # ORM for database interaction
-gem 'activesupport', '~> 8.0' # Utility classes and extensions
+gem 'activerecord', '~> 8' # ORM for database interaction
+gem 'activesupport', '~> 8' # Utility classes and extensions
 gem 'bcrypt' # Password hashing
 gem 'bullet' # N+1 query detection
 gem 'colorize' # Colorized output

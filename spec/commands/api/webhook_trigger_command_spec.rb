@@ -28,7 +28,6 @@ RSpec.describe API::WebhookTriggerCommand, type: :command do
         allow(webhook_event).to receive(:processed?).and_return(false)
         allow(webhook_event).to receive(:update)
         allow(command).to receive(:perform_post_request).and_return(response)
-        allow(command).to receive(:parser).with('{}').and_return({})
       end
 
       it 'performs the post request' do
@@ -54,12 +53,17 @@ RSpec.describe API::WebhookTriggerCommand, type: :command do
     end
 
     context 'when a connection error occurs' do
+      let(:analysis_report) { create :analysis_report }
+
       before do
         allow(webhook_event).to receive(:processed?).and_return(false)
         allow(command).to receive(:perform_post_request)
           .and_raise(Faraday::ConnectionFailed.new('Connection failed'))
         allow(ErrorLogger).to receive(:log)
         allow(webhook_event).to receive(:update)
+        allow(Analysis::Report).to receive(:find).with(webhook_event.event_id)
+          .and_return(analysis_report)
+        allow(analysis_report).to receive(:update)
       end
 
       it 'logs the error and updates the webhook event status to error' do
@@ -69,6 +73,7 @@ RSpec.describe API::WebhookTriggerCommand, type: :command do
           .with(instance_of(Faraday::ConnectionFailed))
         expect(webhook_event).to have_received(:update)
           .with(status: :error, response: 'Connection failed')
+        expect(analysis_report).to have_received(:update).with(status: :error)
       end
     end
   end

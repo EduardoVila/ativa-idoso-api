@@ -10,7 +10,7 @@ require_relative '../../../app/integrators/errors/analysis/token_post_response_e
 # rubocop: enable Layout/LineLength
 
 RSpec.describe Analysis::TokenIntegrator do
-  let(:url) { "#{ENV.fetch('PREDICTION_URL')}/api/v1/tokens" }
+  let(:url) { ENV.fetch('PREDICTION_TOKEN_URL') }
   let(:client_secret) { ENV.fetch('PREDICTION_CLIENT_SECRET') }
   let(:client_id) { ENV.fetch('PREDICTION_CLIENT_ID') }
   let(:response_headers) { { 'Content-Type' => 'application/json' } }

@@ -11,9 +11,6 @@ require_relative '../../../app/integrators/errors/provenir/big_data_corp_post_re
 
 RSpec.describe Provenir::BigDataCorpIntegrator do
   let(:url) { ENV.fetch('PROVENIR_BIG_DATA_CORP_URL') }
-  let(:client_secret) { ENV.fetch('PROVENIR_CLIENT_SECRET') }
-  let(:client_id) { ENV.fetch('PROVENIR_CLIENT_ID') }
-  let(:access_token) { Base64.strict_encode64("#{client_id}:#{client_secret}") }
   let(:response_headers) { { 'Content-Type' => 'application/json' } }
 
   before { WebMock.disable_net_connect! }
@@ -35,10 +32,7 @@ RSpec.describe Provenir::BigDataCorpIntegrator do
 
       before do
         stub_request(:post, url).with(
-          headers: {
-            'Content-Type' => 'application/json',
-            'Authorization' => "Basic #{access_token}"
-          }
+          headers: { 'Content-Type' => 'application/json' }
         ).to_return(status: 200, body: response_body, headers: response_headers)
       end
 
@@ -50,10 +44,7 @@ RSpec.describe Provenir::BigDataCorpIntegrator do
     context 'when the response is unsuccessful' do
       before do
         stub_request(:post, url).with(
-          headers: {
-            'Content-Type' => 'application/json',
-            'Authorization' => "Basic #{access_token}"
-          }
+          headers: { 'Content-Type' => 'application/json' }
         ).to_return(status: 403, body: nil, headers: response_headers)
       end
 
@@ -65,10 +56,7 @@ RSpec.describe Provenir::BigDataCorpIntegrator do
     context 'when a Faraday::ConnectionFailed error occurs' do
       before do
         stub_request(:post, url).with(
-          headers: {
-            'Content-Type' => 'application/json',
-            'Authorization' => "Basic #{access_token}"
-          }
+          headers: { 'Content-Type' => 'application/json' }
         ).to_raise(Faraday::ConnectionFailed.new('Connection failed'))
       end
 

@@ -29,7 +29,8 @@ module Analysis
       if command_class == 'Analysis::PredictionCommand'
         Invoker.execute(:a_step, current_analysis, command_class)
 
-        return analysis_item.update(status: :done)
+        analysis_item.update(status: :done, features: analysis_item.featurable)
+        return
       end
 
       result = Invoker.execute(:a_step, current_analysis, command_class)
@@ -50,7 +51,8 @@ module Analysis
       else
         analysis_item.update(
           status: :done,
-          disapproval_situation: result[:disapproval_situation]
+          disapproval_situation: result[:disapproval_situation],
+          features: analysis_item.featurable
         )
       end
     end

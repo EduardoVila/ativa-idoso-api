@@ -4,7 +4,6 @@ require 'base64'
 require_relative '../errors/analysis/token_post_response_error'
 require_relative '../concerns/nestable'
 require_relative '../concerns/integrable'
-require_relative '../concerns/parseable'
 require_relative '../error_logger'
 
 module Analysis
@@ -14,7 +13,7 @@ module Analysis
 
       raise ::Errors::Analysis::TokenPostResponseError unless response.success?
 
-      parsed_response_body = parser(response.body)
+      parsed_response_body = json_parse(response.body)
 
       token = initialize_object_with_nested_attributes(parsed_response_body)
       token.access_token = Base64.strict_decode64(token.access_token)
@@ -34,7 +33,7 @@ module Analysis
 
     # Endpoint: POST /api/v1/tokens
     def post_url
-      "#{ENV.fetch('PREDICTION_URL')}/api/v1/tokens"
+      ENV.fetch('PREDICTION_TOKEN_URL')
     end
 
     def post_headers

@@ -30,10 +30,10 @@ module Nestable
       key = klass_alias(key, object) || key # alias key if present
 
       nested_klass = nested_klass(key, object) # get nested klass if present
-      association_collection = association_collection?(key, object) # check if association is a collection
+      association = association_reflection(key, object)
 
       # has_many association attributes initialization
-      if value.is_a?(Array) && association_collection
+      if value.is_a?(Array) && association&.collection?
         next if nested_klass.blank?
 
         # `value` will be overwrite by the initialized objects (note the `!`)
@@ -43,7 +43,7 @@ module Nestable
       end
 
       # has_one association attributes initialization
-      if value.is_a?(Hash) && !association_collection
+      if value.is_a?(Hash) && association&.has_one?
         next if nested_klass.blank?
 
         # pattern matching to overwrite `key` and `value`
@@ -65,9 +65,8 @@ module Nestable
     object.class.association_alias(key)
   end
 
-  def association_collection?(key, object)
-    association_reflection = object.class.reflect_on_association(key)
-    association_reflection&.collection?
+  def association_reflection(key, object)
+    object.class&.reflect_on_association(key)
   end
 
   def nested_klass(key, object)

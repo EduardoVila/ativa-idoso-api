@@ -21,6 +21,7 @@
 require 'require_all'
 
 require_all 'app/models/concerns/delegators'
+
 require_relative '../concerns/featurable'
 
 module Analysis
@@ -31,6 +32,8 @@ module Analysis
     include Delegators::BoaVistaCadastral
     include Delegators::Provenir
     include ::Featurable
+
+    auditable
 
     before_validation :cpf_normalizer
 

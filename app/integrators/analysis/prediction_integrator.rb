@@ -6,6 +6,12 @@ require_relative '../application_integrator'
 
 module Analysis
   class PredictionIntegrator < ApplicationIntegrator
+    def conn(proxy: nil)
+      super(proxy: proxy).tap do |connection|
+        connection.request(:authorization, :bearer, access_token)
+      end
+    end
+
     def create_resource(analysis_item)
       response = perform_post_request(analysis_item)
 
@@ -13,7 +19,8 @@ module Analysis
         raise ::Errors::Analysis::PredictionPostResponseError
       end
 
-      parsed_response_body = parser(response.body)
+      parsed_response_body = json_parse(response.body)
+
       prediction = build_prediction(parsed_response_body, analysis_item)
 
       prediction.save && prediction
@@ -40,7 +47,7 @@ module Analysis
 
     # Endpoint: POST /api/v1/predictions
     def post_url
-      "#{ENV.fetch('PREDICTION_URL')}/api/v1/predictions"
+      ENV.fetch('PREDICTION_URL')
     end
 
     def post_headers
@@ -48,19 +55,18 @@ module Analysis
         'Accept' => '*/*',
         'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
         'User-Agent' => 'Faraday v2.12.2',
-        'Content-Type' => 'application/json',
-        'Authorization' => "Bearer #{access_token64}"
+        'Content-Type' => 'application/json'
       }
     end
 
     def post_body(analysis_item)
       {
         cpf: analysis_item.cpf,
-        features: analysis_item.features
+        features: analysis_item.featurable
       }.to_json
     end
 
-    def access_token64
+    def access_token
       token = ::Analysis::TokenService.call
 
       Base64.strict_encode64(token.access_token)

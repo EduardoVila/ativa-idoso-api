@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
 require_relative '../../integrators/concerns/integrable'
-require_relative '../../integrators/concerns/parseable'
 require_relative 'webhook_trigger_command_error'
 
 module API
   class WebhookTriggerCommand < ApplicationCommand
     include Integrable
-    include Parseable
 
     attr_reader :webhook_event
 
@@ -28,6 +26,8 @@ module API
       ErrorLogger.log(e)
 
       webhook_event.update(status: :error, response: e.message)
+
+      Analysis::Report.find(webhook_event.event_id).update(status: :error)
 
       webhook_event
     end

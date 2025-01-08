@@ -3,6 +3,7 @@
 require 'spec_helper'
 require 'webmock/rspec'
 require 'dotenv/load'
+require_relative '../integrable'
 require_relative '../../../app/integrators/serasa/fintech_report_integrator'
 require_relative '../../../app/integrators/errors/serasa/response_error'
 require_relative '../../../app/integrators/errors/serasa/not_found_error'
