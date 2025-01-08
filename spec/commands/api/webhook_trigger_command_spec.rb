@@ -28,7 +28,6 @@ RSpec.describe API::WebhookTriggerCommand, type: :command do
         allow(webhook_event).to receive(:processed?).and_return(false)
         allow(webhook_event).to receive(:update)
         allow(command).to receive(:perform_post_request).and_return(response)
-        allow(command).to receive(:parser).with('{}').and_return({})
       end
 
       it 'performs the post request' do

@@ -1,21 +1,13 @@
 # frozen_string_literal: true
 
-require_relative '../concerns/nestable'
-require_relative '../concerns/integrable'
-require_relative '../concerns/parseable'
-
 require_relative '../errors/serasa/response_error'
 require_relative '../errors/serasa/not_found_error'
 
 module Serasa
-  class FintechReportIntegrator
-    include Parseable
-    include Integrable
-    include Nestable
-
+  class FintechReportIntegrator < ApplicationIntegrator
     def load_data(analysis_item)
       response = perform_post_request(analysis_item)
-      body = parser(response.body)
+      body = json_parse(response.body)
 
       if response.status == 404 && not_found_message?(body)
         raise ::Errors::Serasa::NotFoundError

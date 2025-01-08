@@ -7,7 +7,7 @@ module ProScore
 
       raise ::Errors::ProScore::ResponseError unless response.success?
 
-      body = parser(response.body)
+      body = json_parse(response.body)
 
       pro_score_authentication = initialize_object_with_nested_attributes(body)
 

@@ -17,15 +17,24 @@ module Analysis
 
       analysis_item.update(status: :wip)
 
-      run_boa_vista_cadastral unless analysis_item.name.present?
+      if analysis_item.name.blank?
+        run_boa_vista_cadastral
 
-      return if boa_vista_error?
+        return if boa_vista_error?
+
+        update_analysis_item_name
+      end
 
       analyze_item_step_by_step
+
       sync_analysis_report
     end
 
     private
+
+    def update_analysis_item_name
+      analysis_item.update(name: analysis_item.reload.boa_vista_cadastral_name)
+    end
 
     def analysis_item_done_or_not_found?
       %w[done not_found].include?(analysis_item.status)

@@ -7,7 +7,7 @@ module Featurable
     # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     # Order of the features is important!
     # Do not change it unless you know what you are doing.
-    def features
+    def featurable
       {
         provenir_presumed_income_class: provenir_presumed_income_class,
         provenir_age: provenir_age,

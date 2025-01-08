@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
 require_relative '../../integrators/concerns/integrable'
-require_relative '../../integrators/concerns/parseable'
 require_relative 'webhook_trigger_command_error'
 
 module API
   class WebhookTriggerCommand < ApplicationCommand
     include Integrable
-    include Parseable
 
     attr_reader :webhook_event
 

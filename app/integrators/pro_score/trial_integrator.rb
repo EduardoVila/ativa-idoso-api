@@ -8,7 +8,7 @@ module ProScore
   class TrialIntegrator < ApplicationIntegrator
     def load_data(analysis_item)
       response = perform_get_request(analysis_item)
-      body = parser(response.body)
+      body = json_parse(response.body)
 
       raise Errors::ProScore::ResponseError if response_error?(body)
 

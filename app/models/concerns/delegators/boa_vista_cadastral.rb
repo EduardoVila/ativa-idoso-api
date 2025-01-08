@@ -5,7 +5,7 @@ module Delegators
     extend ActiveSupport::Concern
 
     included do
-      delegate :addresses_count, :phones_count, :age,
+      delegate :addresses_count, :phones_count, :age, :name,
                to: :boa_vista_cadastral, allow_nil: true,
                prefix: :boa_vista_cadastral
     end

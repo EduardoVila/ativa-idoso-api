@@ -1,17 +1,10 @@
 # frozen_string_literal: true
 
 require 'base64'
-require_relative '../concerns/nestable'
-require_relative '../concerns/integrable'
-require_relative '../concerns/parseable'
 require_relative '../errors/serasa/response_error'
 
 module Serasa
-  class AuthenticationIntegrator
-    include Parseable
-    include Integrable
-    include Nestable
-
+  class AuthenticationIntegrator < ApplicationIntegrator
     def conn(proxy: nil)
       super(proxy: proxy).tap do |connection|
         connection.request(
@@ -25,7 +18,7 @@ module Serasa
 
       raise ::Errors::Serasa::ResponseError unless response.success?
 
-      body = parser(response.body)
+      body = json_parse(response.body)
 
       serasa_authentication = initialize_object_with_nested_attributes(body)
 

@@ -39,7 +39,7 @@ RSpec.describe Featurable, type: :concern do
     end
   end
 
-  describe '#features' do
+  describe '#featurable' do
     let(:dummy_instance) { dummy_class.new }
 
     context 'when all attributes are set' do
@@ -104,7 +104,7 @@ RSpec.describe Featurable, type: :concern do
       it 'returns correct hash when all attributes are set' do
         initialize_features
 
-        expect(dummy_instance.features).to eq(expected_features)
+        expect(dummy_instance.featurable).to eq(expected_features)
       end
     end
 
@@ -170,7 +170,7 @@ RSpec.describe Featurable, type: :concern do
       it 'returns correct hash when some attributes are nil' do
         initialize_features
 
-        expect(dummy_instance.features).to eq(expected_features)
+        expect(dummy_instance.featurable).to eq(expected_features)
       end
     end
   end

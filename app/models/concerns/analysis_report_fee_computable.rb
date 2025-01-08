@@ -6,15 +6,10 @@ module AnalysisReportFeeComputable
   included do
     # TODO: correct the fee calculation
     def calculate_fee(prediction)
-      result = 0
+      result = prediction.fee
+      result = 14.0 if prediction.fee.to_s.eql?('9.5')
 
-      if result.blank?
-        result = prediction.fee + 2 # we are adding 2% to preserve our cash
-
-        result = 14.0 if prediction.result.to_s.eql?('9.5')
-
-        return unless fee.blank? || fee < result
-      end
+      return unless fee.blank? || fee < result
 
       update(fee: result)
     end

@@ -2,19 +2,16 @@
 
 require 'base64'
 require_relative '../errors/provenir/big_data_corp_post_response_error'
-require_relative '../concerns/nestable'
-require_relative '../concerns/integrable'
-require_relative '../concerns/parseable'
 require_relative '../error_logger'
 
 module Provenir
   class BigDataCorpIntegrator < ApplicationIntegrator
     include CustomJsonParseable
 
-    # Override the default timeout of 60 seconds to 120 seconds
     def conn(proxy: nil)
       super(proxy: proxy).tap do |connection|
         connection.options.timeout = 120
+        connection.request(:authorization, :basic, access_token)
       end
     end
 
@@ -68,26 +65,24 @@ module Provenir
     end
 
     def post_headers
-      {
-        'Content-Type' => 'application/json',
-        'Authorization' => "Basic #{access_token}"
-      }
+      { 'Content-Type' => 'application/json' }
     end
 
     def post_body(cpf)
-      { Alpop: { Input: { Cpf: cpf } } }.to_json
+      {
+        Alpop: {
+          Input: {
+            Cpf: cpf
+          }
+        }
+      }.to_json
     end
 
     def access_token
+      client_id = ENV.fetch('PROVENIR_CLIENT_ID')
+      client_secret = ENV.fetch('PROVENIR_CLIENT_SECRET')
+
       Base64.strict_encode64("#{client_id}:#{client_secret}")
-    end
-
-    def client_id
-      ENV.fetch('PROVENIR_CLIENT_ID')
-    end
-
-    def client_secret
-      ENV.fetch('PROVENIR_CLIENT_SECRET')
     end
   end
 end

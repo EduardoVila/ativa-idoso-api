@@ -9,7 +9,7 @@ module BoaVista
 
       response = perform_post_request(unmasked_cpf, products)
 
-      parsed_response_body = parser(response.body)
+      parsed_response_body = json_parse(response.body)
 
       if response.status != 200 || parsed_response_body.blank?
         raise BoaVistaResponseError
