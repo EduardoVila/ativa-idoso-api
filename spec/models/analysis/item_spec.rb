@@ -27,6 +27,10 @@ RSpec.describe Analysis::Item, type: :model do
     it { is_expected.to be_valid }
   end
 
+  describe 'behaviors' do
+    it { is_expected.to be_auditable }
+  end
+
   describe 'associations' do
     it {
       expect(subject).to belong_to(:report).class_name('Analysis::Report')

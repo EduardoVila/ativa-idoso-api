@@ -18,7 +18,7 @@ FactoryBot.define do
   factory :analysis_prediction, class: 'Analysis::Prediction' do
     cpf { Faker::CPF.pretty }
     approved { [true, false].sample }
-    label { Faker::Name.name }
+    label { %w[human_analyzed multi_softmax].sample }
     input_data { { 'key' => 'value' } }
 
     item factory: :analysis_item

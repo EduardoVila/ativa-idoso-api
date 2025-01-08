@@ -27,8 +27,13 @@ module ApplicationLoader
 
   def self.load_app
     # Load all Ruby files in the app directory
-    app_dir = File.join(File.dirname(__FILE__), '../app/**/*.rb')
 
+    # Load all models first to ensure constants are available to other classes (e.g. concerns)
+    models_dir = File.join(File.dirname(__FILE__), '../app/models/*.rb')
+    require_all models_dir
+
+    # Load the rest of the application
+    app_dir = File.join(File.dirname(__FILE__), '../app/**/*.rb')
     require_all app_dir
   end
 end

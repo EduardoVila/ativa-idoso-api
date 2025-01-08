@@ -40,6 +40,10 @@ RSpec.describe Analysis::Report, type: :model do
     end
   end
 
+  describe 'behaviors' do
+    it { is_expected.to be_auditable }
+  end
+
   describe 'associations' do
     it {
       expect(subject).to belong_to(:api_client).class_name('API::Client')

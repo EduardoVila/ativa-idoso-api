@@ -21,6 +21,8 @@ module Analysis
   class Report < ApplicationRecord
     include ::AnalysisReportFeeComputable
 
+    auditable ignore: %i[payload status created_at updated_at]
+
     enum :status, %i[todo wip done not_found error]
     enum :disapproval_situation, [
       :debtor, # when has debits with Alpop

@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 require 'active_record'
+require_relative 'concerns/auditable'
 
 class ApplicationRecord < ActiveRecord::Base
+  include ::Auditable
+
   self.abstract_class = true
 
   def self.human_enum_name(name, value)
