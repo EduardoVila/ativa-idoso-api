@@ -920,7 +920,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "pro_score_report_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["pro_score_report_id"], name: "index_pro_score_presumed_incomes_on_pro_score_report_id"
+    t.index ["pro_score_report_id"], name: "index_pro_score_presumed_incomes_on_pro_score_report_id", unique: true
   end
 
   create_table "pro_score_presumed_salary_ranges", force: :cascade do |t|
@@ -931,7 +931,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "pro_score_report_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["pro_score_report_id"], name: "index_pro_score_presumed_salary_ranges_on_pro_score_report_id"
+    t.index ["pro_score_report_id"], name: "index_pro_score_presumed_salary_ranges_on_pro_score_report_id", unique: true
   end
 
   create_table "pro_score_proprable_professions", force: :cascade do |t|
@@ -941,7 +941,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "pro_score_report_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["pro_score_report_id"], name: "index_pro_score_proprable_professions_on_pro_score_report_id"
+    t.index ["pro_score_report_id"], name: "index_pro_score_proprable_professions_on_pro_score_report_id", unique: true
   end
 
   create_table "pro_score_reports", force: :cascade do |t|
@@ -950,7 +950,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.uuid "analysis_item_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["analysis_item_id"], name: "index_pro_score_reports_on_analysis_item_id"
+    t.index ["analysis_item_id"], name: "index_pro_score_reports_on_analysis_item_id", unique: true
   end
 
   create_table "pro_score_trial_lawyers", force: :cascade do |t|
