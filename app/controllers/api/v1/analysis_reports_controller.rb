@@ -31,7 +31,7 @@ module API
     #     - 404 status if the report is not found.
     class AnalysisReportsController < ApplicationController
       before(%w[/api/v1/analysis-reports /api/v1/analysis-reports/:uuid]) do
-        authenticate_access_token_from request
+        authenticate_access_token_from(request)
       end
 
       post('/api/v1/analysis-reports') do

@@ -2,7 +2,7 @@
 
 require 'jwt'
 require 'dotenv/load'
-require_relative '../../models/api/client' # Ensure you require the Client model
+require_relative '../../models/api/client'
 
 # Tokenable module provides methods to handle JWT token encoding, decoding,
 # and client authentication.
@@ -23,28 +23,65 @@ require_relative '../../models/api/client' # Ensure you require the Client model
 module Tokenable
   class << self
     # Generate a JWT token
-    def encode(payload)
-      JWT.encode(payload, ENV.fetch('JWT_SECRET'), 'HS256')
+    def create_jwt(payload:, expires_in: ENV.fetch('SECONDS').to_i)
+      payload['exp'] = Time.now.to_i + expires_in
+      payload['iss'] = 'alpop-analysis'
+      payload['iat'] = Time.now.to_i
+
+      # Load the RSA private key
+      private_key = ENV['RSA_PRIVATE_KEY'].gsub('\\n', "\n") # Replace escaped newlines with actual newlines (\n)
+      rsa_key = OpenSSL::PKey::RSA.new(private_key) # Create a new RSA key object
+
+      algorithm = ENV.fetch('JWT_ALGORITHM')
+
+      JWT.encode(payload, rsa_key, algorithm)
     end
 
     # Decode the JWT token and return the payload
-    def decode(token)
-      JWT.decode(
-        token, ENV.fetch('JWT_SECRET'), true, { algorithm: 'HS256' }
-      ).first
+    def verify_jwt(token)
+      decoded_token = JWT.decode(token, nil, false) # Decode the token without verifying it
+
+      issuer = decoded_token[0]['iss'] # Extract the issuer from the decoded token
+      public_key = fetch_public_key_for(issuer) # Fetch the public key for the issuer
+      rsa_key = OpenSSL::PKey::RSA.new(public_key) # Create a new RSA key object
+
+      algorithm = ENV.fetch('JWT_ALGORITHM')
+
+      # Decode the JWT, verifying it with the public key and algorithm
+      decoded_payload = JWT.decode(token, rsa_key, true, { algorithm: })
+
+      # Check if the token is expired
+      # The first element of the decoded payload is the actual data
+      check_expiration(decoded_payload.first)
+
+      decoded_payload.first # Return the payload (decoded data)
+    rescue JWT::ExpiredSignature
+      raise ExpiredTokenError, 'Token has expired'
     rescue JWT::DecodeError
-      nil # Return nil if the token is invalid
+      raise InvalidTokenError, 'Invalid token'
     end
 
-    # Method to authenticate a client based on client_id and client_secret
-    # Returns a JWT token if the client is authenticated
-    def create_access_token(client_id, client_secret)
-      client = API::Client.find_by_client_id client_id
+    def check_expiration(payload)
+      expiration_time = payload['exp']
 
-      return unless client&.authenticate(client_secret) # Authenticate the client
+      return unless expiration_time && Time.now.to_i > expiration_time
 
-      payload = { client_id: client_id, exp: Time.now.to_i + 10_080 } # 7 days in minutes
-      encode(payload)
+      raise ExpiredTokenError, 'Token has expired'
+    end
+
+    def fetch_public_key_for(issuer)
+      # Map each issuer to its public key
+
+      public_keys = {
+        'alpop-analysis' => OpenSSL::PKey::RSA.new(
+          ENV.fetch('RSA_PUBLIC_KEY').gsub('\\n', "\n")
+        ),
+        'alpop-prediction' => OpenSSL::PKey::RSA.new(
+          ENV.fetch('RSA_ALPOP_PREDICTION_PUBLIC_KEY').gsub('\\n', "\n")
+        )
+      }
+
+      public_keys[issuer] # Replace escaped newlines with actual newlines (\n)
     end
 
     def authenticate_access_token(request)
@@ -53,12 +90,12 @@ module Tokenable
 
       return 401 unless token
 
-      decoded_token = Tokenable.decode(token)
+      payload = Tokenable.verify_jwt(token)
 
-      return 401 unless decoded_token
+      return 401 unless payload
 
       begin
-        200 if API::Client.find_by_client_id(decoded_token['client_id'])
+        200 if API::Client.find_by_client_id(payload['sub'])
       rescue NoMethodError
         404
       rescue JWT::ExpiredSignature, JWT::DecodeError
@@ -72,12 +109,12 @@ module Tokenable
 
       return unless token
 
-      decoded_token = Tokenable.decode(token)
+      payload = Tokenable.verify_jwt(token)
 
-      return unless decoded_token
+      return unless payload
 
       begin
-        API::Client.find_by_client_id(decoded_token['client_id'])
+        API::Client.find_by_client_id(payload['sub'])
       rescue NoMethodError
         halt 404
       rescue JWT::ExpiredSignature, JWT::DecodeError
@@ -86,3 +123,6 @@ module Tokenable
     end
   end
 end
+
+class ExpiredTokenError < StandardError; end
+class InvalidTokenError < StandardError; end

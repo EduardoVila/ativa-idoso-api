@@ -45,6 +45,7 @@ class AddAnalysisTables < ActiveRecord::Migration[8.0]
       t.float :fee
       t.string :label
       t.jsonb :input_data
+      t.string :raw_data
       t.references :analysis_item, type: :uuid, null: false, foreign_key: true, index: true
       t.timestamps
     end

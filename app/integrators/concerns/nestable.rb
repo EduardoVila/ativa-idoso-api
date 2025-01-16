@@ -3,10 +3,8 @@
 module Nestable
   extend ActiveSupport::Concern
 
-  def initialize_object_with_nested_attributes(parsed_response_body)
-    klass_model.new(
-      initialize_nested_attributes(parsed_response_body, klass_model.new)
-    )
+  def initialize_object_with_nested_attributes(parsed_data)
+    klass_model.new(initialize_nested_attributes(parsed_data, klass_model.new))
   end
 
   def klass_model

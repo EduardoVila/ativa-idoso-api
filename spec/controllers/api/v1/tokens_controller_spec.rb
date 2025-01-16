@@ -41,8 +41,8 @@ RSpec.describe API::V1::TokensController, type: :controller do
 
         expect(last_response.status).to eq(200)
         expect(json_response).to have_key('access_token')
-        expect(json_response['token_type']).to eq('bearer')
-        expect(json_response['expires_in']).to eq(10_080)
+        expect(json_response['token_type']).to eq('Bearer')
+        expect(json_response['expires_in']).to eq(604_800)
       end
     end
 

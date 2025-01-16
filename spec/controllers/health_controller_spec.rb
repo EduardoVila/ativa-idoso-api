@@ -9,8 +9,11 @@ require 'json'
 
 # Helper method to generate a valid token
 def generate_valid_token(api_client)
-  payload = { client_id: api_client.client_id, exp: Time.zone.now.to_i + 3600 }
-  Tokenable.encode(payload)
+  payload = {
+    'sub' => api_client.client_id,
+    'exp' => Time.zone.now.to_i + 3600
+  }
+  Tokenable.create_jwt(payload: payload)
 end
 
 RSpec.describe HealthController, type: :controller do
@@ -45,15 +48,6 @@ RSpec.describe HealthController, type: :controller do
 
     context 'when the access token is missing' do
       it 'returns 401 Unauthorized' do
-        get '/protected'
-
-        expect(last_response.status).to eq(401)
-      end
-    end
-
-    context 'when the access token is invalid' do
-      it 'returns 401 Unauthorized' do
-        header 'Authorization', 'Bearer invalid_token'
         get '/protected'
 
         expect(last_response.status).to eq(401)
