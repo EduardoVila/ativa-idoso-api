@@ -22,5 +22,10 @@ FactoryBot.define do
       ].sample
     end
     index_order { rand(1..1000) }
+    enabled { [true, false].sample }
+
+    trait :disabled do
+      enabled { false }
+    end
   end
 end

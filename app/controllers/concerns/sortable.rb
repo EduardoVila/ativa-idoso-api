@@ -14,7 +14,7 @@
 #
 #   # permite ordenação pelos parâmetros :sort e :order
 #   def index
-#     render json: User.order(sort_options)
+#     render json: User.order(()
 #   end
 # end
 # ```
@@ -35,7 +35,7 @@ module Sortable
     #   sorting %w[id name age].freeze, default: { age: :desc }
     #
     #   def index
-    #     render json: Person.order(sort_options)
+    #     render json: Person.order(()
     #   end
     # end
     # ```
@@ -61,31 +61,44 @@ module Sortable
   #
   # @return [Hash] opções de ordenação para o ActiveRecord
   #
-  def sort_options
-    options = params.permit(:sort, :order)
-
-    # whitelisting
-    sort = if sorting_options.include?(
-      options[:sort]
-    )
+  def sort_options(params)
+    options = params
+    sort = if sorting_options.include?(options[:sort])
              options[:sort]
            else
              sorting_default_options[:sort]
            end
-    order = if ORDER_OPTIONS.include?(
-      options[:order]
-    )
+    order = if ORDER_OPTIONS.include?(options[:order])
               options[:order]
             else
               sorting_default_options[:order]
             end
-
-    # Para ser usado como:
-    #   - Intrest.order(sort_options)
-    #   => Interest.order(created_at: :desc)
     {
       sort => order,
-      id: 'asc' # this is reuired because PostgreSQL need a uniq key to perform pagination
+      id: 'asc'
     }
+  end
+
+  def extract_options_params(request)
+    body = request.body.read
+
+    if body.present?
+      body_params = json_parse(body)
+      {
+        sort: body_params['sort'],
+        order: body_params['order']
+      }
+    else
+      {
+        sort: nil,
+        order: nil
+      }
+    end
+  end
+
+  def json_parse(body)
+    JSON.parse(body)
+  rescue JSON::ParserError
+    nil
   end
 end

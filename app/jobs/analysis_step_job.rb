@@ -6,12 +6,15 @@ class AnalysisStepJob < ApplicationJob
   queue_as :analysis_step
 
   def perform(analysis_item_id, analysis_step_id)
+    return if analysis_item_id.blank? || analysis_step_id.blank?
+
     analysis_item = find_analysis_item(analysis_item_id)
     analysis_step = find_analysis_step(analysis_step_id)
     webhook_event = find_webhook_event(analysis_item.analysis_report_id)
 
     if analysis_item.blank? ||
        analysis_step.blank? ||
+       webhook_event.blank? ||
        analysis_item.steps.find_by(id: analysis_step_id).present?
 
       return

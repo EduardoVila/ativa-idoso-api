@@ -2,11 +2,11 @@
 
 module Analysis
   class StepItemSerializer < ApplicationSerializer
-    attributes :id, :cpf, :name, :state, :disapproval_situation, :debits,
+    attributes :id, :cpf, :name, :disapproval_situation, :debits,
                :status, :created_at, :prediction, :contracts, :original,
-               :error_status, :property_type, :human_analyzed_prediction,
+               :error_status, :human_analyzed_prediction,
                :approved, :age, :presumed_income_value, :proprable_profession,
-               :bounced_check, :trials, :main_tenant?
+               :bounced_check, :trials
 
     def original
       object.clone_of&.serialize_record
