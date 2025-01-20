@@ -68,6 +68,18 @@ module API
         end
       end
 
+      post('/api/v1/analysis-reports/:uuid/retry') do
+        analysis_report = find_analysis_report_by(request, params)
+
+        return status(404) unless analysis_report.present?
+
+        return status(400) unless analysis_report.status == 'error'
+
+        RetryJob.perform_later(analysis_report.id)
+
+        status(202)
+      end
+
       get('/api/v1/analysis-reports/:uuid') do
         current_client = Tokenable.current_client(request)
 
@@ -82,6 +94,16 @@ module API
         else
           halt(404, { message: 'Analysis report not found' }.to_json)
         end
+      end
+
+      private
+
+      def find_analysis_report_by(request, params)
+        current_client = Tokenable.current_client(request)
+
+        ::Analysis::Report.includes(:api_client).find_by(
+          id: params[:uuid], api_client_id: current_client.id
+        )
       end
     end
   end
