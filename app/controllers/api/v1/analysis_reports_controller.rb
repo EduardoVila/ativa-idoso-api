@@ -69,7 +69,7 @@ module API
       end
 
       post('/api/v1/analysis-reports/:uuid/retry') do
-        analysis_report = find_analysis_report_by(request, params)
+        analysis_report = find_analysis_report(request, params)
 
         return status(404) unless analysis_report.present?
 
@@ -81,11 +81,7 @@ module API
       end
 
       get('/api/v1/analysis-reports/:uuid') do
-        current_client = Tokenable.current_client(request)
-
-        analysis_report = ::Analysis::Report.includes(:api_client).find_by(
-          id: params[:uuid], api_client_id: current_client.id
-        )
+        analysis_report = find_analysis_report(request, params)
 
         if analysis_report.present?
           status(200)
@@ -98,7 +94,7 @@ module API
 
       private
 
-      def find_analysis_report_by(request, params)
+      def find_analysis_report(request, params)
         current_client = Tokenable.current_client(request)
 
         ::Analysis::Report.includes(:api_client).find_by(

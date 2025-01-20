@@ -5,12 +5,12 @@ class RetryJob < ApplicationJob
 
   def perform(analysis_report_id)
     analysis_report = find_analysis_report(analysis_report_id)
-    webhook_event = find_webhook_event(analysis_report.id)
+    webhook_event = find_webhook_event(analysis_report_id)
 
     return unless analysis_report.items.any? { |item| item.status == 'error' }
 
-    process_analysis_report(analysis_report)
-    process_webhook_event(webhook_event)
+    analysis_report.update(status: :wip)
+    webhook_event.update(status: :processing, job_id: job_id)
 
     process_items_with_error_status(analysis_report)
 
@@ -26,14 +26,6 @@ class RetryJob < ApplicationJob
 
   def find_webhook_event(analysis_report_id)
     API::WebhookEvent.find_by(event_id: analysis_report_id)
-  end
-
-  def process_webhook_event(webhook_event)
-    webhook_event.update(status: :processing, job_id: job_id)
-  end
-
-  def process_analysis_report(analysis_report)
-    analysis_report.update(status: :wip)
   end
 
   def process_items_with_error_status(analysis_report)
