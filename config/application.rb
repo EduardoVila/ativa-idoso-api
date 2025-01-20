@@ -19,6 +19,7 @@ class AlpopAnalysis < Sinatra::Base
     enable :raise_errors
   end
 
+  # Load the application routes automatically
   ApplicationController.subclasses.each { |controller| use controller }
 
   use Rack::Protection # Enable Rack::Protection middleware
