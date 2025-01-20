@@ -84,16 +84,17 @@ module Sortable
 
     if body.present?
       body_params = json_parse(body)
-      {
+
+      return {
         sort: body_params['sort'],
         order: body_params['order']
       }
-    else
-      {
-        sort: nil,
-        order: nil
-      }
     end
+
+    {
+      sort: nil,
+      order: nil
+    }
   end
 
   def json_parse(body)

@@ -32,10 +32,6 @@ module Analysis
     scope :enabled, -> { where enabled: true }
     scope :disabled, -> { where enabled: false }
 
-    def internal_processing_step?
-      name.include?('alpop')
-    end
-
     private
 
     def validate_command_class
