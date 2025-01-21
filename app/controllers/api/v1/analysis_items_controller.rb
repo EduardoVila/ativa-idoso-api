@@ -7,45 +7,35 @@ module API
     class AnalysisItemsController < ApplicationController
       include Sortable
 
-      before %w[
-        /api/v1/analysis-items/:analysis_item_id/next-steps
-        /api/v1/:analysis_item_id/reruns
-      ] do
-        authenticate_access_token_from(request)
-      end
-
       sorting(%w[index_order].freeze, default: { index_order: :asc })
 
-      # Go to next analysis step
+      # POST /api/v1/analysis-items/:analysis_item_id/next-steps
       post('/api/v1/analysis-items/:analysis_item_id/next-steps') do
-        begin
-          analysis_item = Analysis::Item.find(params['analysis_item_id'])
-        rescue ActiveRecord::RecordNotFound
-          return status(404)
+        analysis_item = Analysis::Item.find_by(id: params['analysis_item_id'])
+
+        if analysis_item.blank?
+          halt(404, { message: 'Analysis item not found' }.to_json)
         end
 
-        body_params = JSON.parse(request.body.read)
+        step_id = JSON.parse(request.body.read)['analysis_step_id']
+        halt(400, { message: 'No analysis step requested' }) if step_id.blank?
 
-        return status(400) if body_params['analysis_step_id'].blank?
-
-        step_id = body_params['analysis_step_id']
-
-        return status(400) if step_id.blank?
-
-        analysis_item ||= Analysis::Item.find(params['analysis_item_id'])
-
-        return status(422) if analysis_item.steps.find_by(id: step_id).present?
+        if analysis_item.steps.exists?(id: step_id)
+          halt(422, { message: 'Analysis step already exists' })
+        end
 
         AnalysisStepJob.perform_later(analysis_item.id, step_id)
 
-        status(201)
+        status(202)
+
+        { message: 'Analysis step scheduled' }.to_json
       end
 
-      # Rerun analysis item
+      # GET /api/v1/analysis-items/:analysis_item_id/steps
       post('/api/v1/:analysis_item_id/reruns') do
         ClonedAnalysisItemJob.perform_later(params['analysis_item_id'])
 
-        status(201)
+        status(202)
 
         { message: 'Analysis item rerun scheduled' }.to_json
       end

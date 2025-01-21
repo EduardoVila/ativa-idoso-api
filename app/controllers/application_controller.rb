@@ -8,7 +8,10 @@ class ApplicationController < Sinatra::Base
 
   before do
     content_type :json
-    authenticate_access_token_from(request)
+
+    unless instance_of?(API::V1::TokensController)
+      authenticate_access_token_from(request)
+    end
   end
 
   def authenticate_access_token_from(request)

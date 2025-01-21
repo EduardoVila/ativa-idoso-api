@@ -45,8 +45,8 @@ RSpec.describe(API::V1::AnalysisItemsController, type: :controller) do
         )
       end
 
-      it 'returns status 201' do
-        expect(last_response.status).to eq(201)
+      it 'returns status 202' do
+        expect(last_response.status).to eq(202)
       end
     end
 
@@ -86,8 +86,8 @@ RSpec.describe(API::V1::AnalysisItemsController, type: :controller) do
         )
       end
 
-      it 'returns status 201' do
-        expect(last_response.status).to eq(201)
+      it 'returns status 202' do
+        expect(last_response.status).to eq(202)
       end
 
       it 'returns a success message' do
