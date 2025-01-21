@@ -8,6 +8,8 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
   include Rack::Test::Methods
 
   describe 'POST /api/v1/analysis-reports' do
+    subject(:post_request) { post(route, {}.to_json, headers) }
+
     let(:route) { '/api/v1/analysis-reports' }
     let(:current_client) { create :api_client }
     let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
@@ -46,11 +48,11 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
     context 'when the request is unsuccessful' do
       before do
         allow(Tokenable).to receive_messages(authenticate_access_token: 401)
+
+        post_request
       end
 
       it 'returns a 401 Unauthorized status' do
-        post(route, {}.to_json, headers)
-
         expect(last_response.status).to eq(401)
       end
     end
@@ -61,10 +63,64 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
           authenticate_access_token: 200,
           current_client: current_client
         )
+
+        post_request
       end
 
       it 'returns a 400 Bad Request status' do
-        post(route, {}.to_json, headers)
+        expect(last_response.status).to eq(400)
+      end
+    end
+  end
+
+  describe 'POST /api/v1/analysis-reports/:uuid/retry' do
+    subject(:post_request) { post(route, {}, headers) }
+
+    let!(:analysis_report) do
+      create :analysis_report, :error, api_client: current_client
+    end
+    let(:route) { "/api/v1/analysis-reports/#{analysis_report.id}/retry" }
+    let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
+    let(:current_client) { create :api_client }
+
+    before do
+      allow(Tokenable).to receive_messages(
+        authenticate_access_token: 200,
+        current_client: current_client
+      )
+      allow(RetryJob).to receive(:perform_later)
+
+      post_request
+    end
+
+    context 'when analysis report exists and status is error' do
+      it 'schedules the RetryJob' do
+        expect(RetryJob).to have_received(:perform_later)
+          .with(analysis_report.id)
+      end
+
+      it 'returns a 202 status code' do
+        expect(last_response.status).to eq(202)
+      end
+    end
+
+    context 'when analysis report is not found' do
+      let(:route) { '/api/v1/analysis-reports/invalid-uuid/retry' }
+
+      it 'returns a 404 status code' do
+        post_request
+
+        expect(last_response.status).to eq(404)
+      end
+    end
+
+    context 'when analysis report status is not error' do
+      let(:analysis_report) do
+        create :analysis_report, :done, api_client: current_client
+      end
+
+      it 'returns a 400 status code' do
+        post_request
 
         expect(last_response.status).to eq(400)
       end
@@ -85,11 +141,11 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
           authenticate_access_token: 200,
           current_client: current_client
         )
+
+        get("#{base_route}/#{analysis_report.id}", {}, headers)
       end
 
       it 'returns the analysis report' do
-        get("#{base_route}/#{analysis_report.id}", {}, headers)
-
         expect(last_response.status).to eq(200)
 
         response_body = JSON.parse(last_response.body)
@@ -103,11 +159,12 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
           authenticate_access_token: 200,
           current_client: current_client
         )
+
+        get("#{base_route}/foo", {}, headers)
+
       end
 
       it 'returns a 404 error' do
-        get("#{base_route}/foo", {}, headers)
-
         expect(last_response.status).to eq(404)
       end
     end
