@@ -10,7 +10,7 @@ module API
     # - POST /api/v1/analysis-reports: Creates a new analysis report.
     # - GET /api/v1/analysis-reports/:uuid: Retrieves an analysis report by UUID.
     #
-    # Before Actions:
+    # Before Actions in ApplicationController:
     # - Authenticates access token for the specified routes.
     #
     # Methods:
@@ -30,10 +30,6 @@ module API
     #     - 200 status and serialized analysis report JSON if found.
     #     - 404 status if the report is not found.
     class AnalysisReportsController < ApplicationController
-      before(%w[/api/v1/analysis-reports /api/v1/analysis-reports/:uuid]) do
-        authenticate_access_token_from request
-      end
-
       post('/api/v1/analysis-reports') do
         current_client = Tokenable.current_client(request)
         body_params = JSON.parse(request.body.read)
