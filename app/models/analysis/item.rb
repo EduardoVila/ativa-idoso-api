@@ -49,6 +49,7 @@ module Analysis
       pro_score_presumed_income
       pro_score_commercial_relations
       provenir_big_data_corp
+      alpop_prediction
     ], suffix: true
 
     enum :disapproval_situation, %i[

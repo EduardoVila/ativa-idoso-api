@@ -8,10 +8,16 @@ require 'base64'
 require_relative 'concerns/tokenable'
 
 class ApplicationController < Sinatra::Base
-  before { content_type :json }
+  include Tokenable
+
+  before do
+    content_type :json
+    authenticate_access_token_from(request)
+  end
 
   def authenticate_access_token_from(request)
     http_status = Tokenable.authenticate_access_token(request)
-    halt http_status unless http_status == 200
+    halt(http_status) unless http_status == 200
+    http_status
   end
 end
