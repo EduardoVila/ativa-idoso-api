@@ -4,7 +4,7 @@ class AddBoaVistaAcertaEssencialTables < ActiveRecord::Migration[8.0]
       t.string :cpf, null: false
       t.integer :credit_type, null: false, default: 0
       t.string :raw_data
-      t.references :consumer, polymorphic: true, type: :uuid, index: { unique: true }
+      t.references :consumer, polymorphic: true, type: :uuid, null: false, index: { unique: true }
       t.timestamps
     end
 

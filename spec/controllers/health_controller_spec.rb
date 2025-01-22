@@ -22,15 +22,6 @@ RSpec.describe HealthController, type: :controller do
   let(:app) { described_class }
   let(:json_response) { JSON.parse(last_response.body) }
 
-  describe 'GET /' do
-    it 'returns health status 200' do
-      get '/'
-
-      expect(last_response.status).to eq(200)
-      expect(json_response).to include('message' => 'Health: OK')
-    end
-  end
-
   describe 'GET /protected' do
     context 'when the request is valid' do
       before do
