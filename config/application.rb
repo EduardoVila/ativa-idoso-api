@@ -11,8 +11,6 @@ ApplicationLoader.load_gems
 # Load the application and lib directories
 ApplicationLoader.load_app
 
-require_relative 'router'
-
 # Start the application
 class AlpopAnalysis < Sinatra::Base
   configure :development, :test, :production do
@@ -21,5 +19,8 @@ class AlpopAnalysis < Sinatra::Base
     enable :raise_errors
   end
 
-  Router.init(self)
+  # Load the application routes automatically
+  ApplicationController.subclasses.each { |controller| use controller }
+
+  use Rack::Protection # Enable Rack::Protection middleware
 end

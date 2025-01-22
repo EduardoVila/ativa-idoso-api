@@ -29,9 +29,8 @@ module Tokenable
 
     # Decode the JWT token and return the payload
     def decode(token)
-      JWT.decode(
-        token, ENV.fetch('JWT_SECRET'), true, { algorithm: 'HS256' }
-      ).first
+      JWT.decode(token, ENV.fetch('JWT_SECRET'), true, { algorithm: 'HS256' })
+        .first
     rescue JWT::DecodeError
       nil # Return nil if the token is invalid
     end
@@ -43,7 +42,7 @@ module Tokenable
 
       return unless client&.authenticate(client_secret) # Authenticate the client
 
-      payload = { client_id: client_id, exp: Time.now.to_i + 10_080 } # 7 days in minutes
+      payload = { client_id: client_id, exp: Time.now.to_i + 10_080 } # 7 days in minutes TODO: Move to ENV
       encode(payload)
     end
 

@@ -1,18 +1,17 @@
 # frozen_string_literal: true
 
-require 'sinatra'
-require 'sinatra/activerecord'
-require 'sinatra/base'
-require 'json'
-require 'base64'
 require_relative 'concerns/tokenable'
+require_relative 'concerns/sortable'
 
 class ApplicationController < Sinatra::Base
   include Tokenable
 
   before do
     content_type :json
-    authenticate_access_token_from(request)
+
+    unless instance_of?(API::V1::TokensController)
+      authenticate_access_token_from(request)
+    end
   end
 
   def authenticate_access_token_from(request)
