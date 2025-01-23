@@ -5,7 +5,6 @@ require_relative '../../application_controller'
 module API
   module V1
     class AnalysisReportsController < ApplicationController
-      # POST /api/v1/analysis-reports
       post('/api/v1/analysis-reports') do
         current_client = Tokenable.current_client(request)
         body_params = JSON.parse(request.body.read)
@@ -40,8 +39,7 @@ module API
         end
       end
 
-      # POST /api/v1/analysis-reports/:uuid/retry
-      post('/api/v1/analysis-reports/:uuid/retry') do
+      post('/api/v1/analysis-reports/:uuid/retries') do
         analysis_report = find_analysis_report(request, params)
 
         unless analysis_report.present?

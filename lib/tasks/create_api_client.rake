@@ -2,7 +2,7 @@
 
 namespace :db do
   desc 'Create an API client'
-  task api_client: :environment do
+  task create_api_client: :environment do
     require 'securerandom'
     require 'colorize'
     require_relative '../../config/application'

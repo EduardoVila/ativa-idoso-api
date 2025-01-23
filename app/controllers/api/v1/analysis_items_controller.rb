@@ -9,7 +9,6 @@ module API
 
       sorting(%w[index_order].freeze, default: { index_order: :asc })
 
-      # POST /api/v1/analysis-items/:analysis_item_id/next-steps
       post('/api/v1/analysis-items/:analysis_item_id/next-steps') do
         analysis_item = Analysis::Item.find_by(id: params['analysis_item_id'])
 
@@ -31,8 +30,7 @@ module API
         { message: 'Analysis step scheduled' }.to_json
       end
 
-      # GET /api/v1/analysis-items/:analysis_item_id/steps
-      post('/api/v1/:analysis_item_id/reruns') do
+      post('/api/v1/analysis-items/:analysis_item_id/reruns') do
         ClonedAnalysisItemJob.perform_later(params['analysis_item_id'])
 
         status(202)

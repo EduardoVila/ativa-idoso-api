@@ -73,13 +73,13 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
     end
   end
 
-  describe 'POST /api/v1/analysis-reports/:uuid/retry' do
+  describe 'POST /api/v1/analysis-reports/:uuid/retries' do
     subject(:post_request) { post(route, {}, headers) }
 
     let!(:analysis_report) do
       create :analysis_report, :error, api_client: current_client
     end
-    let(:route) { "/api/v1/analysis-reports/#{analysis_report.id}/retry" }
+    let(:route) { "/api/v1/analysis-reports/#{analysis_report.id}/retries" }
     let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
     let(:current_client) { create :api_client }
 
@@ -105,7 +105,7 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
     end
 
     context 'when analysis report is not found' do
-      let(:route) { '/api/v1/analysis-reports/invalid-uuid/retry' }
+      let(:route) { '/api/v1/analysis-reports/invalid-uuid/retries' }
 
       it 'returns a 404 status code' do
         post_request

@@ -5,10 +5,7 @@ require 'webmock/rspec'
 require 'dotenv/load'
 require_relative '../integrable'
 require_relative '../../../app/integrators/analysis/token_integrator'
-# rubocop: disable Layout/LineLength
-require_relative '../../../app/integrators/errors/analysis/token_post_response_error'
-# rubocop: enable Layout/LineLength
-
+require_relative '../../../app/integrators/errors/analysis/token_response_error'
 RSpec.describe Analysis::TokenIntegrator do
   let(:url) { ENV.fetch('PREDICTION_TOKEN_URL') }
   let(:client_secret) { ENV.fetch('PREDICTION_CLIENT_SECRET') }
@@ -60,8 +57,10 @@ RSpec.describe Analysis::TokenIntegrator do
           .to_return(status: 403, body: nil, headers: response_headers)
       end
 
-      it 'raises a PredictionPostResponseError' do
-        expect { response }.to raise_error(Faraday::ForbiddenError)
+      it 'raises a Errors::Analysis::TokenPostResponseError' do
+        expect do
+          response
+        end.to raise_error(Errors::Analysis::TokenPostResponseError)
       end
     end
 

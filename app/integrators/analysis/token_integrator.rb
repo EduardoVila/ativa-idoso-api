@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'base64'
-require_relative '../errors/analysis/token_post_response_error'
+require_relative '../errors/analysis/token_response_error'
 require_relative '../concerns/nestable'
 require_relative '../concerns/integrable'
 require_relative '../error_logger'
@@ -10,16 +10,14 @@ module Analysis
   class TokenIntegrator < ApplicationIntegrator
     def create_resource
       response = perform_post_request
+      raw_data = response.body
 
-      raise ::Errors::Analysis::TokenPostResponseError unless response.success?
+      parsed_data = json_parse(raw_data)
 
-      parsed_response_body = json_parse(response.body)
-
-      token = initialize_object_with_nested_attributes(parsed_response_body)
-      token.access_token = Base64.strict_decode64(token.access_token)
+      token = initialize_object_with_nested_attributes(parsed_data)
 
       token.save && token
-    rescue Faraday::ConnectionFailed => e
+    rescue Faraday::Error => e
       ErrorLogger.log e
 
       raise ::Errors::Analysis::TokenPostResponseError

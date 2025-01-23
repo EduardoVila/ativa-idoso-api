@@ -20,21 +20,24 @@ module API
         rescue ArgumentError
           halt(401)
         end
-        # Generate a JWT token
-        token = Tokenable.create_access_token(client_id, client_secret)
 
-        # Return the token if it was generated
-        if token
-          status(200)
-          {
-            access_token: Base64.strict_encode64(token),
-            token_type: 'bearer',
-            expires_in: 10_080, # 7 days in minutes
-            created_at: Time.now
-          }.to_json
-        else
-          halt(401)
-        end
+        # Find the client by the client_id and authenticate it
+        client = API::Client.find_by_client_id(client_id)
+
+        return halt(401) unless client&.authenticate(client_secret)
+
+        # Create the access token
+        access_token = Tokenable.create_jwt(
+          payload: { 'sub' => client.client_id }
+        )
+
+        status(200)
+
+        {
+          access_token: access_token,
+          token_type: 'Bearer',
+          expires_in: ENV.fetch('SECONDS').to_i # 7 days in minutes
+        }.to_json
       end
     end
   end
