@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_22_133752) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -1515,6 +1515,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["provenir_lawsuit_id"], name: "index_provenir_update_lawsuit_id"
+  end
+
+  create_table "public_keys", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "key", null: false
+    t.string "issuer", null: false
+    t.string "algorithm", null: false
+    t.datetime "valid_from", null: false
+    t.datetime "valid_to", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "request_logs", force: :cascade do |t|

@@ -4,10 +4,12 @@
 # pick it up automatically.
 ---
 :verbose: false
-:concurrency: 10
+:concurrency: 15
 
 # Set timeout to 8 on Heroku, longer if you manage your own systems.
-:timeout: 8
+:timeout: 10
+
+:retry_backoff: 2
 
 :logfile: './log/sidekiq.log'
 
@@ -17,14 +19,18 @@
 :queues:
   - default
   - analysis_report
+  - analysis_step
+  - cloned_analysis_item
+  - retry
 
 # custom property read by config/sidekiq.rb
 :redis_url: 'redis://localhost:6379'
 
-# you can override concurrency based on environment
+:environment: <%= ENV.fetch('RACK_ENV', 'development') %>
+
 production:
   :concurrency: <%= ENV.fetch('SIDEKIQ_MAX_THREADS', 5) %>
   # override it if needed
   # :redis_url: 'redis://redis.example.com:7372/12'
-staging:
+development:
   :concurrency: <%= ENV.fetch('SIDEKIQ_MAX_THREADS', 5) %>

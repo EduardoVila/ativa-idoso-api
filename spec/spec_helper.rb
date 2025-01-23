@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ENV['APP_ENV'] = 'test'
+ENV['RACK_ENV'] = 'test'
 
 # Set up SimpleCov - must be done before requiring any of the application code
 require 'simplecov'
@@ -78,7 +78,7 @@ RSpec.configure do |config|
   end
 
   config.before(:suite) do
-    system('APP_ENV=test bundle exec rake db:restart_test')
+    system('RACK_ENV=test bundle exec rake db:restart_test')
     FactoryBot.find_definitions
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with :truncation

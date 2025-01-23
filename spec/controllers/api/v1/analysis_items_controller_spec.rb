@@ -61,11 +61,11 @@ RSpec.describe(API::V1::AnalysisItemsController, type: :controller) do
     end
   end
 
-  describe 'POST /api/v1/:analysis_item_id/reruns' do
+  describe 'POST /api/v1/analysis-items/:analysis_item_id/reruns' do
     subject(:post_request) { post(route, {}, headers) }
 
     let(:analysis_item) { create :analysis_item }
-    let(:route) { "/api/v1/#{analysis_item.id}/reruns" }
+    let(:route) { "/api/v1/analysis-items/#{analysis_item.id}/reruns" }
     let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
     let(:current_client) { create :api_client }
 

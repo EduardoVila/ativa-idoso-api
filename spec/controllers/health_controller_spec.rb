@@ -8,25 +8,31 @@ require_relative '../../app/controllers/concerns/tokenable'
 require 'json'
 
 # Helper method to generate a valid token
-def generate_valid_token(api_client)
-  payload = {
-    'sub' => api_client.client_id,
-    'exp' => Time.zone.now.to_i + 3600
-  }
+def generate_valid_token_helper(api_client)
+  payload = { 'sub' => api_client.client_id }
+
   Tokenable.create_jwt(payload: payload)
 end
 
 RSpec.describe HealthController, type: :controller do
   include Rack::Test::Methods
 
-  let(:app) { described_class }
-  let(:json_response) { JSON.parse(last_response.body) }
-
   describe 'GET /protected' do
+    let(:app) { described_class }
+    let(:json_response) { JSON.parse(last_response.body) }
+
     context 'when the request is valid' do
       before do
         api_client = create :api_client
-        valid_token = generate_valid_token(api_client)
+        valid_token = generate_valid_token_helper(api_client)
+        PublicKey.create(
+          key: ENV.fetch('RSA_PUBLIC_KEY').gsub('\\n', "\n"),
+          issuer: 'alpop-analysis',
+          algorithm: 'RS256',
+          valid_from: Time.now,
+          valid_to: Time.now + 1.year
+        )
+
         header 'Authorization', "Bearer #{valid_token}"
         get '/protected'
       end

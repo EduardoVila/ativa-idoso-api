@@ -52,7 +52,7 @@ module Integrable
   end
 
   def retry_exceptions
-    if ENV.fetch('APP_ENV') == 'test'
+    if ENV.fetch('RACK_ENV') == 'test'
       return Faraday::Retry::Middleware::DEFAULT_EXCEPTIONS
     end
 
