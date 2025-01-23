@@ -1,12 +1,18 @@
 # frozen_string_literal: true
 
-require 'sidekiq'
+require 'redis'
 require 'json'
 
 module RedisCache
-  REDIS_POOL = Sidekiq::RedisConnection.create(url: ENV.fetch('REDIS_URL'))
+  # Create a connection pool with 5 connections and a 5-second timeout for each connection attempt
+  REDIS_POOL = ConnectionPool.new(
+    size: ENV.fetch('REDIS_POOL_SIZE').to_i,
+    timeout: 5
+  ) do
+    Redis.new(url: ENV.fetch('REDIS_URL')) # Create a new Redis connection for each thread that needs one (up to 5)
+  end
 
-  module_function
+  module_function # Make all methods in this module available as module functions
 
   # Returns a Redis connection from the pool
   #
@@ -19,11 +25,11 @@ module RedisCache
   #
   # @param key [String] the key under which the value will be stored
   # @param value [Object] the value to be stored
-  # @param ttl [Integer, nil] the time-to-live in seconds (optional)
+  # @param ttl [Integer] the time-to-live in seconds for the key (default: 1 day or 86,400 seconds)
+  #                    After this time has passed, the key will be automatically deleted by Redis.
   # @return [String, Boolean] 'OK' if successful, true if the key was set, false if not
-  def set(key, value, ttl: nil)
-    value = value.to_json
-    ttl ? redis.setex(key, ttl, value) : redis.set(key, value)
+  def set(key, value, ttl: ENV.fetch('REDIS_TTL', 86_400).to_i)
+    redis.setex(key, ttl, value.to_json)
   end
 
   # Retrieve a value from Redis and parse it as JSON
