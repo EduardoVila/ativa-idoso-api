@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+# To checkout configuration of sidekiq in the application, you can use the following snippet:
+#
+# `Sidekiq.default_configuration`
+#
+# It should reflect the content of sidekiq.yml file.
+
 require 'sidekiq'
 require 'yaml'
 require 'erb'

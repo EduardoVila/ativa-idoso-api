@@ -10,7 +10,7 @@ module Tokenable
     # Generate a JWT token with the given payload signed with the RSA private key.
     def create_jwt(payload:, expires_in: ENV.fetch('SECONDS').to_i)
       payload['exp'] = Time.now.to_i + expires_in
-      payload['iss'] = 'alpop-analysis'
+      payload['iss'] = ENV.fetch('JWT_ISSUER')
       payload['iat'] = Time.now.to_i
 
       # Load the RSA private key
