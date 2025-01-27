@@ -45,10 +45,8 @@ module Tokenable
       check_expiration(decoded_payload.first)
 
       decoded_payload.first # Return the payload (decoded and verified data from jwt)
-    rescue JWT::ExpiredSignature
-      raise ExpiredTokenError, 'Token has expired'
-    rescue JWT::DecodeError
-      raise InvalidTokenError, 'Invalid token'
+    rescue JWT::ExpiredSignature, JWT::DecodeError
+      nil
     end
 
     def check_expiration(payload)
@@ -73,7 +71,7 @@ module Tokenable
         200 if API::Client.find_by_client_id(payload['sub'])
       rescue NoMethodError
         404
-      rescue JWT::ExpiredSignature, JWT::DecodeError
+      rescue JWT::ExpiredSignature, JWT::DecodeError, ExpiredTokenError
         401
       end
     end
@@ -90,10 +88,8 @@ module Tokenable
 
       begin
         API::Client.find_by_client_id(payload['sub'])
-      rescue NoMethodError
-        halt 404
-      rescue JWT::ExpiredSignature, JWT::DecodeError
-        halt 401
+      rescue NoMethodError, JWT::ExpiredSignature, JWT::DecodeError
+        nil
       end
     end
 

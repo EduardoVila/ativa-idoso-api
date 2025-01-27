@@ -17,10 +17,12 @@ module API
         end
 
         step_id = JSON.parse(request.body.read)['analysis_step_id']
-        halt(400, { message: 'No analysis step requested' }) if step_id.blank?
+        if step_id.blank?
+          halt(400, { message: 'No analysis step requested' }.to_json)
+        end
 
         if analysis_item.steps.exists?(id: step_id)
-          halt(422, { message: 'Analysis step already exists' })
+          halt(422, { message: 'Analysis step already exists' }.to_json)
         end
 
         AnalysisStepJob.perform_later(analysis_item.id, step_id)
@@ -31,6 +33,12 @@ module API
       end
 
       post('/api/v1/analysis-items/:analysis_item_id/reruns') do
+        analysis_item = Analysis::Item.find_by(id: params['analysis_item_id'])
+
+        if analysis_item.blank?
+          halt(404, { message: 'Analysis item not found' }.to_json)
+        end
+
         ClonedAnalysisItemJob.perform_later(params['analysis_item_id'])
 
         status(202)

@@ -8,11 +8,17 @@ class ApplicationController < Sinatra::Base
 
   before do
     content_type :json
-
-    unless instance_of?(API::V1::TokensController)
-      authenticate_access_token_from(request)
-    end
   end
+
+  # Protects the following endpoints with a valid access token.
+  before(%w[
+    /protected
+    /api/v1/analysis-reports
+    /api/v1/analysis-reports/:uuid/retries
+    /api/v1/analysis-reports/:uuid
+    /api/v1/analysis-items/:analysis_item_id/next-steps
+    /api/v1/analysis-items/:analysis_item_id/reruns
+  ]) { authenticate_access_token_from(request) }
 
   def authenticate_access_token_from(request)
     http_status = Tokenable.authenticate_access_token(request)

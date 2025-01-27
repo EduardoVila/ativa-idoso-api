@@ -43,11 +43,11 @@ module API
         analysis_report = find_analysis_report(request, params)
 
         unless analysis_report.present?
-          halt(404, { message: 'Analysis report not found' })
+          halt(404, { message: 'Analysis report not found' }.to_json)
         end
 
-        unless analysis_report.status == 'error'
-          halt(400, { message: 'Analysis report must be status error' })
+        if analysis_report.status != 'error'
+          halt(400, { message: 'Analysis report must be status error' }.to_json)
         end
 
         RetryJob.perform_later(analysis_report.id)
