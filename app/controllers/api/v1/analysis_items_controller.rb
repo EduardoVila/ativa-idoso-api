@@ -10,9 +10,17 @@ module API
       sorting(%w[index_order].freeze, default: { index_order: :asc })
 
       post('/api/v1/analysis-items/:analysis_item_id/next-steps') do
+        current_client = Tokenable.current_client(request)
+
+        halt(401) if current_client.blank?
+
         analysis_item = Analysis::Item.find_by(id: params['analysis_item_id'])
 
         halt(404) if analysis_item.blank?
+
+        api_client_id = analysis_item.report.api_client_id
+
+        halt(403) if api_client_id != current_client.id
 
         request.body.read.blank? ? halt(400) : request.body.rewind
 
@@ -28,9 +36,17 @@ module API
       end
 
       post('/api/v1/analysis-items/:analysis_item_id/reruns') do
+        current_client = Tokenable.current_client(request)
+
+        halt(401) if current_client.blank?
+
         analysis_item = Analysis::Item.find_by(id: params['analysis_item_id'])
 
         halt(404) if analysis_item.blank?
+
+        api_client_id = analysis_item.report.api_client_id
+
+        halt(403) if api_client_id != current_client.id
 
         ClonedAnalysisItemJob.perform_later(params['analysis_item_id'])
 

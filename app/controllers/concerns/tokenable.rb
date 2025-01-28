@@ -57,25 +57,6 @@ module Tokenable
       raise ExpiredTokenError, 'Token has expired'
     end
 
-    def authenticate_access_token(request)
-      authorization_header = request.env['HTTP_AUTHORIZATION']
-      token = authorization_header&.split&.last
-
-      return 401 unless token
-
-      payload = Tokenable.verify(token)
-
-      return 401 unless payload
-
-      begin
-        200 if API::Client.find_by_client_id(payload['sub'])
-      rescue NoMethodError
-        404
-      rescue JWT::ExpiredSignature, JWT::DecodeError, ExpiredTokenError
-        401
-      end
-    end
-
     def current_client(request)
       authorization_header = request.env['HTTP_AUTHORIZATION']
       token = authorization_header&.split&.last

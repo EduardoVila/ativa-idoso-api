@@ -14,14 +14,11 @@ RSpec.describe(API::V1::AnalysisItemsController, type: :controller) do
     let(:invalid_params) { { analysis_step_id: nil }.to_json }
     let(:route) { "/api/v1/analysis-items/#{analysis_item.id}/next-steps" }
     let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
-    let(:current_client) { create :api_client }
+    let(:current_client) { analysis_item.report.api_client }
 
     before do
       allow(AnalysisStepJob).to receive(:perform_later)
-      allow(Tokenable).to receive_messages(
-        authenticate_access_token: 200,
-        current_client: current_client
-      )
+      allow(Tokenable).to receive_messages(current_client: current_client)
     end
 
     context 'when the step is already associated with the analysis item' do
@@ -67,14 +64,11 @@ RSpec.describe(API::V1::AnalysisItemsController, type: :controller) do
     let(:analysis_item) { create :analysis_item }
     let(:route) { "/api/v1/analysis-items/#{analysis_item.id}/reruns" }
     let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
-    let(:current_client) { create :api_client }
+    let(:current_client) { analysis_item.report.api_client }
 
     before do
       allow(ClonedAnalysisItemJob).to receive(:perform_later)
-      allow(Tokenable).to receive_messages(
-        authenticate_access_token: 200,
-        current_client: current_client
-      )
+      allow(Tokenable).to receive_messages(current_client: current_client)
     end
 
     context 'when the request is valid' do
@@ -93,7 +87,7 @@ RSpec.describe(API::V1::AnalysisItemsController, type: :controller) do
 
     context 'when the request is invalid' do
       before do
-        allow(Tokenable).to receive(:authenticate_access_token).and_return(401)
+        allow(Tokenable).to receive(:current_client).and_return(nil)
 
         post_request
       end

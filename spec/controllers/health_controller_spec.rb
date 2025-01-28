@@ -39,7 +39,6 @@ RSpec.describe HealthController, type: :controller do
 
       it 'returns protected health status 200' do
         expect(last_response.status).to eq(200)
-        expect(json_response).to include('message' => 'Protected health: OK')
       end
     end
 

@@ -1,13 +1,17 @@
 # frozen_string_literal: true
 
+require_relative 'application_controller'
+
 class HealthController < ApplicationController
-  # This is a protected endpoint that requires a valid access token (Bearer)
+  # This is a protected endpoint that requires a valid access token (Bearer jwt)
   # to be passed in the Authorization header of the request.
   # If the token is valid, it will return a status 200 with a message.
-  # ApplicationController will authenticate the access token before the request is processed.
 
   get '/protected' do
-    status 200
-    { message: 'Protected health: OK' }.to_json
+    current_client = Tokenable.current_client(request)
+
+    halt(401) if current_client.blank?
+
+    status(200)
   end
 end

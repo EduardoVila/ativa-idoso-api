@@ -7,6 +7,9 @@ module API
     class AnalysisReportsController < ApplicationController
       post('/api/v1/analysis-reports') do
         current_client = Tokenable.current_client(request)
+
+        halt(401) if current_client.blank?
+
         body_params = JSON.parse(request.body.read)
 
         # Validates the presence of the analysis report and callback URL.
@@ -40,7 +43,13 @@ module API
       end
 
       post('/api/v1/analysis-reports/:uuid/retries') do
-        analysis_report = find_analysis_report(request, params)
+        current_client = Tokenable.current_client(request)
+
+        halt(401) if current_client.blank?
+
+        analysis_report = ::Analysis::Report.includes(:api_client).find_by(
+          id: params[:uuid], api_client_id: current_client.id
+        )
 
         halt(404) unless analysis_report.present?
 
@@ -52,7 +61,13 @@ module API
       end
 
       get('/api/v1/analysis-reports/:uuid') do
-        analysis_report = find_analysis_report(request, params)
+        current_client = Tokenable.current_client(request)
+
+        halt(401) if current_client.blank?
+
+        analysis_report = ::Analysis::Report.includes(:api_client).find_by(
+          id: params[:uuid], api_client_id: current_client.id
+        )
 
         if analysis_report.present?
           status(200)
@@ -61,16 +76,6 @@ module API
         else
           halt(404)
         end
-      end
-
-      private
-
-      def find_analysis_report(request, params)
-        current_client = Tokenable.current_client(request)
-
-        ::Analysis::Report.includes(:api_client).find_by(
-          id: params[:uuid], api_client_id: current_client.id
-        )
       end
     end
   end

@@ -13,7 +13,9 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
     let(:route) { '/api/v1/analysis-reports' }
     let(:current_client) { create :api_client }
     let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
-    let(:analysis_report) { create :analysis_report }
+    let!(:analysis_report) do
+      create :analysis_report, api_client: current_client
+    end
     let(:analysis_report_params) { attributes_for :analysis_report }
     let(:params) do
       {
@@ -25,11 +27,7 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
 
     context 'when the request is successful' do
       before do
-        allow(Tokenable).to receive_messages(
-          authenticate_access_token: 200,
-          current_client: current_client
-        )
-
+        allow(Tokenable).to receive_messages(current_client: current_client)
         allow(AnalysisReportJob).to receive(:perform_later)
           .and_return(job_double)
         allow(API::WebhookEvent).to receive(:create)
@@ -47,7 +45,7 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
 
     context 'when the request is unsuccessful' do
       before do
-        allow(Tokenable).to receive_messages(authenticate_access_token: 401)
+        allow(Tokenable).to receive_messages(current_client: nil)
 
         post_request
       end
@@ -59,10 +57,7 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
 
     context 'when the request is invalid' do
       before do
-        allow(Tokenable).to receive_messages(
-          authenticate_access_token: 200,
-          current_client: current_client
-        )
+        allow(Tokenable).to receive_messages(current_client: current_client)
 
         post_request
       end
@@ -84,10 +79,7 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
     let(:current_client) { create :api_client }
 
     before do
-      allow(Tokenable).to receive_messages(
-        authenticate_access_token: 200,
-        current_client: current_client
-      )
+      allow(Tokenable).to receive_messages(current_client: current_client)
       allow(RetryJob).to receive(:perform_later)
 
       post_request
@@ -137,10 +129,7 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
 
     context 'when the report exists' do
       before do
-        allow(Tokenable).to receive_messages(
-          authenticate_access_token: 200,
-          current_client: current_client
-        )
+        allow(Tokenable).to receive_messages(current_client: current_client)
 
         get("#{base_route}/#{analysis_report.id}", {}, headers)
       end
@@ -155,13 +144,9 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
 
     context 'when the report does not exist' do
       before do
-        allow(Tokenable).to receive_messages(
-          authenticate_access_token: 200,
-          current_client: current_client
-        )
+        allow(Tokenable).to receive_messages(current_client: current_client)
 
         get("#{base_route}/foo", {}, headers)
-
       end
 
       it 'returns a 404 error' do
