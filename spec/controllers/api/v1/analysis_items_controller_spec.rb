@@ -89,12 +89,6 @@ RSpec.describe(API::V1::AnalysisItemsController, type: :controller) do
       it 'returns status 202' do
         expect(last_response.status).to eq(202)
       end
-
-      it 'returns a success message' do
-        expect(last_response.body).to eq(
-          { message: 'Analysis item rerun scheduled' }.to_json
-        )
-      end
     end
 
     context 'when the request is invalid' do

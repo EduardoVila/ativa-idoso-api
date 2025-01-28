@@ -12,7 +12,7 @@ module API
         # Validates the presence of the analysis report and callback URL.
         if body_params['analysis_report'].blank? ||
            body_params['callback_url'] !~ URI::DEFAULT_PARSER.make_regexp # TODO: improve regex
-          halt(400, { message: 'Invalid parameters' }.to_json)
+          halt(400)
         end
 
         analysis_report = ::Analysis::Report.new(
@@ -35,20 +35,16 @@ module API
 
           analysis_report.serialize_record.to_json
         else
-          halt(422, { message: 'Analysis report could not be saved' }.to_json)
+          halt(422)
         end
       end
 
       post('/api/v1/analysis-reports/:uuid/retries') do
         analysis_report = find_analysis_report(request, params)
 
-        unless analysis_report.present?
-          halt(404, { message: 'Analysis report not found' }.to_json)
-        end
+        halt(404) unless analysis_report.present?
 
-        if analysis_report.status != 'error'
-          halt(400, { message: 'Analysis report must be status error' }.to_json)
-        end
+        halt(400) if analysis_report.status != 'error'
 
         RetryJob.perform_later(analysis_report.id)
 
@@ -63,7 +59,7 @@ module API
 
           analysis_report.serialize_record.to_json
         else
-          halt(404, { message: 'Analysis report not found' }.to_json)
+          halt(404)
         end
       end
 
