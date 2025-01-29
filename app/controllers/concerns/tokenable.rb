@@ -54,7 +54,7 @@ module Tokenable
 
       return unless expiration_time && Time.now.to_i > expiration_time
 
-      raise ExpiredTokenError, 'Token has expired'
+      raise JWT::ExpiredSignature
     end
 
     def current_client(request)
@@ -106,6 +106,3 @@ module Tokenable
     end
   end
 end
-
-class ExpiredTokenError < StandardError; end
-class InvalidTokenError < StandardError; end
