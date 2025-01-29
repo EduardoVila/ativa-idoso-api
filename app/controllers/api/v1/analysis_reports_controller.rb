@@ -42,18 +42,28 @@ module API
         end
       end
 
-      post('/api/v1/analysis-reports/:uuid/retries') do
+      post('/api/v1/analysis-reports/retries') do
         current_client = Tokenable.current_client(request)
 
         halt(401) if current_client.blank?
 
-        analysis_report = ::Analysis::Report.includes(:api_client).find_by(
-          id: params[:uuid], api_client_id: current_client.id
-        )
+        request.body.read.blank? ? halt(400) : request.body.rewind
 
-        halt(404) unless analysis_report.present?
+        request_body = JSON.parse(request.body.read)
+        cpf = request_body['cpf']
 
-        halt(400) if analysis_report.status != 'error'
+        halt(400) if cpf.blank?
+
+        analysis_item = Analysis::Item.where(cpf: cpf)
+          .order(updated_at: :desc)
+          .first
+
+        halt(404) if analysis_item.blank?
+
+        analysis_report = analysis_item.report
+        api_client_id = analysis_report.api_client_id
+
+        halt(403) if api_client_id != current_client.id
 
         RetryJob.perform_later(analysis_report.id)
 

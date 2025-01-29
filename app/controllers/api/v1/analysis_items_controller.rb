@@ -9,24 +9,29 @@ module API
 
       sorting(%w[index_order].freeze, default: { index_order: :asc })
 
-      post('/api/v1/analysis-items/:analysis_item_id/next-steps') do
+      post('/api/v1/analysis-items/next-steps') do
         current_client = Tokenable.current_client(request)
 
         halt(401) if current_client.blank?
 
-        analysis_item = Analysis::Item.find_by(id: params['analysis_item_id'])
+        request.body.read.blank? ? halt(400) : request.body.rewind
+
+        request_body = JSON.parse(request.body.read)
+
+        step_id = request_body['analysis_step_id']
+        cpf = request_body['cpf']
+
+        halt(400) if step_id.blank? || cpf.blank?
+
+        analysis_item = Analysis::Item.where(cpf: cpf)
+          .order(updated_at: :desc)
+          .first
 
         halt(404) if analysis_item.blank?
 
         api_client_id = analysis_item.report.api_client_id
 
         halt(403) if api_client_id != current_client.id
-
-        request.body.read.blank? ? halt(400) : request.body.rewind
-
-        step_id = JSON.parse(request.body.read)['analysis_step_id']
-
-        halt(400) if step_id.blank?
 
         halt(422) if analysis_item.steps.exists?(id: step_id)
 
@@ -35,12 +40,21 @@ module API
         status(202)
       end
 
-      post('/api/v1/analysis-items/:analysis_item_id/reruns') do
+      post('/api/v1/analysis-items/reruns') do
         current_client = Tokenable.current_client(request)
 
         halt(401) if current_client.blank?
 
-        analysis_item = Analysis::Item.find_by(id: params['analysis_item_id'])
+        request.body.read.blank? ? halt(400) : request.body.rewind
+
+        request_body = JSON.parse(request.body.read)
+        cpf = request_body['cpf']
+
+        halt(400) if cpf.blank?
+
+        analysis_item = Analysis::Item.where(cpf: cpf)
+          .order(updated_at: :desc)
+          .first
 
         halt(404) if analysis_item.blank?
 
@@ -48,7 +62,7 @@ module API
 
         halt(403) if api_client_id != current_client.id
 
-        ClonedAnalysisItemJob.perform_later(params['analysis_item_id'])
+        ClonedAnalysisItemJob.perform_later(analysis_item.id)
 
         status(202)
       end

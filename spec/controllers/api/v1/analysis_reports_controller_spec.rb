@@ -68,15 +68,17 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
     end
   end
 
-  describe 'POST /api/v1/analysis-reports/:uuid/retries' do
-    subject(:post_request) { post(route, {}, headers) }
+  describe 'POST /api/v1/analysis-reports/retries' do
+    subject(:post_request) { post(route, params, headers) }
 
     let!(:analysis_report) do
       create :analysis_report, :error, api_client: current_client
     end
-    let(:route) { "/api/v1/analysis-reports/#{analysis_report.id}/retries" }
+    let!(:analysis_item) { create :analysis_item, report: analysis_report }
+    let(:route) { '/api/v1/analysis-reports/retries' }
     let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
     let(:current_client) { create :api_client }
+    let(:params) { { cpf: analysis_report.items.first.cpf }.to_json }
 
     before do
       allow(Tokenable).to receive_messages(current_client: current_client)
@@ -97,24 +99,19 @@ RSpec.describe API::V1::AnalysisReportsController, type: :controller do
     end
 
     context 'when analysis report is not found' do
-      let(:route) { '/api/v1/analysis-reports/invalid-uuid/retries' }
+      let(:route) { '/api/v1/analysis-reports/retries' }
+
+      before do
+        allow(Tokenable).to receive_messages(current_client: current_client)
+        allow(RetryJob).to receive(:perform_later)
+
+        post(route, { cpf: '00000000000' }.to_json, headers)
+      end
 
       it 'returns a 404 status code' do
         post_request
 
         expect(last_response.status).to eq(404)
-      end
-    end
-
-    context 'when analysis report status is not error' do
-      let(:analysis_report) do
-        create :analysis_report, :done, api_client: current_client
-      end
-
-      it 'returns a 400 status code' do
-        post_request
-
-        expect(last_response.status).to eq(400)
       end
     end
   end
