@@ -5,14 +5,19 @@ require 'spec_helper'
 RSpec.describe(API::V1::AnalysisItemsController, type: :controller) do
   include Rack::Test::Methods
 
-  describe 'POST /api/v1/analysis-items/:analysis_item_id/next-steps' do
+  describe 'POST /api/v1/analysis-items/next-steps' do
     subject(:post_request) { post(route, valid_params, headers) }
 
     let(:analysis_item) { create :analysis_item }
     let(:step) { create :analysis_step }
-    let(:valid_params) { { analysis_step_id: step.id }.to_json }
+    let(:valid_params) do
+      {
+        cpf: analysis_item.cpf,
+        analysis_step_id: step.id
+      }.to_json
+    end
     let(:invalid_params) { { analysis_step_id: nil }.to_json }
-    let(:route) { "/api/v1/analysis-items/#{analysis_item.id}/next-steps" }
+    let(:route) { '/api/v1/analysis-items/next-steps' }
     let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
     let(:current_client) { analysis_item.report.api_client }
 
@@ -58,11 +63,12 @@ RSpec.describe(API::V1::AnalysisItemsController, type: :controller) do
     end
   end
 
-  describe 'POST /api/v1/analysis-items/:analysis_item_id/reruns' do
-    subject(:post_request) { post(route, {}, headers) }
+  describe 'POST /api/v1/analysis-items/reruns' do
+    subject(:post_request) { post(route, valid_params, headers) }
 
+    let(:valid_params) { { cpf: analysis_item.cpf }.to_json }
     let(:analysis_item) { create :analysis_item }
-    let(:route) { "/api/v1/analysis-items/#{analysis_item.id}/reruns" }
+    let(:route) { '/api/v1/analysis-items/reruns' }
     let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
     let(:current_client) { analysis_item.report.api_client }
 
