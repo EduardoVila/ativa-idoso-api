@@ -4,7 +4,7 @@ require 'json'
 
 require_relative 'concerns/nestable'
 require_relative 'concerns/integrable'
-require_relative '../controllers/concerns/tokenable'
+require_relative '../handlers/concerns/tokenable'
 
 class ApplicationIntegrator
   include Integrable

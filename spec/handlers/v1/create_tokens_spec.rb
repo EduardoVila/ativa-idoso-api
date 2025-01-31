@@ -2,15 +2,14 @@
 
 require 'spec_helper'
 require 'rack/test'
-require_relative '../../../../app/controllers/application_controller'
-require_relative '../../../../app/controllers/api/v1/tokens_controller'
+require_relative '../../../app/handlers/v1/create_token'
 require 'bcrypt'
 
-RSpec.describe API::V1::TokensController, type: :controller do
+RSpec.describe V1::CreateToken, type: :handler do
   include Rack::Test::Methods
 
-  describe 'POST /api/v1/tokens' do
-    let(:route) { '/api/v1/tokens' }
+  describe 'POST /v1/tokens' do
+    let(:route) { '/v1/tokens' }
     let(:headers) { { 'CONTENT_TYPE' => 'application/x-www-form-urlencoded' } }
 
     context 'when the request is valid' do

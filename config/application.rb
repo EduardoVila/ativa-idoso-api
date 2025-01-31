@@ -10,10 +10,5 @@ ApplicationLoader.load_sidekiq_redis
 
 # Start the application
 class AlpopAnalysis < Sinatra::Base
-  set :routes, ApplicationController.subclasses.map(&:routes).flatten
-
-  # Load the application routes automatically
-  ApplicationController.subclasses.each { |controller| use controller }
-
   use Rack::Protection # Enable Rack::Protection middleware
 end
