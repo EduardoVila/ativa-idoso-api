@@ -8,6 +8,8 @@ module V1
   class NextAnalysisStep < Sinatra::Base
     include Validatable
 
+    before { content_type :json }
+
     post('/v1/analysis-items/:analysis_item_id/next-steps') do
       current_client = Tokenable.current_client(request)
       halt(401) if current_client.blank?

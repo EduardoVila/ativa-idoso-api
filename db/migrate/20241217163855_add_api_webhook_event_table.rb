@@ -2,9 +2,9 @@ class AddApiWebhookEventTable < ActiveRecord::Migration[8.0]
   def change
     create_table :api_webhook_events, id: :uuid, default: 'uuid_generate_v4()' do |t|
       t.string :callback_url
-      t.integer :callback_id
+      t.bigint :callback_id
       t.string :event_type
-      t.string :event_id
+      t.uuid :event_id
       t.string :job_id
       t.integer :status
       t.jsonb :payload

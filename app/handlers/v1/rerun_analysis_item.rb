@@ -6,6 +6,8 @@ end
 
 module V1
   class RerunAnalysisItem < Sinatra::Base
+    before { content_type :json }
+
     post('/v1/analysis-items/:analysis_item_id/reruns') do
       current_client = Tokenable.current_client(request)
       halt(401) if current_client.blank?

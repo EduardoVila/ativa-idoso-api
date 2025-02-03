@@ -18,15 +18,15 @@ module V1
       halt(400) if data.blank?
 
       # Validate required parameters
-      cpf = data['cpf']
+      cpfs = data['cpfs']
       callback_url = data['callback_url']
-      score_report_id = data['score_report_id']
-      halt(400) if cpf.blank? ||
-                   score_report_id.blank? ||
+      callback_id = data['callback_id']
+      halt(400) if cpfs.blank? ||
+                   callback_id.blank? ||
                    callback_url !~ URI::DEFAULT_PARSER.make_regexp
 
       # Create analysis report
-      analysis_report = create_analysis_report(cpf, current_client)
+      analysis_report = create_analysis_report(cpfs, current_client)
       halt(422) unless analysis_report.persisted?
 
       # Create webhook and enqueue job
@@ -41,13 +41,13 @@ module V1
     private
 
     def create_analysis_report(params, client)
-      ::Analysis::Report.new(**params, api_client_id: client.id).tap(&:save)
+      ::Analysis::Report.new(cpfs: params, api_client_id: client.id).tap(&:save)
     end
 
     def create_webhook_event(report, client, request, data)
       API::WebhookEvent.create(
         callback_url: data['callback_url'],
-        callback_id: data['score_report_id'],
+        callback_id: data['callback_id'],
         event_type: 'analysis_report',
         event_id: report.id,
         status: 'received',

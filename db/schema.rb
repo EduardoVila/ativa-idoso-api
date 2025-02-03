@@ -98,9 +98,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_22_133752) do
 
   create_table "api_webhook_events", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "callback_url"
-    t.integer "callback_id"
+    t.bigint "callback_id"
     t.string "event_type"
-    t.string "event_id"
+    t.uuid "event_id"
     t.string "job_id"
     t.integer "status"
     t.jsonb "payload"

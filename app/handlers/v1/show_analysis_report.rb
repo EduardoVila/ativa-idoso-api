@@ -6,6 +6,8 @@ end
 
 module V1
   class ShowAnalysisReport < Sinatra::Base
+    before { content_type :json }
+
     get('/v1/analysis-reports/:uuid') do
       current_client = Tokenable.current_client(request)
 
