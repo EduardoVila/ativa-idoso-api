@@ -2,22 +2,20 @@
 
 require 'spec_helper'
 
-RSpec.describe(API::V1::AnalysisItemsController, type: :controller) do
+RSpec.describe V1::NextAnalysisStep, type: :handler do
   include Rack::Test::Methods
 
-  describe 'POST /api/v1/analysis-items/next-steps' do
+  describe 'POST /v1/analysis-items/:analysis_item_id/next-steps' do
     subject(:post_request) { post(route, valid_params, headers) }
 
     let(:analysis_item) { create :analysis_item }
+    let(:id) { analysis_item.id }
     let(:step) { create :analysis_step }
     let(:valid_params) do
-      {
-        cpf: analysis_item.cpf,
-        analysis_step_id: step.id
-      }.to_json
+      { analysis_step_id: step.id }.to_json
     end
     let(:invalid_params) { { analysis_step_id: nil }.to_json }
-    let(:route) { '/api/v1/analysis-items/next-steps' }
+    let(:route) { "/v1/analysis-items/#{id}/next-steps" }
     let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
     let(:current_client) { analysis_item.report.api_client }
 
@@ -59,47 +57,6 @@ RSpec.describe(API::V1::AnalysisItemsController, type: :controller) do
         post_request
 
         expect(last_response.status).to eq(400)
-      end
-    end
-  end
-
-  describe 'POST /api/v1/analysis-items/reruns' do
-    subject(:post_request) { post(route, valid_params, headers) }
-
-    let(:valid_params) { { cpf: analysis_item.cpf }.to_json }
-    let(:analysis_item) { create :analysis_item }
-    let(:route) { '/api/v1/analysis-items/reruns' }
-    let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
-    let(:current_client) { analysis_item.report.api_client }
-
-    before do
-      allow(ClonedAnalysisItemJob).to receive(:perform_later)
-      allow(Tokenable).to receive_messages(current_client: current_client)
-    end
-
-    context 'when the request is valid' do
-      before { post_request }
-
-      it 'enqueues the ClonedAnalysisItemJob' do
-        expect(ClonedAnalysisItemJob).to have_received(:perform_later).with(
-          analysis_item.id.to_s
-        )
-      end
-
-      it 'returns status 202' do
-        expect(last_response.status).to eq(202)
-      end
-    end
-
-    context 'when the request is invalid' do
-      before do
-        allow(Tokenable).to receive(:current_client).and_return(nil)
-
-        post_request
-      end
-
-      it 'returns status 401' do
-        expect(last_response.status).to eq(401)
       end
     end
   end

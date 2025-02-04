@@ -52,7 +52,10 @@ module API
     end
 
     def payload
-      { webhook: webhook_event.payload }.to_json
+      {
+        score_report_webhook: webhook_event.payload,
+        score_report_id: webhook_event.callback_id
+      }.to_json
     end
 
     def encoded_access_token_hash
