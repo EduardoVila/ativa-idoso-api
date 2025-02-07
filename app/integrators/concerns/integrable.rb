@@ -22,6 +22,7 @@ module Integrable
       req.url url
       req.headers.update(headers) if headers
       req.headers['Idempotency-Key'] = SecureRandom.uuid if verb == :post # ensure idempotency on POST requests
+
       req.body = params if params
 
       RequestLogger.log(req) if enable_log_request
@@ -51,7 +52,7 @@ module Integrable
   end
 
   def retry_exceptions
-    if ENV.fetch('APP_ENV') == 'test'
+    if ENV.fetch('RACK_ENV') == 'test'
       return Faraday::Retry::Middleware::DEFAULT_EXCEPTIONS
     end
 

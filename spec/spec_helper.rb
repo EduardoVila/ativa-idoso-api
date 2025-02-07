@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ENV['APP_ENV'] = 'test'
+ENV['RACK_ENV'] = 'test'
 
 # Set up SimpleCov - must be done before requiring any of the application code
 require 'simplecov'
@@ -8,7 +8,7 @@ require 'simplecov-lcov'
 
 SimpleCov.start do
   add_group 'Commands', 'app/commands'
-  add_group 'Controllers', 'app/controllers'
+  add_group 'Handlers', 'app/handlers'
   add_group 'Jobs', 'app/jobs'
   add_group 'Models', 'app/models'
   add_group 'Services', 'app/services'
@@ -20,7 +20,7 @@ SimpleCov.start do
   add_filter 'lib/concerns'
 
   add_filter 'app/models/application_record.rb'
-  add_filter 'app/controllers/application_controller.rb'
+  add_filter 'app/handlers/application_handler.rb'
   add_filter 'app/commands/application_command.rb'
   add_filter 'app/jobs/application_job.rb'
   add_filter 'app/services/application_service.rb'
@@ -28,7 +28,7 @@ SimpleCov.start do
   add_filter 'app/serializers/application_serializer.rb'
 
   add_filter 'app/models/concerns'
-  add_filter 'app/controllers/concerns'
+  add_filter 'app/handlers/concerns'
 
   add_filter 'app/core_extensions'
 
@@ -78,7 +78,7 @@ RSpec.configure do |config|
   end
 
   config.before(:suite) do
-    system('APP_ENV=test bundle exec rake db:restart_test')
+    system('RACK_ENV=test bundle exec rake db:restart_test')
     FactoryBot.find_definitions
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with :truncation
@@ -100,14 +100,17 @@ RSpec.configure do |config|
 
   Kernel.srand config.seed
 
-  # Controller config
+  # Handler config
+  config.define_derived_metadata(file_path: %r{/spec/handlers/}) do |metadata|
+    metadata[:type] = :handler
+  end
   config.include(
     Module.new do
       def app
         described_class
       end
     end,
-    type: :controller
+    type: :handler
   )
 
   # Job config

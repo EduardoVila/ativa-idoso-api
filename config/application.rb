@@ -2,24 +2,23 @@
 
 # This is the main application file that will be used to start the application
 
-# Load the application loader and environments
 require_relative 'environments'
 
-# Load gems according to the environment
 ApplicationLoader.load_gems
-
-# Load the application and lib directories
 ApplicationLoader.load_app
-
-require_relative 'router'
+ApplicationLoader.load_sidekiq_redis
 
 # Start the application
 class AlpopAnalysis < Sinatra::Base
-  configure :development, :test, :production do
-    enable :logging
-    enable :dump_errors
-    enable :raise_errors
-  end
+  use V1::CreateAnalysisReport
+  use V1::CreateToken
+  use V1::NextAnalysisStep
+  use V1::RerunAnalysisItem
+  use V1::RetryAnalysisReport
+  use V1::ShowAnalysisReport
+  use Rack::Protection
 
-  Router.init(self)
+  get '/' do
+    'ok'
+  end
 end

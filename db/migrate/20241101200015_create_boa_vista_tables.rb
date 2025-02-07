@@ -2,7 +2,7 @@ class CreateBoaVistaTables < ActiveRecord::Migration[8.0]
   def change
     create_table :boa_vista_cadastrals do |t|
       t.string :raw_data
-      t.references :consumer, polymorphic: true, type: :uuid, null: true, index: { unique: true }
+      t.references :consumer, polymorphic: true, type: :uuid, null: false, index: { unique: true }
       t.timestamps
     end
 

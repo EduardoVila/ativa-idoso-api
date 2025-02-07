@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_22_133752) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -50,6 +50,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.float "fee"
     t.string "label"
     t.jsonb "input_data"
+    t.string "raw_data"
     t.uuid "analysis_item_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -97,8 +98,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
 
   create_table "api_webhook_events", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "callback_url"
+    t.bigint "callback_id"
     t.string "event_type"
-    t.string "event_id"
+    t.uuid "event_id"
     t.string "job_id"
     t.integer "status"
     t.jsonb "payload"
@@ -131,11 +133,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.string "cpf", null: false
     t.integer "credit_type", default: 0, null: false
     t.string "raw_data"
-    t.string "consumer_type"
-    t.uuid "consumer_id"
+    t.string "consumer_type", null: false
+    t.uuid "consumer_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["consumer_type", "consumer_id"], name: "index_boa_vista_acerta_essencials_on_consumer"
+    t.index ["consumer_type", "consumer_id"], name: "index_boa_vista_acerta_essencials_on_consumer", unique: true
   end
 
   create_table "boa_vista_additional_informations", force: :cascade do |t|
@@ -189,7 +191,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "boa_vista_acerta_essencial_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["boa_vista_acerta_essencial_id"], name: "idx_on_boa_vista_acerta_essencial_id_79c1bf7475"
+    t.index ["boa_vista_acerta_essencial_id"], name: "idx_on_boa_vista_acerta_essencial_id_79c1bf7475", unique: true
   end
 
   create_table "boa_vista_basic_registrations", force: :cascade do |t|
@@ -202,7 +204,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "boa_vista_cadastral_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["boa_vista_cadastral_id"], name: "index_boa_vista_basic_registrations_on_boa_vista_cadastral_id"
+    t.index ["boa_vista_cadastral_id"], name: "index_boa_vista_basic_registrations_on_boa_vista_cadastral_id", unique: true
   end
 
   create_table "boa_vista_cadastral_locations", force: :cascade do |t|
@@ -211,7 +213,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "boa_vista_cadastral_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["boa_vista_cadastral_id"], name: "index_boa_vista_cadastral_locations_on_boa_vista_cadastral_id"
+    t.index ["boa_vista_cadastral_id"], name: "index_boa_vista_cadastral_locations_on_boa_vista_cadastral_id", unique: true
   end
 
   create_table "boa_vista_cadastral_qualifications", force: :cascade do |t|
@@ -220,16 +222,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "boa_vista_cadastral_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["boa_vista_cadastral_id"], name: "idx_on_boa_vista_cadastral_id_353e336e1f"
+    t.index ["boa_vista_cadastral_id"], name: "idx_on_boa_vista_cadastral_id_353e336e1f", unique: true
   end
 
   create_table "boa_vista_cadastrals", force: :cascade do |t|
     t.string "raw_data"
-    t.string "consumer_type"
-    t.uuid "consumer_id"
+    t.string "consumer_type", null: false
+    t.uuid "consumer_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["consumer_type", "consumer_id"], name: "index_boa_vista_cadastrals_on_consumer"
+    t.index ["consumer_type", "consumer_id"], name: "index_boa_vista_cadastrals_on_consumer", unique: true
   end
 
   create_table "boa_vista_cheque_additional_informations", force: :cascade do |t|
@@ -243,7 +245,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "boa_vista_acerta_essencial_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_cheque_additional_info_on_acerta_essencial_id"
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_cheque_additional_info_on_acerta_essencial_id", unique: true
   end
 
   create_table "boa_vista_cheque_stoppeds", force: :cascade do |t|
@@ -265,7 +267,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "boa_vista_acerta_essencial_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_cheque_stopped_on_acerta_essencial_id"
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_cheque_stopped_on_acerta_essencial_id", unique: true
   end
 
   create_table "boa_vista_cheques_stopped_for_reason21s", force: :cascade do |t|
@@ -288,7 +290,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "boa_vista_acerta_essencial_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["boa_vista_acerta_essencial_id"], name: "index_cheques_stopped_for_reason21_on_acerta_essencial_id"
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_cheques_stopped_for_reason21_on_acerta_essencial_id", unique: true
   end
 
   create_table "boa_vista_current_account_historics", force: :cascade do |t|
@@ -305,7 +307,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "boa_vista_acerta_essencial_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_current_account_historic_on_acerta_essencial_id"
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_current_account_historic_on_acerta_essencial_id", unique: true
   end
 
   create_table "boa_vista_debit_occurrences", force: :cascade do |t|
@@ -322,7 +324,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "boa_vista_acerta_essencial_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_debit_occurrences_on_acerta_essencial_id"
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_debit_occurrences_on_acerta_essencial_id", unique: true
   end
 
   create_table "boa_vista_debits", force: :cascade do |t|
@@ -357,7 +359,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "boa_vista_acerta_essencial_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_decisions_on_boa_vista_acerta_essencial_id"
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_decisions_on_boa_vista_acerta_essencial_id", unique: true
   end
 
   create_table "boa_vista_documents_names", force: :cascade do |t|
@@ -373,7 +375,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "boa_vista_acerta_essencial_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_documents_names_on_acerta_essencial_id"
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_documents_names_on_acerta_essencial_id", unique: true
   end
 
   create_table "boa_vista_historic_informed_cheques", force: :cascade do |t|
@@ -392,7 +394,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "boa_vista_acerta_essencial_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_historic_informed_cheque_on_acerta_essencial_id"
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_historic_informed_cheque_on_acerta_essencial_id", unique: true
   end
 
   create_table "boa_vista_identifications", force: :cascade do |t|
@@ -419,7 +421,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "boa_vista_acerta_essencial_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_identifications_on_acerta_essencial_id"
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_identifications_on_acerta_essencial_id", unique: true
   end
 
   create_table "boa_vista_list_of_returns_reported_by_ccfs", force: :cascade do |t|
@@ -467,7 +469,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "boa_vista_acerta_essencial_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_locations_on_boa_vista_acerta_essencial_id"
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_locations_on_boa_vista_acerta_essencial_id", unique: true
   end
 
   create_table "boa_vista_phone_confirmations", force: :cascade do |t|
@@ -486,7 +488,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "boa_vista_acerta_essencial_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_phone_confirmations_on_acerta_essencial_id"
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_boa_vista_phone_confirmations_on_acerta_essencial_id", unique: true
   end
 
   create_table "boa_vista_phones", force: :cascade do |t|
@@ -519,7 +521,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "boa_vista_acerta_essencial_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["boa_vista_acerta_essencial_id"], name: "index_previous90_days_consultations_on_acerta_essencial_id"
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_previous90_days_consultations_on_acerta_essencial_id", unique: true
   end
 
   create_table "boa_vista_previous_cheque_consultations", force: :cascade do |t|
@@ -537,7 +539,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "boa_vista_acerta_essencial_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["boa_vista_acerta_essencial_id"], name: "index_previous_cheque_consultations_on_acerta_essencial_id"
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_previous_cheque_consultations_on_acerta_essencial_id", unique: true
   end
 
   create_table "boa_vista_previous_queries", force: :cascade do |t|
@@ -569,7 +571,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "boa_vista_acerta_essencial_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["boa_vista_acerta_essencial_id"], name: "idx_on_boa_vista_acerta_essencial_id_f338e63983"
+    t.index ["boa_vista_acerta_essencial_id"], name: "idx_on_boa_vista_acerta_essencial_id_f338e63983", unique: true
   end
 
   create_table "boa_vista_protested_titles", force: :cascade do |t|
@@ -598,7 +600,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "boa_vista_acerta_essencial_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["boa_vista_acerta_essencial_id"], name: "index_record_messages_on_acerta_essencial_id"
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_record_messages_on_acerta_essencial_id", unique: true
   end
 
   create_table "boa_vista_related_people", force: :cascade do |t|
@@ -635,7 +637,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "boa_vista_acerta_essencial_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["boa_vista_acerta_essencial_id"], name: "index_returns_reported_by_users_on_acerta_essencial_id"
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_returns_reported_by_users_on_acerta_essencial_id", unique: true
   end
 
   create_table "boa_vista_score_rating_several_models", force: :cascade do |t|
@@ -678,7 +680,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "boa_vista_acerta_essencial_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["boa_vista_acerta_essencial_id"], name: "index_summary_devolution_reported_by_ccf_on_acerta_essencial_id"
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_summary_devolution_reported_by_ccf_on_acerta_essencial_id", unique: true
   end
 
   create_table "boa_vista_summary_of_returns_reported_by_users", force: :cascade do |t|
@@ -693,7 +695,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "boa_vista_acerta_essencial_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["boa_vista_acerta_essencial_id"], name: "index_summary_of_return_reported_by_user_on_acerta_essencial_id"
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_summary_of_return_reported_by_user_on_acerta_essencial_id", unique: true
   end
 
   create_table "boa_vista_summary_previous_query_cheques", force: :cascade do |t|
@@ -711,7 +713,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "boa_vista_acerta_essencial_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["boa_vista_acerta_essencial_id"], name: "index_summary_previous_query_cheques_on_acerta_essencial_id"
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_summary_previous_query_cheques_on_acerta_essencial_id", unique: true
   end
 
   create_table "boa_vista_zip_code_confirmations", force: :cascade do |t|
@@ -726,7 +728,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "boa_vista_acerta_essencial_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["boa_vista_acerta_essencial_id"], name: "index_zip_code_confirmations_on_acerta_essencial_id"
+    t.index ["boa_vista_acerta_essencial_id"], name: "index_zip_code_confirmations_on_acerta_essencial_id", unique: true
   end
 
   create_table "idwall_addresses", force: :cascade do |t|
@@ -761,7 +763,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "idwall_report_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["idwall_report_id"], name: "index_idwall_cpfs_on_idwall_report_id"
+    t.index ["idwall_report_id"], name: "index_idwall_cpfs_on_idwall_report_id", unique: true
   end
 
   create_table "idwall_related_people", force: :cascade do |t|
@@ -781,7 +783,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.uuid "analysis_item_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["analysis_item_id"], name: "index_idwall_reports_on_analysis_item_id"
+    t.index ["analysis_item_id"], name: "index_idwall_reports_on_analysis_item_id", unique: true
   end
 
   create_table "idwall_trial_parts", force: :cascade do |t|
@@ -920,7 +922,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "pro_score_report_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["pro_score_report_id"], name: "index_pro_score_presumed_incomes_on_pro_score_report_id"
+    t.index ["pro_score_report_id"], name: "index_pro_score_presumed_incomes_on_pro_score_report_id", unique: true
   end
 
   create_table "pro_score_presumed_salary_ranges", force: :cascade do |t|
@@ -931,7 +933,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "pro_score_report_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["pro_score_report_id"], name: "index_pro_score_presumed_salary_ranges_on_pro_score_report_id"
+    t.index ["pro_score_report_id"], name: "index_pro_score_presumed_salary_ranges_on_pro_score_report_id", unique: true
   end
 
   create_table "pro_score_proprable_professions", force: :cascade do |t|
@@ -941,7 +943,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "pro_score_report_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["pro_score_report_id"], name: "index_pro_score_proprable_professions_on_pro_score_report_id"
+    t.index ["pro_score_report_id"], name: "index_pro_score_proprable_professions_on_pro_score_report_id", unique: true
   end
 
   create_table "pro_score_reports", force: :cascade do |t|
@@ -950,7 +952,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.uuid "analysis_item_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["analysis_item_id"], name: "index_pro_score_reports_on_analysis_item_id"
+    t.index ["analysis_item_id"], name: "index_pro_score_reports_on_analysis_item_id", unique: true
   end
 
   create_table "pro_score_trial_lawyers", force: :cascade do |t|
@@ -1136,7 +1138,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "provenir_big_data_corp_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["provenir_big_data_corp_id"], name: "index_provenir_basic_datum_big_data_corp_id"
+    t.index ["provenir_big_data_corp_id"], name: "index_provenir_basic_datum_big_data_corp_id", unique: true
   end
 
   create_table "provenir_big_data_corps", force: :cascade do |t|
@@ -1144,7 +1146,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.uuid "analysis_item_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["analysis_item_id"], name: "index_provenir_big_data_corps_on_analysis_item_id"
+    t.index ["analysis_item_id"], name: "index_provenir_big_data_corps_on_analysis_item_id", unique: true
   end
 
   create_table "provenir_business_relationships", force: :cascade do |t|
@@ -1157,7 +1159,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "provenir_big_data_corp_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["provenir_big_data_corp_id"], name: "index_provenir_business_relationship_big_data_corp_id"
+    t.index ["provenir_big_data_corp_id"], name: "index_provenir_business_relationship_big_data_corp_id", unique: true
   end
 
   create_table "provenir_business_relationships_items", force: :cascade do |t|
@@ -1200,7 +1202,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "provenir_big_data_corp_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["provenir_big_data_corp_id"], name: "index_provenir_collection_big_data_corp_id"
+    t.index ["provenir_big_data_corp_id"], name: "index_provenir_collection_big_data_corp_id", unique: true
   end
 
   create_table "provenir_decisions", force: :cascade do |t|
@@ -1225,7 +1227,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "provenir_big_data_corp_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["provenir_big_data_corp_id"], name: "index_provenir_extended_address_big_data_corp_id"
+    t.index ["provenir_big_data_corp_id"], name: "index_provenir_extended_address_big_data_corp_id", unique: true
   end
 
   create_table "provenir_extended_document_informations", force: :cascade do |t|
@@ -1253,7 +1255,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "provenir_big_data_corp_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["provenir_big_data_corp_id"], name: "index_provenir_extended_phone_big_data_corp_id"
+    t.index ["provenir_big_data_corp_id"], name: "index_provenir_extended_phone_big_data_corp_id", unique: true
   end
 
   create_table "provenir_financial_data", force: :cascade do |t|
@@ -1263,7 +1265,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "provenir_big_data_corp_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["provenir_big_data_corp_id"], name: "index_provenir_financial_datum_big_data_corp_id"
+    t.index ["provenir_big_data_corp_id"], name: "index_provenir_financial_datum_big_data_corp_id", unique: true
   end
 
   create_table "provenir_financial_risks", force: :cascade do |t|
@@ -1281,7 +1283,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "provenir_big_data_corp_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["provenir_big_data_corp_id"], name: "index_provenir_financial_risk_big_data_corp_id"
+    t.index ["provenir_big_data_corp_id"], name: "index_provenir_financial_risk_big_data_corp_id", unique: true
   end
 
   create_table "provenir_income_estimates", force: :cascade do |t|
@@ -1293,7 +1295,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "provenir_financial_datum_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["provenir_financial_datum_id"], name: "index_provenir_income_estimate_financial_datum_id"
+    t.index ["provenir_financial_datum_id"], name: "index_provenir_income_estimate_financial_datum_id", unique: true
   end
 
   create_table "provenir_lawsuits", force: :cascade do |t|
@@ -1353,7 +1355,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "provenir_party_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["provenir_party_id"], name: "index_provenir_party_detail_party_id"
+    t.index ["provenir_party_id"], name: "index_provenir_party_detail_party_id", unique: true
   end
 
   create_table "provenir_personal_relationships", force: :cascade do |t|
@@ -1452,7 +1454,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "provenir_big_data_corp_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["provenir_big_data_corp_id"], name: "index_provenir_process_big_data_corp_id"
+    t.index ["provenir_big_data_corp_id"], name: "index_provenir_process_big_data_corp_id", unique: true
   end
 
   create_table "provenir_related_people", force: :cascade do |t|
@@ -1467,7 +1469,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "provenir_big_data_corp_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["provenir_big_data_corp_id"], name: "index_provenir_related_person_big_data_corp_id"
+    t.index ["provenir_big_data_corp_id"], name: "index_provenir_related_person_big_data_corp_id", unique: true
   end
 
   create_table "provenir_rgs", force: :cascade do |t|
@@ -1478,7 +1480,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "provenir_extended_document_information_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["provenir_extended_document_information_id"], name: "index_big_data_rg_extended_document_information_id"
+    t.index ["provenir_extended_document_information_id"], name: "index_big_data_rg_extended_document_information_id", unique: true
   end
 
   create_table "provenir_sources", force: :cascade do |t|
@@ -1487,7 +1489,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "provenir_rg_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["provenir_rg_id"], name: "index_provenir_source_rg_id"
+    t.index ["provenir_rg_id"], name: "index_provenir_source_rg_id", unique: true
   end
 
   create_table "provenir_tax_returns", force: :cascade do |t|
@@ -1514,6 +1516,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["provenir_lawsuit_id"], name: "index_provenir_update_lawsuit_id"
+  end
+
+  create_table "public_keys", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "key", null: false
+    t.string "issuer", null: false
+    t.string "algorithm", null: false
+    t.datetime "valid_from", null: false
+    t.datetime "valid_to", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "request_logs", force: :cascade do |t|
@@ -1550,7 +1562,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "serasa_registration_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["serasa_registration_id"], name: "index_serasa_addresses_on_serasa_registration_id"
+    t.index ["serasa_registration_id"], name: "index_serasa_addresses_on_serasa_registration_id", unique: true
   end
 
   create_table "serasa_authentications", force: :cascade do |t|
@@ -1581,14 +1593,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "serasa_negative_data_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["serasa_negative_data_id"], name: "index_serasa_checks_on_serasa_negative_data_id"
+    t.index ["serasa_negative_data_id"], name: "index_serasa_checks_on_serasa_negative_data_id", unique: true
   end
 
   create_table "serasa_facts", force: :cascade do |t|
     t.bigint "serasa_fintech_report_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["serasa_fintech_report_id"], name: "index_serasa_facts_on_serasa_fintech_report_id"
+    t.index ["serasa_fintech_report_id"], name: "index_serasa_facts_on_serasa_fintech_report_id", unique: true
   end
 
   create_table "serasa_fintech_reports", force: :cascade do |t|
@@ -1596,14 +1608,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.uuid "analysis_item_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["analysis_item_id"], name: "index_serasa_fintech_reports_on_analysis_item_id"
+    t.index ["analysis_item_id"], name: "index_serasa_fintech_reports_on_analysis_item_id", unique: true
   end
 
   create_table "serasa_inquiries", force: :cascade do |t|
     t.bigint "serasa_fact_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["serasa_fact_id"], name: "index_serasa_inquiries_on_serasa_fact_id"
+    t.index ["serasa_fact_id"], name: "index_serasa_inquiries_on_serasa_fact_id", unique: true
   end
 
   create_table "serasa_inquiry_items", force: :cascade do |t|
@@ -1620,7 +1632,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "serasa_fintech_report_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["serasa_fintech_report_id"], name: "index_serasa_negative_data_on_serasa_fintech_report_id"
+    t.index ["serasa_fintech_report_id"], name: "index_serasa_negative_data_on_serasa_fintech_report_id", unique: true
   end
 
   create_table "serasa_negative_items", force: :cascade do |t|
@@ -1644,7 +1656,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "serasa_negative_data_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["serasa_negative_data_id"], name: "index_serasa_notaries_on_serasa_negative_data_id"
+    t.index ["serasa_negative_data_id"], name: "index_serasa_notaries_on_serasa_negative_data_id", unique: true
   end
 
   create_table "serasa_notary_items", force: :cascade do |t|
@@ -1664,7 +1676,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "serasa_negative_data_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["serasa_negative_data_id"], name: "index_serasa_pefins_on_serasa_negative_data_id"
+    t.index ["serasa_negative_data_id"], name: "index_serasa_pefins_on_serasa_negative_data_id", unique: true
   end
 
   create_table "serasa_phones", force: :cascade do |t|
@@ -1675,14 +1687,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "owner_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["owner_type", "owner_id"], name: "index_serasa_phones_on_owner"
+    t.index ["owner_type", "owner_id"], name: "index_serasa_phones_on_owner", unique: true
   end
 
   create_table "serasa_refins", force: :cascade do |t|
     t.bigint "serasa_negative_data_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["serasa_negative_data_id"], name: "index_serasa_refins_on_serasa_negative_data_id"
+    t.index ["serasa_negative_data_id"], name: "index_serasa_refins_on_serasa_negative_data_id", unique: true
   end
 
   create_table "serasa_registrations", force: :cascade do |t|
@@ -1695,7 +1707,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "serasa_fintech_report_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["serasa_fintech_report_id"], name: "index_serasa_registrations_on_serasa_fintech_report_id"
+    t.index ["serasa_fintech_report_id"], name: "index_serasa_registrations_on_serasa_fintech_report_id", unique: true
   end
 
   create_table "serasa_scores", force: :cascade do |t|
@@ -1708,7 +1720,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "serasa_fintech_report_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["serasa_fintech_report_id"], name: "index_serasa_scores_on_serasa_fintech_report_id"
+    t.index ["serasa_fintech_report_id"], name: "index_serasa_scores_on_serasa_fintech_report_id", unique: true
   end
 
   create_table "serasa_stolen_document_items", force: :cascade do |t|
@@ -1736,7 +1748,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "serasa_fact_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["serasa_fact_id"], name: "index_serasa_stolen_documents_on_serasa_fact_id"
+    t.index ["serasa_fact_id"], name: "index_serasa_stolen_documents_on_serasa_fact_id", unique: true
   end
 
   create_table "serasa_summaries", force: :cascade do |t|
@@ -1746,7 +1758,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_131811) do
     t.bigint "owner_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["owner_type", "owner_id"], name: "index_serasa_summaries_on_owner"
+    t.index ["owner_type", "owner_id"], name: "index_serasa_summaries_on_owner", unique: true
   end
 
   add_foreign_key "analysis_item_steps", "analysis_items"

@@ -6,7 +6,7 @@ require 'dotenv/load'
 require_relative '../integrable'
 require_relative '../../../app/integrators/analysis/prediction_integrator'
 # rubocop: disable Layout/LineLength
-require_relative '../../../app/integrators/errors/analysis/prediction_post_response_error'
+require_relative '../../../app/integrators/errors/analysis/prediction_response_error'
 # rubocop: enable Layout/LineLength
 
 RSpec.describe Analysis::PredictionIntegrator do

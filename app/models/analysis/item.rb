@@ -49,6 +49,7 @@ module Analysis
       pro_score_presumed_income
       pro_score_commercial_relations
       provenir_big_data_corp
+      alpop_prediction
     ], suffix: true
 
     enum :disapproval_situation, %i[
@@ -125,14 +126,14 @@ module Analysis
                           inverse_of: :item,
                           dependent: :destroy
 
-    has_many :predictions, class_name: 'Analysis::Prediction',
-                           inverse_of: :item,
-                           dependent: :destroy
-
     has_many :steps, through: :item_steps,
                      class_name: 'Analysis::Step',
                      inverse_of: :items,
                      dependent: :destroy
+
+    has_many :predictions, class_name: 'Analysis::Prediction',
+                           inverse_of: :item,
+                           dependent: :destroy
 
     def cpf_normalizer
       self.cpf = CPF::Formatter.format cpf if cpf.present?
