@@ -53,8 +53,10 @@ module API
 
     def payload
       {
-        score_report_webhook: webhook_event.payload,
-        score_report_id: webhook_event.callback_id
+        data: {
+          webhook_payload: webhook_event.payload,
+          callback_id: webhook_event.callback_id
+        }
       }.to_json
     end
 

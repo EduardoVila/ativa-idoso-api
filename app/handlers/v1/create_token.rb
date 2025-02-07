@@ -6,7 +6,7 @@ end
 
 module V1
   class CreateToken < Sinatra::Base
-    before { content_type :json }
+    include Headable
 
     post '/v1/tokens' do
       # Validate request format and parameters

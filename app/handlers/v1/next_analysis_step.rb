@@ -7,8 +7,7 @@ end
 module V1
   class NextAnalysisStep < Sinatra::Base
     include Validatable
-
-    before { content_type :json }
+    include Headable
 
     post('/v1/analysis-items/:analysis_item_id/next-steps') do
       current_client = Tokenable.current_client(request)

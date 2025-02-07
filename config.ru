@@ -14,8 +14,4 @@
 require_relative 'config/application' # Load your main application file
 require 'sidekiq/web'
 
-# now use the secret with a session cookie middleware
-use Rack::Session::Cookie, secret: ENV.fetch('SESSION_SECRET'),
-                           same_site: true, max_age: 86_400
-
 run Rack::URLMap.new('/' => AlpopAnalysis, '/sidekiq' => Sidekiq::Web) # Run the Sinatra application

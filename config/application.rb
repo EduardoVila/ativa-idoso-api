@@ -16,6 +16,9 @@ class AlpopAnalysis < Sinatra::Base
   use V1::RerunAnalysisItem
   use V1::RetryAnalysisReport
   use V1::ShowAnalysisReport
-  # Automatically register handlers endpoints
-  use Rack::Protection # Enable Rack::Protection middleware
+  use Rack::Protection
+
+  get '/' do
+    'ok'
+  end
 end

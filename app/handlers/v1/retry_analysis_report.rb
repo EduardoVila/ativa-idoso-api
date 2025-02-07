@@ -6,7 +6,7 @@ end
 
 module V1
   class RetryAnalysisReport < Sinatra::Base
-    before { content_type :json }
+    include Headable
 
     post('/v1/analysis-reports/:analysis_report_id/retries') do
       current_client = Tokenable.current_client(request)

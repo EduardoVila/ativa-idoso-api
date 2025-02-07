@@ -29,6 +29,7 @@ gem 'ostruct' # OpenStruct for storing data
 gem 'paper_trail' # Versioning for records
 gem 'pg' # PostgreSQL database adapter
 gem 'puma' # Web server for serving the application
+gem 'rack-attack' # Rack middleware for blocking requests
 gem 'rake' # Task runner for the application
 gem 'redis' # Redis client for caching
 gem 'require_all' # Require all files in a directory

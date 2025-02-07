@@ -7,6 +7,7 @@ end
 module V1
   class CreateAnalysisReport < Sinatra::Base
     include Validatable
+    include Headable
 
     post('/v1/analysis-reports') do
       current_client = Tokenable.current_client(request)
