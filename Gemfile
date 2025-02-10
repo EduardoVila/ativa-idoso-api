@@ -28,6 +28,9 @@ gem 'jwt' # JSON Web Token support
 gem 'ostruct' # OpenStruct for storing data
 gem 'paper_trail' # Versioning for records
 gem 'pg' # PostgreSQL database adapter
+gem 'pry' # REPL for debugging
+gem 'pry-byebug' # Enhanced REPL for debugging
+gem 'pry-coolline' # CoolLine integration for Pry
 gem 'puma' # Web server for serving the application
 gem 'rack-attack' # Rack middleware for blocking requests
 gem 'rake' # Task runner for the application
@@ -53,9 +56,6 @@ group :development, :test do
   gem 'faker' # Data generation for tests
   gem 'guard' # Automatic test running
   gem 'guard-rspec', require: false # Integration with RSpec
-  gem 'pry' # REPL for debugging
-  gem 'pry-byebug' # Enhanced REPL for debugging
-  gem 'pry-coolline' # CoolLine integration for Pry
   gem 'rack-test' # Helpers for testing Rack applications
   gem 'rspec' # Testing framework
   gem 'shoulda-matchers' # Matchers for common Rails functionality
