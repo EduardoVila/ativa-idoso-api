@@ -5,17 +5,25 @@
 # Table name: boa_vista_zip_code_confirmations
 #
 #  id                            :bigint           not null, primary key
-#  register_size                 :string
-#  register_type                 :string
-#  register                      :string
-#  zip_code                      :string
 #  address                       :string
-#  neighborhood                  :string
 #  city                          :string
 #  federative_unit               :string
-#  boa_vista_acerta_essencial_id :bigint           not null
+#  neighborhood                  :string
+#  register                      :string
+#  register_size                 :string
+#  register_type                 :string
+#  zip_code                      :string
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
+#  boa_vista_acerta_essencial_id :bigint           not null
+#
+# Indexes
+#
+#  index_zip_code_confirmations_on_acerta_essencial_id  (boa_vista_acerta_essencial_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (boa_vista_acerta_essencial_id => boa_vista_acerta_essencials.id)
 #
 require 'spec_helper'
 

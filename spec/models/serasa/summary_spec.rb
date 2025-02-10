@@ -5,12 +5,16 @@
 # Table name: serasa_summaries
 #
 #  id         :bigint           not null, primary key
-#  count      :integer
 #  balance    :float
+#  count      :integer
 #  owner_type :string
-#  owner_id   :bigint
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  owner_id   :bigint
+#
+# Indexes
+#
+#  index_serasa_summaries_on_owner  (owner_type,owner_id) UNIQUE
 #
 require 'spec_helper'
 

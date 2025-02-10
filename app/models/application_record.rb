@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-require 'active_record'
-require_relative 'concerns/auditable'
-
 class ApplicationRecord < ActiveRecord::Base
+  require_relative 'concerns/auditable'
   include ::Auditable
 
   self.abstract_class = true

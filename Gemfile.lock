@@ -46,9 +46,7 @@ GEM
       uri (>= 0.13.1)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
-    annotate (2.6.5)
-      activerecord (>= 2.3.0)
-      rake (>= 0.8.7)
+    annotaterb (4.13.0)
     ast (2.4.2)
     base64 (0.2.0)
     bcrypt (3.1.20)
@@ -374,7 +372,7 @@ DEPENDENCIES
   activemodel (~> 8)
   activerecord (~> 8)
   activesupport (~> 8)
-  annotate
+  annotaterb
   bcrypt
   bullet
   byebug

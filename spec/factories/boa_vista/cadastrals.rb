@@ -5,11 +5,15 @@
 # Table name: boa_vista_cadastrals
 #
 #  id            :bigint           not null, primary key
+#  consumer_type :string           not null
 #  raw_data      :string
-#  consumer_type :string
-#  consumer_id   :uuid
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  consumer_id   :uuid             not null
+#
+# Indexes
+#
+#  index_boa_vista_cadastrals_on_consumer  (consumer_type,consumer_id) UNIQUE
 #
 FactoryBot.define do
   factory :boa_vista_cadastral, class: 'BoaVista::Cadastral' do

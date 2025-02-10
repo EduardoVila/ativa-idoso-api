@@ -5,11 +5,19 @@
 # Table name: pro_score_reports
 #
 #  id                 :bigint           not null, primary key
-#  raw_data           :string
 #  performed_searches :text             default([]), is an Array
-#  analysis_item_id   :uuid             not null
+#  raw_data           :string
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  analysis_item_id   :uuid             not null
+#
+# Indexes
+#
+#  index_pro_score_reports_on_analysis_item_id  (analysis_item_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (analysis_item_id => analysis_items.id)
 #
 module ProScore
   class Report < ApplicationRecord

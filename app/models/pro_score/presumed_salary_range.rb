@@ -5,13 +5,21 @@
 # Table name: pro_score_presumed_salary_ranges
 #
 #  id                       :bigint           not null, primary key
-#  numero_plugin            :string
 #  codigo_da_faixa_salarial :string
-#  faixa_salarial           :string
 #  descricao_da_faixa       :string
-#  pro_score_report_id      :bigint           not null
+#  faixa_salarial           :string
+#  numero_plugin            :string
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
+#  pro_score_report_id      :bigint           not null
+#
+# Indexes
+#
+#  index_pro_score_presumed_salary_ranges_on_pro_score_report_id  (pro_score_report_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (pro_score_report_id => pro_score_reports.id)
 #
 module ProScore
   class PresumedSalaryRange < ApplicationRecord

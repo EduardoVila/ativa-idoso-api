@@ -5,26 +5,34 @@
 # Table name: boa_vista_locations
 #
 #  id                            :bigint           not null, primary key
-#  register_size                 :string
-#  register_type                 :string
-#  register                      :string
-#  public_place_type             :string
+#  city                          :string
+#  complement                    :string
+#  ddd_1                         :string
+#  ddd_2                         :string
+#  ddd_3                         :string
+#  federative_unit               :string
+#  neighborhood                  :string
+#  phone_1                       :string
+#  phone_2                       :string
+#  phone_3                       :string
 #  public_place_name             :string
 #  public_place_number           :string
-#  complement                    :string
-#  neighborhood                  :string
-#  city                          :string
-#  federative_unit               :string
+#  public_place_type             :string
+#  register                      :string
+#  register_size                 :string
+#  register_type                 :string
 #  zip_code                      :string
-#  ddd_1                         :string
-#  phone_1                       :string
-#  ddd_2                         :string
-#  phone_2                       :string
-#  ddd_3                         :string
-#  phone_3                       :string
-#  boa_vista_acerta_essencial_id :bigint           not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
+#  boa_vista_acerta_essencial_id :bigint           not null
+#
+# Indexes
+#
+#  index_boa_vista_locations_on_boa_vista_acerta_essencial_id  (boa_vista_acerta_essencial_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (boa_vista_acerta_essencial_id => boa_vista_acerta_essencials.id)
 #
 module BoaVista
   class Location < ApplicationRecord

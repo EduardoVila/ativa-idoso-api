@@ -5,26 +5,34 @@
 # Table name: boa_vista_score_rating_several_models
 #
 #  id                            :bigint           not null, primary key
-#  register_size                 :string
-#  register_type                 :string
-#  register                      :string
-#  score_type                    :string
-#  score                         :string
-#  plan_name                     :string
-#  score_model                   :string
-#  score_name                    :string
-#  numeric_classification        :string
 #  alphabetic_classification     :string
-#  probability                   :string
-#  text                          :string
 #  code_kind_model               :string
 #  kind_description              :string
+#  message                       :string
+#  numeric_classification        :string
+#  plan_name                     :string
+#  probability                   :string
+#  register                      :string
+#  register_size                 :string
+#  register_type                 :string
+#  score                         :string
+#  score_model                   :string
+#  score_name                    :string
+#  score_type                    :string
+#  text                          :string
 #  text_2                        :string
 #  value                         :string
-#  message                       :string
-#  boa_vista_acerta_essencial_id :bigint           not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
+#  boa_vista_acerta_essencial_id :bigint           not null
+#
+# Indexes
+#
+#  index_score_rating_several_models_on_acerta_essencial_id  (boa_vista_acerta_essencial_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (boa_vista_acerta_essencial_id => boa_vista_acerta_essencials.id)
 #
 require 'spec_helper'
 

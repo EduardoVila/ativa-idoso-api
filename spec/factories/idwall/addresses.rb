@@ -5,18 +5,26 @@
 # Table name: idwall_addresses
 #
 #  id                :bigint           not null, primary key
-#  main              :string
 #  city              :string
-#  state             :string
-#  number            :string
-#  zip_code          :string
-#  street            :string
-#  neighborhood      :string
-#  people_at_address :string
 #  kind              :string
-#  idwall_report_id  :bigint           not null
+#  main              :string
+#  neighborhood      :string
+#  number            :string
+#  people_at_address :string
+#  state             :string
+#  street            :string
+#  zip_code          :string
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  idwall_report_id  :bigint           not null
+#
+# Indexes
+#
+#  index_idwall_addresses_on_idwall_report_id  (idwall_report_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (idwall_report_id => idwall_reports.id)
 #
 FactoryBot.define do
   factory :idwall_address, class: 'Idwall::Address' do

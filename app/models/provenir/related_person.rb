@@ -5,17 +5,25 @@
 # Table name: provenir_related_people
 #
 #  id                        :bigint           not null, primary key
-#  total_relationships       :integer
-#  total_relatives           :integer
-#  total_neighbors           :integer
-#  total_spouses             :integer
+#  total_college_class       :integer
 #  total_coworkers           :integer
 #  total_household           :integer
+#  total_neighbors           :integer
 #  total_partners            :integer
-#  total_college_class       :integer
-#  provenir_big_data_corp_id :bigint           not null
+#  total_relationships       :integer
+#  total_relatives           :integer
+#  total_spouses             :integer
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
+#  provenir_big_data_corp_id :bigint           not null
+#
+# Indexes
+#
+#  index_provenir_related_person_big_data_corp_id  (provenir_big_data_corp_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (provenir_big_data_corp_id => provenir_big_data_corps.id)
 #
 module Provenir
   class RelatedPerson < ApplicationRecord

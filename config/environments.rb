@@ -31,6 +31,8 @@ module ApplicationLoader
     # Load all Ruby files in the app directory
 
     # Load all models first to ensure constants are available to other classes (e.g. concerns)
+    require_relative '../app/models/application_record'
+
     models_dir = File.join(File.dirname(__FILE__), '../app/models/*.rb')
     require_all models_dir
 

@@ -5,14 +5,22 @@
 # Table name: boa_vista_record_messages
 #
 #  id                            :bigint           not null, primary key
+#  record_reference              :string
+#  register                      :string
 #  register_size                 :string
 #  register_type                 :string
-#  register                      :string
-#  record_reference              :string
 #  text                          :string
-#  boa_vista_acerta_essencial_id :bigint           not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
+#  boa_vista_acerta_essencial_id :bigint           not null
+#
+# Indexes
+#
+#  index_record_messages_on_acerta_essencial_id  (boa_vista_acerta_essencial_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (boa_vista_acerta_essencial_id => boa_vista_acerta_essencials.id)
 #
 require 'spec_helper'
 

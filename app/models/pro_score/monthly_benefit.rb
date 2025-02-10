@@ -5,18 +5,26 @@
 # Table name: pro_score_monthly_benefits
 #
 #  id                                :bigint           not null, primary key
-#  numero_plugin                     :string
+#  beneficio_concedido_judicialmente :string
 #  mes_competencia                   :string
 #  mes_referencia                    :string
-#  uf                                :string
-#  nome_municipio                    :string
 #  nis_beneficiario                  :string
+#  nome_municipio                    :string
 #  numero_beneficio                  :string
-#  beneficio_concedido_judicialmente :string
+#  numero_plugin                     :string
+#  uf                                :string
 #  valor_parcela                     :string
-#  pro_score_report_id               :bigint           not null
 #  created_at                        :datetime         not null
 #  updated_at                        :datetime         not null
+#  pro_score_report_id               :bigint           not null
+#
+# Indexes
+#
+#  index_pro_score_monthly_benefits_on_pro_score_report_id  (pro_score_report_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (pro_score_report_id => pro_score_reports.id)
 #
 module ProScore
   class MonthlyBenefit < ApplicationRecord

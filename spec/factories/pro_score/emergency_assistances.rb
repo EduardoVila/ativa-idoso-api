@@ -5,18 +5,26 @@
 # Table name: pro_score_emergency_assistances
 #
 #  id                  :bigint           not null, primary key
-#  numero_plugin       :string
-#  mes_disponibilizado :string
 #  codigo_do_municipio :string
-#  municipio           :string
-#  uf                  :string
-#  parcelas            :string
-#  valor               :string
 #  enquadramento       :string
+#  mes_disponibilizado :string
+#  municipio           :string
+#  numero_plugin       :string
 #  observacao          :string
-#  pro_score_report_id :bigint           not null
+#  parcelas            :string
+#  uf                  :string
+#  valor               :string
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  pro_score_report_id :bigint           not null
+#
+# Indexes
+#
+#  index_pro_score_emergency_assistances_on_pro_score_report_id  (pro_score_report_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (pro_score_report_id => pro_score_reports.id)
 #
 FactoryBot.define do
   factory :pro_score_emergency_assistance,

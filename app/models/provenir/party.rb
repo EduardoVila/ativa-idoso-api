@@ -5,15 +5,23 @@
 # Table name: provenir_parties
 #
 #  id                  :bigint           not null, primary key
-#  party_doc           :string
 #  is_party_active     :boolean
-#  name                :string
-#  polarity            :string
-#  party_type          :string
 #  last_capture_date   :datetime
-#  provenir_lawsuit_id :bigint           not null
+#  name                :string
+#  party_doc           :string
+#  party_type          :string
+#  polarity            :string
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  provenir_lawsuit_id :bigint           not null
+#
+# Indexes
+#
+#  index_provenir_party_lawsuit_id  (provenir_lawsuit_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (provenir_lawsuit_id => provenir_lawsuits.id)
 #
 module Provenir
   class Party < ApplicationRecord

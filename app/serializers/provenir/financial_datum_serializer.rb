@@ -5,12 +5,20 @@
 # Table name: provenir_financial_data
 #
 #  id                        :bigint           not null, primary key
-#  total_assets              :string
 #  creation_date             :datetime
 #  last_update_date          :datetime
-#  provenir_big_data_corp_id :bigint           not null
+#  total_assets              :string
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
+#  provenir_big_data_corp_id :bigint           not null
+#
+# Indexes
+#
+#  index_provenir_financial_datum_big_data_corp_id  (provenir_big_data_corp_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (provenir_big_data_corp_id => provenir_big_data_corps.id)
 #
 require_relative '../application_serializer'
 

@@ -5,13 +5,21 @@
 # Table name: provenir_rgs
 #
 #  id                                        :bigint           not null, primary key
-#  number                                    :string
-#  document_last4_digits                     :string
 #  creation_date                             :datetime
+#  document_last4_digits                     :string
 #  last_update_date                          :datetime
-#  provenir_extended_document_information_id :bigint           not null
+#  number                                    :string
 #  created_at                                :datetime         not null
 #  updated_at                                :datetime         not null
+#  provenir_extended_document_information_id :bigint           not null
+#
+# Indexes
+#
+#  index_big_data_rg_extended_document_information_id  (provenir_extended_document_information_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (provenir_extended_document_information_id => provenir_extended_document_informations.id)
 #
 require 'spec_helper'
 

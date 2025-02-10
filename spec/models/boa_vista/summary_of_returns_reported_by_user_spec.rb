@@ -5,17 +5,25 @@
 # Table name: boa_vista_summary_of_returns_reported_by_users
 #
 #  id                            :bigint           not null, primary key
-#  register_size                 :string
-#  register_type                 :string
-#  register                      :string
-#  document_type                 :string
 #  document_number               :string
-#  total                         :string
+#  document_type                 :string
 #  first_devolution_date         :string
 #  last_devolution_date          :string
-#  boa_vista_acerta_essencial_id :bigint           not null
+#  register                      :string
+#  register_size                 :string
+#  register_type                 :string
+#  total                         :string
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
+#  boa_vista_acerta_essencial_id :bigint           not null
+#
+# Indexes
+#
+#  index_summary_of_return_reported_by_user_on_acerta_essencial_id  (boa_vista_acerta_essencial_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (boa_vista_acerta_essencial_id => boa_vista_acerta_essencials.id)
 #
 require 'spec_helper'
 

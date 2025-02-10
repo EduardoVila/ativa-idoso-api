@@ -5,15 +5,23 @@
 # Table name: pro_score_trial_parts
 #
 #  id                       :bigint           not null, primary key
-#  numero_plugin            :string
-#  numero_do_processo_unico :string
-#  nome                     :string
 #  documento                :string
-#  tipo                     :string
+#  nome                     :string
+#  numero_do_processo_unico :string
+#  numero_plugin            :string
 #  polo                     :string
-#  pro_score_trial_id       :bigint           not null
+#  tipo                     :string
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
+#  pro_score_trial_id       :bigint           not null
+#
+# Indexes
+#
+#  index_pro_score_trial_parts_on_pro_score_trial_id  (pro_score_trial_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (pro_score_trial_id => pro_score_trials.id)
 #
 FactoryBot.define do
   factory :pro_score_trial_part, class: 'ProScore::TrialPart' do

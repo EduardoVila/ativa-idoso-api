@@ -6,9 +6,17 @@
 #
 #  id               :bigint           not null, primary key
 #  raw_data         :string
-#  analysis_item_id :uuid             not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  analysis_item_id :uuid             not null
+#
+# Indexes
+#
+#  index_provenir_big_data_corps_on_analysis_item_id  (analysis_item_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (analysis_item_id => analysis_items.id)
 #
 
 require_relative '../concerns/blank_object_filterable'

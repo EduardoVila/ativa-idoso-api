@@ -5,12 +5,20 @@
 # Table name: provenir_processes
 #
 #  id                        :bigint           not null, primary key
-#  lawsuits_total            :integer
 #  defendant_lawsuits_total  :integer
+#  lawsuits_total            :integer
 #  plaintiff_lawsuits_total  :integer
-#  provenir_big_data_corp_id :bigint           not null
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
+#  provenir_big_data_corp_id :bigint           not null
+#
+# Indexes
+#
+#  index_provenir_process_big_data_corp_id  (provenir_big_data_corp_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (provenir_big_data_corp_id => provenir_big_data_corps.id)
 #
 require 'spec_helper'
 

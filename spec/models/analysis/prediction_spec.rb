@@ -5,14 +5,23 @@
 # Table name: analysis_predictions
 #
 #  id               :bigint           not null, primary key
-#  cpf              :string
 #  approved         :boolean
+#  cpf              :string
 #  fee              :float
-#  label            :string
 #  input_data       :jsonb
-#  analysis_item_id :uuid             not null
+#  label            :string
+#  raw_data         :string
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  analysis_item_id :uuid             not null
+#
+# Indexes
+#
+#  index_analysis_predictions_on_analysis_item_id  (analysis_item_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (analysis_item_id => analysis_items.id)
 #
 
 require 'spec_helper'

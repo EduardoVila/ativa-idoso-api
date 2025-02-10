@@ -5,15 +5,23 @@
 # Table name: provenir_business_relationships
 #
 #  id                        :bigint           not null, primary key
-#  total_relationships       :integer
-#  total_ownerships          :integer
-#  total_employments         :integer
-#  total_partners            :integer
 #  total_clients             :integer
+#  total_employments         :integer
+#  total_ownerships          :integer
+#  total_partners            :integer
+#  total_relationships       :integer
 #  total_suppliers           :integer
-#  provenir_big_data_corp_id :bigint           not null
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
+#  provenir_big_data_corp_id :bigint           not null
+#
+# Indexes
+#
+#  index_provenir_business_relationship_big_data_corp_id  (provenir_big_data_corp_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (provenir_big_data_corp_id => provenir_big_data_corps.id)
 #
 FactoryBot.define do
   factory :provenir_business_relationship,

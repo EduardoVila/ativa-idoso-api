@@ -5,18 +5,26 @@
 # Table name: boa_vista_protested_title_summaries
 #
 #  id                            :bigint           not null, primary key
+#  accumulated_value             :string
+#  currency                      :string
+#  federative_unit               :string
+#  final_period                  :string
+#  initial_period                :string
+#  register                      :string
 #  register_size                 :string
 #  register_type                 :string
-#  register                      :string
 #  total                         :string
-#  initial_period                :string
-#  final_period                  :string
-#  currency                      :string
-#  accumulated_value             :string
-#  federative_unit               :string
-#  boa_vista_acerta_essencial_id :bigint           not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
+#  boa_vista_acerta_essencial_id :bigint           not null
+#
+# Indexes
+#
+#  idx_on_boa_vista_acerta_essencial_id_f338e63983  (boa_vista_acerta_essencial_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (boa_vista_acerta_essencial_id => boa_vista_acerta_essencials.id)
 #
 require 'spec_helper'
 

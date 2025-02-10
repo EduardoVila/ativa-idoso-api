@@ -5,34 +5,42 @@
 # Table name: provenir_basic_data
 #
 #  id                                   :bigint           not null, primary key
-#  tax_id_number                        :string
-#  tax_id_country                       :string
-#  name                                 :string
+#  age                                  :integer
+#  birth_country                        :string
+#  birth_date                           :datetime
+#  chinese_sign                         :string
+#  creation_date                        :datetime
+#  father_name                          :string
+#  first_and_last_name_uniqueness_score :integer
+#  first_name_uniqueness_score          :integer
 #  gender                               :string
+#  has_obit_indication                  :boolean
+#  last_update_date                     :datetime
+#  marital_status_data                  :string
+#  mother_name                          :string
+#  name                                 :string
+#  name_uniqueness_score                :integer
 #  name_word_count                      :integer
 #  number_of_full_name_namesakes        :integer
-#  name_uniqueness_score                :integer
-#  first_name_uniqueness_score          :integer
-#  first_and_last_name_uniqueness_score :integer
-#  birth_date                           :datetime
-#  age                                  :integer
-#  zodiac_sign                          :string
-#  chinese_sign                         :string
-#  birth_country                        :string
-#  mother_name                          :string
-#  father_name                          :string
-#  marital_status_data                  :string
-#  tax_id_status                        :string
-#  tax_id_origin                        :string
+#  tax_id_country                       :string
 #  tax_id_fiscal_region                 :string
-#  has_obit_indication                  :boolean
+#  tax_id_number                        :string
+#  tax_id_origin                        :string
+#  tax_id_status                        :string
 #  tax_id_status_date                   :datetime
 #  tax_id_status_registration_date      :datetime
-#  creation_date                        :datetime
-#  last_update_date                     :datetime
-#  provenir_big_data_corp_id            :bigint           not null
+#  zodiac_sign                          :string
 #  created_at                           :datetime         not null
 #  updated_at                           :datetime         not null
+#  provenir_big_data_corp_id            :bigint           not null
+#
+# Indexes
+#
+#  index_provenir_basic_datum_big_data_corp_id  (provenir_big_data_corp_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (provenir_big_data_corp_id => provenir_big_data_corps.id)
 #
 require 'spec_helper'
 

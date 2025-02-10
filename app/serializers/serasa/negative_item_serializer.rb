@@ -5,19 +5,23 @@
 # Table name: serasa_negative_items
 #
 #  id              :bigint           not null, primary key
-#  occurrence_date :date
-#  legal_nature_id :string
-#  legal_nature    :string
-#  contract_id     :string
-#  creditor_name   :string
 #  amount          :float
 #  city            :string
+#  creditor_name   :string
 #  federal_unit    :string
-#  principal       :boolean
+#  legal_nature    :string
+#  occurrence_date :date
 #  owner_type      :string
-#  owner_id        :bigint
+#  principal       :boolean
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  contract_id     :string
+#  legal_nature_id :string
+#  owner_id        :bigint
+#
+# Indexes
+#
+#  index_serasa_negative_items_on_owner  (owner_type,owner_id)
 #
 require_relative '../application_serializer'
 

@@ -5,18 +5,26 @@
 # Table name: pro_score_trial_lawyers
 #
 #  id                       :bigint           not null, primary key
-#  numero_plugin            :string
-#  numero_do_processo_unico :string
 #  advogado_nome            :string
-#  parte_nome               :string
-#  cpf                      :string
 #  cnpj                     :string
-#  tipo                     :string
+#  cpf                      :string
+#  numero_do_processo_unico :string
+#  numero_plugin            :string
 #  oab_numero               :string
 #  oab_uf                   :string
-#  pro_score_trial_id       :bigint           not null
+#  parte_nome               :string
+#  tipo                     :string
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
+#  pro_score_trial_id       :bigint           not null
+#
+# Indexes
+#
+#  index_pro_score_trial_lawyers_on_pro_score_trial_id  (pro_score_trial_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (pro_score_trial_id => pro_score_trials.id)
 #
 require 'spec_helper'
 

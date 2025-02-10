@@ -5,25 +5,33 @@
 # Table name: provenir_collections
 #
 #  id                                    :bigint           not null, primary key
-#  is_currently_on_collection            :boolean
-#  last30_days_collection_occurrences    :integer
-#  last90_days_collection_occurrences    :integer
-#  last180_days_collection_occurrences   :integer
-#  last365_days_collection_occurrences   :integer
-#  last30_days_collection_origins        :integer
-#  last90_days_collection_origins        :integer
-#  last180_days_collection_origins       :integer
-#  last365_days_collection_origins       :integer
-#  total_collection_months               :integer
-#  current_consecutive_collection_months :integer
-#  max_consecutive_collection_months     :integer
-#  first_collection_date                 :datetime
-#  last_collection_date                  :datetime
 #  collection_occurrences                :integer
 #  collection_origins                    :integer
-#  provenir_big_data_corp_id             :bigint           not null
+#  current_consecutive_collection_months :integer
+#  first_collection_date                 :datetime
+#  is_currently_on_collection            :boolean
+#  last180_days_collection_occurrences   :integer
+#  last180_days_collection_origins       :integer
+#  last30_days_collection_occurrences    :integer
+#  last30_days_collection_origins        :integer
+#  last365_days_collection_occurrences   :integer
+#  last365_days_collection_origins       :integer
+#  last90_days_collection_occurrences    :integer
+#  last90_days_collection_origins        :integer
+#  last_collection_date                  :datetime
+#  max_consecutive_collection_months     :integer
+#  total_collection_months               :integer
 #  created_at                            :datetime         not null
 #  updated_at                            :datetime         not null
+#  provenir_big_data_corp_id             :bigint           not null
+#
+# Indexes
+#
+#  index_provenir_collection_big_data_corp_id  (provenir_big_data_corp_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (provenir_big_data_corp_id => provenir_big_data_corps.id)
 #
 require 'spec_helper'
 

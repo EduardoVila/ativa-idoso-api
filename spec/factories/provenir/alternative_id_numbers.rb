@@ -5,11 +5,19 @@
 # Table name: provenir_alternative_id_numbers
 #
 #  id                      :bigint           not null, primary key
-#  document_type           :string
 #  document_number         :string
-#  provenir_basic_datum_id :bigint           not null
+#  document_type           :string
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
+#  provenir_basic_datum_id :bigint           not null
+#
+# Indexes
+#
+#  index_provenir_alternative_id_number_basic_datum_id  (provenir_basic_datum_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (provenir_basic_datum_id => provenir_basic_data.id)
 #
 FactoryBot.define do
   factory :provenir_alternative_id_number,

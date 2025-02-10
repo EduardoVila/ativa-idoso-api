@@ -5,21 +5,29 @@
 # Table name: boa_vista_summary_devolution_reported_by_ccfs
 #
 #  id                            :bigint           not null, primary key
-#  register_size                 :string
-#  register_type                 :string
-#  register                      :string
-#  document_type                 :string
+#  devolution_total              :string
 #  document_number               :string
+#  document_type                 :string
 #  name                          :string
 #  names_total                   :string
-#  devolution_total              :string
 #  reason_12                     :string
 #  reason_13                     :string
 #  reason_14                     :string
 #  reason_99                     :string
-#  boa_vista_acerta_essencial_id :bigint           not null
+#  register                      :string
+#  register_size                 :string
+#  register_type                 :string
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
+#  boa_vista_acerta_essencial_id :bigint           not null
+#
+# Indexes
+#
+#  index_summary_devolution_reported_by_ccf_on_acerta_essencial_id  (boa_vista_acerta_essencial_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (boa_vista_acerta_essencial_id => boa_vista_acerta_essencials.id)
 #
 module BoaVista
   class SummaryDevolutionReportedByCcf < ApplicationRecord

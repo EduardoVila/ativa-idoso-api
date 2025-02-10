@@ -5,15 +5,23 @@
 # Table name: analysis_reports
 #
 #  id                    :uuid             not null, primary key
-#  cpfs                  :string           is an Array
-#  status                :integer
-#  fee                   :float
 #  approved              :boolean
+#  cpfs                  :string           is an Array
 #  disapproval_situation :integer
+#  fee                   :float
 #  payload               :string
-#  api_client_id         :uuid             not null
+#  status                :integer
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
+#  api_client_id         :uuid             not null
+#
+# Indexes
+#
+#  index_analysis_reports_on_api_client_id  (api_client_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (api_client_id => api_clients.id)
 #
 require_relative '../application_serializer'
 

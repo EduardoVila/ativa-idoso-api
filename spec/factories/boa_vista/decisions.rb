@@ -5,17 +5,25 @@
 # Table name: boa_vista_decisions
 #
 #  id                            :bigint           not null, primary key
+#  approves                      :string
+#  document                      :string
+#  document_type                 :string
+#  register                      :string
 #  register_size                 :string
 #  register_type                 :string
-#  register                      :string
-#  document_type                 :string
-#  document                      :string
 #  score                         :string
-#  approves                      :string
 #  text                          :string
-#  boa_vista_acerta_essencial_id :bigint           not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
+#  boa_vista_acerta_essencial_id :bigint           not null
+#
+# Indexes
+#
+#  index_boa_vista_decisions_on_boa_vista_acerta_essencial_id  (boa_vista_acerta_essencial_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (boa_vista_acerta_essencial_id => boa_vista_acerta_essencials.id)
 #
 FactoryBot.define do
   factory :boa_vista_decision, class: 'BoaVista::Decision' do

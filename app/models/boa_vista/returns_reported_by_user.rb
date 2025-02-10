@@ -5,29 +5,37 @@
 # Table name: boa_vista_returns_reported_by_users
 #
 #  id                            :bigint           not null, primary key
+#  agency                        :string
+#  bank                          :string
+#  city                          :string
+#  currency                      :string
+#  current_account               :string
+#  document                      :string
+#  document_type                 :string
+#  federative_unit               :string
+#  final_cheque                  :string
+#  informant                     :string
+#  informant_code                :string
+#  initial_cheque                :string
+#  occurrence_date               :string
+#  point                         :string
+#  reason                        :string
+#  register                      :string
+#  register_date                 :string
 #  register_size                 :string
 #  register_type                 :string
-#  register                      :string
-#  document_type                 :string
-#  document                      :string
-#  bank                          :string
-#  agency                        :string
-#  current_account               :string
-#  initial_cheque                :string
-#  final_cheque                  :string
-#  reason                        :string
-#  point                         :string
-#  occurrence_date               :string
-#  register_date                 :string
-#  currency                      :string
 #  value                         :string
-#  informant_code                :string
-#  informant                     :string
-#  city                          :string
-#  federative_unit               :string
-#  boa_vista_acerta_essencial_id :bigint           not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
+#  boa_vista_acerta_essencial_id :bigint           not null
+#
+# Indexes
+#
+#  index_returns_reported_by_users_on_acerta_essencial_id  (boa_vista_acerta_essencial_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (boa_vista_acerta_essencial_id => boa_vista_acerta_essencials.id)
 #
 module BoaVista
   class ReturnsReportedByUser < ApplicationRecord

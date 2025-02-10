@@ -5,20 +5,28 @@
 # Table name: boa_vista_previous_cheque_consultations
 #
 #  id                            :bigint           not null, primary key
-#  register_size                 :string
-#  register_type                 :string
-#  register                      :string
-#  document_type                 :string
-#  document_number               :string
 #  consultation_type             :string
 #  credit_date                   :string
 #  credit_hour                   :string
 #  currency                      :string
-#  value                         :string
+#  document_number               :string
+#  document_type                 :string
 #  informant                     :string
-#  boa_vista_acerta_essencial_id :bigint           not null
+#  register                      :string
+#  register_size                 :string
+#  register_type                 :string
+#  value                         :string
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
+#  boa_vista_acerta_essencial_id :bigint           not null
+#
+# Indexes
+#
+#  index_previous_cheque_consultations_on_acerta_essencial_id  (boa_vista_acerta_essencial_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (boa_vista_acerta_essencial_id => boa_vista_acerta_essencials.id)
 #
 require 'spec_helper'
 

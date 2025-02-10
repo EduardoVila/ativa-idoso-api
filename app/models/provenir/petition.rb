@@ -5,9 +5,17 @@
 # Table name: provenir_petitions
 #
 #  id                  :bigint           not null, primary key
-#  provenir_lawsuit_id :bigint           not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  provenir_lawsuit_id :bigint           not null
+#
+# Indexes
+#
+#  index_provenir_petition_lawsuit_id  (provenir_lawsuit_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (provenir_lawsuit_id => provenir_lawsuits.id)
 #
 module Provenir
   class Petition < ApplicationRecord

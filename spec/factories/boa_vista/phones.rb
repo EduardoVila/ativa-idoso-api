@@ -8,9 +8,17 @@
 #  ddd                             :string
 #  number                          :string
 #  phone_type                      :string
-#  boa_vista_cadastral_location_id :bigint           not null
 #  created_at                      :datetime         not null
 #  updated_at                      :datetime         not null
+#  boa_vista_cadastral_location_id :bigint           not null
+#
+# Indexes
+#
+#  index_boa_vista_phones_on_boa_vista_cadastral_location_id  (boa_vista_cadastral_location_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (boa_vista_cadastral_location_id => boa_vista_cadastral_locations.id)
 #
 FactoryBot.define do
   factory :boa_vista_phone, class: 'BoaVista::Phone' do

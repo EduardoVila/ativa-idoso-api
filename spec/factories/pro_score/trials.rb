@@ -5,25 +5,33 @@
 # Table name: pro_score_trials
 #
 #  id                       :bigint           not null, primary key
-#  numero_plugin            :string
-#  numero_do_processo_unico :string
-#  data_distribuicao        :datetime
 #  area                     :string
 #  causa_moeda              :string
 #  causa_valor              :string
-#  unidade_origem           :string
-#  url_processo             :string
-#  sistema                  :string
+#  classe_processual_nome   :string
+#  data_distribuicao        :datetime
 #  data_processamento       :datetime
+#  juiz                     :string
+#  numero_do_processo_unico :string
+#  numero_plugin            :string
+#  orgao_julgador           :string
+#  segmento                 :string
+#  sistema                  :string
 #  tribunal                 :string
 #  uf                       :string
-#  segmento                 :string
-#  classe_processual_nome   :string
-#  orgao_julgador           :string
-#  juiz                     :string
-#  pro_score_report_id      :bigint           not null
+#  unidade_origem           :string
+#  url_processo             :string
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
+#  pro_score_report_id      :bigint           not null
+#
+# Indexes
+#
+#  index_pro_score_trials_on_pro_score_report_id  (pro_score_report_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (pro_score_report_id => pro_score_reports.id)
 #
 FactoryBot.define do
   factory :pro_score_trial, class: 'ProScore::Trial' do

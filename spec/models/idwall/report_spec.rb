@@ -6,11 +6,19 @@
 #
 #  id               :bigint           not null, primary key
 #  number           :string           not null
-#  status           :integer          default("processing")
 #  raw_data         :string
-#  analysis_item_id :uuid             not null
+#  status           :integer          default("processing")
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  analysis_item_id :uuid             not null
+#
+# Indexes
+#
+#  index_idwall_reports_on_analysis_item_id  (analysis_item_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (analysis_item_id => analysis_items.id)
 #
 require 'spec_helper'
 

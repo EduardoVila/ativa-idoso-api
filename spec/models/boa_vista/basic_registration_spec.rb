@@ -5,15 +5,23 @@
 # Table name: boa_vista_basic_registrations
 #
 #  id                     :bigint           not null, primary key
-#  cpf                    :string
-#  name                   :string
-#  mother_name            :string
 #  birth_date             :string
-#  exposed_person         :string
+#  cpf                    :string
 #  cpf_situation          :string
-#  boa_vista_cadastral_id :bigint           not null
+#  exposed_person         :string
+#  mother_name            :string
+#  name                   :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  boa_vista_cadastral_id :bigint           not null
+#
+# Indexes
+#
+#  index_boa_vista_basic_registrations_on_boa_vista_cadastral_id  (boa_vista_cadastral_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (boa_vista_cadastral_id => boa_vista_cadastrals.id)
 #
 require 'spec_helper'
 

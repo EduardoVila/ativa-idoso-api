@@ -5,13 +5,17 @@
 # Table name: serasa_phones
 #
 #  id           :bigint           not null, primary key
-#  region_code  :string
 #  area_code    :string
-#  phone_number :string
 #  owner_type   :string
-#  owner_id     :bigint
+#  phone_number :string
+#  region_code  :string
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
+#  owner_id     :bigint
+#
+# Indexes
+#
+#  index_serasa_phones_on_owner  (owner_type,owner_id) UNIQUE
 #
 FactoryBot.define do
   factory :serasa_phone, class: 'Serasa::Phone' do

@@ -5,19 +5,27 @@
 # Table name: serasa_check_items
 #
 #  id              :bigint           not null, primary key
-#  occurrence_date :date
-#  legal_square    :string
-#  bank_id         :integer
+#  alinea          :string
 #  bank_name       :string
-#  bank_agency_id  :integer
 #  check_count     :integer
+#  check_number    :string
 #  city            :string
 #  federal_unit    :string
-#  check_number    :string
-#  alinea          :string
-#  serasa_check_id :bigint           not null
+#  legal_square    :string
+#  occurrence_date :date
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  bank_agency_id  :integer
+#  bank_id         :integer
+#  serasa_check_id :bigint           not null
+#
+# Indexes
+#
+#  index_serasa_check_items_on_serasa_check_id  (serasa_check_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (serasa_check_id => serasa_checks.id)
 #
 require 'spec_helper'
 

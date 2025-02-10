@@ -5,12 +5,20 @@
 # Table name: pro_score_commercial_relations
 #
 #  id                  :bigint           not null, primary key
-#  numero_plugin       :string
 #  cpfcnpj             :string
+#  numero_plugin       :string
 #  razao_social        :string
-#  pro_score_report_id :bigint           not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  pro_score_report_id :bigint           not null
+#
+# Indexes
+#
+#  index_pro_score_commercial_relations_on_pro_score_report_id  (pro_score_report_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (pro_score_report_id => pro_score_reports.id)
 #
 require_relative '../application_serializer'
 

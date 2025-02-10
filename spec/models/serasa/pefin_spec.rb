@@ -5,9 +5,17 @@
 # Table name: serasa_pefins
 #
 #  id                      :bigint           not null, primary key
-#  serasa_negative_data_id :bigint           not null
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
+#  serasa_negative_data_id :bigint           not null
+#
+# Indexes
+#
+#  index_serasa_pefins_on_serasa_negative_data_id  (serasa_negative_data_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (serasa_negative_data_id => serasa_negative_data.id)
 #
 require 'spec_helper'
 

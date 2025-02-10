@@ -5,15 +5,23 @@
 # Table name: serasa_notary_items
 #
 #  id               :bigint           not null, primary key
-#  occurrence_date  :date
 #  amount           :float
-#  office_number    :string
-#  office_name      :string
 #  city             :string
 #  federal_unit     :string
-#  serasa_notary_id :bigint           not null
+#  occurrence_date  :date
+#  office_name      :string
+#  office_number    :string
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  serasa_notary_id :bigint           not null
+#
+# Indexes
+#
+#  index_serasa_notary_items_on_serasa_notary_id  (serasa_notary_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (serasa_notary_id => serasa_notaries.id)
 #
 require_relative '../application_serializer'
 

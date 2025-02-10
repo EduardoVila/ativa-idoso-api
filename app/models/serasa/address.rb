@@ -6,14 +6,22 @@
 #
 #  id                     :bigint           not null, primary key
 #  address_line           :string
-#  district               :string
-#  zip_code               :string
-#  country                :string
 #  city                   :string
+#  country                :string
+#  district               :string
 #  state                  :string
-#  serasa_registration_id :bigint           not null
+#  zip_code               :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  serasa_registration_id :bigint           not null
+#
+# Indexes
+#
+#  index_serasa_addresses_on_serasa_registration_id  (serasa_registration_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (serasa_registration_id => serasa_registrations.id)
 #
 module Serasa
   class Address < ApplicationRecord

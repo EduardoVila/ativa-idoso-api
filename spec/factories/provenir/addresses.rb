@@ -5,64 +5,72 @@
 # Table name: provenir_addresses
 #
 #  id                                    :bigint           not null, primary key
-#  typology                              :string
-#  title                                 :string
-#  address_main                          :string
-#  number                                :string
-#  complement                            :string
-#  neighborhood                          :string
-#  zip_code                              :string
-#  city                                  :string
-#  state                                 :string
-#  country                               :string
-#  address_type                          :string
 #  address_currently_in_rf_site          :string
-#  complement_type                       :string
-#  build_code                            :string
-#  building_code                         :string
-#  household_code                        :string
 #  address_entity_age                    :integer
-#  address_entity_total_passages         :integer
 #  address_entity_bad_passages           :integer
 #  address_entity_crawling_passages      :integer
-#  address_entity_validation_passages    :integer
-#  address_entity_query_passages         :integer
 #  address_entity_month_average_passages :float
+#  address_entity_query_passages         :integer
+#  address_entity_total_passages         :integer
+#  address_entity_validation_passages    :integer
 #  address_global_age                    :integer
-#  address_global_total_passages         :integer
 #  address_global_bad_passages           :integer
 #  address_global_crawling_passages      :integer
-#  address_global_validation_passages    :integer
-#  address_global_query_passages         :integer
 #  address_global_month_average_passages :float
+#  address_global_query_passages         :integer
+#  address_global_total_passages         :integer
+#  address_global_validation_passages    :integer
+#  address_main                          :string
 #  address_number_of_entities            :integer
-#  priority                              :integer
-#  is_main_for_entity                    :boolean
-#  is_recent_for_entity                  :boolean
-#  is_main_for_other_entity              :boolean
-#  is_recent_for_other_entity            :boolean
-#  is_active                             :boolean
-#  is_ratified                           :boolean
-#  is_likely_from_accountant             :boolean
-#  last_validation_date                  :datetime
+#  address_type                          :string
+#  build_code                            :string
+#  building_code                         :string
+#  capture_date                          :datetime
+#  city                                  :string
+#  complement                            :string
+#  complement_type                       :string
+#  country                               :string
+#  creation_date                         :datetime
 #  entity_first_passage_date             :datetime
 #  entity_last_passage_date              :datetime
 #  global_first_passage_date             :datetime
 #  global_last_passage_date              :datetime
-#  last3_months_passages                 :integer          default(0)
-#  last6_months_passages                 :integer          default(0)
+#  has_opt_in                            :boolean
+#  household_code                        :string
+#  is_active                             :boolean
+#  is_likely_from_accountant             :boolean
+#  is_main_for_entity                    :boolean
+#  is_main_for_other_entity              :boolean
+#  is_ratified                           :boolean
+#  is_recent_for_entity                  :boolean
+#  is_recent_for_other_entity            :boolean
 #  last12_months_passages                :integer          default(0)
 #  last16_months_passages                :integer          default(0)
-#  match_rate                            :integer          default(0)
-#  creation_date                         :datetime
-#  capture_date                          :datetime
+#  last3_months_passages                 :integer          default(0)
+#  last6_months_passages                 :integer          default(0)
 #  last_update_date                      :datetime
-#  has_opt_in                            :boolean
+#  last_validation_date                  :datetime
 #  latitude                              :float
 #  longitude                             :float
-#  provenir_extended_address_id          :bigint           not null
+#  match_rate                            :integer          default(0)
+#  neighborhood                          :string
+#  number                                :string
+#  priority                              :integer
+#  state                                 :string
+#  title                                 :string
+#  typology                              :string
+#  zip_code                              :string
 #  created_at                            :datetime         not null
 #  updated_at                            :datetime         not null
+#  provenir_extended_address_id          :bigint           not null
+#
+# Indexes
+#
+#  index_provenir_address_extended_address_id  (provenir_extended_address_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (provenir_extended_address_id => provenir_extended_addresses.id)
 #
 FactoryBot.define do
   factory :provenir_address, class: 'Provenir::Address' do

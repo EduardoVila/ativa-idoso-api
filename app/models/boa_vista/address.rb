@@ -5,18 +5,26 @@
 # Table name: boa_vista_addresses
 #
 #  id                              :bigint           not null, primary key
-#  street_type                     :string
-#  street                          :string
-#  number                          :string
-#  neighborhood                    :string
-#  city                            :string
-#  federal_unit                    :string
-#  zip_code                        :string
-#  complement                      :string
 #  address_type                    :string
-#  boa_vista_cadastral_location_id :bigint           not null
+#  city                            :string
+#  complement                      :string
+#  federal_unit                    :string
+#  neighborhood                    :string
+#  number                          :string
+#  street                          :string
+#  street_type                     :string
+#  zip_code                        :string
 #  created_at                      :datetime         not null
 #  updated_at                      :datetime         not null
+#  boa_vista_cadastral_location_id :bigint           not null
+#
+# Indexes
+#
+#  index_boa_vista_addresses_on_boa_vista_cadastral_location_id  (boa_vista_cadastral_location_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (boa_vista_cadastral_location_id => boa_vista_cadastral_locations.id)
 #
 module BoaVista
   class Address < ApplicationRecord

@@ -5,9 +5,17 @@
 # Table name: serasa_negative_data
 #
 #  id                       :bigint           not null, primary key
-#  serasa_fintech_report_id :bigint           not null
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
+#  serasa_fintech_report_id :bigint           not null
+#
+# Indexes
+#
+#  index_serasa_negative_data_on_serasa_fintech_report_id  (serasa_fintech_report_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (serasa_fintech_report_id => serasa_fintech_reports.id)
 #
 require 'spec_helper'
 

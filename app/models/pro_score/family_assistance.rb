@@ -5,13 +5,21 @@
 # Table name: pro_score_family_assistances
 #
 #  id                       :bigint           not null, primary key
-#  numero_plugin            :string
-#  valor                    :string
-#  ultima_data_do_beneficio :string
 #  consta_beneficio         :string
-#  pro_score_report_id      :bigint           not null
+#  numero_plugin            :string
+#  ultima_data_do_beneficio :string
+#  valor                    :string
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
+#  pro_score_report_id      :bigint           not null
+#
+# Indexes
+#
+#  index_pro_score_family_assistances_on_pro_score_report_id  (pro_score_report_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (pro_score_report_id => pro_score_reports.id)
 #
 module ProScore
   class FamilyAssistance < ApplicationRecord

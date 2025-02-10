@@ -5,15 +5,23 @@
 # Table name: serasa_registrations
 #
 #  id                       :bigint           not null, primary key
-#  document_number          :string
-#  consumer_name            :string
-#  mother_name              :string
 #  birth_date               :string
-#  status_registration      :string
+#  consumer_name            :string
+#  document_number          :string
+#  mother_name              :string
 #  status_date              :date
-#  serasa_fintech_report_id :bigint           not null
+#  status_registration      :string
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
+#  serasa_fintech_report_id :bigint           not null
+#
+# Indexes
+#
+#  index_serasa_registrations_on_serasa_fintech_report_id  (serasa_fintech_report_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (serasa_fintech_report_id => serasa_fintech_reports.id)
 #
 module Serasa
   class Registration < ApplicationRecord

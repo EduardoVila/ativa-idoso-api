@@ -5,18 +5,28 @@
 # Table name: analysis_items
 #
 #  id                    :uuid             not null, primary key
-#  name                  :string
 #  cpf                   :string
-#  status                :integer          default("todo")
-#  error_status          :integer          default("none")
-#  prediction            :integer
-#  payment_situation     :integer          default("unanalyzed")
 #  disapproval_situation :integer
+#  error_status          :integer          default("none")
 #  features              :jsonb
-#  clone_of_id           :uuid
-#  analysis_report_id    :uuid             not null
+#  name                  :string
+#  payment_situation     :integer          default("unanalyzed")
+#  prediction            :integer
+#  status                :integer          default("todo")
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
+#  analysis_report_id    :uuid             not null
+#  clone_of_id           :uuid
+#
+# Indexes
+#
+#  index_analysis_items_on_analysis_report_id  (analysis_report_id)
+#  index_analysis_items_on_clone_of_id         (clone_of_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (analysis_report_id => analysis_reports.id)
+#  fk_rails_...  (clone_of_id => analysis_items.id)
 #
 FactoryBot.define do
   factory :analysis_item, class: 'Analysis::Item' do

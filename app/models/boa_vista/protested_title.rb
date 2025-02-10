@@ -5,19 +5,27 @@
 # Table name: boa_vista_protested_titles
 #
 #  id                            :bigint           not null, primary key
+#  city                          :string
+#  currency                      :string
+#  federative_unit               :string
+#  occurrence_date               :string
+#  occurrence_type               :string
+#  register                      :string
 #  register_size                 :string
 #  register_type                 :string
-#  register                      :string
-#  occurrence_type               :string
 #  registry                      :string
-#  occurrence_date               :string
-#  currency                      :string
 #  value                         :string
-#  city                          :string
-#  federative_unit               :string
-#  boa_vista_acerta_essencial_id :bigint           not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
+#  boa_vista_acerta_essencial_id :bigint           not null
+#
+# Indexes
+#
+#  index_protested_titles_on_acerta_essencial_id  (boa_vista_acerta_essencial_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (boa_vista_acerta_essencial_id => boa_vista_acerta_essencials.id)
 #
 module BoaVista
   class ProtestedTitle < ApplicationRecord

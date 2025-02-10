@@ -67,7 +67,7 @@ end
 
 group :development do
   # Development and Debugging Gems
-  gem 'annotate' # Adds comments to models with schema information
+  gem 'annotaterb' # Adds comments to models with schema information
   gem 'database_consistency', require: false # Database consistency checks
   gem 'rubocop' # Code analyzer and formatter
   gem 'rubocop-capybara' # Capybara-specific RuboCop rules

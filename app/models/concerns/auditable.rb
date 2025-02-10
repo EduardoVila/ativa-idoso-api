@@ -19,6 +19,8 @@
 
 require 'paper_trail'
 
+require_relative '../audit'
+
 module Auditable
   extend ActiveSupport::Concern
 
