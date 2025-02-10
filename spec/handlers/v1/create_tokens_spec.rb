@@ -8,8 +8,8 @@ require 'bcrypt'
 RSpec.describe V1::CreateToken, type: :handler do
   include Rack::Test::Methods
 
-  describe 'POST /v1/tokens' do
-    let(:route) { '/v1/tokens' }
+  describe 'POST /v1/authenticate' do
+    let(:route) { '/v1/authenticate' }
     let(:headers) { { 'CONTENT_TYPE' => 'application/x-www-form-urlencoded' } }
 
     context 'when the request is valid' do

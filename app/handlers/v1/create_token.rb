@@ -8,7 +8,7 @@ module V1
   class CreateToken < Sinatra::Base
     include Headable
 
-    post '/v1/tokens' do
+    post '/v1/authenticate' do
       # Validate request format and parameters
       halt(401) unless valid_token_request?(request, params)
 
