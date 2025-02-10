@@ -45,6 +45,7 @@ gem 'sinatra-activerecord' # ActiveRecord integration with Sinatra
 gem 'sinatra-contrib' # Additional Sinatra utilities
 gem 'tzinfo' # Timezone support
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby] # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem 'nokogiri'
 
 group :development, :test do
   gem 'byebug' # Debugger for debugging
