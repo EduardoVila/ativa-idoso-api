@@ -43,7 +43,7 @@ module V1
 
     def create_analysis_report(params, client)
       ::Analysis::Report.new(
-        cpfs: params, api_client_id: client.id, status: :wip
+        cpfs: params, api_client_id: client.id, status: :todo
       ).tap(&:save)
     end
 
