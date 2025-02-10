@@ -10,8 +10,8 @@ ApplicationLoader.load_sidekiq_redis
 
 # Start the application
 class AlpopAnalysis < Sinatra::Base
+  use V1::Authenticate
   use V1::CreateAnalysisReport
-  use V1::CreateToken
   use V1::NextAnalysisStep
   use V1::RerunAnalysisItem
   use V1::RetryAnalysisReport

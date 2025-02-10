@@ -2,10 +2,10 @@
 
 require 'spec_helper'
 require 'rack/test'
-require_relative '../../../app/handlers/v1/create_token'
+require_relative '../../../app/handlers/v1/authenticate'
 require 'bcrypt'
 
-RSpec.describe V1::CreateToken, type: :handler do
+RSpec.describe V1::Authenticate, type: :handler do
   include Rack::Test::Methods
 
   describe 'POST /v1/authenticate' do

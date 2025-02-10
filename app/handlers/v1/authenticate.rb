@@ -5,7 +5,7 @@ Dir[File.join(__dir__, 'concerns', '*.rb')].each do |file|
 end
 
 module V1
-  class CreateToken < Sinatra::Base
+  class Authenticate < Sinatra::Base
     include Headable
 
     post '/v1/authenticate' do
@@ -21,7 +21,7 @@ module V1
       halt(401) unless client
 
       # Generate token and response
-      create_token_response(client)
+      tokenable_response(client)
     end
 
     private
@@ -47,7 +47,7 @@ module V1
       client&.authenticate(credentials[:client_secret]) ? client : nil
     end
 
-    def create_token_response(client)
+    def tokenable_response(client)
       access_token = Tokenable.create_jwt(
         payload: { 'sub' => client.client_id }
       )
