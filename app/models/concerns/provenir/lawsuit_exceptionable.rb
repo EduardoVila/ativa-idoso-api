@@ -18,7 +18,7 @@ module Provenir
     private
 
     def active_or_undefined_status?
-      status == 'ATIVO' || status == 'INDEFINIDO'
+      %w[ATIVO INDEFINIDO].include?(status)
     end
 
     def exceptionable_keywords

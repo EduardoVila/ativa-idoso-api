@@ -6,7 +6,7 @@ require_relative '../application_integrator'
 module Analysis
   class PredictionIntegrator < ApplicationIntegrator
     def conn(proxy: nil)
-      super(proxy: proxy).tap do |connection|
+      super.tap do |connection|
         connection.request(:authorization, :bearer, access_token)
       end
     end

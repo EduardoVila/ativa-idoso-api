@@ -9,7 +9,7 @@ module Provenir
     include CustomJsonParseable
 
     def conn(proxy: nil)
-      super(proxy: proxy).tap do |connection|
+      super.tap do |connection|
         connection.options.timeout = 120
         connection.request(:authorization, :basic, access_token)
       end

@@ -6,7 +6,7 @@ require_relative '../errors/serasa/response_error'
 module Serasa
   class AuthenticationIntegrator < ApplicationIntegrator
     def conn(proxy: nil)
-      super(proxy: proxy).tap do |connection|
+      super.tap do |connection|
         connection.request(
           :authorization, :basic, client_credentials
         )
