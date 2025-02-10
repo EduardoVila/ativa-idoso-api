@@ -13,7 +13,9 @@ module BoaVista
 
       begin
         BoaVista::CadastralIntegrator.new.create_resource(analysis_item)
-      rescue BoaVistaResponseError
+      rescue BoaVistaResponseError => e
+        puts e
+
         analysis_item.update(status: :error, error_status: :boa_vista)
 
         Invoker.execute(:analysis_report_sync_command, analysis_item.report)
