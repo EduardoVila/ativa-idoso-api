@@ -76,11 +76,11 @@ module Integrators
     end
 
     def self.build_xml_header
-      Nokogiri::XML('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>')
+      ::Nokogiri::XML('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>')
     end
 
     def self.build_essencial_body_request(cpf, credit_type)
-      body = Nokogiri::XML::Builder.with(build_xml_header) do |xml|
+      body = ::Nokogiri::XML::Builder.with(build_xml_header) do |xml|
         xml.acertaContratoEntrada(
           'xmlns' => 'http://boavistaservicos.com.br/familia/acerta/pf'
         ) do

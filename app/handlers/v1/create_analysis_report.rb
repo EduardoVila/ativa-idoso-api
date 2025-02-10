@@ -32,7 +32,7 @@ module V1
 
       # Create webhook and enqueue job
       create_webhook_event(analysis_report, current_client, request, data)
-      AnalysisReportJob.perform_now(analysis_report.id)
+      AnalysisReportJob.perform_later(analysis_report.id)
 
       # Return response
       status(201)
