@@ -21,7 +21,7 @@ module BoaVista
       #   analysis_item.update(status: :not_found, error_status: :boa_vista)
 
       #   Invoker.execute(:analysis_report_sync_command, analysis_item.report)
-      # end
+      end
     end
   end
 end
