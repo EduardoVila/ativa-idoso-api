@@ -42,7 +42,9 @@ module V1
     private
 
     def create_analysis_report(params, client)
-      ::Analysis::Report.new(cpfs: params, api_client_id: client.id).tap(&:save)
+      ::Analysis::Report.new(
+        cpfs: params, api_client_id: client.id, status: :wip
+      ).tap(&:save)
     end
 
     def create_webhook_event(report, client, request, data)

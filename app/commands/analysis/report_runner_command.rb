@@ -14,8 +14,6 @@ module Analysis
     def call
       return if %w[done not_found].include?(analysis_report.status)
 
-      analysis_report.update(status: :wip)
-
       Analysis::CreateAnalysisItemsService.call(analysis_report)
 
       analysis_report

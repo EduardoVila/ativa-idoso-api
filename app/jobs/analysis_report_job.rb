@@ -22,7 +22,7 @@ class AnalysisReportJob < ApplicationJob
 
     return unless webhook_event
 
-    webhook_event.update(status: 'processing', job_id: job_id)
+    webhook_event.update(status: :processing, job_id: job_id)
     run_analysis_report(analysis_report)
 
     return if analysis_report_done_or_not_found?(analysis_report)
@@ -40,10 +40,6 @@ class AnalysisReportJob < ApplicationJob
 
   def find_webhook_event(analysis_report_id)
     API::WebhookEvent.find_by(event_id: analysis_report_id)
-  end
-
-  def process_webhook_event(webhook_event)
-    webhook_event.update(status: 'processing', job_id: job_id)
   end
 
   def run_analysis_report(analysis_report)
