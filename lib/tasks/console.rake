@@ -13,6 +13,8 @@ namespace :console do
     require_relative '../../config/environments' # Environment setup
     require_relative '../../config/application' # Application setup
 
+    require 'pry' # REPL for debugging
+
     if settings.environment == 'development'
       Dir[File.join(__dir__, '../../spec/factories/**/*.rb')].each { |file| require file } # FactoryBot setup
     end
