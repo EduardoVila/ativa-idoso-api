@@ -379,6 +379,7 @@ DEPENDENCIES
   guard-rspec
   i18n
   jwt
+  nokogiri
   ostruct
   paper_trail
   pg
@@ -391,6 +392,7 @@ DEPENDENCIES
   rake
   redis
   require_all
+  rexml
   rspec
   rubocop
   rubocop-capybara
