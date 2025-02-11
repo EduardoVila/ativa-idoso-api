@@ -19,6 +19,8 @@ class AlpopAnalysis < Sinatra::Base
   use Rack::Protection
 
   get '/' do
+    headers 'Content-Type' => 'application/json'
+
     { message: 'Analysis API is running.' }.to_json
   end
 end
