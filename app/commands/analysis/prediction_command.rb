@@ -15,7 +15,7 @@ module Analysis
         Analysis::PredictionIntegrator.new.create_resource(analysis_item)
 
         success_hash
-      rescue StandardError
+      rescue ::Errors::Analysis::PredictionPostResponseError, StandardError
         analysis_item.update(error_status: :alpop_prediction)
 
         failure_hash

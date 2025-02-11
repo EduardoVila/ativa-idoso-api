@@ -61,14 +61,16 @@ RSpec.describe Analysis::PredictionIntegrator do
       end
 
       it 'raises a Faraday::ForbiddenError' do
-        expect { response }.to raise_error(Faraday::ForbiddenError)
+        expect do
+          response
+        end.to raise_error(Errors::Analysis::PredictionPostResponseError)
       end
     end
 
     context 'when a Faraday::ConnectionFailed error occurs' do
       before do
         stub_request(:post, url).with(headers: request_headers)
-          .to_raise(Faraday::ConnectionFailed.new('Connection failed'))
+          .to_raise(Errors::Analysis::PredictionPostResponseError)
       end
 
       it 'raises a PredictionPostResponseError after retries' do

@@ -12,8 +12,9 @@ module ProScore
       pro_score_authentication = initialize_object_with_nested_attributes(body)
 
       pro_score_authentication.save && pro_score_authentication
-    rescue Faraday::ConnectionFailed, Faraday::TimeoutError => e
+    rescue Faraday::ConnectionFailed, Faraday::TimeoutError, Faraday::Error => e
       ErrorLogger.log e
+
       raise ::Errors::ProScore::ResponseError
     end
 

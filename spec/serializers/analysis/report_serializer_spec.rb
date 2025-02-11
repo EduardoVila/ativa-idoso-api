@@ -61,8 +61,7 @@ RSpec.describe Analysis::ReportSerializer do
             expect(result).to eq(
               {
                 approved: true,
-                disapproval_situation: nil,
-                value: 6.5
+                disapproval_situation: nil
               }
             )
           end
@@ -77,8 +76,7 @@ RSpec.describe Analysis::ReportSerializer do
             expect(result).to eq(
               {
                 approved: false,
-                disapproval_situation: nil,
-                value: nil
+                disapproval_situation: nil
               }
             )
           end

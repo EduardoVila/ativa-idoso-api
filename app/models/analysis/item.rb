@@ -10,7 +10,6 @@
 #  error_status          :integer          default("none")
 #  features              :jsonb
 #  name                  :string
-#  payment_situation     :integer          default("unanalyzed")
 #  prediction            :integer
 #  status                :integer          default("todo")
 #  created_at            :datetime         not null
@@ -77,16 +76,11 @@ module Analysis
       reproved_by_recent_debit
     ]
 
-    enum :payment_situation, %i[
-      unanalyzed good_payer no_payer new_client late_payer
-    ], suffix: true
-
     validates :status, inclusion: { in: statuses.keys }
     validates :error_status, inclusion: { in: error_statuses.keys }
     validates :disapproval_situation,
               inclusion: { in: disapproval_situations.keys },
               allow_nil: true
-    validates :payment_situation, inclusion: { in: payment_situations.keys }
     validate :validate_monthly_score_limit
 
     with_options presence: true do

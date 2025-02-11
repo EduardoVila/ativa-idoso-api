@@ -23,7 +23,7 @@ module Serasa
       serasa_authentication = initialize_object_with_nested_attributes(body)
 
       serasa_authentication.save && serasa_authentication
-    rescue Faraday::ConnectionFailed => e
+    rescue Faraday::ConnectionFailed, Faraday::Error => e
       ErrorLogger.log e
 
       raise ::Errors::Serasa::ResponseError

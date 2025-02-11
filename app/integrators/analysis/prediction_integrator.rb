@@ -13,14 +13,20 @@ module Analysis
 
     def create_resource(analysis_item)
       response = perform_post_request(analysis_item)
+
+      unless response.success?
+        raise ::Errors::Analysis::PredictionPostResponseError
+      end
+
       raw_data = response.body
       parsed_data = json_parse(raw_data)
 
       prediction = build_prediction(parsed_data, analysis_item, raw_data)
 
       prediction.save && prediction
-    rescue Faraday::ConnectionFailed => e
+    rescue Faraday::Error => e
       ErrorLogger.log e
+
       raise ::Errors::Analysis::PredictionPostResponseError
     end
 

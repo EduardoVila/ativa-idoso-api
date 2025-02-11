@@ -20,7 +20,7 @@ module BoaVista
       )
 
       cadastral.save && cadastral
-    rescue Faraday::ConnectionFailed => e
+    rescue Faraday::Error => e
       ErrorLogger.log e
 
       raise BoaVistaResponseError

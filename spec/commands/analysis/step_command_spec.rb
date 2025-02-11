@@ -61,11 +61,7 @@ RSpec.describe Analysis::StepCommand, type: :command do
     let(:current_analysis) { analysis_item }
     let(:command_class) { 'SomeCommandClass' }
     let(:result) do
-      {
-        approved: false,
-        status: 'error',
-        disapproval_situation: 'foobar'
-      }
+      { status: 'failure', approved: false, disapproval_situation: 'foobar' }
     end
 
     before do
@@ -80,27 +76,27 @@ RSpec.describe Analysis::StepCommand, type: :command do
         .with(:a_step, current_analysis, command_class)
     end
 
-    context 'when command class is Analysis::PredictionCommand' do
-      let(:command_class) { 'Analysis::PredictionCommand' }
-
-      it 'updates the analysis item status to done' do
-        allow(analysis_item).to receive(:update)
-
-        command.send(:invoke_steps, current_analysis, command_class)
-
-        expect(analysis_item).to have_received(:update).with(
-          status: :done, features: analysis_item.featurable
-        )
-      end
-    end
-
     context 'when result is approved' do
-      let(:result) { { approved: true } }
+      let(:result) do
+        { status: 'success', approved: true, disapproval_situation: nil }
+      end
 
       it 'does not update the analysis item' do
         command.send(:invoke_steps, current_analysis, command_class)
 
         expect(command).not_to have_received(:update_analysis_item)
+      end
+    end
+
+    context 'when command class is Analysis::PredictionCommand' do
+      let(:command_class) { 'Analysis::PredictionCommand' }
+
+      it 'updates the analysis item with the result' do
+        allow(command).to receive(:update_analysis_item)
+
+        command.send(:invoke_steps, current_analysis, command_class)
+
+        expect(command).to have_received(:update_analysis_item).with(result)
       end
     end
 
@@ -124,12 +120,14 @@ RSpec.describe Analysis::StepCommand, type: :command do
   end
 
   describe '#update_analysis_item' do
-    let(:result) { { status: 'error', disapproval_situation: 'foobar' } }
+    context 'when result status is failure' do
+      let(:result) { { status: 'failure', disapproval_situation: 'foobar' } }
 
-    it 'updates the analysis item status to error' do
-      expect(analysis_item).to receive(:update).with(status: :error) # rubocop:disable RSpec/MessageSpies
+      it 'updates the analysis item status to error' do
+        expect(analysis_item).to receive(:update).with(status: :error) # rubocop:disable RSpec/MessageSpies
 
-      command.send(:update_analysis_item, result)
+        command.send(:update_analysis_item, result)
+      end
     end
 
     context 'when result status is not_found' do
@@ -142,22 +140,16 @@ RSpec.describe Analysis::StepCommand, type: :command do
       end
     end
 
-    context 'when result status is done' do
+    context 'when result status is success' do
+      let(:features) { analysis_item.featurable }
       let(:result) do
-        {
-          status: :done,
-          disapproval_situation: 'foobar',
-          features: analysis_item.featurable
-        }
+        { status: 'success', approved: false, disapproval_situation: 'foobar' }
       end
 
       it 'updates the item status to done and sets disapproval_situation' do
-        expect(analysis_item).to receive(:update) # rubocop:disable RSpec/MessageSpies
-          .with(
-            status: :done,
-            disapproval_situation: 'foobar',
-            features: analysis_item.featurable
-          )
+        expect(analysis_item).to receive(:update).with( # rubocop:disable RSpec/MessageSpies
+          status: :done, disapproval_situation: 'foobar', features: features
+        )
 
         command.send(:update_analysis_item, result)
       end

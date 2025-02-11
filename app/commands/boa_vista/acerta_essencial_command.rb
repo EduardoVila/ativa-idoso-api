@@ -27,7 +27,8 @@ module BoaVista
         acerta_essencial.update(consumer: analysis_item)
 
         success_hash
-      rescue StandardError
+      rescue ::Errors::Analysis::PredictionPostResponseError, StandardError,
+             Faraday::Error
         analysis_item.update(error_status: :boa_vista)
 
         failure_hash

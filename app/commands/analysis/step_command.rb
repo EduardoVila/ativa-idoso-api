@@ -27,10 +27,9 @@ module Analysis
 
     def invoke_steps(current_analysis, command_class)
       if command_class == 'Analysis::PredictionCommand'
-        Invoker.execute(:a_step, current_analysis, command_class)
+        result = Invoker.execute(:a_step, current_analysis, command_class)
 
-        analysis_item.update(status: :done, features: analysis_item.featurable)
-        return
+        return update_analysis_item(result)
       end
 
       result = Invoker.execute(:a_step, current_analysis, command_class)
@@ -44,11 +43,11 @@ module Analysis
 
     def update_analysis_item(result)
       case result[:status]
-      when 'error'
+      when 'failure'
         analysis_item.update(status: :error)
       when 'not_found'
         analysis_item.update(status: :not_found)
-      else
+      when 'success'
         analysis_item.update(
           status: :done,
           disapproval_situation: result[:disapproval_situation],
@@ -59,9 +58,7 @@ module Analysis
 
     def create_analysis_prediction
       Analysis::Prediction.create(
-        label: 'pre_prediction',
-        item: analysis_item,
-        approved: false
+        label: 'pre_prediction', item: analysis_item, approved: false
       )
     end
   end

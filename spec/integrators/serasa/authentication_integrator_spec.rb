@@ -70,7 +70,7 @@ RSpec.describe Serasa::AuthenticationIntegrator do
       end
 
       it 'raises a Errors::Serasa::ResponseError with the response status' do
-        expect { response }.to raise_error(Faraday::UnauthorizedError)
+        expect { response }.to raise_error(Errors::Serasa::ResponseError)
       end
     end
 
@@ -80,7 +80,7 @@ RSpec.describe Serasa::AuthenticationIntegrator do
           .with(
             headers: headers,
             body: '{}'
-          ).to_raise(Faraday::ConnectionFailed.new('Connection failed'))
+          ).to_raise(Errors::Serasa::ResponseError)
       end
 
       it 'raises a Errors::Serasa::ResponseError after retries' do

@@ -51,7 +51,6 @@ module Analysis
 
       {
         approved: object.approved,
-        value: object.fee,
         disapproval_situation: object.disapproval_situation
       }
     end

@@ -38,8 +38,8 @@ RSpec.describe ProScore::AuthenticationIntegrator do
           .to_return(status: 401, body: nil, headers:)
       end
 
-      it 'raises a Faraday::UnauthorizedError' do
-        expect { subject }.to raise_error(Faraday::UnauthorizedError)
+      it 'raises a Errors::ProScore::ResponseError' do
+        expect { subject }.to raise_error(Errors::ProScore::ResponseError)
       end
     end
 

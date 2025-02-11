@@ -10,7 +10,6 @@
 #  error_status          :integer          default("none")
 #  features              :jsonb
 #  name                  :string
-#  payment_situation     :integer          default("unanalyzed")
 #  prediction            :integer
 #  status                :integer          default("todo")
 #  created_at            :datetime         not null

@@ -49,7 +49,9 @@ RSpec.describe Provenir::BigDataCorpIntegrator do
       end
 
       it 'raises a BigDataCorpPostResponseError' do
-        expect { response }.to raise_error(Faraday::ForbiddenError)
+        expect do
+          response
+        end.to raise_error(Errors::Provenir::BigDataCorpPostResponseError)
       end
     end
 
@@ -57,7 +59,7 @@ RSpec.describe Provenir::BigDataCorpIntegrator do
       before do
         stub_request(:post, url).with(
           headers: { 'Content-Type' => 'application/json' }
-        ).to_raise(Faraday::ConnectionFailed.new('Connection failed'))
+        ).to_raise(Errors::Provenir::BigDataCorpPostResponseError)
       end
 
       it 'raises a BigDataCorpPostResponseError after retries' do
