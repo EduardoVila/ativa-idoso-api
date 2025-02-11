@@ -25,7 +25,7 @@ gem 'fiddle'
 gem 'foreman' # Process manager for running multiple processes
 gem 'i18n' # Internationalization support
 gem 'jwt' # JSON Web Token support
-gem 'nokogiri' # XML and HTML parsing
+gem 'nokogiri'
 gem 'ostruct' # OpenStruct for storing data
 gem 'paper_trail' # Versioning for records
 gem 'pg' # PostgreSQL database adapter
@@ -37,7 +37,7 @@ gem 'rack-attack' # Rack middleware for blocking requests
 gem 'rake' # Task runner for the application
 gem 'redis' # Redis client for caching
 gem 'require_all' # Require all files in a directory
-gem 'rexml' # XML parsing
+gem 'rexml'
 gem 'sentry-ruby'
 gem 'sidekiq' # Background job processing
 gem 'sidekiq-batch' # Batch processing for Sidekiq

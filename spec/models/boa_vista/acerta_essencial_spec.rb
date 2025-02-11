@@ -489,14 +489,15 @@ RSpec.describe BoaVista::AcertaEssencial, type: :model do
     context 'when there are identification' do
       subject { create :boa_vista_acerta_essencial }
 
+      let(:birth_date) { 30.years.ago.to_date }
       let!(:identification) do
         create :boa_vista_identification,
-               birth_date: '11/02/1990',
+               birth_date:,
                boa_vista_acerta_essencial: subject
       end
 
       it 'returns the correctly age' do
-        expect(subject.age).to eq(34)
+        expect(subject.age).to eq(30)
       end
     end
 
