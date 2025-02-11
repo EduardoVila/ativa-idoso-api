@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_11_143729) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_11_170750) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -93,6 +93,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_11_143729) do
     t.text "validators", default: ["blocked_negativity_validator", "exceeded_debits_validator", "protested_titles_validator", "provenir_has_obit_indication_validator", "provenir_family_holding_validator", "provenir_process_validator", "provenir_age_and_income_validator"], array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "description"
   end
 
   create_table "api_webhook_events", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
