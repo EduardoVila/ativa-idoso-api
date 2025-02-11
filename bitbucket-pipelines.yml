@@ -48,12 +48,10 @@ definitions:
 pipelines:
   default:
     - step: *install-dependencies-and-run-tests
-
   branches:
     dev:
       - step: *install-dependencies-and-run-tests
-
-    master:
+    main:
       - step: *install-dependencies-and-run-tests
       - step: *building-artifacts
       - step: *deploy-to-production
