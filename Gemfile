@@ -25,6 +25,7 @@ gem 'fiddle'
 gem 'foreman' # Process manager for running multiple processes
 gem 'i18n' # Internationalization support
 gem 'jwt' # JSON Web Token support
+gem 'nokogiri'
 gem 'ostruct' # OpenStruct for storing data
 gem 'paper_trail' # Versioning for records
 gem 'pg' # PostgreSQL database adapter
@@ -36,6 +37,7 @@ gem 'rack-attack' # Rack middleware for blocking requests
 gem 'rake' # Task runner for the application
 gem 'redis' # Redis client for caching
 gem 'require_all' # Require all files in a directory
+gem 'rexml'
 gem 'sentry-ruby'
 gem 'sidekiq' # Background job processing
 gem 'sidekiq-batch' # Batch processing for Sidekiq
@@ -45,8 +47,6 @@ gem 'sinatra-activerecord' # ActiveRecord integration with Sinatra
 gem 'sinatra-contrib' # Additional Sinatra utilities
 gem 'tzinfo' # Timezone support
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby] # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'nokogiri'
-gem "rexml"
 
 group :development, :test do
   gem 'byebug' # Debugger for debugging

@@ -26,6 +26,24 @@ definitions:
         services:
           - redis
           - postgres
+    - step: &building-artifacts
+        name: Building Artifacts
+        script:
+          - cd ..
+          - tar czfv application.tgz build/
+          - mv application.tgz build/
+          - cd build
+        artifacts:
+          - application.tgz
+    - step: &deploy-to-production
+        name: Deploy to Production
+        script:
+          - pipe: atlassian/heroku-deploy:0.1.1
+            variables:
+              HEROKU_API_KEY: $HEROKU_API_KEY
+              HEROKU_APP_NAME: $HEROKU_APP_NAME
+              ZIP_FILE: "application.tgz"
+          - curl https://cli-assets.heroku.com/install.sh | bash
 
 pipelines:
   default:
@@ -37,3 +55,5 @@ pipelines:
 
     master:
       - step: *install-dependencies-and-run-tests
+      - step: *building-artifacts
+      - step: *deploy-to-production
