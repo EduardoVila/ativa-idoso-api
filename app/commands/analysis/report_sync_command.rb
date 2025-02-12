@@ -98,13 +98,13 @@ module Analysis
 
       return if ordered_situations.blank?
 
-      reprove_analysis_report(ordered_situations)
+      reprove_analysis_report(ordered_situations.first)
     end
 
     def reprove_analysis_report(disapproval_situation)
       analysis_report.update(
-        status: :done,
-        disapproval_situation: disapproval_situation.first
+        approved: false,
+        disapproval_situation: disapproval_situation
       )
     end
 
