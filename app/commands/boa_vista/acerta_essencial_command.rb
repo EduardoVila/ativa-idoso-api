@@ -7,7 +7,7 @@ module BoaVista
     attr_reader :analysis_item
 
     def call
-      return success_hash if analysis_item.boa_vista_acerta_essencial.present?
+      return approved_hash if analysis_item.boa_vista_acerta_essencial.present?
 
       if analysis_item.error_status == 'boa_vista'
         analysis_item.update(error_status: :none)
@@ -26,7 +26,7 @@ module BoaVista
 
         acerta_essencial.update(consumer: analysis_item)
 
-        success_hash
+        approved_hash
       rescue ::Errors::Analysis::PredictionPostResponseError, StandardError,
              Faraday::Error
         analysis_item.update(error_status: :boa_vista)

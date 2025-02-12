@@ -6,7 +6,7 @@ RSpec.describe Provenir::BigDataCorpCommand, type: :command do
   describe '#call' do
     let(:integrator) { instance_double(Provenir::BigDataCorpIntegrator) }
     let(:analysis_item) { create :analysis_item }
-    let(:success_hash) do
+    let(:approved_hash) do
       { status: 'success', approved: true, disapproval_situation: nil }
     end
     let(:failure_hash) do
@@ -26,7 +26,7 @@ RSpec.describe Provenir::BigDataCorpCommand, type: :command do
       end
 
       it 'returns the correct hash data' do
-        expect(described_class.call(analysis_item)).to eq(success_hash)
+        expect(described_class.call(analysis_item)).to eq(approved_hash)
       end
     end
 
@@ -46,7 +46,7 @@ RSpec.describe Provenir::BigDataCorpCommand, type: :command do
             .and_return(integrator)
 
           allow(integrator).to receive(:create_resource).with(analysis_item)
-            .and_return(success_hash)
+            .and_return(approved_hash)
         end
 
         it 'calls big data corp integrator' do
@@ -56,7 +56,7 @@ RSpec.describe Provenir::BigDataCorpCommand, type: :command do
         end
 
         it 'returns the correct hash data' do
-          expect(described_class.call(analysis_item)).to eq(success_hash)
+          expect(described_class.call(analysis_item)).to eq(approved_hash)
         end
 
         context 'when analysis_item has error status' do

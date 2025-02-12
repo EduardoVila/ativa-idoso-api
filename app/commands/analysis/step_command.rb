@@ -26,10 +26,10 @@ module Analysis
     private
 
     def invoke_steps(current_analysis, command_class)
-      if command_class == 'Analysis::PredictionCommand'
+      if command_class == 'Analysis::PredictionCommand' # Last step
         result = Invoker.execute(:a_step, current_analysis, command_class)
 
-        return update_analysis_item(result)
+        return finished_analysis_item(result)
       end
 
       result = Invoker.execute(:a_step, current_analysis, command_class)
@@ -38,21 +38,28 @@ module Analysis
 
       create_analysis_prediction if command_class == 'PrePredictionCommand'
 
-      update_analysis_item(result)
+      finished_analysis_item(result)
     end
 
-    def update_analysis_item(result)
+    # This method serves as a loop breaker for the step processing
+    def finished_analysis_item(result)
       case result[:status]
       when 'failure'
         analysis_item.update(status: :error)
       when 'not_found'
         analysis_item.update(status: :not_found)
       when 'success'
-        analysis_item.update(
-          status: :done,
-          disapproval_situation: result[:disapproval_situation],
-          features: analysis_item.featurable
-        )
+        if result[:approved]
+          analysis_item.update(
+            status: :done, features: analysis_item.featurable
+          )
+        else
+          analysis_item.update(
+            status: :done,
+            disapproval_situation: result[:disapproval_situation],
+            features: analysis_item.featurable
+          )
+        end
       end
     end
 

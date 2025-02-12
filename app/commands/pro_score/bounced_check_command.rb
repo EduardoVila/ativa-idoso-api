@@ -10,7 +10,7 @@ module ProScore
       if performed_searches.include?('bounced_check')
         return reproved_hash(:reproved_by_bounced_check) if bounced_check?
 
-        return success_hash
+        return approved_hash
       end
 
       if analysis_item.error_status == 'pro_score_bounced_checks'
@@ -21,7 +21,7 @@ module ProScore
         ::ProScore::BouncedCheckIntegrator.new.load_data(analysis_item)
         return reproved_hash(:reproved_by_bounced_check) if bounced_check?
 
-        success_hash
+        approved_hash
       rescue Errors::ProScore::ResponseError, Faraday::ConnectionFailed
         analysis_item.update(error_status: :pro_score_bounced_checks)
 

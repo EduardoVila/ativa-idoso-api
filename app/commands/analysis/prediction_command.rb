@@ -12,9 +12,14 @@ module Analysis
       end
 
       begin
-        Analysis::PredictionIntegrator.new.create_resource(analysis_item)
+        integrator = Analysis::PredictionIntegrator.new
+        prediction = integrator.create_resource(analysis_item)
 
-        success_hash
+        if prediction.approved
+          approved_hash
+        else
+          reproved_hash(:prediction)
+        end
       rescue ::Errors::Analysis::PredictionPostResponseError, StandardError
         analysis_item.update(error_status: :alpop_prediction)
 

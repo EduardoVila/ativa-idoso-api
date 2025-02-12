@@ -3,7 +3,7 @@
 module CommandResultsHash
   extend ActiveSupport::Concern
 
-  def success_hash
+  def approved_hash
     { status: 'success', approved: true, disapproval_situation: nil }
   end
 
