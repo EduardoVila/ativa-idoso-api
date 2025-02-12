@@ -34,7 +34,6 @@ RSpec.describe Analysis::ReportSerializer do
   it { is_expected.to serialize_attribute(:id).from(analysis_report) }
   it { is_expected.to serialize_attribute(:status).from(analysis_report) }
   it { is_expected.to serialize_attribute(:created_at).from(analysis_report) }
-  it { is_expected.to serialize_attribute(:fee).from(analysis_report) }
 
   describe 'custom attributes' do
     describe '#result' do
@@ -61,7 +60,8 @@ RSpec.describe Analysis::ReportSerializer do
             expect(result).to eq(
               {
                 approved: true,
-                disapproval_situation: nil
+                disapproval_situation: nil,
+                value: 6.5
               }
             )
           end
@@ -76,7 +76,8 @@ RSpec.describe Analysis::ReportSerializer do
             expect(result).to eq(
               {
                 approved: false,
-                disapproval_situation: nil
+                disapproval_situation: nil,
+                value: nil
               }
             )
           end

@@ -27,8 +27,8 @@ require_relative '../application_serializer'
 
 module Analysis
   class ReportSerializer < ApplicationSerializer
-    attributes :id, :cpfs, :status, :result, :valid_until,
-               :created_by, :created_at, :fee, :items
+    attributes :id, :cpfs, :status, :result, :valid_until, :created_by,
+               :created_at, :items
 
     def items
       object.items.map do |analysis_item|
@@ -51,6 +51,7 @@ module Analysis
 
       {
         approved: object.approved,
+        value: object.fee,
         disapproval_situation: object.disapproval_situation
       }
     end
