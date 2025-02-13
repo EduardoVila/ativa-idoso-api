@@ -24,27 +24,22 @@
 #  fk_rails_...  (api_client_id => api_clients.id)
 #
 require_relative '../concerns/analysis_report_fee_computable'
-
+require_relative '../concerns/disapproval_situation_concern'
 module Analysis
   class Report < ApplicationRecord
     include ::AnalysisReportFeeComputable
+    include ::Auditable
+    include ::DisapprovalSituationConcern
 
     auditable ignore: %i[payload status created_at updated_at]
 
     enum :status, %i[todo wip done not_found error]
-    enum :disapproval_situation, [
-      :debtor, # when has debits with Alpop
-      :blocked_negativity,
-      :reproved_by_trial,
-      :insufficient_income,
-      :exceeded_debits,
-      :blocked_cpf,
-      :reproved_by_relative,
-      :reproved_by_bounced_check,
-      :reproved_by_age_and_income,
-      :reproved_by_obit_indication,
-      :prediction
-    ]
+
+    validates :status, inclusion: { in: statuses.keys }
+    validates :disapproval_situation,
+              inclusion: { in: disapproval_situations.keys },
+              allow_nil: true
+    validate :cpfs_validation
 
     belongs_to :api_client, class_name: 'API::Client',
                             foreign_key: 'api_client_id'
@@ -52,8 +47,6 @@ module Analysis
     has_many :items, class_name: 'Analysis::Item',
                      inverse_of: :report,
                      dependent: :destroy
-
-    validate :cpfs_validation
 
     scope :approved, -> { where(approved: true) }
 

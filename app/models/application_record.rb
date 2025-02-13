@@ -2,7 +2,6 @@
 
 class ApplicationRecord < ActiveRecord::Base
   require_relative 'concerns/auditable'
-  include ::Auditable
 
   self.abstract_class = true
 

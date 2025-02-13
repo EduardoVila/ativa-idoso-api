@@ -32,6 +32,7 @@ require 'require_all'
 require_all 'app/models/concerns/delegators'
 
 require_relative '../concerns/featurable'
+require_relative '../concerns/disapproval_situation_concern'
 
 module Analysis
   class Item < ApplicationRecord
@@ -40,7 +41,9 @@ module Analysis
     include Delegators::BoaVistaAcertaEssencial
     include Delegators::BoaVistaCadastral
     include Delegators::Provenir
+    include ::DisapprovalSituationConcern
     include ::Featurable
+    include ::Auditable
 
     auditable
 
@@ -60,22 +63,6 @@ module Analysis
       provenir_big_data_corp
       alpop_prediction
     ], suffix: true
-
-    enum :disapproval_situation, %i[
-      debtor
-      blocked_negativity
-      reproved_by_trial
-      insufficient_income
-      exceeded_debits
-      blocked_cpf
-      reproved_by_relative
-      reproved_by_bounced_check
-      reproved_by_age_and_income
-      reproved_by_obit_indication
-      reproved_by_protested_title
-      reproved_by_recent_debit
-      prediction
-    ]
 
     validates :status, inclusion: { in: statuses.keys }
     validates :error_status, inclusion: { in: error_statuses.keys }
