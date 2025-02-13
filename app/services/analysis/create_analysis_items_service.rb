@@ -24,7 +24,7 @@ module Analysis
           next
         end
 
-        analysis_report.items.create(cpf: formatted_cpf)
+        analysis_report.items.create(cpf: formatted_cpf, status: :todo)
       end
     end
 

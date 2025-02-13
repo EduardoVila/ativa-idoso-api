@@ -61,8 +61,9 @@ module Analysis
 
       check_reprovement(analysis_items)
 
-      return unless analysis_report.approved?
+      return unless analysis_report.approved? # if not approved, no need to calculate fee
 
+      # calculate fee based on the last prediction
       analysis_items.each do |analysis_item|
         predictions = analysis_item.predictions
         prediction = human_analyzed(analysis_item) || predictions.last
@@ -77,14 +78,6 @@ module Analysis
 
         analysis_report.calculate_fee(prediction)
       end
-    end
-
-    def reproval_situations
-      %w[
-        blocked_cpf reproved_by_trial blocked_negativity debtor
-        insufficient_income exceeded_debits reproved_by_relative
-        reproved_by_bounced_check reproved_by_age_and_income
-      ]
     end
 
     def human_analyzed(analysis_item)
@@ -111,8 +104,23 @@ module Analysis
     def reprove_analysis_report(disapproval_situation)
       analysis_report.update(
         approved: false,
-        disapproval_situation:
+        disapproval_situation: disapproval_situation
       )
+    end
+
+    def reproval_situations
+      %w[
+        blocked_cpf
+        reproved_by_trial
+        blocked_negativity
+        debtor
+        insufficient_income
+        exceeded_debits
+        reproved_by_relative
+        reproved_by_bounced_check
+        reproved_by_age_and_income
+        prediction
+      ]
     end
   end
 end

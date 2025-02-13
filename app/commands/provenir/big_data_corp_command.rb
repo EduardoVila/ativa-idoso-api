@@ -7,7 +7,7 @@ module Provenir
     attr_reader :analysis_item
 
     def call
-      return success_hash if analysis_item.provenir_big_data_corp.present?
+      return approved_hash if analysis_item.provenir_big_data_corp.present?
 
       if analysis_item.provenir_big_data_corp_error_status?
         analysis_item.update(error_status: :none)
@@ -16,7 +16,7 @@ module Provenir
       begin
         ::Provenir::BigDataCorpIntegrator.new.create_resource(analysis_item)
 
-        success_hash
+        approved_hash
       rescue StandardError
         analysis_item.update(error_status: :provenir_big_data_corp)
 

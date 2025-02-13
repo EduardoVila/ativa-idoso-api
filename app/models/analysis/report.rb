@@ -42,7 +42,8 @@ module Analysis
       :reproved_by_relative,
       :reproved_by_bounced_check,
       :reproved_by_age_and_income,
-      :reproved_by_obit_indication
+      :reproved_by_obit_indication,
+      :prediction
     ]
 
     belongs_to :api_client, class_name: 'API::Client',
