@@ -53,9 +53,7 @@ RSpec.describe Analysis::Report, type: :model do
   end
 
   describe 'associations' do
-    it {
-      expect(subject).to belong_to(:api_client).class_name('API::Client')
-    }
+    it { expect(subject).to belong_to(:api_client).class_name('API::Client') }
 
     it {
       expect(subject).to have_many(:items).class_name('Analysis::Item')
@@ -64,18 +62,15 @@ RSpec.describe Analysis::Report, type: :model do
   end
 
   describe 'validations' do
-    it 'is valid with valid attributes' do
-      report = described_class.new
-      expect(report).to be_valid
-    end
-
     it 'is not valid with invalid cpfs' do
-      report = described_class.new(cpfs: ['12345678901'])
+      report = build :analysis_report, cpfs: %w[12345678901 12345678901]
+
       expect(report).not_to be_valid
     end
 
     it 'is valid with valid cpfs' do
-      report = described_class.new(cpfs: [Faker::CPF.pretty])
+      report = build :analysis_report
+
       expect(report).to be_valid
     end
   end
