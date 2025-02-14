@@ -48,7 +48,19 @@ RSpec.describe Analysis::ItemSerializer, type: :serializer do
   it { is_expected.to serialize_attribute(:prediction).from(analysis_item) }
   it { is_expected.to serialize_attribute(:error_status).from(analysis_item) }
 
-  describe 'custom attributes' do # rubocop:disable RSpec/EmptyExampleGroup
+  describe 'custom attributes' do
     # TODO: Implement tests for the custom attributes
+    describe '#presumed_incomes' do
+      let(:big_data_corp) { create :provenir_big_data_corp, analysis_item: }
+      let(:financial_datum) { create :provenir_financial_datum, big_data_corp: }
+      let!(:income_estimates) do
+        create :provenir_income_estimate, financial_datum:
+      end
+
+      it 'returns the presumed_incomes' do
+        expect(subject[:presumed_incomes])
+          .to eq(income_estimates.serialize_record)
+      end
+    end
   end
 end
