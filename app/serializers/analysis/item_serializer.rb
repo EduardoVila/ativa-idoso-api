@@ -34,19 +34,18 @@ module Analysis
     attributes :id, :cpf, :name, :disapproval_situation, :debits,
                :status, :created_at, :prediction, :original,
                :error_status, :human_analyzed_prediction,
-               :approved, :presumed_income_value, :proprable_profession,
+               :approved, :presumed_incomes, :proprable_profession,
                :bounced_check, :trials
 
     def original
       object.clone_of&.serialize_record
     end
 
-    def presumed_income_value
-      if object.pro_score_presumed_income_value
-        return format('%.2f', object.pro_score_presumed_income_value)
-      end
+    def presumed_incomes
+      return unless object.provenir_big_data_corp
 
-      object.provenir_bigdata_v2 || '0.00'
+      financial_datum = object.provenir_big_data_corp.financial_datum
+      financial_datum.income_estimate&.serialize_record
     end
 
     def proprable_profession
