@@ -33,6 +33,9 @@ module ApplicationLoader
     # Load all models first to ensure constants are available to other classes (e.g. concerns)
     require_relative '../app/models/application_record'
 
+    lib_validators = File.join(File.dirname(__FILE__), '../lib/validators/*.rb')
+    require_all lib_validators
+
     models_dir = File.join(File.dirname(__FILE__), '../app/models/*.rb')
     require_all models_dir
 

@@ -72,7 +72,7 @@ module Analysis
     validate :validate_monthly_score_limit
 
     with_options presence: true do
-      validates :cpf # , cpf: true TODO add this validation
+      validates :cpf, cpf: true
       validates :status
       validates :error_status
     end

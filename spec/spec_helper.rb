@@ -50,6 +50,7 @@ end
 require_relative '../config/application'
 require_relative 'helpers/serializers/serialize_attribute'
 require_relative 'helpers/serializers/match_serialized_records'
+require_relative 'helpers/validators/test/matchers'
 require 'active_support/testing/assertions'
 
 module RSpecMixin
@@ -100,6 +101,11 @@ RSpec.configure do |config|
 
   Kernel.srand config.seed
 
+  # Model config
+  Validators::Test::Matchers.all.each do |validator|
+    config.include validator, type: :model
+  end
+
   # Handler config
   config.define_derived_metadata(file_path: %r{/spec/handlers/}) do |metadata|
     metadata[:type] = :handler
@@ -120,6 +126,7 @@ RSpec.configure do |config|
   # Serializers config
   config.include MatchSerializerRecordSupportMatcher
   config.include SerializeAttributeSupportMatcher, type: :serializer
+
   config.define_derived_metadata(file_path: %r{/spec/serializers}) do |metadata|
     metadata[:type] = :serializer
   end

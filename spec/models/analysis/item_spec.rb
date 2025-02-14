@@ -66,4 +66,44 @@ RSpec.describe Analysis::Item, type: :model do
         .class_name('Analysis::Step').inverse_of(:items).dependent(:destroy)
     }
   end
+
+  describe 'validations' do
+    describe 'cpf' do
+      it { is_expected.to validate_cpf_for :cpf }
+    end
+  end
+
+  describe 'custom validations' do
+    describe '#validate_monthly_analysis_item_limit' do
+      context 'when there are 4000 analysis_items in the month' do
+        before do
+          allow(described_class).to receive_message_chain(:where, :count).and_return(4000) # rubocop:disable RSpec/MessageChain
+        end
+
+        let(:analysis_item) { build :analysis_item }
+
+        it 'is valid and does not add any error message' do
+          analysis_item.save
+
+          expect(analysis_item).to be_valid
+          expect(analysis_item.errors.messages[:base].size).to eq(0)
+        end
+      end
+
+      context 'when there are more than 4000 analysis_items in the month' do
+        before do
+          allow(described_class).to receive_message_chain(:where, :count).and_return(4001) # rubocop:disable RSpec/MessageChain
+        end
+
+        let(:analysis_item) { build :analysis_item }
+
+        it 'is invalid and adds an error message' do
+          analysis_item.save
+
+          expect(analysis_item).to be_invalid
+          expect(analysis_item.errors.messages[:base].size).to eq(1)
+        end
+      end
+    end
+  end
 end

@@ -8,7 +8,7 @@ RSpec.describe Analysis::CreateAnalysisItemsService do
 
   describe '#call' do
     context 'when analysis report has no items' do
-      let(:cpfs) { %w[12345678901 98765432100] }
+      let(:cpfs) { [Faker::CPF.numeric, Faker::CPF.numeric] }
 
       before { allow(analysis_report).to receive(:cpfs).and_return(cpfs) }
 
@@ -32,7 +32,7 @@ RSpec.describe Analysis::CreateAnalysisItemsService do
     end
 
     context 'when previous analysis item exists' do
-      let(:cpf) { '12345678901' }
+      let(:cpf) { Faker::CPF.numeric }
       let!(:previous_analysis_item) do
         create :analysis_item, cpf: cpf, status: :done, created_at: 10.days.ago
       end
