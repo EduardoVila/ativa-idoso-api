@@ -28,7 +28,7 @@ FactoryBot.define do
     cpf { Faker::CPF.pretty.to_s }
     name { Faker::Name.name }
     mother_name { Faker::Name.name }
-    birth_date { Time.zone.today }
+    birth_date { Time.zone.today - 20.years }
 
     boa_vista_cadastral
   end

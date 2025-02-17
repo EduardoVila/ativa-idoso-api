@@ -20,6 +20,7 @@ definitions:
         caches:
           - bundler
         script:
+          - apt-get update && apt-get install -y xclip
           - bundle install
           - bundle exec rubocop
           - bundle exec rspec

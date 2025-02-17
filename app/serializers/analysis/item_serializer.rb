@@ -31,29 +31,25 @@ require_relative '../application_serializer'
 
 module Analysis
   class ItemSerializer < ApplicationSerializer
-    attributes :id, :cpf, :name, :disapproval_situation, :debits,
-               :status, :created_at, :prediction, :original,
-               :error_status, :human_analyzed_prediction,
-               :approved, :presumed_incomes, :proprable_profession,
-               :bounced_check, :trials
-
-    def original
-      object.clone_of&.serialize_record
-    end
+    attributes :id, :cpf, :name, :disapproval_situation, :debits, :age,
+               :status, :created_at, :prediction, :error_status, :approved,
+               :presumed_incomes, :proprable_profession, :bounced_check, :trials
 
     def presumed_incomes
-      return unless object.provenir_big_data_corp
+      return unless object_with_associations.provenir_big_data_corp
 
-      financial_datum = object.provenir_big_data_corp.financial_datum
-      financial_datum.income_estimate&.serialize_record
+      financial_datum = object_with_associations.provenir_big_data_corp
+        .financial_datum
+
+      financial_datum&.income_estimate&.serialize_record
     end
 
     def proprable_profession
-      object.pro_score_proprable_profession&.serialize_record
+      object_with_associations.pro_score_proprable_profession&.serialize_record
     end
 
     def bounced_check
-      object.pro_score_bounced_check? || false
+      object_with_associations.pro_score_bounced_check? || false
     end
 
     def trials
@@ -61,19 +57,15 @@ module Analysis
     end
 
     def name
-      object.boa_vista_cadastral_name
+      object_with_associations.boa_vista_cadastral_name
     end
 
     def age
-      object.boa_vista_cadastral_age
-    end
-
-    def human_analyzed_prediction
-      human_analyzed&.serialize_record
+      object_with_associations.boa_vista_cadastral_age
     end
 
     def approved
-      predictions = object.predictions
+      predictions = object_with_associations.predictions
 
       return nil if predictions.blank?
       return human_analyzed.approved if human_analyzed.present?
@@ -82,7 +74,7 @@ module Analysis
     end
 
     def prediction
-      predictions = object.predictions
+      predictions = object_with_associations.predictions
 
       return nil if predictions.blank? || !approved
 
@@ -103,16 +95,22 @@ module Analysis
 
     private
 
+    def object_with_associations
+      object.clone_of || object
+    end
+
     def boa_vista_acerta_essencial
-      @boa_vista_acerta_essencial ||= object.boa_vista_acerta_essencial
+      @boa_vista_acerta_essencial ||= object_with_associations
+        .boa_vista_acerta_essencial
     end
 
     def provider_trials
-      object.pro_score_trials || object.provenir_lawsuits
+      object_with_associations.pro_score_trials || object_with_associations
+        .provenir_lawsuits
     end
 
     def serasa_fintech_report
-      @serasa_fintech_report ||= object.serasa_fintech_report
+      @serasa_fintech_report ||= object_with_associations.serasa_fintech_report
     end
 
     def negative_data
@@ -120,7 +118,9 @@ module Analysis
     end
 
     def human_analyzed
-      object.predictions.find_by(label: 'human_analyzed')
+      object_with_associations.predictions&.find do |prediction|
+        prediction.label == 'human_analyzed'
+      end
     end
   end
 end
