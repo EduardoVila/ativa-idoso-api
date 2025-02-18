@@ -35,7 +35,10 @@ module Analysis
       new_analysis_item.update(
         clone_of: previous_analysis_item,
         report: analysis_report,
-        status: :todo
+        status: :todo,
+        prediction: previous_analysis_item.prediction.dup,
+        features: previous_analysis_item.features,
+        disapproval_situation: previous_analysis_item.disapproval_situation
       )
     end
 
