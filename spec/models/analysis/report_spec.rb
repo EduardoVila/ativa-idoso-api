@@ -61,17 +61,31 @@ RSpec.describe Analysis::Report, type: :model do
     }
   end
 
-  describe 'validations' do
-    it 'is not valid with invalid cpfs' do
-      report = build :analysis_report, cpfs: %w[12345678901 12345678901]
+  describe 'callbacks' do
+    describe '#format_cpfs' do
+      it 'formats the cpfs' do
+        cpf = Faker::CPF.numeric
+        formatted_cpf = CPF::Formatter.format(cpf)
+        report = create :analysis_report, cpfs: [cpf]
 
-      expect(report).not_to be_valid
+        expect(report.cpfs).to eq [formatted_cpf]
+      end
     end
+  end
 
-    it 'is valid with valid cpfs' do
-      report = build :analysis_report
+  describe 'validations' do
+    describe '#cpfs_validation' do
+      it 'is not valid with invalid cpfs' do
+        report = build :analysis_report, cpfs: %w[12345678901 12345678901]
 
-      expect(report).to be_valid
+        expect(report).not_to be_valid
+      end
+
+      it 'is valid with valid cpfs' do
+        report = build :analysis_report
+
+        expect(report).to be_valid
+      end
     end
   end
 end

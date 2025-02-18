@@ -33,6 +33,8 @@ module Analysis
 
     auditable ignore: %i[payload status created_at updated_at]
 
+    before_validation :format_cpfs
+
     enum :status, %i[todo wip done not_found error]
 
     validates :status, inclusion: { in: statuses.keys }
@@ -52,12 +54,18 @@ module Analysis
 
     private
 
+    def format_cpfs
+      return if cpfs.blank?
+
+      self.cpfs = cpfs.map do |cpf|
+        CPF::Formatter.format cpf
+      end
+    end
+
     def cpfs_validation
       return if cpfs.blank?
 
       cpfs.each do |cpf|
-        cpf = CPF::Formatter.format cpf
-
         next if CPF.valid? cpf
 
         errors.add(:cpfs, message: cpf)
