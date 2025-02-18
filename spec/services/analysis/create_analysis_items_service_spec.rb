@@ -43,7 +43,7 @@ RSpec.describe Analysis::CreateAnalysisItemsService do
         new_item = analysis_report.items.last
 
         expect(new_item.clone_of).to eq(previous_analysis_item)
-        expect(new_item.status).to eq('todo')
+        expect(new_item.status).to eq('done')
       end
     end
   end

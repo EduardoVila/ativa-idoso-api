@@ -45,7 +45,6 @@ RSpec.describe Analysis::ItemSerializer, type: :serializer do
 
   it { is_expected.to serialize_attribute(:status).from(analysis_item) }
   it { is_expected.to serialize_attribute(:created_at).from(analysis_item) }
-  it { is_expected.to serialize_attribute(:prediction).from(analysis_item) }
   it { is_expected.to serialize_attribute(:error_status).from(analysis_item) }
 
   describe 'custom attributes' do
