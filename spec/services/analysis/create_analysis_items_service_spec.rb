@@ -32,13 +32,10 @@ RSpec.describe Analysis::CreateAnalysisItemsService do
     end
 
     context 'when previous analysis item exists' do
-      let(:cpf) { Faker::CPF.numeric }
+      let(:cpf) { Faker::CPF.pretty }
+      let(:analysis_report) { create :analysis_report, cpfs: [cpf] }
       let!(:previous_analysis_item) do
         create :analysis_item, cpf: cpf, status: :done, created_at: 10.days.ago
-      end
-
-      before do
-        allow(analysis_report).to receive(:cpfs).and_return([cpf])
       end
 
       it 'clones the previous analysis item' do
