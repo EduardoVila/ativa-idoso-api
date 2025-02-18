@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_11_170750) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_18_171106) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -32,7 +32,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_11_170750) do
     t.string "cpf"
     t.integer "status", default: 0
     t.integer "error_status", default: 0
-    t.integer "prediction"
     t.integer "disapproval_situation"
     t.jsonb "features", default: {}
     t.uuid "clone_of_id"
