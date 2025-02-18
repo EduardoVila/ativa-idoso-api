@@ -45,6 +45,7 @@ definitions:
               HEROKU_APP_NAME: $HEROKU_APP_NAME
               ZIP_FILE: "application.tgz"
           - curl https://cli-assets.heroku.com/install.sh | bash
+          - heroku run rake db:migrate --app $HEROKU_APP_NAME
 
 pipelines:
   default:
