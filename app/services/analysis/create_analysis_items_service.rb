@@ -40,9 +40,11 @@ module Analysis
         disapproval_situation: previous_analysis_item.disapproval_situation
       )
 
-      prediction = previous_analysis_item.prediction.dup
+      previous_analysis_item.predictions.each do |prediction|
+        new_prediction = prediction.dup
 
-      prediction.update(analysis_item: new_analysis_item)
+        new_prediction.update(analysis_item: new_analysis_item)
+      end
     end
 
     def find_previous_analysis_item(cpf)
