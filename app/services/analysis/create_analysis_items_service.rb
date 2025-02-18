@@ -31,12 +31,15 @@ module Analysis
 
     def clone_analysis_item(previous_analysis_item)
       new_analysis_item = previous_analysis_item.dup
+      prediction = previous_analysis_item.prediction.dup
+
+      prediction.save
 
       new_analysis_item.update(
         clone_of: previous_analysis_item,
         report: analysis_report,
         status: :done,
-        prediction: previous_analysis_item.prediction.dup,
+        prediction: prediction,
         features: previous_analysis_item.features,
         disapproval_situation: previous_analysis_item.disapproval_situation
       )
