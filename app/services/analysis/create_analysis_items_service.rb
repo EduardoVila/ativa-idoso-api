@@ -43,7 +43,7 @@ module Analysis
       previous_analysis_item.predictions.each do |prediction|
         new_prediction = prediction.dup
 
-        new_prediction.update(analysis_item: new_analysis_item)
+        new_prediction.update(item: new_analysis_item)
       end
     end
 
