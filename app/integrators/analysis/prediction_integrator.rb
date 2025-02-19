@@ -87,5 +87,13 @@ module Analysis
     def access_token
       ::Analysis::TokenService.call.access_token
     end
+
+    def enable_log_response
+      true
+    end
+
+    def enable_log_request
+      true
+    end
   end
 end

@@ -63,5 +63,13 @@ module API
     def encoded_access_token_hash
       Base64.strict_encode64(webhook_event.access_token)
     end
+
+    def enable_log_response
+      true
+    end
+
+    def enable_log_request
+      true
+    end
   end
 end
