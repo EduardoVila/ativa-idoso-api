@@ -106,8 +106,6 @@ GEM
       logger
     faraday-net_http (3.4.0)
       net-http (>= 0.5.0)
-    faraday-retry (2.2.1)
-      faraday (~> 2.0)
     ffi (1.17.1-aarch64-linux-gnu)
     ffi (1.17.1-aarch64-linux-musl)
     ffi (1.17.1-arm-linux-gnu)
@@ -372,7 +370,6 @@ DEPENDENCIES
   faker
   faraday
   faraday-net_http
-  faraday-retry
   fiddle
   foreman
   guard
