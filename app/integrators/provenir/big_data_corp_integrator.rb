@@ -29,10 +29,10 @@ module Provenir
       )
 
       big_data_corp.save && big_data_corp
-    rescue Faraday::Error => e
+    rescue Faraday::Error, ::Errors::Provenir::BigDataCorpPostResponseError => e
       ErrorLogger.log e
 
-      raise ::Errors::Provenir::BigDataCorpPostResponseError
+      raise e
     end
 
     private

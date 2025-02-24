@@ -19,17 +19,19 @@ module API
 
       response = perform_post_request
 
+      raise API::WebhookTriggerCommandError unless response.success?
+
       webhook_event.update(status: :processed, response: response.status)
 
       webhook_event
-    rescue Faraday::Error => e
+    rescue Faraday::Error, API::WebhookTriggerCommandError => e
       ErrorLogger.log(e)
 
       webhook_event.update(status: :error, response: e.message)
 
       Analysis::Report.find(webhook_event.event_id).update(status: :error)
 
-      webhook_event
+      raise e
     end
 
     private
@@ -47,7 +49,7 @@ module API
         'Content-Type' => 'application/json',
         'Accept' => 'application/json',
         'Strict-Transport-Security' => 'max-age=63072000; includeSubDomains; preload', # HSTS header
-        'Authorization' => "Bearer #{encoded_access_token_hash}"
+        'Authorization' => "Bearer #{hashed_access_token}"
       }
     end
 
@@ -60,8 +62,8 @@ module API
       }.to_json
     end
 
-    def encoded_access_token_hash
-      Base64.strict_encode64(webhook_event.access_token)
+    def hashed_access_token
+      webhook_event.access_token
     end
 
     def enable_log_response

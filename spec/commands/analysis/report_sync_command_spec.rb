@@ -295,7 +295,7 @@ RSpec.describe Analysis::ReportSyncCommand, type: :command do
         end
 
         it 'raises a PayloadSender::ResponseError' do
-          expect { subject.call }.to raise_error(PayloadSender::ResponseError)
+          expect { subject.call }.to raise_error(Faraday::ResourceNotFound)
         end
       end
     end

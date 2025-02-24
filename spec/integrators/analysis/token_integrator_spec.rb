@@ -60,7 +60,7 @@ RSpec.describe Analysis::TokenIntegrator do
       it 'raises a Errors::Analysis::TokenPostResponseError' do
         expect do
           response
-        end.to raise_error(Errors::Analysis::TokenPostResponseError)
+        end.to raise_error(Faraday::ForbiddenError)
       end
     end
 
@@ -70,10 +70,8 @@ RSpec.describe Analysis::TokenIntegrator do
           .to_raise(Faraday::ConnectionFailed.new('Connection failed'))
       end
 
-      it 'raises a PredictionPostResponseError after retries' do
-        expect { response }.to raise_error(
-          Errors::Analysis::TokenPostResponseError
-        )
+      it 'raises a Faraday::ConnectionFailed after retries' do
+        expect { response }.to raise_error(Faraday::ConnectionFailed)
       end
     end
   end

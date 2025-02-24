@@ -10,6 +10,9 @@ module Analysis
   class TokenIntegrator < ApplicationIntegrator
     def create_resource
       response = perform_post_request
+
+      raise ::Errors::Analysis::TokenPostResponseError unless response.success?
+
       raw_data = response.body
 
       parsed_data = json_parse(raw_data)
@@ -17,10 +20,10 @@ module Analysis
       token = initialize_object_with_nested_attributes(parsed_data)
 
       token.save && token
-    rescue Faraday::Error => e
+    rescue Faraday::Error, ::Errors::Analysis::TokenPostResponseError => e
       ErrorLogger.log e
 
-      raise ::Errors::Analysis::TokenPostResponseError
+      raise e
     end
 
     private

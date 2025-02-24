@@ -17,7 +17,7 @@ SimpleCov.start do
   add_group 'Serializers', 'app/serializers'
 
   add_filter 'config'
-  add_filter 'lib/concerns'
+  add_filter 'lib/validators'
 
   add_filter 'app/models/application_record.rb'
   add_filter 'app/handlers/application_handler.rb'

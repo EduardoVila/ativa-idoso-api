@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
 require_relative 'payload_sender_response_error'
+require_relative '../../../app/integrators/concerns/integrable'
 
 module PayloadSender
   class << self
+    include Integrable
+
     def send(payload, report)
       response = perform_post_request(payload, report)
 
@@ -17,13 +20,15 @@ module PayloadSender
 
       ResponseLogger.log(response, 'payloader_sender', payload)
 
-      raise PayloadSender::ResponseError
+      raise e
     end
 
     private
 
     def perform_post_request(payload, report)
-      conn.post do |req|
+      integrable_conn = conn # conn method is defined in Integrable module
+
+      integrable_conn.post do |req|
         req.url payload
         req.headers['Content-Type'] = 'application/json'
         req.body = report.to_json
@@ -31,20 +36,5 @@ module PayloadSender
         RequestLogger.log(req)
       end
     end
-
-    def conn(proxy: nil)
-      ::Faraday.new(ssl: {}, proxy: proxy) do |f|
-        f.request :url_encoded
-        f.request(
-          :retry,
-          max: 9,
-          interval: 0.1,
-          exceptions: [Faraday::ConnectionFailed]
-        )
-        f.adapter :net_http
-      end
-    end
   end
-
-  class ResponseError < StandardError; end
 end

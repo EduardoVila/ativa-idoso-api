@@ -24,21 +24,27 @@ module Analysis
       prediction = build_prediction(parsed_data, analysis_item, raw_data)
 
       prediction.save && prediction
-    rescue Faraday::Error => e
+    rescue Faraday::Error, ::Errors::Analysis::PredictionPostResponseError => e
       ErrorLogger.log e
 
-      raise ::Errors::Analysis::PredictionPostResponseError
+      raise e
     end
 
     def show_resource(id)
       response = perform_get_request(id)
+
+      unless response.success?
+        raise ::Errors::Analysis::PredictionGetResponseError
+      end
+
       raw_data = response.body
       parsed_response_body = json_parse(raw_data)
 
       build_prediction(parsed_response_body, nil, response.body)
-    rescue Faraday::Error => e
+    rescue Faraday::Error, ::Errors::Analysis::PredictionGetResponseError => e
       ErrorLogger.log e
-      raise ::Errors::Analysis::PredictionGetResponseError
+
+      raise e
     end
 
     private
