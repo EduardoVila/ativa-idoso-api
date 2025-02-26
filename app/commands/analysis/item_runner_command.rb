@@ -41,7 +41,7 @@ module Analysis
     end
 
     def sync_analysis_report
-      Invoker.execute(:analysis_report_sync_command, analysis_report)
+      Invoker.execute(:analysis_report_sync_command, analysis_report.reload)
     end
 
     def run_boa_vista_cadastral

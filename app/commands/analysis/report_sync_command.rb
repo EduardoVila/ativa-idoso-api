@@ -28,7 +28,7 @@ module Analysis
     def sync_status
       analysis_report.status = :done
 
-      analysis_report.items.each do |analysis_item|
+      analysis_report.items.reload.each do |analysis_item|
         if analysis_item.todo?
           analysis_report.status = :wip
 
