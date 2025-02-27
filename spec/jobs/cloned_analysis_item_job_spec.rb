@@ -15,7 +15,6 @@ RSpec.describe ClonedAnalysisItemJob, type: :job do
     allow(job_instance).to receive_messages(
       find_analysis_item: analysis_item, find_webhook_event: webhook_event
     )
-    allow(job_instance).to receive(:process_webhook_event)
     allow(job_instance).to receive(:process_analysis_item)
     allow(job_instance).to receive(:update_webhook_event_payload)
     allow(job_instance).to receive(:trigger_webhook_event)
@@ -30,13 +29,10 @@ RSpec.describe ClonedAnalysisItemJob, type: :job do
 
   describe '#perform' do
     context 'when clone_of_id is present' do
-      it 'processes the webhook event' do
-        allow(job_instance).to receive(:process_webhook_event)
-
+      it 'updates the webhook event' do
         job_instance.perform(analysis_item.id)
 
-        expect(job_instance).to have_received(:process_webhook_event)
-          .with(webhook_event)
+        expect(webhook_event.reload.status).to eq 'processing'
       end
 
       it 'updates the analysis item' do
@@ -91,11 +87,9 @@ RSpec.describe ClonedAnalysisItemJob, type: :job do
       before { analysis_item.update(clone_of_id: nil) }
 
       it 'does not process the webhook event' do
-        allow(job_instance).to receive(:process_webhook_event)
-
         job_instance.perform(analysis_item.id)
 
-        expect(job_instance).not_to have_received(:process_webhook_event)
+        expect(webhook_event.reload.status).not_to eq 'processing'
       end
     end
   end
