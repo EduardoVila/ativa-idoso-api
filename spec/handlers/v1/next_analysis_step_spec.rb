@@ -10,11 +10,11 @@ RSpec.describe V1::NextAnalysisStep, type: :handler do
 
     let(:analysis_item) { create :analysis_item }
     let(:id) { analysis_item.id }
-    let(:step) { create :analysis_step }
+    let(:analysis_step) { create :analysis_step }
     let(:valid_params) do
-      { analysis_step_id: step.id }.to_json
+      { data: { step_name: analysis_step.name } }.to_json
     end
-    let(:invalid_params) { { analysis_step_id: nil }.to_json }
+    let(:invalid_params) { { data: { step_name: nil } }.to_json }
     let(:route) { "/v1/analysis-items/#{id}/next-steps" }
     let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
     let(:current_client) { analysis_item.report.api_client }
@@ -24,29 +24,29 @@ RSpec.describe V1::NextAnalysisStep, type: :handler do
       allow(Tokenable).to receive_messages(current_client: current_client)
     end
 
+    context 'when the step is not associated with the analysis item' do
+      before { post_request }
+
+      it 'enqueues the AnalysisStepJob' do
+        expect(AnalysisStepJob).to have_received(:perform_later).with(
+          analysis_item.id, analysis_step.id
+        )
+      end
+
+      it 'returns status 202' do
+        expect(last_response.status).to eq(202)
+      end
+    end
+
     context 'when the step is already associated with the analysis item' do
       before do
-        analysis_item.steps << step
+        analysis_item.steps << analysis_step
 
         post_request
       end
 
       it 'returns status 422' do
         expect(last_response.status).to eq(422)
-      end
-    end
-
-    context 'when the step is not associated with the analysis item' do
-      before { post_request }
-
-      it 'enqueues the AnalysisStepJob' do
-        expect(AnalysisStepJob).to have_received(:perform_later).with(
-          analysis_item.id, step.id
-        )
-      end
-
-      it 'returns status 202' do
-        expect(last_response.status).to eq(202)
       end
     end
 

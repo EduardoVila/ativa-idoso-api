@@ -9,8 +9,10 @@ class RetryJob < ApplicationJob
 
     return unless analysis_report.items.any? { |item| item.status == 'error' }
 
-    analysis_report.update(status: :wip)
-    webhook_event.update(status: :processing, job_id: job_id)
+    ApplicationRecord.transaction do
+      webhook_event.update!(status: :processing, job_id: job_id)
+      analysis_report.update!(status: :wip)
+    end
 
     process_items_with_error_status(analysis_report)
 

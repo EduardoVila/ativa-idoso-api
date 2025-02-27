@@ -17,9 +17,11 @@ module Analysis
 
         invoke_steps(current_analysis, step.command_class)
 
-        next if analysis_item.status.eql?('wip') # Continue step by step if the status is wip
+        # Continue running step by step if the analysis item status is wip
+        next if analysis_item.status.eql?('wip')
 
-        break # Break the loop if the status is done/error/not_found
+        # Break the loop if the status is done/error/not_found
+        break
       end
     end
 
@@ -29,7 +31,8 @@ module Analysis
       if command_class == 'Analysis::PredictionCommand' # Last step
         result = Invoker.execute(:a_step, current_analysis, command_class)
 
-        return finished_analysis_item(result) # Change status from wip to done/error/not_found to finish the loop in the call method
+        # Change status from wip to done/error/not_found to finish the loop in the call method
+        return finished_analysis_item(result)
       end
 
       result = Invoker.execute(:a_step, current_analysis, command_class)
@@ -38,7 +41,8 @@ module Analysis
 
       create_analysis_prediction if command_class == 'PrePredictionCommand'
 
-      finished_analysis_item(result) # Change status from wip to done/error/not_found to finish the loop in the call method
+      # Change status from wip to done/error/not_found to finish the loop in the call method
+      finished_analysis_item(result)
     end
 
     # This method serves as a loop breaker for the step processing.

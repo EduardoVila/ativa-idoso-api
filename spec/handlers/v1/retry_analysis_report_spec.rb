@@ -14,7 +14,7 @@ RSpec.describe V1::RetryAnalysisReport, type: :handler do
     let(:route) { "/v1/analysis-reports/#{id}/retries" }
     let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
     let(:current_client) { create :api_client }
-    let(:params) { { cpf: analysis_report.items.first.cpf }.to_json }
+    let(:params) { {} }
 
     before do
       allow(Tokenable).to receive_messages(current_client: current_client)

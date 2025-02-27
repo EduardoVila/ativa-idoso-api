@@ -15,8 +15,9 @@ module V1
 
       # Parse and validate request body
       body_params = ensure_valid_request_body(request)
-      step_id = body_params['analysis_step_id']
-      halt(400) if step_id.blank?
+      data = body_params['data']
+      step_name = data['step_name']
+      halt(400) if step_name.blank?
 
       # Find analysis item by ID
       analysis_item = Analysis::Item.find_by(id: params[:analysis_item_id])
@@ -24,11 +25,15 @@ module V1
 
       verify_client_ownership!(current_client, analysis_item.report)
 
-      # Validate step hasn't been processed
-      halt(422) if analysis_item.steps.exists?(id: step_id)
+      # Find step by name
+      analysis_step = Analysis::Step.find_by(name: step_name)
+      halt(404) if analysis_step.blank?
 
-      # Enqueue job
-      AnalysisStepJob.perform_later(analysis_item.id, step_id)
+      # Validate step has not been processed yet; if it has, return 422
+      halt(422) if analysis_item.steps.exists?(name: analysis_step.name)
+
+      # Enqueue job to process step
+      AnalysisStepJob.perform_later(analysis_item.id, analysis_step.id)
       status(202)
     end
 

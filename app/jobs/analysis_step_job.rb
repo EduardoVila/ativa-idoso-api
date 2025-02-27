@@ -20,14 +20,14 @@ class AnalysisStepJob < ApplicationJob
       return
     end
 
-    process_webhook_event(webhook_event)
-
-    analysis_item.update(status: :wip)
+    ApplicationRecord.transaction do
+      webhook_event.update!(status: :processing, job_id: job_id)
+      analysis_item.update!(status: :wip)
+    end
 
     invoke_step(analysis_item, analysis_step.command_class)
 
     analysis_item.steps << analysis_step
-
     analysis_item.update(status: :done)
 
     update_webhook_event_payload(webhook_event, analysis_item.report)
@@ -46,10 +46,6 @@ class AnalysisStepJob < ApplicationJob
 
   def find_analysis_step(analysis_step_id)
     Analysis::Step.find_by(id: analysis_step_id)
-  end
-
-  def process_webhook_event(webhook_event)
-    webhook_event.update(status: 'processing', job_id: job_id)
   end
 
   def invoke_step(analysis_item, command_class)

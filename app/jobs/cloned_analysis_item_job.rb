@@ -8,19 +8,21 @@ class ClonedAnalysisItemJob < ApplicationJob
   def perform(analysis_item_id)
     analysis_item = find_analysis_item(analysis_item_id)
     webhook_event = find_webhook_event(analysis_item.analysis_report_id)
+    analysis_report = analysis_item.report
 
     return if analysis_item.clone_of_id.blank?
 
-    process_webhook_event(webhook_event)
-
-    analysis_item.update(clone_of_id: nil, status: :todo, name: nil)
-    analysis_item.report.update(status: :wip)
+    ApplicationRecord.transaction do
+      webhook_event.update!(status: :processing, job_id: job_id)
+      analysis_item.update!(clone_of_id: nil, status: :todo, name: nil)
+      analysis_report.update!(status: :wip)
+    end
 
     analysis_item.predictions.destroy_all
 
     process_analysis_item(analysis_item)
 
-    update_webhook_event_payload(webhook_event, analysis_item.report)
+    update_webhook_event_payload(webhook_event, analysis_report)
     trigger_webhook_event(webhook_event)
   end
 
@@ -32,10 +34,6 @@ class ClonedAnalysisItemJob < ApplicationJob
 
   def find_webhook_event(analysis_report_id)
     API::WebhookEvent.find_by(event_id: analysis_report_id)
-  end
-
-  def process_webhook_event(webhook_event)
-    webhook_event.update(status: 'processing', job_id: job_id)
   end
 
   def process_analysis_item(analysis_item)
