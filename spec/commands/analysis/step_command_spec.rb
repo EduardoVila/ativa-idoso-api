@@ -24,8 +24,7 @@ RSpec.describe Analysis::StepCommand, type: :command do
 
     it 'invokes steps for each step' do
       steps.each do |step|
-        expect(command).to receive(:invoke_steps) # rubocop:disable RSpec/MessageSpies
-          .with(current_analysis, step.command_class)
+        expect(command).to receive(:invoke_steps).with(step.command_class) # rubocop:disable RSpec/MessageSpies
       end
 
       command.call
@@ -58,7 +57,7 @@ RSpec.describe Analysis::StepCommand, type: :command do
     let(:analysis_item) do
       create :analysis_item, :clone, :wip, error_status: :none
     end
-    let(:current_analysis) { analysis_item }
+    let(:current_analysis) { analysis_item.clone_of }
     let(:command_class) { 'SomeCommandClass' }
     let(:result) do
       { status: 'failure', approved: false, disapproval_situation: 'foobar' }
@@ -70,7 +69,7 @@ RSpec.describe Analysis::StepCommand, type: :command do
     end
 
     it 'executes the command' do
-      command.send(:invoke_steps, current_analysis, command_class)
+      command.send(:invoke_steps, command_class)
 
       expect(Invoker).to have_received(:execute)
         .with(:a_step, current_analysis, command_class)
@@ -82,7 +81,7 @@ RSpec.describe Analysis::StepCommand, type: :command do
       end
 
       it 'does not update the analysis item' do
-        command.send(:invoke_steps, current_analysis, command_class)
+        command.send(:invoke_steps, command_class)
 
         expect(command).not_to have_received(:finished_analysis_item)
       end
@@ -94,7 +93,7 @@ RSpec.describe Analysis::StepCommand, type: :command do
       it 'updates the analysis item with the result' do
         allow(command).to receive(:finished_analysis_item)
 
-        command.send(:invoke_steps, current_analysis, command_class)
+        command.send(:invoke_steps, command_class)
 
         expect(command).to have_received(:finished_analysis_item)
           .with(result)
@@ -107,14 +106,14 @@ RSpec.describe Analysis::StepCommand, type: :command do
       it 'creates an analysis prediction' do
         allow(command).to receive(:create_analysis_prediction)
 
-        command.send(:invoke_steps, current_analysis, command_class)
+        command.send(:invoke_steps, command_class)
 
         expect(command).to have_received(:create_analysis_prediction)
       end
     end
 
     it 'updates the analysis item with the result' do
-      command.send(:invoke_steps, current_analysis, command_class)
+      command.send(:invoke_steps, command_class)
 
       expect(command).to have_received(:finished_analysis_item).with(result)
     end
