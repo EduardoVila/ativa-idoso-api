@@ -31,9 +31,10 @@ require_relative '../application_serializer'
 
 module Analysis
   class ItemSerializer < ApplicationSerializer
-    attributes :id, :cpf, :name, :disapproval_situation, :debits, :age,
+    attributes :id, :cpf, :name, :disapproval_situation, :debits, :age, :steps,
                :status, :created_at, :prediction, :error_status, :approved,
-               :presumed_incomes, :proprable_profession, :bounced_check, :trials
+               :presumed_incomes, :proprable_profession, :bounced_check,
+               :bounced_checks, :trials
 
     def presumed_incomes
       return unless object_with_associations.provenir_big_data_corp
@@ -50,6 +51,12 @@ module Analysis
 
     def bounced_check
       object_with_associations.pro_score_bounced_check? || false
+    end
+
+    def bounced_checks
+      return unless bounced_check
+
+      object_with_associations.pro_score_bounced_checks&.map(&:serialize_record)
     end
 
     def trials
@@ -91,6 +98,10 @@ module Analysis
       end
 
       negative_data&.debits&.map(&:serialize_record)
+    end
+
+    def steps
+      object.steps.pluck(:name)
     end
 
     private
