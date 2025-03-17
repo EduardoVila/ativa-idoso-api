@@ -34,10 +34,25 @@ module Analysis
     attributes :id, :cpf, :name, :disapproval_situation, :debits, :age, :steps,
                :status, :created_at, :prediction, :error_status, :approved,
                :presumed_incomes, :proprable_profession, :bounced_check,
-               :bounced_checks, :trials
+               :trials, :protested_titles, :pro_score_bounced_checks,
+               :provenir_big_data_corp
+
+    # Data to be shown in the analysis item admin step page
+    def pro_score_bounced_checks
+      return unless object_with_associations.pro_score_bounced_checks
+
+      object_with_associations.pro_score_bounced_checks.map(&:serialize_record)
+    end
+
+    # Data to be shown in the analysis item admin step page
+    def provenir_big_data_corp
+      return unless object_with_associations.provenir_big_data_corp.present?
+
+      object_with_associations.provenir_big_data_corp.serialize_record
+    end
 
     def presumed_incomes
-      return unless object_with_associations.provenir_big_data_corp
+      return unless object_with_associations.provenir_big_data_corp.present?
 
       financial_datum = object_with_associations.provenir_big_data_corp
         .financial_datum
@@ -51,12 +66,6 @@ module Analysis
 
     def bounced_check
       object_with_associations.pro_score_bounced_check? || false
-    end
-
-    def bounced_checks
-      return unless bounced_check
-
-      object_with_associations.pro_score_bounced_checks&.map(&:serialize_record)
     end
 
     def trials
@@ -92,9 +101,21 @@ module Analysis
       prediction.fee
     end
 
+    def protested_titles
+      boa_vista_acerta_essencial ||= object_with_associations
+        .boa_vista_acerta_essencial
+
+      return unless boa_vista_acerta_essencial.present?
+
+      boa_vista_acerta_essencial.protested_titles.map(&:serialize_record)
+    end
+
     def debits
+      boa_vista_acerta_essencial ||= object_with_associations
+        .boa_vista_acerta_essencial
+
       if boa_vista_acerta_essencial.present?
-        return @boa_vista_acerta_essencial.debits.map(&:serialize_record)
+        return boa_vista_acerta_essencial.debits.map(&:serialize_record)
       end
 
       negative_data&.debits&.map(&:serialize_record)
@@ -108,11 +129,6 @@ module Analysis
 
     def object_with_associations
       object.clone_of || object
-    end
-
-    def boa_vista_acerta_essencial
-      @boa_vista_acerta_essencial ||= object_with_associations
-        .boa_vista_acerta_essencial
     end
 
     def provider_trials
