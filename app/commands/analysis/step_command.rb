@@ -6,14 +6,16 @@ module Analysis
 
     def initialize(analysis_item)
       super()
-      @analysis_item = analysis_item.clone_of || analysis_item
+      @analysis_item = analysis_item
     end
 
     def call
+      current_item = analysis_item.clone_of || analysis_item
+
       Analysis::Step.enabled.order(:index_order).each do |step|
         analysis_item.steps << step
 
-        invoke_steps(step.command_class)
+        invoke_steps(current_item, step.command_class)
 
         # Continue running step by step if the analysis item status is wip
         next if analysis_item.status.eql?('wip')
@@ -25,22 +27,22 @@ module Analysis
 
     private
 
-    def invoke_steps(command_class)
+    def invoke_steps(current_item, command_class)
       if command_class == 'Analysis::PredictionCommand' # Last step
-        result = Invoker.execute(:a_step, analysis_item, command_class)
+        result = Invoker.execute(:a_step, current_item, command_class)
 
         # Change status from wip to done/error/not_found to finish the loop in the call method
-        return finished_analysis_item(result)
+        return finished_item_status_update(result)
       end
 
-      result = Invoker.execute(:a_step, analysis_item, command_class)
+      result = Invoker.execute(:a_step, current_item, command_class)
 
       return if result[:approved]
 
       create_analysis_prediction if command_class == 'PrePredictionCommand'
 
       # Change status from wip to done/error/not_found to finish the loop in the call method
-      finished_analysis_item(result)
+      finished_item_status_update(result)
     end
 
     # This method serves as a loop breaker for the step processing.
@@ -50,7 +52,7 @@ module Analysis
     # This way, the method can update the analysis item status based on the command result
     #  and break the loop if necessary.
     # Furthermore, it centralizes the logic of updating the analysis item status.
-    def finished_analysis_item(result)
+    def finished_item_status_update(result)
       case result[:status]
       when 'failure'
         analysis_item.update(status: :error)
