@@ -116,7 +116,8 @@ RSpec.describe Analysis::StepCommand, type: :command do
     it 'updates the analysis item with the result' do
       command.send(:invoke_steps, current_item, command_class)
 
-      expect(command).to have_received(:finished_item_status_update).with(result)
+      expect(command).to have_received(:finished_item_status_update)
+        .with(result)
     end
   end
 
