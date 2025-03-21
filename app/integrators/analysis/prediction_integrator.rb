@@ -27,8 +27,6 @@ module Analysis
     rescue Faraday::Error, ::Errors::Analysis::PredictionPostResponseError => e
       ErrorLogger.log e
 
-      renew_token(e) if e.response[:status] == 401
-
       raise e
     end
 
@@ -46,18 +44,10 @@ module Analysis
     rescue Faraday::Error, ::Errors::Analysis::PredictionGetResponseError => e
       ErrorLogger.log e
 
-      renew_token(e) if e.response[:status] == 401
-
       raise e
     end
 
     private
-
-    def renew_token(exception)
-      return unless exception.response[:status] == 401
-
-      Analysis::TokenIntegrator.new.create_resource
-    end
 
     def perform_get_request(id)
       do_request(:get, get_url(id), headers)
