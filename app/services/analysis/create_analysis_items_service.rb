@@ -32,6 +32,7 @@ module Analysis
     def clone_analysis_item(previous_analysis_item)
       new_analysis_item = previous_analysis_item.dup
 
+      # Cloning the analysis item and setting the new attributes
       new_analysis_item.update(
         clone_of: previous_analysis_item,
         report: analysis_report,
@@ -40,6 +41,12 @@ module Analysis
         disapproval_situation: previous_analysis_item.disapproval_situation
       )
 
+      # Cloning current steps
+      previous_analysis_item.steps.each do |step|
+        new_analysis_item.item_steps.create(step: step)
+      end
+
+      # Cloning current predictions
       previous_analysis_item.predictions.each do |prediction|
         new_prediction = prediction.dup
 

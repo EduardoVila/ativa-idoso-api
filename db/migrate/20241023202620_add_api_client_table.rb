@@ -1,6 +1,6 @@
 class AddApiClientTable < ActiveRecord::Migration[8.0]
   def change
-    create_table :api_clients, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :api_clients do |t|
       t.string :client_id, null: false
       t.string :client_secret, null: false
       t.text :validators, array: true, default: [

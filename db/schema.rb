@@ -19,7 +19,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_171106) do
   enable_extension "uuid-ossp"
 
   create_table "analysis_item_steps", force: :cascade do |t|
-    t.uuid "analysis_item_id", null: false
+    t.bigint "analysis_item_id", null: false
     t.bigint "analysis_step_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -27,15 +27,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_171106) do
     t.index ["analysis_step_id"], name: "index_analysis_item_steps_on_analysis_step_id"
   end
 
-  create_table "analysis_items", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+  create_table "analysis_items", force: :cascade do |t|
     t.string "name"
     t.string "cpf"
     t.integer "status", default: 0
     t.integer "error_status", default: 0
     t.integer "disapproval_situation"
     t.jsonb "features", default: {}
-    t.uuid "clone_of_id"
-    t.uuid "analysis_report_id", null: false
+    t.bigint "clone_of_id"
+    t.bigint "analysis_report_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["analysis_report_id"], name: "index_analysis_items_on_analysis_report_id"
@@ -49,20 +49,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_171106) do
     t.string "label"
     t.jsonb "input_data"
     t.string "raw_data"
-    t.uuid "analysis_item_id", null: false
+    t.bigint "analysis_item_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["analysis_item_id"], name: "index_analysis_predictions_on_analysis_item_id"
   end
 
-  create_table "analysis_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+  create_table "analysis_reports", force: :cascade do |t|
     t.string "cpfs", array: true
     t.integer "status"
     t.float "fee"
     t.boolean "approved"
     t.integer "disapproval_situation"
     t.string "payload"
-    t.uuid "api_client_id", null: false
+    t.bigint "api_client_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["api_client_id"], name: "index_analysis_reports_on_api_client_id"
@@ -86,7 +86,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_171106) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "api_clients", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+  create_table "api_clients", force: :cascade do |t|
     t.string "client_id", null: false
     t.string "client_secret", null: false
     t.text "validators", default: ["blocked_negativity_validator", "exceeded_debits_validator", "protested_titles_validator", "provenir_has_obit_indication_validator", "provenir_family_holding_validator", "provenir_process_validator", "provenir_age_and_income_validator"], array: true
@@ -95,17 +95,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_171106) do
     t.string "description"
   end
 
-  create_table "api_webhook_events", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+  create_table "api_webhook_events", force: :cascade do |t|
     t.string "callback_url"
     t.bigint "callback_id"
     t.string "event_type"
-    t.uuid "event_id"
-    t.string "job_id"
+    t.bigint "event_id"
+    t.uuid "job_id"
     t.integer "status"
     t.jsonb "payload"
     t.jsonb "response"
     t.string "access_token"
-    t.uuid "api_client_id", null: false
+    t.bigint "api_client_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["api_client_id"], name: "index_api_webhook_events_on_api_client_id"
@@ -133,7 +133,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_171106) do
     t.integer "credit_type", default: 0, null: false
     t.string "raw_data"
     t.string "consumer_type", null: false
-    t.uuid "consumer_id", null: false
+    t.bigint "consumer_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["consumer_type", "consumer_id"], name: "index_boa_vista_acerta_essencials_on_consumer", unique: true
@@ -227,7 +227,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_171106) do
   create_table "boa_vista_cadastrals", force: :cascade do |t|
     t.string "raw_data"
     t.string "consumer_type", null: false
-    t.uuid "consumer_id", null: false
+    t.bigint "consumer_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["consumer_type", "consumer_id"], name: "index_boa_vista_cadastrals_on_consumer", unique: true
@@ -779,7 +779,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_171106) do
     t.string "number", null: false
     t.integer "status", default: 0
     t.string "raw_data"
-    t.uuid "analysis_item_id", null: false
+    t.bigint "analysis_item_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["analysis_item_id"], name: "index_idwall_reports_on_analysis_item_id", unique: true
@@ -948,7 +948,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_171106) do
   create_table "pro_score_reports", force: :cascade do |t|
     t.string "raw_data"
     t.text "performed_searches", default: [], array: true
-    t.uuid "analysis_item_id", null: false
+    t.bigint "analysis_item_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["analysis_item_id"], name: "index_pro_score_reports_on_analysis_item_id", unique: true
@@ -1142,7 +1142,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_171106) do
 
   create_table "provenir_big_data_corps", force: :cascade do |t|
     t.string "raw_data"
-    t.uuid "analysis_item_id", null: false
+    t.bigint "analysis_item_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["analysis_item_id"], name: "index_provenir_big_data_corps_on_analysis_item_id", unique: true
@@ -1517,7 +1517,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_171106) do
     t.index ["provenir_lawsuit_id"], name: "index_provenir_update_lawsuit_id"
   end
 
-  create_table "public_keys", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+  create_table "public_keys", force: :cascade do |t|
     t.string "key", null: false
     t.string "issuer", null: false
     t.string "algorithm", null: false
@@ -1604,7 +1604,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_171106) do
 
   create_table "serasa_fintech_reports", force: :cascade do |t|
     t.string "raw_data"
-    t.uuid "analysis_item_id", null: false
+    t.bigint "analysis_item_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["analysis_item_id"], name: "index_serasa_fintech_reports_on_analysis_item_id", unique: true

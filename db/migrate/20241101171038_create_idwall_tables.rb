@@ -4,7 +4,7 @@ class CreateIdwallTables < ActiveRecord::Migration[8.0]
       t.string :number, null: false
       t.integer :status, default: 0
       t.string :raw_data
-      t.references :analysis_item, type: :uuid, null: false, foreign_key: true, index: { unique: true }
+      t.references :analysis_item, null: false, foreign_key: true, index: { unique: true }
       t.timestamps
     end
 

@@ -3,7 +3,7 @@ class AddProScoreTables < ActiveRecord::Migration[8.0]
     create_table :pro_score_reports do |t|
       t.string :raw_data
       t.text :performed_searches, default: [], array: true
-      t.references :analysis_item, type: :uuid, null: false, index: { unique: true }, foreign_key: true
+      t.references :analysis_item, null: false, index: { unique: true }, foreign_key: true
       t.timestamps
     end
 

@@ -35,7 +35,12 @@ RSpec.describe Analysis::CreateAnalysisItemsService do
       let(:cpf) { Faker::CPF.pretty }
       let(:analysis_report) { create :analysis_report, cpfs: [cpf] }
       let!(:previous_analysis_item) do
-        create :analysis_item, cpf: cpf, status: :done, created_at: 10.days.ago
+        create(
+          :analysis_item,
+          cpf: cpf,
+          status: :done,
+          created_at: rand(0..29).days.ago
+        )
       end
 
       it 'clones the previous analysis item' do
@@ -44,6 +49,26 @@ RSpec.describe Analysis::CreateAnalysisItemsService do
 
         expect(new_item.clone_of).to eq(previous_analysis_item)
         expect(new_item.status).to eq('done')
+      end
+
+      it 'clones the steps of the previous analysis item' do
+        previous_step = create :analysis_step
+        previous_analysis_item.item_steps.create(step: previous_step)
+
+        service.call
+        new_item = analysis_report.items.last
+
+        expect(new_item.item_steps.count).to eq(1)
+        expect(new_item.item_steps.first.step).to eq(previous_step)
+      end
+
+      it 'clones the predictions of the previous analysis item' do
+        create :analysis_prediction, item: previous_analysis_item
+
+        service.call
+        new_item = analysis_report.items.last
+
+        expect(new_item.predictions.count).to eq(1)
       end
     end
   end

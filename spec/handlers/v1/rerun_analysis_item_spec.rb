@@ -22,7 +22,7 @@ RSpec.describe V1::RerunAnalysisItem, type: :handler do
 
       it 'enqueues the ClonedAnalysisItemJob' do
         expect(ClonedAnalysisItemJob).to have_received(:perform_later).with(
-          analysis_item.id.to_s
+          analysis_item.id
         )
       end
 

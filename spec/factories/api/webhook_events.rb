@@ -29,7 +29,7 @@
 FactoryBot.define do
   factory :api_webhook_event, class: 'API::WebhookEvent' do
     callback_url { Faker::Internet.url }
-    event_id { SecureRandom.uuid }
+    event_id { rand(1..100) }
     status { 'received' }
 
     client factory: :api_client

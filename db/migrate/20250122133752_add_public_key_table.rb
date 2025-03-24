@@ -1,6 +1,6 @@
 class AddPublicKeyTable < ActiveRecord::Migration[8.0]
   def change
-    create_table :public_keys, id: :uuid, default: 'uuid_generate_v4()' do |t|
+    create_table :public_keys do |t|
       t.string :key, null: false
       t.string :issuer, null: false
       t.string :algorithm, null: false

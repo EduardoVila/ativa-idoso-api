@@ -2,7 +2,7 @@ class AddSerasaTables < ActiveRecord::Migration[8.0]
   def change
     create_table :serasa_fintech_reports do |t|
       t.string :raw_data
-      t.references :analysis_item, type: :uuid, null: false, index:  { unique: true }, foreign_key: true
+      t.references :analysis_item, null: false, index:  { unique: true }, foreign_key: true
       t.timestamps
     end
 
