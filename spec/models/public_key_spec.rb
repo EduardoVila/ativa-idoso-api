@@ -4,7 +4,7 @@
 #
 # Table name: public_keys
 #
-#  id         :uuid             not null, primary key
+#  id         :bigint           not null, primary key
 #  algorithm  :string           not null
 #  issuer     :string           not null
 #  key        :string           not null

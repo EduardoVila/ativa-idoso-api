@@ -9,7 +9,7 @@
 #  raw_data      :string
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  consumer_id   :uuid             not null
+#  consumer_id   :bigint           not null
 #
 # Indexes
 #

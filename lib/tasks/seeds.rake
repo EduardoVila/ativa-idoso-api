@@ -646,13 +646,6 @@ namespace :db do
               }
             },
             stolen_documents_attributes: {
-              occurrence_date: Faker::Date.backward,
-              inclusion_date: Faker::Time.backward,
-              document_type: Faker::Lorem.word,
-              document_number: Faker::Number.number(digits: 10).to_s,
-              issuing_authority: Faker::Lorem.word,
-              detailed_reason: Faker::Lorem.sentence,
-              occurrence_state: Faker::Address.state_abbr,
               items_attributes: [
                 {
                   occurrence_date: Faker::Date.backward,

@@ -4,18 +4,17 @@
 #
 # Table name: analysis_items
 #
-#  id                    :uuid             not null, primary key
+#  id                    :bigint           not null, primary key
 #  cpf                   :string
 #  disapproval_situation :integer
 #  error_status          :integer          default("none")
 #  features              :jsonb
 #  name                  :string
-#  prediction            :integer
 #  status                :integer          default("todo")
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
-#  analysis_report_id    :uuid             not null
-#  clone_of_id           :uuid
+#  analysis_report_id    :bigint           not null
+#  clone_of_id           :bigint
 #
 # Indexes
 #

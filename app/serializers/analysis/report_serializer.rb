@@ -4,7 +4,7 @@
 #
 # Table name: analysis_reports
 #
-#  id                    :uuid             not null, primary key
+#  id                    :bigint           not null, primary key
 #  approved              :boolean
 #  cpfs                  :string           is an Array
 #  disapproval_situation :integer
@@ -13,7 +13,7 @@
 #  status                :integer
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
-#  api_client_id         :uuid             not null
+#  api_client_id         :bigint           not null
 #
 # Indexes
 #

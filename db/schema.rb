@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_18_171106) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_26_142839) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -1737,13 +1737,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_171106) do
   end
 
   create_table "serasa_stolen_documents", force: :cascade do |t|
-    t.date "occurrence_date"
-    t.datetime "inclusion_date"
-    t.string "document_type"
-    t.string "document_number"
-    t.string "issuing_authority"
-    t.string "detailed_reason"
-    t.string "occurrence_state"
     t.bigint "serasa_fact_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

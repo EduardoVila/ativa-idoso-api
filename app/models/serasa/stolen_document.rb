@@ -4,17 +4,10 @@
 #
 # Table name: serasa_stolen_documents
 #
-#  id                :bigint           not null, primary key
-#  detailed_reason   :string
-#  document_number   :string
-#  document_type     :string
-#  inclusion_date    :datetime
-#  issuing_authority :string
-#  occurrence_date   :date
-#  occurrence_state  :string
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  serasa_fact_id    :bigint           not null
+#  id             :bigint           not null, primary key
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  serasa_fact_id :bigint           not null
 #
 # Indexes
 #

@@ -7,7 +7,7 @@
 #  id               :bigint           not null, primary key
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  analysis_item_id :uuid             not null
+#  analysis_item_id :bigint           not null
 #  analysis_step_id :bigint           not null
 #
 # Indexes

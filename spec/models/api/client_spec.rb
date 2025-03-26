@@ -4,7 +4,7 @@
 #
 # Table name: api_clients
 #
-#  id            :uuid             not null, primary key
+#  id            :bigint           not null, primary key
 #  client_secret :string           not null
 #  description   :string
 #  validators    :text             default(["blocked_negativity_validator", "exceeded_debits_validator", "protested_titles_validator", "provenir_has_obit_indication_validator", "provenir_family_holding_validator", "provenir_process_validator", "provenir_age_and_income_validator"]), is an Array

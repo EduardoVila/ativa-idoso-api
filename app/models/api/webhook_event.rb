@@ -4,7 +4,7 @@
 #
 # Table name: api_webhook_events
 #
-#  id            :uuid             not null, primary key
+#  id            :bigint           not null, primary key
 #  access_token  :string
 #  callback_url  :string
 #  event_type    :string
@@ -13,10 +13,10 @@
 #  status        :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  api_client_id :uuid             not null
+#  api_client_id :bigint           not null
 #  callback_id   :bigint
-#  event_id      :uuid
-#  job_id        :string
+#  event_id      :bigint
+#  job_id        :uuid
 #
 # Indexes
 #
@@ -27,7 +27,6 @@
 #  fk_rails_...  (api_client_id => api_clients.id)
 #
 require 'bcrypt'
-require_relative '../application_record'
 
 module API
   class WebhookEvent < ApplicationRecord

@@ -8,7 +8,7 @@
 #  raw_data         :string
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  analysis_item_id :uuid             not null
+#  analysis_item_id :bigint           not null
 #
 # Indexes
 #
