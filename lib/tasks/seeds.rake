@@ -40,7 +40,7 @@ namespace :db do
         }
       )
 
-      # BoaVista module
+      # BoaVista::AcertaEssencial module
       acerta_essencial = BoaVista::AcertaEssencial.create!(
         {
           cpf: Faker::CPF.pretty,
@@ -529,6 +529,58 @@ namespace :db do
         }
       )
 
+      # BoaVista::Cadastral module
+      BoaVista::Cadastral.create!(
+        {
+          consumer_type: 'Analysis::Item',
+          consumer_id: analysis_item.id,
+          raw_data: '{}',
+          basic_registration_attributes: {
+            birth_date: Faker::Date.backward.to_s,
+            cpf: Faker::CPF.pretty,
+            cpf_situation: Faker::Lorem.word,
+            exposed_person: Faker::Boolean.boolean,
+            mother_name: Faker::Name.name,
+            name: Faker::Name.name
+          },
+          cadastral_location_attributes: {
+            cpf: Faker::CPF.pretty,
+            emails: [Faker::Internet.email],
+            phones_attributes: [
+              {
+                ddd: Faker::Number.number(digits: 2).to_s,
+                number: Faker::PhoneNumber.phone_number,
+                phone_type: '1'
+              }
+            ],
+            addresses_attributes: [
+              {
+                address_type: '1',
+                street: Faker::Address.street_name,
+                number: Faker::Address.building_number,
+                neighborhood: Faker::Address.community,
+                city: Faker::Address.city,
+                federal_unit: Faker::Address.state_abbr,
+                zip_code: Faker::Address.zip_code,
+                complement: Faker::Address.secondary_address
+              }
+            ]
+          },
+          cadastral_qualification_attributes: {
+            cpf: Faker::CPF.pretty,
+            death: Faker::Boolean.boolean.to_s,
+            related_people_attributes: [
+              {
+                name: Faker::Name.name,
+                degree_of_kinship: Faker::Lorem.word,
+                cpf: Faker::CPF.pretty
+              }
+            ]
+          }
+        }
+      )
+
+      # Serasa module
       Serasa::FintechReport.create!(
         {
           raw_data: '{}',
@@ -1611,6 +1663,10 @@ namespace :db do
           }
         }
       )
+
+      Analysis::Step.all.each do |step|
+        analysis_item.item_steps.create(step:)
+      end
     end
 
     puts('Database populated successfully!'.cyan.bold)
