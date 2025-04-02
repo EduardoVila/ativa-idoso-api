@@ -19,31 +19,36 @@ module V1
       halt(400) if data.blank?
 
       # Validate required parameters
-      cpfs = data['cpfs']
-      callback_url = data['callback_url']
-      callback_id = data['callback_id']
-      halt(400) if cpfs.blank? ||
-                   callback_id.blank? ||
-                   callback_url !~ URI::DEFAULT_PARSER.make_regexp
+      halt(400) unless required_params_present?(data)
 
       # Create analysis report
-      analysis_report = create_analysis_report(cpfs, current_client)
+      analysis_report = create_analysis_report(data, current_client)
       halt(422) unless analysis_report.persisted?
 
       # Create webhook and enqueue job
       create_webhook_event(analysis_report, current_client, request, data)
       AnalysisReportJob.perform_later(analysis_report.id)
 
-      # Return response
+      # Return response with status 201 and send the alpop-analysis-pointer
       status(201)
       analysis_report.serialize_record.to_json
     end
 
     private
 
-    def create_analysis_report(params, client)
+    def required_params_present?(params)
+      params['cpfs'].present? &&
+        params['callback_url'].present? &&
+        params['callback_id'].present? &&
+        params['callback_url'] =~ URI::DEFAULT_PARSER.make_regexp
+    end
+
+    def create_analysis_report(data, client)
       ::Analysis::Report.new(
-        cpfs: params, api_client_id: client.id, status: :todo
+        cpfs: data['cpfs'],
+        prediction_model_name: data['prediction_model_name'],
+        api_client_id: client.id,
+        status: :todo
       ).tap(&:save)
     end
 

@@ -44,7 +44,8 @@ RSpec.describe Analysis::PredictionIntegrator do
           headers: request_headers,
           body: {
             cpf: analysis_item.cpf,
-            features: analysis_item.featurable
+            features: analysis_item.featurable,
+            prediction_model_name: nil
           }.to_json
         ).to_return(status: 200, body: response_body, headers: response_headers)
       end

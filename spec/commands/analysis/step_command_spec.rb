@@ -13,7 +13,7 @@ RSpec.describe Analysis::StepCommand, type: :command do
     before do
       allow(Analysis::Step).to receive_message_chain(:enabled, :order) # rubocop:disable RSpec/MessageChain
         .and_return(steps)
-      allow(command).to receive(:invoke_steps)
+      allow(command).to receive(:invoke_step)
     end
 
     it 'adds steps to the analysis item' do
@@ -24,7 +24,7 @@ RSpec.describe Analysis::StepCommand, type: :command do
 
     it 'invokes steps for each step' do
       steps.each do |step|
-        expect(command).to receive(:invoke_steps) # rubocop:disable RSpec/MessageSpies
+        expect(command).to receive(:invoke_step) # rubocop:disable RSpec/MessageSpies
           .with(current_item, step.command_class)
       end
 
@@ -54,7 +54,7 @@ RSpec.describe Analysis::StepCommand, type: :command do
     end
   end
 
-  describe '#invoke_steps' do
+  describe '#invoke_step' do
     let(:analysis_item) do
       create :analysis_item, :clone, :wip, error_status: :none
     end
@@ -70,7 +70,7 @@ RSpec.describe Analysis::StepCommand, type: :command do
     end
 
     it 'executes the command' do
-      command.send(:invoke_steps, current_item, command_class)
+      command.send(:invoke_step, current_item, command_class)
 
       expect(Invoker).to have_received(:execute)
         .with(:a_step, current_item, command_class)
@@ -82,7 +82,7 @@ RSpec.describe Analysis::StepCommand, type: :command do
       end
 
       it 'does not update the analysis item' do
-        command.send(:invoke_steps, current_item, command_class)
+        command.send(:invoke_step, current_item, command_class)
 
         expect(command).not_to have_received(:finished_item_status_update)
       end
@@ -94,7 +94,7 @@ RSpec.describe Analysis::StepCommand, type: :command do
       it 'updates the analysis item with the result' do
         allow(command).to receive(:finished_item_status_update)
 
-        command.send(:invoke_steps, current_item, command_class)
+        command.send(:invoke_step, current_item, command_class)
 
         expect(command).to have_received(:finished_item_status_update)
           .with(result)
@@ -107,14 +107,14 @@ RSpec.describe Analysis::StepCommand, type: :command do
       it 'creates an analysis prediction' do
         allow(command).to receive(:create_analysis_prediction)
 
-        command.send(:invoke_steps, current_item, command_class)
+        command.send(:invoke_step, current_item, command_class)
 
         expect(command).to have_received(:create_analysis_prediction)
       end
     end
 
     it 'updates the analysis item with the result' do
-      command.send(:invoke_steps, current_item, command_class)
+      command.send(:invoke_step, current_item, command_class)
 
       expect(command).to have_received(:finished_item_status_update)
         .with(result)

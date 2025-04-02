@@ -16,7 +16,8 @@ RSpec.describe V1::CreateAnalysisReport, type: :handler do
         data: {
           cpfs: [cpf.to_s],
           callback_url: 'http://example.test/callback',
-          callback_id: '123'
+          callback_id: '123',
+          prediction_model: 'model_name'
         }
       }
     end
@@ -68,7 +69,8 @@ RSpec.describe V1::CreateAnalysisReport, type: :handler do
             data: {
               cpfs: [],
               callback_url: 'http://example.test/callback',
-              callback_id: '123'
+              callback_id: '123',
+              prediction_model: 'model_name'
             }
           }
         end
@@ -82,7 +84,8 @@ RSpec.describe V1::CreateAnalysisReport, type: :handler do
             data: {
               cpfs: ['12345678901'],
               callback_url: 'invalid_url',
-              callback_id: '123'
+              callback_id: '123',
+              prediction_model: 'model_name'
             }
           }
         end
@@ -96,7 +99,8 @@ RSpec.describe V1::CreateAnalysisReport, type: :handler do
             data: {
               cpfs: ['12345678901'],
               callback_url: 'http://example.test/callback',
-              callback_id: ''
+              callback_id: '',
+              prediction_model: 'model_name'
             }
           }
         end

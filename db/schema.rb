@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_26_142839) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_31_194424) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -65,7 +65,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_26_142839) do
     t.bigint "api_client_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "prediction_model_name"
     t.index ["api_client_id"], name: "index_analysis_reports_on_api_client_id"
+    t.index ["prediction_model_name"], name: "index_analysis_reports_on_prediction_model_name"
   end
 
   create_table "analysis_steps", force: :cascade do |t|

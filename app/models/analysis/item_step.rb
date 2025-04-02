@@ -27,5 +27,7 @@ module Analysis
 
     belongs_to :step, class_name: 'Analysis::Step',
                       foreign_key: 'analysis_step_id'
+
+    validates :analysis_step_id, uniqueness: { scope: :analysis_item_id }
   end
 end

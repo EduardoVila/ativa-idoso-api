@@ -10,6 +10,7 @@
 #  disapproval_situation :integer
 #  fee                   :float
 #  payload               :string
+#  prediction_model_name :string
 #  status                :integer
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
@@ -17,7 +18,8 @@
 #
 # Indexes
 #
-#  index_analysis_reports_on_api_client_id  (api_client_id)
+#  index_analysis_reports_on_api_client_id          (api_client_id)
+#  index_analysis_reports_on_prediction_model_name  (prediction_model_name)
 #
 # Foreign Keys
 #

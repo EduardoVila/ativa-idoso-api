@@ -127,6 +127,8 @@ module Analysis
                            inverse_of: :item,
                            dependent: :destroy
 
+    delegate :prediction_model_name, to: :report, allow_nil: true
+
     def cpf_normalizer
       self.cpf = CPF::Formatter.format cpf if cpf.present?
     end

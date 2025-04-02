@@ -86,7 +86,8 @@ module Analysis
     def post_body(analysis_item)
       {
         cpf: analysis_item.cpf,
-        features: analysis_item.featurable
+        features: analysis_item.featurable,
+        prediction_model_name: analysis_item.prediction_model_name
       }.to_json
     end
 

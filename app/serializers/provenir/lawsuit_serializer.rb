@@ -55,13 +55,5 @@ module Provenir
   class LawsuitSerializer < ApplicationSerializer
     attributes :id, :lawsuit_number, :state, :court_name, :notice_date,
                :main_subject, :lawsuit_type, :defendant, :disapproved
-
-    def defendant
-      object.defendant?
-    end
-
-    def disapproved
-      object.disapproved?
-    end
   end
 end

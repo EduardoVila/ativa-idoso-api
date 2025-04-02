@@ -13,12 +13,16 @@ module Analysis
       current_item = analysis_item.clone_of || analysis_item
 
       Analysis::Step.enabled.order(:index_order).each do |step|
-        analysis_item.steps << step
+        # Skip the step if it is already present in the analysis item
+        unless analysis_item.item_steps.exists?(step: step)
+          analysis_item.item_steps.create(step: step)
+        end
 
-        invoke_steps(current_item, step.command_class)
+        # invoke step and update the analysis item status if necessary
+        invoke_step(current_item, step.command_class)
 
         # Continue running step by step if the analysis item status is wip
-        next if analysis_item.status.eql?('wip')
+        next if analysis_item.reload.status.eql?('wip')
 
         # Break the loop if the status is done/error/not_found
         break
@@ -27,12 +31,14 @@ module Analysis
 
     private
 
-    def invoke_steps(current_item, command_class)
+    def invoke_step(current_item, command_class)
       if command_class == 'Analysis::PredictionCommand' # Last step
         result = Invoker.execute(:a_step, current_item, command_class)
 
         # Change status from wip to done/error/not_found to finish the loop in the call method
-        return finished_item_status_update(result)
+        finished_item_status_update(result)
+
+        return
       end
 
       result = Invoker.execute(:a_step, current_item, command_class)
@@ -48,7 +54,7 @@ module Analysis
     # This method serves as a loop breaker for the step processing.
     # It updates the status of the analysis item based on the result of the step.
     # When creating integrations and commands make it return the command_results_hash
-    #   with the status of the command execution.
+    #  with the status of the command execution.
     # This way, the method can update the analysis item status based on the command result
     #  and break the loop if necessary.
     # Furthermore, it centralizes the logic of updating the analysis item status.
@@ -63,7 +69,7 @@ module Analysis
           analysis_item.update(
             status: :done, features: analysis_item.featurable
           )
-        else
+        elsif result[:disapproval_situation]
           analysis_item.update(
             status: :done,
             disapproval_situation: result[:disapproval_situation],
