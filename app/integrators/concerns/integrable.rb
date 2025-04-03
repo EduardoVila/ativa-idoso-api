@@ -32,7 +32,7 @@ module Integrable
         req.url url
         req.headers.update(headers) if headers
         req.body = params if params
-        req.headers['Idempotency-Key'] = SecureRandom.uuid if verb == :post
+        req.headers['X-Idempotency-Key'] = SecureRandom.uuid if verb == :post
 
         RequestLogger.log(req) if enable_log_request
       end
@@ -64,9 +64,9 @@ module Integrable
   private
 
   def should_retry?(exception, url, verb = nil)
-    # Don't retry non-idempotent requests (e.g. POST)
-    # TODO: add logic of retrying POST requests with idempotency key header
     return false if AlpopAnalysis.test?
+
+    # TODO: idempotency logic is ready. This return should be removed when tested in QA
     return false if url.include?('alpop.com.br') && verb == :post
 
     [
