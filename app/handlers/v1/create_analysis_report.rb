@@ -26,7 +26,7 @@ module V1
       halt(422) unless analysis_report.persisted?
 
       # Create webhook and enqueue job
-      create_webhook_event(analysis_report, current_client, request, data)
+      create_webhook_event(analysis_report, current_client, data)
       AnalysisReportJob.perform_later(analysis_report.id)
 
       # Return response with status 201 and send the alpop-analysis-pointer
@@ -52,14 +52,13 @@ module V1
       ).tap(&:save)
     end
 
-    def create_webhook_event(report, client, request, data)
+    def create_webhook_event(report, client, data)
       API::WebhookEvent.create(
         callback_url: data['callback_url'],
         callback_id: data['callback_id'],
         event_type: 'analysis_report',
         event_id: report.id,
         status: 'received',
-        access_token: request.env['HTTP_AUTHORIZATION'],
         api_client_id: client.id
       )
     end

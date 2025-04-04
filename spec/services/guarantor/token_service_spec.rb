@@ -2,25 +2,25 @@
 
 require 'spec_helper'
 
-RSpec.describe Analysis::TokenService do
+RSpec.describe Guarantor::TokenService do
   subject { described_class.call }
 
   describe '.call' do
     let(:integrator_double) do
-      instance_double(Analysis::TokenIntegrator)
+      instance_double(Guarantor::TokenIntegrator)
     end
 
     before do
-      allow(Analysis::TokenIntegrator).to receive(:new)
+      allow(Guarantor::TokenIntegrator).to receive(:new)
         .and_return(integrator_double)
     end
 
     context 'when last authentication is expired' do
-      let(:token) { create :analysis_token }
+      let(:token) { create :guarantor_token }
 
-      before { create :analysis_token, :expired }
+      before { create :guarantor_token, :expired }
 
-      it 'generates a new authentication on alpop-analysis API' do
+      it 'generates a new authentication on alpop-guarantor API' do
         allow(integrator_double).to receive(:create_resource).once
           .and_return(token)
 
@@ -29,7 +29,7 @@ RSpec.describe Analysis::TokenService do
     end
 
     context 'when last authentication is not expired' do
-      let!(:token) { create :analysis_token }
+      let!(:token) { create :guarantor_token }
 
       it 'returns the api token' do
         allow(integrator_double).to receive(:create_resource).once
@@ -41,7 +41,7 @@ RSpec.describe Analysis::TokenService do
     end
 
     context 'when there is no authentication' do
-      let(:token) { create :analysis_token }
+      let(:token) { create :guarantor_token }
 
       before { token.delete }
 

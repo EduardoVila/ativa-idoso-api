@@ -2,65 +2,64 @@
 
 require 'spec_helper'
 
-RSpec.describe API::WebhookTriggerCommand, type: :command do
-  let(:webhook_event) { create :api_webhook_event }
-  let(:command) { described_class.new(webhook_event) }
+RSpec.describe API::WebhookTriggerCommand do
+  subject { described_class.new(webhook_event) }
 
   describe '#call' do
+    let(:analysis_report) { create :analysis_report }
+    let(:webhook_event) do
+      create :api_webhook_event, status: :received, event_id: analysis_report.id
+    end
+    let(:integrator) { Guarantor::WebhookIntegrator.new }
+
+    before do
+      allow(Guarantor::WebhookIntegrator).to receive(:new)
+        .and_return(integrator)
+      allow(integrator).to receive(:create_resource)
+    end
+
     context 'when the webhook event is already processed' do
       before do
         allow(webhook_event).to receive(:processed?).and_return(true)
-        allow(command).to receive(:perform_post_request)
       end
 
-      it 'does not perform the post request' do
-        command.call
-        expect(command).not_to have_received(:perform_post_request)
+      it 'returns immediately without creating a resource' do
+        subject.call
+        expect(integrator).not_to have_received(:create_resource)
       end
     end
 
-    context 'when the webhook event is not processed yet' do
-      let(:response) do
-        instance_double(Faraday::Response, status: 200, body: '{}')
+    context 'when the webhook event is not processed' do
+      it 'creates a resource using the integrator' do
+        subject.call
+        expect(integrator).to have_received(:create_resource)
+          .with(webhook_event)
       end
+    end
 
+    context 'when there is an error' do
       before do
-        allow(webhook_event).to receive(:processed?).and_return(false)
+        allow(Guarantor::WebhookIntegrator).to receive(:new)
+          .and_return(integrator)
+        allow(integrator).to receive(:create_resource).with(webhook_event)
+          .and_raise(Errors::Guarantor::WebhookPostResponseError)
+        allow(Analysis::Report).to receive(:find).with(analysis_report.id)
+          .and_return(analysis_report)
         allow(webhook_event).to receive(:update)
-        allow(command).to receive(:perform_post_request).and_return(response)
-        allow(response).to receive(:success?).and_return(true)
+        allow(analysis_report).to receive(:update)
       end
 
-      it 'performs the post request' do
-        command.call
-        expect(command).to have_received(:perform_post_request)
-      end
+      it 'updates webhook_event and report with error status raising error' do
+        expect do
+          subject.call
+        end.to raise_error(Errors::Guarantor::WebhookPostResponseError)
 
-      it 'updates the webhook event status to processed' do
-        command.call
-        expect(webhook_event).to have_received(:update)
-          .with(status: :processed, response: 200)
-      end
-    end
-
-    context 'when the post request fails' do
-      before do
-        allow(command).to receive(:call).and_raise(Faraday::Error)
-      end
-
-      it 'raises a Faraday::Error' do
-        expect { command.call }.to raise_error(Faraday::Error)
-      end
-    end
-
-    context 'when a connection error occurs' do
-      before do
-        allow(command).to receive(:call)
-          .and_raise(API::WebhookTriggerCommandError)
-      end
-
-      it 'raises a API::WebhookTriggerCommandError' do
-        expect { command.call }.to raise_error(API::WebhookTriggerCommandError)
+        expect(webhook_event).to have_received(:update).with(
+          status: :error,
+          response: 'Errors::Guarantor::WebhookPostResponseError'
+        )
+        expect(Analysis::Report).to have_received(:find)
+          .with(analysis_report.id)
       end
     end
   end

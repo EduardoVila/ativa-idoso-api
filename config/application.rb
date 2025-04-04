@@ -17,11 +17,11 @@ class AlpopAnalysis < Sinatra::Base
   use V1::RerunAnalysisItem
   use V1::RetryAnalysisReport
   use V1::ShowAnalysisReport
+  use Rack::SslEnforcer, hsts: { subdomains: true }, only_https: true
   use Rack::Protection
 
   get '/' do
     headers 'Content-Type' => 'application/json'
-
     { message: 'Analysis API is running.' }.to_json
   end
 end

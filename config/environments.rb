@@ -8,7 +8,8 @@
 require 'sinatra' # Load the Sinatra web framework
 require 'sinatra/activerecord' # Load the ActiveRecord ORM
 require 'dotenv/load' # Load the dotenv gem to read .env files
-
+require 'rack/cors' # Load the Rack::Cors middleware for CORS support
+require 'rack/ssl-enforcer' # Load the Rack::SslEnforcer middleware for SSL enforcement
 require_relative 'database'
 
 Dotenv.load # Load environment variables from .env files
@@ -55,6 +56,18 @@ configure :development do
   set :database, Database.fetch_config
   set :show_exceptions, :after_handler # Enable error reporting
   set :logging, true # Enable logging in development
+
+  configure :development do
+    use Rack::Cors do
+      allow do
+        origins '*'
+        resource '*',
+                 headers: :any,
+                 methods: %i[get post put patch delete options head],
+                 max_age: 600
+      end
+    end
+  end
 end
 
 configure :test do
@@ -79,4 +92,15 @@ configure :development, :test, :production do
   set :public_folder, File.expand_path('public', __dir__) # Set the public directory
   set :time_zone,
       Time.zone_default = ActiveSupport::TimeZone['America/Sao_Paulo']
+
+  use Rack::Cors do
+    allow do
+      origins ENV.fetch('CORS_ALLOWED_ORIGINS', 'alpop.com.br')
+      resource '*',
+               headers: :any,
+               methods: %i[get post put patch delete options head],
+               expose: %w[Authorization],
+               max_age: 600
+    end
+  end
 end

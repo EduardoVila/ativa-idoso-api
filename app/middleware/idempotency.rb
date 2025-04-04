@@ -1,15 +1,66 @@
 # frozen_string_literal: true
 
+#
+### Idempotency Middleware
+#
+# 1. **Check Cache First**
+#    – See if a prior request with the same key is already completed. If yes, return the
+# cached response immediately.
+#
+# 2. **Acquire a Redis Lock**
+#    – Attempt to set the lock key. If this succeeds, the request can proceed to compute
+# the final response.
+#    – If it fails (because another request holds the lock), we either:
+#      (a) Poll for a short time, waiting for the other request’s result. Return it if
+# found.
+#      (b) Or return an immediate error (e.g., 409 Conflict).
+#
+# 3. **Compute and Cache**
+#    – Process the request by calling the next handler, capture the response, and read
+# its body.
+#    – Store the final response in Redis with an expiration time (TTL). Any subsequent
+# requests use this cached result.
+#
+# 4. **Release the Lock**
+#    – In the finally block, delete the lock key so future requests can generate or
+# reuse the response.
+#
+# ### Advantages Over a Simple Cache-Only Approach
+#
+# - **Concurrency Control:** Prevents multiple servers or threads from duplicating work
+# if they receive the same idempotency key at nearly the same time.
+# - **Persistence:** Data remains in Redis, surviving process restarts (assuming you’re
+# not using Redis in ephemeral mode).
+# - **TTL Management:** redis_client.setex ensures the result expires after a configured
+# period (e.g., 7 days), preventing the cache from growing indefinitely.
+#
+# ### Production Considerations
+#
+# - **Lock Expiry:** If the request takes longer than REDIS_LOCK_EXPIRY (e.g. 10 seconds
+# in the example), the lock expires. Another concurrent request could then incorrectly
+# acquire the lock. Set a lock expiry that makes sense for your typical request
+# processing time. You may also need to refresh the lock if you expect very long
+# processing.
+# - **Lock Contention Strategy:** Instead of polling, you could return 409 Conflict
+# immediately, or use more sophisticated approaches like a queue or “pending”
+# placeholder.
+# - **Body Size & Performance:** Reading large response bodies into memory might be
+# expensive. If your responses are large, consider streaming them or storing them in an
+# object store if necessary.
+#
+# This pattern is suitable for distributed environments where multiple application
+# instances need idempotent behavior.
 require 'rack'
 require 'json'
 
-REGEX = /\A[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}\z/x
-
+# uuid regex
+REGEX = /
+\A[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}\z/x
 class Idempotency
   def initialize(app, lock_expiry: 10, cache_expiry: 86_400)
     @app = app
     @lock_expiry = lock_expiry       # seconds
-    @cache_expiry = cache_expiry     # seconds (7 days default)
+    @cache_expiry = cache_expiry     # seconds (1 days default)
   end
 
   def call(env)
@@ -62,8 +113,7 @@ class Idempotency
     if cached_data
       [cached_data[:status_code], {}, [cached_data[:content]]]
     else
-      [409, {},
-       ['Request could not be completed due to concurrent processing']]
+      [409, {}, ['The process has not been completed yet. Try again later.']]
     end
   end
 
