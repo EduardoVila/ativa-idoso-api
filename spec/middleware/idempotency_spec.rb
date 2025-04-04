@@ -9,7 +9,7 @@ RSpec.describe Idempotency do
 
   let(:app) do
     Rack::Builder.new do
-      use described_class
+      use Idempotency # rubocop:disable RSpec/DescribedClass
       run ->(_) { [200, {}, ['OK']] }
     end
   end
@@ -23,20 +23,25 @@ RSpec.describe Idempotency do
       end
     end
 
-    context 'with invalid Idempotency-Key' do
+    context 'with invalid X-Idempotency-Key' do
       it 'returns 400' do
-        header 'Idempotency-Key', 'invalid-key-format'
+        header 'X-Idempotency-Key', 'invalid-key-format'
         post '/'
         expect(last_response.status).to eq(400)
         expect(last_response.body).to include('Invalid Idempotency-Key format')
       end
     end
 
-    context 'with valid Idempotency-Key' do
+    context 'with valid X-Idempotency-Key' do
       let(:valid_key) { '123e4567-e89b-12d3-a456-426614174000' }
 
+      before do
+        allow(RedisCache).to receive(:get).and_return(nil)
+        allow(RedisCache).to receive(:set)
+      end
+
       it 'passes the request to the next component' do
-        header 'Idempotency-Key', valid_key
+        header 'X-Idempotency-Key', valid_key
         post '/'
         expect(last_response.status).to eq(200)
         expect(last_response.body).to eq('OK')
