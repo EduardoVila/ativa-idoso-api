@@ -9,7 +9,7 @@ RSpec.describe Idempotency do
 
   let(:app) do
     Rack::Builder.new do
-      use Idempotency
+      use described_class
       run ->(_) { [200, {}, ['OK']] }
     end
   end
