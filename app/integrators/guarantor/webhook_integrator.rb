@@ -5,11 +5,11 @@ require_relative '../application_integrator'
 
 module Guarantor
   class WebhookIntegrator < ApplicationIntegrator
-    def conn(proxy: nil)
-      super.tap do |connection|
-        connection.request(:authorization, :bearer, access_token)
-      end
-    end
+    # def conn(proxy: nil)
+    #   super.tap do |connection|
+    #     connection.request(:authorization, :bearer, access_token)
+    #   end
+    # end
 
     def create_resource(webhook_event)
       response = perform_post_request(webhook_event)
@@ -51,9 +51,9 @@ module Guarantor
       }.to_json
     end
 
-    def access_token
-      ::Guarantor::TokenService.call.access_token
-    end
+    # def access_token
+    #   ::Guarantor::TokenService.call.access_token
+    # end
 
     def enable_log_response
       true
