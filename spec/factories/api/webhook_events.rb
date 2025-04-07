@@ -5,7 +5,6 @@
 # Table name: api_webhook_events
 #
 #  id            :bigint           not null, primary key
-#  access_token  :string
 #  callback_url  :string
 #  event_type    :string
 #  payload       :jsonb

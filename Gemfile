@@ -33,6 +33,8 @@ gem 'pry-byebug' # Enhanced REPL for debugging
 gem 'pry-coolline' # CoolLine integration for Pry
 gem 'puma' # Web server for serving the application
 gem 'rack-attack' # Rack middleware for blocking requests
+gem 'rack-cors', require: 'rack/cors' # CORS middleware
+gem 'rack-ssl-enforcer' # Enforce SSL for the application
 gem 'rake' # Task runner for the application
 gem 'redis' # Redis client for caching
 gem 'require_all' # Require all files in a directory

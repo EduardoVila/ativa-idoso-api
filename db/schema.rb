@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_31_194424) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_04_172233) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -106,7 +106,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_31_194424) do
     t.integer "status"
     t.jsonb "payload"
     t.jsonb "response"
-    t.string "access_token"
     t.bigint "api_client_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -730,6 +729,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_31_194424) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["boa_vista_acerta_essencial_id"], name: "index_zip_code_confirmations_on_acerta_essencial_id", unique: true
+  end
+
+  create_table "guarantor_tokens", force: :cascade do |t|
+    t.string "access_token"
+    t.string "token_type"
+    t.integer "expires_in"
+    t.string "scope"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "idwall_addresses", force: :cascade do |t|
