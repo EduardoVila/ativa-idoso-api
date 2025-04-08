@@ -7,6 +7,7 @@
 #  id            :bigint           not null, primary key
 #  client_secret :string           not null
 #  description   :string
+#  name          :string
 #  validators    :text             default(["blocked_negativity_validator", "exceeded_debits_validator", "protested_titles_validator", "provenir_has_obit_indication_validator", "provenir_family_holding_validator", "provenir_process_validator", "provenir_age_and_income_validator"]), is an Array
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
@@ -15,7 +16,7 @@
 require 'spec_helper'
 require 'bcrypt'
 
-RSpec.describe API::Client, type: :model do
+RSpec.describe Api::Client, type: :model do
   describe 'factories' do
     context 'with default traits' do
       subject { create :api_client }

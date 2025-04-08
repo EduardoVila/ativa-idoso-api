@@ -7,13 +7,14 @@
 #  id            :bigint           not null, primary key
 #  client_secret :string           not null
 #  description   :string
+#  name          :string
 #  validators    :text             default(["blocked_negativity_validator", "exceeded_debits_validator", "protested_titles_validator", "provenir_has_obit_indication_validator", "provenir_family_holding_validator", "provenir_process_validator", "provenir_age_and_income_validator"]), is an Array
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  client_id     :string           not null
 #
 FactoryBot.define do
-  factory :api_client, class: 'API::Client' do
+  factory :api_client, class: 'Api::Client' do
     trait :with_reports do
       transient do
         reports_count { 1 }

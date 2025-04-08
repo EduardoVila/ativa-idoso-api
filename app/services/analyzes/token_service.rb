@@ -2,13 +2,13 @@
 
 require_relative '../application_service'
 
-module Analysis
+module Analyzes
   class TokenService < ApplicationService
     def call
-      last_token = ::Analysis::Token.last
+      last_token = ::Analyzes::Token.last
 
       if last_token.blank? || last_token.expired?
-        integrator = Analysis::TokenIntegrator.new
+        integrator = Analyzes::TokenIntegrator.new
         token = integrator.create_resource
 
         return token

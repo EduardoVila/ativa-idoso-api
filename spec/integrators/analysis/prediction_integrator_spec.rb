@@ -10,7 +10,7 @@ require_relative '../../../app/integrators/errors/analysis/prediction_response_e
 # rubocop: enable Layout/LineLength
 
 RSpec.describe Analysis::PredictionIntegrator do
-  let!(:token) { create :analysis_token }
+  let!(:token) { create :prediction_token }
   let(:url) { ENV.fetch('PREDICTION_URL') }
   let(:request_headers) do
     {

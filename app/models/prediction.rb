@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-require_relative 'application_record'
-
-module Api
+module Prediction
   def self.table_name_prefix
-    'api_'
+    'prediction_'
   end
 end

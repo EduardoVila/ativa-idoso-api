@@ -38,6 +38,7 @@ module V1
 
     def required_params_present?(params)
       params['cpfs'].present? &&
+        params['requester'].present? &&
         params['callback_url'].present? &&
         params['callback_id'].present? &&
         params['callback_url'] =~ URI::DEFAULT_PARSER.make_regexp
@@ -53,9 +54,10 @@ module V1
     end
 
     def create_webhook_event(report, client, data)
-      API::WebhookEvent.create(
+      Api::WebhookEvent.create(
         callback_url: data['callback_url'],
         callback_id: data['callback_id'],
+        requester: data['requester'],
         event_type: 'analysis_report',
         event_id: report.id,
         status: 'received',

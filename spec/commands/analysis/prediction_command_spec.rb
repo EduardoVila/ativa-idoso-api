@@ -6,7 +6,7 @@ RSpec.describe Analysis::PredictionCommand, type: :command do
   describe '#call' do
     let(:analysis_item) { create :analysis_item, :wip }
     let(:analysis_prediction) { create :analysis_prediction, approved: true }
-    let(:analysis_token) { create :analysis_token }
+    let(:prediction_token) { create :prediction_token }
     let(:integrator) { instance_double(Analysis::PredictionIntegrator) }
     let(:approved_hash) do
       { status: 'success', approved: true, disapproval_situation: nil }
@@ -25,7 +25,8 @@ RSpec.describe Analysis::PredictionCommand, type: :command do
       allow(integrator).to receive(:create_resource).with(analysis_item)
         .and_return(analysis_prediction)
 
-      allow(Analysis::TokenService).to receive(:call).and_return(analysis_token)
+      allow(Prediction::TokenService).to receive(:call)
+        .and_return(prediction_token)
     end
 
     it 'calls the Analysis::PredictionIntegrator' do

@@ -2,17 +2,17 @@
 
 # == Schema Information
 #
-# Table name: analysis_tokens
+# Table name: prediction_tokens
 #
 #  id           :bigint           not null, primary key
 #  access_token :string
-#  token_type   :string
 #  expires_in   :integer
 #  scope        :string
+#  token_type   :string
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #
-module Analysis
+module Prediction
   class Token < ApplicationRecord
     def expired?
       (created_at.to_i + expires_in) < Time.now.to_i

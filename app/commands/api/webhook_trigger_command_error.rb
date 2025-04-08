@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-module API
+module Api
   class WebhookTriggerCommandError < StandardError; end
 end

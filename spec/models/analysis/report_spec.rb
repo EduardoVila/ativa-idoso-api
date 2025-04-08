@@ -18,8 +18,7 @@
 #
 # Indexes
 #
-#  index_analysis_reports_on_api_client_id          (api_client_id)
-#  index_analysis_reports_on_prediction_model_name  (prediction_model_name)
+#  index_analysis_reports_on_api_client_id  (api_client_id)
 #
 # Foreign Keys
 #
@@ -55,7 +54,7 @@ RSpec.describe Analysis::Report, type: :model do
   end
 
   describe 'associations' do
-    it { expect(subject).to belong_to(:api_client).class_name('API::Client') }
+    it { expect(subject).to belong_to(:api_client).class_name('Api::Client') }
 
     it {
       expect(subject).to have_many(:items).class_name('Analysis::Item')

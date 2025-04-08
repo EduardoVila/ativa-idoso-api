@@ -50,7 +50,7 @@ module Tokenable # rubocop:disable Metrics/ModuleLength
 
     # Get authenticated client from request
     # @param request [Sinatra::Request] Current request object
-    # @return [API::Client, nil] Authenticated client or nil
+    # @return [Api::Client, nil] Authenticated client or nil
     def current_client(request)
       token = extract_bearer_token(request)
       return nil if token.blank?
@@ -183,7 +183,7 @@ module Tokenable # rubocop:disable Metrics/ModuleLength
       client_id = payload['sub']
       return nil if client_id.blank?
 
-      API::Client.find_by_client_id(client_id)
+      Api::Client.find_by_client_id(client_id)
     rescue JWT::ExpiredSignature, JWT::DecodeError, NoMethodError => e
       request.logger.info "Token validation failed: #{e.message}"
       nil

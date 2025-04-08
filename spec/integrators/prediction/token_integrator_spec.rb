@@ -4,9 +4,9 @@ require 'spec_helper'
 require 'webmock/rspec'
 require 'dotenv/load'
 require_relative '../integrable'
-require_relative '../../../app/integrators/analysis/token_integrator'
-require_relative '../../../app/integrators/errors/analysis/token_response_error'
-RSpec.describe Analysis::TokenIntegrator do
+require_relative '../../../app/integrators/prediction/token_integrator'
+
+RSpec.describe Prediction::TokenIntegrator do
   let(:url) { ENV.fetch('PREDICTION_TOKEN_URL') }
   let(:client_secret) { ENV.fetch('PREDICTION_CLIENT_SECRET') }
   let(:client_id) { ENV.fetch('PREDICTION_CLIENT_ID') }
@@ -47,7 +47,7 @@ RSpec.describe Analysis::TokenIntegrator do
       end
 
       it 'returns an Analysis::Prediction instance' do
-        expect(response).to be_a(Analysis::Token)
+        expect(response).to be_a(Prediction::Token)
       end
     end
 

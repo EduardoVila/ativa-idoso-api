@@ -7,6 +7,7 @@
 #  id            :bigint           not null, primary key
 #  client_secret :string           not null
 #  description   :string
+#  name          :string
 #  validators    :text             default(["blocked_negativity_validator", "exceeded_debits_validator", "protested_titles_validator", "provenir_has_obit_indication_validator", "provenir_family_holding_validator", "provenir_process_validator", "provenir_age_and_income_validator"]), is an Array
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
@@ -16,7 +17,7 @@ require 'bcrypt'
 require 'logger'
 require 'colorize'
 
-module API
+module Api
   class Client < ::ApplicationRecord
     before_validation :set_client_credentials, on: :create
 
@@ -24,7 +25,7 @@ module API
                                 inverse_of: :api_client,
                                 dependent: :destroy
 
-    has_many :webhook_events, class_name: 'API::WebhookEvent',
+    has_many :webhook_events, class_name: 'Api::WebhookEvent',
                               inverse_of: :client,
                               dependent: :destroy
 

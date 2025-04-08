@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # AnalysisReportSyncCommand provides a way to sync the analysis report with its items
-# it's important to change the analysis report status and send payload through API requests
+# it's important to change the analysis report status and send payload through Api requests
 
 require_relative '../application_command'
 require_relative '../concerns/payload_sender'

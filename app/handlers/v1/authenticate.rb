@@ -43,7 +43,7 @@ module V1
     end
 
     def authenticate_client(credentials)
-      client = API::Client.find_by_client_id(credentials[:client_id])
+      client = Api::Client.find_by_client_id(credentials[:client_id])
       client&.authenticate(credentials[:client_secret]) ? client : nil
     end
 

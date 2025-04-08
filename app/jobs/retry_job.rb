@@ -27,7 +27,7 @@ class RetryJob < ApplicationJob
   end
 
   def find_webhook_event(analysis_report_id)
-    API::WebhookEvent.find_by(event_id: analysis_report_id)
+    Api::WebhookEvent.find_by(event_id: analysis_report_id)
   end
 
   def process_items_with_error_status(analysis_report)

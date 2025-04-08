@@ -91,13 +91,6 @@ class AddSerasaTables < ActiveRecord::Migration[8.0]
     end
 
     create_table :serasa_stolen_documents do |t|
-      t.date :occurrence_date
-      t.datetime :inclusion_date
-      t.string :document_type
-      t.string :document_number
-      t.string :issuing_authority
-      t.string :detailed_reason
-      t.string :occurrence_state
       t.references :serasa_fact, null: false, index: { unique: true }, foreign_key: true
       t.timestamps
     end

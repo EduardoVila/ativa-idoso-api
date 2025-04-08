@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_07_184045) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_08_134112) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -62,12 +62,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_07_184045) do
     t.boolean "approved"
     t.integer "disapproval_situation"
     t.string "payload"
+    t.string "prediction_model_name"
     t.bigint "api_client_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "prediction_model_name"
     t.index ["api_client_id"], name: "index_analysis_reports_on_api_client_id"
-    t.index ["prediction_model_name"], name: "index_analysis_reports_on_prediction_model_name"
   end
 
   create_table "analysis_steps", force: :cascade do |t|
@@ -79,7 +78,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_07_184045) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "analysis_tokens", force: :cascade do |t|
+  create_table "analyzes_tokens", force: :cascade do |t|
     t.string "access_token"
     t.string "token_type"
     t.integer "expires_in"
@@ -91,10 +90,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_07_184045) do
   create_table "api_clients", force: :cascade do |t|
     t.string "client_id", null: false
     t.string "client_secret", null: false
+    t.string "name"
+    t.string "description"
     t.text "validators", default: ["blocked_negativity_validator", "exceeded_debits_validator", "protested_titles_validator", "provenir_has_obit_indication_validator", "provenir_family_holding_validator", "provenir_process_validator", "provenir_age_and_income_validator"], array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "description"
   end
 
   create_table "api_webhook_events", force: :cascade do |t|
@@ -106,12 +106,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_07_184045) do
     t.integer "status"
     t.jsonb "payload"
     t.jsonb "response"
+    t.integer "requester", default: 0, null: false
     t.bigint "api_client_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "requester", default: 0, null: false
     t.index ["api_client_id"], name: "index_api_webhook_events_on_api_client_id"
+    t.index ["callback_id"], name: "index_api_webhook_events_on_callback_id"
+    t.index ["callback_url"], name: "index_api_webhook_events_on_callback_url"
+    t.index ["event_id"], name: "index_api_webhook_events_on_event_id"
     t.index ["requester"], name: "index_api_webhook_events_on_requester"
+    t.index ["status"], name: "index_api_webhook_events_on_status"
   end
 
   create_table "audits", force: :cascade do |t|
@@ -824,6 +828,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_07_184045) do
   create_table "lawsuit_banned_keywords", force: :cascade do |t|
     t.string "keyword"
     t.integer "litigation_category", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "prediction_tokens", force: :cascade do |t|
+    t.string "access_token"
+    t.string "token_type"
+    t.integer "expires_in"
+    t.string "scope"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

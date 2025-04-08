@@ -7,6 +7,7 @@ class AddAnalysisTables < ActiveRecord::Migration[8.0]
       t.boolean :approved
       t.integer :disapproval_situation
       t.string :payload
+      t.string :prediction_model_name
       t.references :api_client, null: false, foreign_key: true, index: true
       t.timestamps
     end
@@ -16,8 +17,6 @@ class AddAnalysisTables < ActiveRecord::Migration[8.0]
       t.string :cpf
       t.integer :status, default: 0
       t.integer :error_status, default: 0
-      t.integer :prediction
-      t.integer :payment_situation, default: 0
       t.integer :disapproval_situation
       t.jsonb :features, default: {}
       t.references :clone_of, foreign_key: { to_table: :analysis_items }, index: true
@@ -47,14 +46,6 @@ class AddAnalysisTables < ActiveRecord::Migration[8.0]
       t.jsonb :input_data
       t.string :raw_data
       t.references :analysis_item, null: false, foreign_key: true, index: true
-      t.timestamps
-    end
-
-    create_table :analysis_tokens do |t|
-      t.string :access_token
-      t.string :token_type
-      t.integer :expires_in
-      t.string :scope
       t.timestamps
     end
   end

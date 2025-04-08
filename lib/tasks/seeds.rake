@@ -10,7 +10,7 @@ namespace :db do
 
     quantity = ENV['QTY'] || 1
     quantity.to_i.times do
-      api_client = API::Client.create!
+      api_client = Api::Client.create!
 
       # Analysis module
       analysis_report = Analysis::Report.create!(

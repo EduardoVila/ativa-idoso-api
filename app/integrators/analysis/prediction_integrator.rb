@@ -92,7 +92,7 @@ module Analysis
     end
 
     def access_token
-      ::Analysis::TokenService.call.access_token
+      ::Prediction::TokenService.call.access_token
     end
 
     def enable_log_response

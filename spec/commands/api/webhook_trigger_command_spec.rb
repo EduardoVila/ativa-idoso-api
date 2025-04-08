@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe API::WebhookTriggerCommand do
+RSpec.describe Api::WebhookTriggerCommand do
   subject { described_class.new(webhook_event) }
 
   describe '#call' do
@@ -10,10 +10,10 @@ RSpec.describe API::WebhookTriggerCommand do
     let(:webhook_event) do
       create :api_webhook_event, status: :received, event_id: analysis_report.id
     end
-    let(:integrator) { Guarantor::WebhookIntegrator.new }
+    let(:integrator) { Api::WebhookIntegrator.new }
 
     before do
-      allow(Guarantor::WebhookIntegrator).to receive(:new)
+      allow(Api::WebhookIntegrator).to receive(:new)
         .and_return(integrator)
       allow(integrator).to receive(:create_resource)
     end
@@ -39,10 +39,10 @@ RSpec.describe API::WebhookTriggerCommand do
 
     context 'when there is an error' do
       before do
-        allow(Guarantor::WebhookIntegrator).to receive(:new)
+        allow(Api::WebhookIntegrator).to receive(:new)
           .and_return(integrator)
         allow(integrator).to receive(:create_resource).with(webhook_event)
-          .and_raise(Errors::Guarantor::WebhookPostResponseError)
+          .and_raise(Errors::Api::WebhookPostResponseError)
         allow(Analysis::Report).to receive(:find).with(analysis_report.id)
           .and_return(analysis_report)
         allow(webhook_event).to receive(:update)
@@ -52,11 +52,11 @@ RSpec.describe API::WebhookTriggerCommand do
       it 'updates webhook_event and report with error status raising error' do
         expect do
           subject.call
-        end.to raise_error(Errors::Guarantor::WebhookPostResponseError)
+        end.to raise_error(Errors::Api::WebhookPostResponseError)
 
         expect(webhook_event).to have_received(:update).with(
           status: :error,
-          response: 'Errors::Guarantor::WebhookPostResponseError'
+          response: 'Errors::Api::WebhookPostResponseError'
         )
         expect(Analysis::Report).to have_received(:find)
           .with(analysis_report.id)

@@ -2,7 +2,7 @@
 
 require_relative 'webhook_trigger_command_error'
 
-module API
+module Api
   class WebhookTriggerCommand < ApplicationCommand
     attr_reader :webhook_event
 
@@ -14,9 +14,9 @@ module API
     def call
       return if webhook_event.processed? # Guard clause to avoid unnecessary calls
 
-      integrator = Guarantor::WebhookIntegrator.new
+      integrator = Api::WebhookIntegrator.new
       integrator.create_resource(webhook_event)
-    rescue ::Errors::Guarantor::WebhookPostResponseError, StandardError => e
+    rescue ::Errors::Api::WebhookPostResponseError, StandardError => e
       webhook_event.update(status: :error, response: e.message)
       Analysis::Report.find(webhook_event.event_id).update(status: :error)
       raise e

@@ -17,7 +17,8 @@ RSpec.describe V1::CreateAnalysisReport, type: :handler do
           cpfs: [cpf.to_s],
           callback_url: 'http://example.test/callback',
           callback_id: '123',
-          prediction_model: 'model_name'
+          prediction_model: 'model_name',
+          requester: %w[analyzes guarantor].sample
         }
       }
     end
@@ -70,7 +71,8 @@ RSpec.describe V1::CreateAnalysisReport, type: :handler do
               cpfs: [],
               callback_url: 'http://example.test/callback',
               callback_id: '123',
-              prediction_model: 'model_name'
+              prediction_model: 'model_name',
+              requester: %w[analyzes guarantor].sample
             }
           }
         end
@@ -85,7 +87,8 @@ RSpec.describe V1::CreateAnalysisReport, type: :handler do
               cpfs: ['12345678901'],
               callback_url: 'invalid_url',
               callback_id: '123',
-              prediction_model: 'model_name'
+              prediction_model: 'model_name',
+              requester: %w[analyzes guarantor].sample
             }
           }
         end
@@ -100,7 +103,8 @@ RSpec.describe V1::CreateAnalysisReport, type: :handler do
               cpfs: ['12345678901'],
               callback_url: 'http://example.test/callback',
               callback_id: '',
-              prediction_model: 'model_name'
+              prediction_model: 'model_name',
+              requester: %w[analyzes guarantor].sample
             }
           }
         end

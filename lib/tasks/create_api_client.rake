@@ -14,7 +14,7 @@ namespace :db do
     puts 'client_id and client_secret must be used in strict_base64 encode'.cyan
     puts 'Use these credentials to authenticate with the API'.cyan
 
-    client = API::Client.create
+    client = Api::Client.create
 
     if client.save
       puts "API client created with the following uuid: #{client.id}".yellow.bold

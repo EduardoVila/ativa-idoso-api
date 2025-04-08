@@ -16,14 +16,14 @@ require 'spec_helper'
 
 RSpec.describe Guarantor::Token, type: :model do
   describe 'factories' do
-    subject { build :analysis_token }
+    subject { build :guarantor_token }
 
     it { is_expected.to be_valid }
   end
 
   describe '#expired?' do
     context 'when created_at in older than the current date' do
-      subject { create :analysis_token, :expired }
+      subject { create :guarantor_token, :expired }
 
       it 'returns true' do
         expect(subject.expired?).to be(true)
@@ -31,7 +31,7 @@ RSpec.describe Guarantor::Token, type: :model do
     end
 
     context 'when created_at is newer than the current date' do
-      subject { create :analysis_token }
+      subject { create :guarantor_token }
 
       it 'returns false' do
         expect(subject.expired?).to be(false)

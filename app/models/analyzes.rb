@@ -2,8 +2,8 @@
 
 require_relative 'application_record'
 
-module Api
+module Analyzes
   def self.table_name_prefix
-    'api_'
+    'analyzes_'
   end
 end

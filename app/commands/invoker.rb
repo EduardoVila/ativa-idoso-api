@@ -11,7 +11,7 @@
 # COMMANDS:
 # - :analysis_report_runner_command -> Analysis::ReportRunnerCommand
 # - :analysis_item_runner_command -> Analysis::ItemRunnerCommand
-# - :api_webhook_trigger_command -> API::WebhookTriggerCommand
+# - :api_webhook_trigger_command -> Api::WebhookTriggerCommand
 # - :boa_vista_cadastral_command -> BoaVista::CadastralCommand
 # - :analysis_step_command -> Analysis::StepCommand
 # - :analysis_report_sync_command -> Analysis::ReportSyncCommand
@@ -29,7 +29,7 @@ class Invoker
   COMMANDS = {
     analysis_report_runner_command: 'Analysis::ReportRunnerCommand',
     analysis_item_runner_command: 'Analysis::ItemRunnerCommand',
-    api_webhook_trigger_command: 'API::WebhookTriggerCommand',
+    api_webhook_trigger_command: 'Api::WebhookTriggerCommand',
     boa_vista_cadastral_command: 'BoaVista::CadastralCommand',
     analysis_step_command: 'Analysis::StepCommand',
     analysis_report_sync_command: 'Analysis::ReportSyncCommand'

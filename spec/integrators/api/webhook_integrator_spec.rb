@@ -4,12 +4,9 @@ require 'spec_helper'
 require 'webmock/rspec'
 require 'dotenv/load'
 require_relative '../integrable'
-require_relative '../../../app/integrators/guarantor/webhook_integrator'
-# rubocop: disable Layout/LineLength
-require_relative '../../../app/integrators/errors/guarantor/webhook_response_error'
-# rubocop: enable Layout/LineLength
-
-RSpec.describe Guarantor::WebhookIntegrator do
+require_relative '../../../app/integrators/api/webhook_integrator'
+require_relative '../../../app/integrators/errors/api/webhook_response_error'
+RSpec.describe Api::WebhookIntegrator do
   let!(:token) { create :guarantor_token }
   let(:webhook_event) do
     create(
@@ -69,7 +66,7 @@ RSpec.describe Guarantor::WebhookIntegrator do
           ).and_return(status: 403, body: nil, headers: response_headers)
       end
 
-      it 'raises an API::WebhookTriggerCommandError' do
+      it 'raises an Api::WebhookTriggerCommandError' do
         expect do
           create_resource_call
         end.to raise_error(Faraday::ForbiddenError)

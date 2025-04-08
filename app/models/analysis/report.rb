@@ -18,8 +18,7 @@
 #
 # Indexes
 #
-#  index_analysis_reports_on_api_client_id          (api_client_id)
-#  index_analysis_reports_on_prediction_model_name  (prediction_model_name)
+#  index_analysis_reports_on_api_client_id  (api_client_id)
 #
 # Foreign Keys
 #
@@ -45,7 +44,7 @@ module Analysis
               allow_nil: true
     validate :cpfs_validation
 
-    belongs_to :api_client, class_name: 'API::Client',
+    belongs_to :api_client, class_name: 'Api::Client',
                             foreign_key: 'api_client_id'
 
     has_many :items, class_name: 'Analysis::Item',

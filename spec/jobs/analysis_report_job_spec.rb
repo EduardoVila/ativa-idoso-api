@@ -20,7 +20,7 @@ RSpec.describe AnalysisReportJob, type: :job do
     before do
       allow(Analysis::Report).to receive(:find).with(analysis_report.id)
         .and_return(analysis_report)
-      allow(API::WebhookEvent).to receive(:find_by)
+      allow(Api::WebhookEvent).to receive(:find_by)
         .with(event_id: analysis_report.id)
         .and_return(webhook_event)
       allow(Invoker).to receive(:execute)
@@ -28,7 +28,7 @@ RSpec.describe AnalysisReportJob, type: :job do
 
     context 'when webhook_event is not found' do
       before do
-        allow(API::WebhookEvent).to receive(:find_by)
+        allow(Api::WebhookEvent).to receive(:find_by)
           .with(event_id: analysis_report.id)
           .and_return(nil)
       end
