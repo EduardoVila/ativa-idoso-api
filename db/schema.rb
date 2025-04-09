@@ -19,6 +19,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_134112) do
   enable_extension "uuid-ossp"
 
   create_table "analysis_item_steps", force: :cascade do |t|
+    t.datetime "started_at"
+    t.datetime "finished_at"
+    t.float "duration"
+    t.integer "execution_status"
+    t.jsonb "result_summary", default: {}, null: false
     t.bigint "analysis_item_id", null: false
     t.bigint "analysis_step_id", null: false
     t.datetime "created_at", null: false
@@ -33,7 +38,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_134112) do
     t.integer "status", default: 0
     t.integer "error_status", default: 0
     t.integer "disapproval_situation"
-    t.jsonb "features", default: {}
+    t.jsonb "steps_execution_data", default: {}, null: false
+    t.jsonb "features", default: {}, null: false
     t.bigint "clone_of_id"
     t.bigint "analysis_report_id", null: false
     t.datetime "created_at", null: false

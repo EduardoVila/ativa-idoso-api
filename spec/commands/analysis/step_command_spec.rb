@@ -25,7 +25,6 @@ RSpec.describe Analysis::StepCommand, type: :command do
     it 'invokes steps for each step' do
       steps.each do |step|
         expect(command).to receive(:invoke_step) # rubocop:disable RSpec/MessageSpies
-          .with(current_item, step.command_class)
       end
 
       command.call
@@ -55,22 +54,29 @@ RSpec.describe Analysis::StepCommand, type: :command do
   end
 
   describe '#invoke_step' do
+    let(:analysis_step) do
+      create :analysis_step
+    end
     let(:analysis_item) do
-      create :analysis_item, :clone, :wip, error_status: :none
+      create :analysis_item, :clone, :wip, :with_steps, error_status: :none
+    end
+    let(:item_step) do
+      create :analysis_item_step, item: analysis_item,
+                                  step: analysis_step
     end
     let(:current_item) { analysis_item.clone_of }
-    let(:command_class) { 'SomeCommandClass' }
+    let(:command_class) { analysis_step.command_class }
     let(:result) do
       { status: 'failure', approved: false, disapproval_situation: 'foobar' }
     end
 
     before do
       allow(Invoker).to receive(:execute).and_return(result)
-      allow(command).to receive(:finished_item_status_update)
+      allow(command).to receive(:update_item_status)
     end
 
     it 'executes the command' do
-      command.send(:invoke_step, current_item, command_class)
+      command.send(:invoke_step, current_item, command_class, item_step)
 
       expect(Invoker).to have_received(:execute)
         .with(:a_step, current_item, command_class)
@@ -82,9 +88,9 @@ RSpec.describe Analysis::StepCommand, type: :command do
       end
 
       it 'does not update the analysis item' do
-        command.send(:invoke_step, current_item, command_class)
+        command.send(:invoke_step, current_item, command_class, item_step)
 
-        expect(command).not_to have_received(:finished_item_status_update)
+        expect(command).not_to have_received(:update_item_status)
       end
     end
 
@@ -92,11 +98,11 @@ RSpec.describe Analysis::StepCommand, type: :command do
       let(:command_class) { 'Analysis::PredictionCommand' }
 
       it 'updates the analysis item with the result' do
-        allow(command).to receive(:finished_item_status_update)
+        allow(command).to receive(:update_item_status)
 
-        command.send(:invoke_step, current_item, command_class)
+        command.send(:invoke_step, current_item, command_class, item_step)
 
-        expect(command).to have_received(:finished_item_status_update)
+        expect(command).to have_received(:update_item_status)
           .with(result)
       end
     end
@@ -107,28 +113,32 @@ RSpec.describe Analysis::StepCommand, type: :command do
       it 'creates an analysis prediction' do
         allow(command).to receive(:create_analysis_prediction)
 
-        command.send(:invoke_step, current_item, command_class)
+        command.send(:invoke_step, current_item, command_class, item_step)
 
         expect(command).to have_received(:create_analysis_prediction)
       end
     end
 
     it 'updates the analysis item with the result' do
-      command.send(:invoke_step, current_item, command_class)
+      command.send(:invoke_step, current_item, command_class, item_step)
 
-      expect(command).to have_received(:finished_item_status_update)
+      expect(command).to have_received(:update_item_status)
         .with(result)
     end
   end
 
-  describe '#finished_item_status_update' do
+  describe '#update_item_status' do
+    before { allow(analysis_item).to receive(:update) }
+
     context 'when result status is failure' do
       let(:result) { { status: 'failure', disapproval_situation: 'foobar' } }
 
       it 'updates the analysis item status to error' do
-        expect(analysis_item).to receive(:update).with(status: :error) # rubocop:disable RSpec/MessageSpies
-
-        command.send(:finished_item_status_update, result)
+        command.send(:update_item_status, result)
+        expect(analysis_item).to have_received(:update).with(
+          status: :error,
+          steps_execution_data: analysis_item.steps_execution_summary
+        )
       end
     end
 
@@ -136,24 +146,44 @@ RSpec.describe Analysis::StepCommand, type: :command do
       let(:result) { { status: 'not_found' } }
 
       it 'updates the analysis item status to not_found' do
-        expect(analysis_item).to receive(:update).with(status: :not_found) # rubocop:disable RSpec/MessageSpies
-
-        command.send(:finished_item_status_update, result)
+        command.send(:update_item_status, result)
+        expect(analysis_item).to have_received(:update).with(
+          status: :not_found,
+          steps_execution_data: analysis_item.steps_execution_summary
+        )
       end
     end
 
-    context 'when result status is success' do
+    context 'when result status is success but not approved' do
       let(:features) { analysis_item.featurable }
       let(:result) do
         { status: 'success', approved: false, disapproval_situation: 'foobar' }
       end
 
       it 'updates the item status to done and sets disapproval_situation' do
-        expect(analysis_item).to receive(:update).with( # rubocop:disable RSpec/MessageSpies
-          status: :done, disapproval_situation: 'foobar', features: features
+        command.send(:update_item_status, result)
+        expect(analysis_item).to have_received(:update).with(
+          status: :done,
+          disapproval_situation: result[:disapproval_situation],
+          features: analysis_item.featurable,
+          steps_execution_data: analysis_item.steps_execution_summary
         )
+      end
+    end
 
-        command.send(:finished_item_status_update, result)
+    context 'when result status is success and approved' do
+      let(:features) { analysis_item.featurable }
+      let(:result) do
+        { status: 'success', approved: true, disapproval_situation: nil }
+      end
+
+      it 'updates item status to done and sets features and step exec data' do
+        command.send(:update_item_status, result)
+        expect(analysis_item).to have_received(:update).with(
+          status: :done,
+          features: analysis_item.featurable,
+          steps_execution_data: analysis_item.steps_execution_summary
+        )
       end
     end
   end

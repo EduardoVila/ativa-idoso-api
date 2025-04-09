@@ -8,9 +8,10 @@
 #  cpf                   :string
 #  disapproval_situation :integer
 #  error_status          :integer          default("none")
-#  features              :jsonb
+#  features              :jsonb            not null
 #  name                  :string
 #  status                :integer          default("todo")
+#  steps_execution_data  :jsonb            not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  analysis_report_id    :bigint           not null

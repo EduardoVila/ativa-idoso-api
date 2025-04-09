@@ -18,7 +18,8 @@ class AddAnalysisTables < ActiveRecord::Migration[8.0]
       t.integer :status, default: 0
       t.integer :error_status, default: 0
       t.integer :disapproval_situation
-      t.jsonb :features, default: {}
+      t.jsonb :steps_execution_data, default: {}, null: false
+      t.jsonb :features, default: {}, null: false
       t.references :clone_of, foreign_key: { to_table: :analysis_items }, index: true
       t.references :analysis_report, null: false, foreign_key: true, index: true
       t.timestamps
@@ -33,6 +34,11 @@ class AddAnalysisTables < ActiveRecord::Migration[8.0]
     end
 
     create_table :analysis_item_steps do |t|
+      t.datetime :started_at
+      t.datetime :finished_at
+      t.float :duration
+      t.integer :execution_status
+      t.jsonb :result_summary, default: {}, null: false
       t.references :analysis_item, null: false, foreign_key: true, index: true
       t.references :analysis_step, null: false, foreign_key: true, index: true
       t.timestamps

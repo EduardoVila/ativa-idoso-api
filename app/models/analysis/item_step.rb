@@ -5,6 +5,11 @@
 # Table name: analysis_item_steps
 #
 #  id               :bigint           not null, primary key
+#  duration         :float
+#  execution_status :integer
+#  finished_at      :datetime
+#  result_summary   :jsonb            not null
+#  started_at       :datetime
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  analysis_item_id :bigint           not null
@@ -29,5 +34,13 @@ module Analysis
                       foreign_key: 'analysis_step_id'
 
     validates :analysis_step_id, uniqueness: { scope: :analysis_item_id }
+
+    enum :execution_status, %i[
+      pending
+      wip
+      completed
+      failed
+      skipped
+    ]
   end
 end

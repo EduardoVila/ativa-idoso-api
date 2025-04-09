@@ -8,9 +8,10 @@
 #  cpf                   :string
 #  disapproval_situation :integer
 #  error_status          :integer          default("none")
-#  features              :jsonb
+#  features              :jsonb            not null
 #  name                  :string
 #  status                :integer          default("todo")
+#  steps_execution_data  :jsonb            not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  analysis_report_id    :bigint           not null
@@ -120,13 +121,29 @@ FactoryBot.define do
       disapproval_situation { :reproved_by_age_and_income }
     end
 
-    # trait :with_analysis_relations do
-    #   after(:create) do |score|
-    #     create(:provenir_big_data_corp, score:)
-    #     create(:pro_score_report, score:)
-    #     create(:boa_vista_acerta_essencial, consumer: score)
-    #     create(:boa_vista_cadastral, consumer: score)
-    #   end
-    # end
+    trait :with_analysis_associations do
+      after(:create) do |analysis_item|
+        create :provenir_big_data_corp, analysis_item: analysis_item
+        create :pro_score_report, analysis_item: analysis_item
+        create :boa_vista_acerta_essencial, consumer: analysis_item
+        create :boa_vista_cadastral, consumer: analysis_item
+        create :serasa_fintech_report, owner: analysis_item
+        create :idwall_report, analysis_item: analysis_item
+      end
+    end
+
+    trait :with_steps do
+      after(:create) do |item|
+        analysis_steps = create_list :analysis_step, 3
+
+        analysis_steps.each do |step|
+          create :analysis_item_step, item: item, step: step
+        end
+
+        item.item_steps.each do |item_step|
+          item_step.update(execution_status: :completed)
+        end
+      end
+    end
   end
 end

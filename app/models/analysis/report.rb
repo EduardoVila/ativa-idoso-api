@@ -24,13 +24,13 @@
 #
 #  fk_rails_...  (api_client_id => api_clients.id)
 #
-require_relative '../concerns/analysis_report_fee_computable'
-require_relative '../concerns/disapproval_situation_concern'
+require_relative '../concerns/analysis/fee_computable'
+require_relative '../concerns/analysis/disapproval_situation_concern'
 module Analysis
   class Report < ApplicationRecord
-    include ::AnalysisReportFeeComputable
     include ::Auditable
-    include ::DisapprovalSituationConcern
+    include FeeComputable
+    include DisapprovalSituationConcern
 
     auditable ignore: %i[payload status created_at updated_at]
 

@@ -8,9 +8,10 @@
 #  cpf                   :string
 #  disapproval_situation :integer
 #  error_status          :integer          default("none")
-#  features              :jsonb
+#  features              :jsonb            not null
 #  name                  :string
 #  status                :integer          default("todo")
+#  steps_execution_data  :jsonb            not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  analysis_report_id    :bigint           not null
@@ -29,9 +30,8 @@
 require 'require_all'
 
 require_all 'app/models/concerns/delegators'
+require_all 'app/models/concerns/analysis'
 
-require_relative '../concerns/featurable'
-require_relative '../concerns/disapproval_situation_concern'
 require_relative '../../../lib/validators/cpf_validator'
 
 module Analysis
@@ -41,9 +41,10 @@ module Analysis
     include Delegators::BoaVistaAcertaEssencial
     include Delegators::BoaVistaCadastral
     include Delegators::Provenir
-    include ::DisapprovalSituationConcern
-    include ::Featurable
     include ::Auditable
+    include DisapprovalSituationConcern
+    include Featurable
+    include StepTrackable
 
     auditable
 

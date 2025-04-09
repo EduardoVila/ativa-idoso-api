@@ -5,6 +5,11 @@
 # Table name: analysis_item_steps
 #
 #  id               :bigint           not null, primary key
+#  duration         :float
+#  execution_status :integer
+#  finished_at      :datetime
+#  result_summary   :jsonb            not null
+#  started_at       :datetime
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  analysis_item_id :bigint           not null

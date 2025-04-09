@@ -14,15 +14,26 @@
 #
 FactoryBot.define do
   factory :analysis_step, class: 'Analysis::Step' do
-    name { Faker::Name.name }
+    name do
+      %w[
+        pro_score_bounced_checks
+        provenir_big_data_corp
+        boa_vista_acerta_essencial
+        pre_predictions
+        predictions
+      ].sample
+    end
     command_class do
-      [
-        'ProScore::FamilyHoldingCommand',
-        'ProScore::BouncedCheckCommand'
+      %w[
+        ProScore::BouncedCheckCommand
+        Provenir::BigDataCorpCommand
+        BoaVista::AcertaEssencialCommand
+        PrePredictionCommand
+        PredictionCommand
       ].sample
     end
     index_order { rand(1..1000) }
-    enabled { [true, false].sample }
+    enabled { true }
 
     trait :disabled do
       enabled { false }
