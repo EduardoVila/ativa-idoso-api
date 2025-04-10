@@ -33,7 +33,7 @@ module V1
       halt(422) if analysis_item.steps.exists?(name: analysis_step.name)
 
       # Enqueue job to process step
-      AnalysisStepJob.perform_later(analysis_item.id, analysis_step.id)
+      AnalysisStepJob.perform_later(analysis_item.name, analysis_step.id)
       status(202)
     end
 

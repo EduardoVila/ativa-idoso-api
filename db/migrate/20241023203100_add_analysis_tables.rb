@@ -18,7 +18,7 @@ class AddAnalysisTables < ActiveRecord::Migration[8.0]
       t.integer :status, default: 0
       t.integer :error_status, default: 0
       t.integer :disapproval_situation
-      t.jsonb :steps_execution_data, default: {}, null: false
+      t.jsonb :steps_data, default: {}, null: false
       t.jsonb :features, default: {}, null: false
       t.references :clone_of, foreign_key: { to_table: :analysis_items }, index: true
       t.references :analysis_report, null: false, foreign_key: true, index: true

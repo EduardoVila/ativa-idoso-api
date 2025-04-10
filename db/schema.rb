@@ -38,7 +38,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_134112) do
     t.integer "status", default: 0
     t.integer "error_status", default: 0
     t.integer "disapproval_situation"
-    t.jsonb "steps_execution_data", default: {}, null: false
+    t.jsonb "steps_data", default: {}, null: false
     t.jsonb "features", default: {}, null: false
     t.bigint "clone_of_id"
     t.bigint "analysis_report_id", null: false

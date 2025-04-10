@@ -93,6 +93,14 @@ configure :development, :test, :production do
   set :time_zone,
       Time.zone_default = ActiveSupport::TimeZone['America/Sao_Paulo']
 
+  # Setting the default locale to Brazilian Portuguese
+  I18n.load_path += Dir[
+    File.join(
+      File.expand_path('..', __dir__), 'config', 'locales', '**', '*.{rb,yml}'
+    )
+  ]
+  I18n.default_locale = :'pt-BR'
+
   use Rack::Cors do
     allow do
       origins ENV.fetch('CORS_ALLOWED_ORIGINS', 'alpop.com.br')

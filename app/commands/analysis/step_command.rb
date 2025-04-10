@@ -15,7 +15,7 @@ module Analysis
       Analysis::Step.enabled.order(:index_order).each do |step|
         next if current_item.steps.include?(step)
 
-        # Create a new item_step for the current step and associate it to current_item.
+        # Create a new item_step for the current step and associate it to current_item (N:M association).
         current_item.steps << step
 
         # Get the item_step for the newly added current step.
@@ -112,12 +112,12 @@ module Analysis
       when 'failure'
         analysis_item.update(
           status: :error,
-          steps_execution_data: analysis_item.steps_execution_summary
+          steps_data: analysis_item.steps_summary
         )
       when 'not_found'
         analysis_item.update(
           status: :not_found,
-          steps_execution_data: analysis_item.steps_execution_summary
+          steps_data: analysis_item.steps_summary
         )
       when 'success'
         handle_case_when_success(result)
@@ -129,14 +129,14 @@ module Analysis
         analysis_item.update(
           status: :done,
           features: analysis_item.featurable,
-          steps_execution_data: analysis_item.steps_execution_summary
+          steps_data: analysis_item.steps_summary
         )
       elsif result[:disapproval_situation]
         analysis_item.update(
           status: :done,
           disapproval_situation: result[:disapproval_situation],
           features: analysis_item.featurable,
-          steps_execution_data: analysis_item.steps_execution_summary
+          steps_data: analysis_item.steps_summary
         )
       end
     end

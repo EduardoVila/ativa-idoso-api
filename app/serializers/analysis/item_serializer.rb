@@ -11,7 +11,7 @@
 #  features              :jsonb            not null
 #  name                  :string
 #  status                :integer          default("todo")
-#  steps_execution_data  :jsonb            not null
+#  steps_data  :jsonb            not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  analysis_report_id    :bigint           not null
@@ -34,17 +34,15 @@ module Analysis
     attributes :id, :cpf, :name, :disapproval_situation, :debits, :age,
                :status, :created_at, :prediction, :error_status, :approved,
                :presumed_incomes, :proprable_profession, :bounced_check,
-               :trials, :protested_titles, :pro_score_bounced_checks,
-               :provenir_big_data_corp, :steps_execution_data
+               :protested_titles, :pro_score_bounced_checks,
+               :provenir_big_data_corp, :steps_summary
 
-    # Data to be shown in the analysis item admin step page
     def pro_score_bounced_checks
       return unless object_with_associations.pro_score_bounced_checks
 
       object_with_associations.pro_score_bounced_checks.map(&:serialize_record)
     end
 
-    # Data to be shown in the analysis item admin step page
     def provenir_big_data_corp
       return unless object_with_associations.provenir_big_data_corp.present?
 
@@ -66,10 +64,6 @@ module Analysis
 
     def bounced_check
       object_with_associations.pro_score_bounced_check? || false
-    end
-
-    def trials
-      provider_trials&.map(&:serialize_record)
     end
 
     def name
@@ -125,11 +119,6 @@ module Analysis
 
     def object_with_associations
       object.clone_of || object
-    end
-
-    def provider_trials
-      object_with_associations.pro_score_trials || object_with_associations
-        .provenir_lawsuits
     end
 
     def serasa_fintech_report

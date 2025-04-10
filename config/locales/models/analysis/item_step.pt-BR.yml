@@ -1,0 +1,18 @@
+pt-BR:
+  activemodel:
+    models:
+      item_step:
+        attributes:
+          name:
+            alpop_process_payment_situation: Histórico Alpop
+            alpop_block_list: Lista de bloqueados
+            pro_score_family_holdings: Membros da família
+            pro_score_bounced_checks: Cheque sem fundo
+            pro_score_trials: Processos
+            pro_score_presumed_income: Renda presumida
+            provenir_big_data_corp: Provenir
+            serasa_fintech_report: Serasa
+            boa_vista_acerta_essencial: Boa Vista
+            pro_score_commercial_relations: Relação comercial
+            pre_predictions: Pré-predição
+            predictions: Predição

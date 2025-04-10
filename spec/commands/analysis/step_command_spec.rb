@@ -137,7 +137,7 @@ RSpec.describe Analysis::StepCommand, type: :command do
         command.send(:update_item_status, result)
         expect(analysis_item).to have_received(:update).with(
           status: :error,
-          steps_execution_data: analysis_item.steps_execution_summary
+          steps_data: analysis_item.steps_summary
         )
       end
     end
@@ -149,7 +149,7 @@ RSpec.describe Analysis::StepCommand, type: :command do
         command.send(:update_item_status, result)
         expect(analysis_item).to have_received(:update).with(
           status: :not_found,
-          steps_execution_data: analysis_item.steps_execution_summary
+          steps_data: analysis_item.steps_summary
         )
       end
     end
@@ -166,7 +166,7 @@ RSpec.describe Analysis::StepCommand, type: :command do
           status: :done,
           disapproval_situation: result[:disapproval_situation],
           features: analysis_item.featurable,
-          steps_execution_data: analysis_item.steps_execution_summary
+          steps_data: analysis_item.steps_summary
         )
       end
     end
@@ -182,7 +182,7 @@ RSpec.describe Analysis::StepCommand, type: :command do
         expect(analysis_item).to have_received(:update).with(
           status: :done,
           features: analysis_item.featurable,
-          steps_execution_data: analysis_item.steps_execution_summary
+          steps_data: analysis_item.steps_summary
         )
       end
     end
