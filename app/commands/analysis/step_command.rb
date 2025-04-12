@@ -12,30 +12,37 @@ module Analysis
     def call
       current_item = analysis_item.clone_of || analysis_item
 
-      Analysis::Step.enabled.order(:index_order).each do |step|
-        next if current_item.steps.include?(step)
+      Analysis::Step.enabled.order(:index_order).each do |enabled_step|
+        next if current_item.steps.include?(enabled_step)
 
         # Create a new item_step for the current step and associate it to current_item (N:M association).
-        current_item.steps << step
+        current_item.steps << enabled_step
 
         # Get the item_step for the newly added current step.
-        item_step = analysis_item.item_steps.find_by(step: step)
+        item_step = analysis_item.item_steps.find_by(step: enabled_step)
 
         # Mark step as in progress.
         item_step.update(execution_status: :wip, started_at: Time.current)
 
         # invoke step and update the analysis item status if necessary.
-        invoke_step(current_item, step.command_class, item_step)
+        invoke_step(current_item, enabled_step.command_class, item_step)
 
         # Continue running step by step if the analysis item status is wip.
-        next if analysis_item.reload.status.eql?('wip')
+        next if analysis_item.reload.wip?
 
+        # Update the steps data and features of the analysis item to latest values.
+        update_model_features_and_steps_data
         # Break the loop if the status is done/error/not_found.
         break
       end
     end
 
     private
+
+    def update_model_features_and_steps_data
+      update_features if analysis_item.done?
+      update_steps_data
+    end
 
     # This method invokes the step command and updates the analysis item status.
     def invoke_step(current_item, command_class, item_step)
@@ -110,15 +117,9 @@ module Analysis
     def update_item_status(result)
       case result[:status]
       when 'failure'
-        analysis_item.update(
-          status: :error,
-          steps_data: analysis_item.steps_summary
-        )
+        analysis_item.update(status: :error)
       when 'not_found'
-        analysis_item.update(
-          status: :not_found,
-          steps_data: analysis_item.steps_summary
-        )
+        analysis_item.update(status: :not_found)
       when 'success'
         handle_case_when_success(result)
       end
@@ -126,17 +127,11 @@ module Analysis
 
     def handle_case_when_success(result)
       if result[:approved]
-        analysis_item.update(
-          status: :done,
-          features: analysis_item.featurable,
-          steps_data: analysis_item.steps_summary
-        )
+        analysis_item.update(status: :done)
       elsif result[:disapproval_situation]
         analysis_item.update(
           status: :done,
-          disapproval_situation: result[:disapproval_situation],
-          features: analysis_item.featurable,
-          steps_data: analysis_item.steps_summary
+          disapproval_situation: result[:disapproval_situation]
         )
       end
     end
@@ -145,6 +140,16 @@ module Analysis
       Analysis::Prediction.create(
         label: 'pre_prediction', item: analysis_item, approved: false
       )
+    end
+
+    def update_steps_data
+      steps_data = analysis_item.steps_summary
+      analysis_item.update(steps_data:)
+    end
+
+    def update_features
+      features = analysis_item.featurable
+      analysis_item.update(features:)
     end
   end
 end

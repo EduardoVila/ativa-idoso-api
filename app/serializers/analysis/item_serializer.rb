@@ -32,10 +32,14 @@ require_relative '../application_serializer'
 module Analysis
   class ItemSerializer < ApplicationSerializer
     attributes :id, :cpf, :name, :disapproval_situation, :debits, :age,
-               :status, :created_at, :prediction, :error_status, :approved,
+               :status, :created_at, :fee, :error_status, :approved,
                :presumed_incomes, :proprable_profession, :bounced_check,
                :protested_titles, :pro_score_bounced_checks,
-               :provenir_big_data_corp, :steps_summary
+               :provenir_big_data_corp, :steps_data, :predictions
+
+    def predictions
+      object_with_associations.predictions.map(&:serialize_record)
+    end
 
     def pro_score_bounced_checks
       return unless object_with_associations.pro_score_bounced_checks
@@ -83,7 +87,7 @@ module Analysis
       predictions.last.approved
     end
 
-    def prediction
+    def fee
       predictions = object_with_associations.predictions
 
       return nil if predictions.blank? || !approved

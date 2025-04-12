@@ -4,7 +4,7 @@ module Analysis
   module StepTrackable
     extend ActiveSupport::Concern
     included do
-      def pending_steps
+      def pending_analysis_steps
         executed_step_ids = item_steps.where(execution_status: :completed)
           .pluck(:analysis_step_id)
 
@@ -13,28 +13,29 @@ module Analysis
           .map(&:serialize_record)
       end
 
-      def next_step
-        return [] if pending_steps.empty?
+      def next_analysis_step
+        return [] if pending_analysis_steps.empty?
 
-        pending_steps.first
+        pending_analysis_steps.first
       end
 
-      def last_executed_step
+      def last_analysis_executed_step
         return [] if steps.empty?
 
         steps.order(:index_order).last.serialize_record
       end
 
-      def all_possible_step
+      def analysis_available_steps
         Analysis::Step.enabled.order(:index_order).map(&:serialize_record)
       end
 
       def steps_summary
         {
-          pending_steps: pending_steps,
-          last_executed_step: last_executed_step,
-          next_step: next_step,
-          all_possible_step: all_possible_step
+          pending_analysis_steps: pending_analysis_steps,
+          executed_analysis_steps: steps,
+          last_analysis_executed_step: last_analysis_executed_step,
+          next_analysis_step: next_analysis_step,
+          analysis_available_steps: analysis_available_steps
         }
       end
     end

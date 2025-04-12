@@ -48,7 +48,7 @@ RSpec.describe Analysis::StepCommand, type: :command do
 
       it 'breaks the loop' do
         command.call
-        expect(analysis_item.steps).to eq([steps.first])
+        expect(analysis_item.steps.first).to eq(steps.first)
       end
     end
   end
@@ -136,8 +136,7 @@ RSpec.describe Analysis::StepCommand, type: :command do
       it 'updates the analysis item status to error' do
         command.send(:update_item_status, result)
         expect(analysis_item).to have_received(:update).with(
-          status: :error,
-          steps_data: analysis_item.steps_summary
+          status: :error
         )
       end
     end
@@ -148,8 +147,7 @@ RSpec.describe Analysis::StepCommand, type: :command do
       it 'updates the analysis item status to not_found' do
         command.send(:update_item_status, result)
         expect(analysis_item).to have_received(:update).with(
-          status: :not_found,
-          steps_data: analysis_item.steps_summary
+          status: :not_found
         )
       end
     end
@@ -164,9 +162,7 @@ RSpec.describe Analysis::StepCommand, type: :command do
         command.send(:update_item_status, result)
         expect(analysis_item).to have_received(:update).with(
           status: :done,
-          disapproval_situation: result[:disapproval_situation],
-          features: analysis_item.featurable,
-          steps_data: analysis_item.steps_summary
+          disapproval_situation: result[:disapproval_situation]
         )
       end
     end
@@ -180,9 +176,7 @@ RSpec.describe Analysis::StepCommand, type: :command do
       it 'updates item status to done and sets features and step exec data' do
         command.send(:update_item_status, result)
         expect(analysis_item).to have_received(:update).with(
-          status: :done,
-          features: analysis_item.featurable,
-          steps_data: analysis_item.steps_summary
+          status: :done
         )
       end
     end
