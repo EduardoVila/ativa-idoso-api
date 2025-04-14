@@ -2,30 +2,27 @@
 
 require_relative 'application_job'
 
-class AnalysisStepJob < ApplicationJob
-  queue_as :analysis_step
+class AnalysisNextStepJob < ApplicationJob
+  queue_as :analysis_next_step
 
-  def perform(analysis_item_id, analysis_step_name)
-    return if analysis_item_id.blank? || analysis_step_name.blank?
+  def perform(analysis_item_id, analysis_step_id)
+    return if analysis_item_id.blank? || analysis_step_id.blank?
 
     analysis_item = find_analysis_item(analysis_item_id)
-    analysis_step = find_analysis_step(analysis_step_name)
+    analysis_step = find_analysis_step(analysis_step_id)
     webhook_event = find_webhook_event(analysis_item.analysis_report_id)
 
     if analysis_item.blank? ||
        analysis_step.blank? ||
        webhook_event.blank? ||
-       analysis_item.steps.find_by(id: analysis_step_name).present?
+       analysis_item.steps.find_by(id: analysis_step_id).present?
 
       return
     end
 
-    ApplicationRecord.transaction do
-      webhook_event.update!(status: :processing, job_id: job_id)
-      analysis_item.update!(status: :wip)
-    end
+    webhook_event.update!(status: :processing, job_id: job_id)
 
-    invoke_step(analysis_item, analysis_step.command_class)
+    process_next_step(analysis_item, analysis_step.command_class)
 
     update_webhook_event_payload(webhook_event, analysis_item.report)
     trigger_webhook_event(webhook_event)
@@ -41,12 +38,12 @@ class AnalysisStepJob < ApplicationJob
     Analysis::Item.find(analysis_item_id)
   end
 
-  def find_analysis_step(analysis_step_name)
-    Analysis::Step.find_by(name: analysis_step_name)
+  def find_analysis_step(analysis_step_id)
+    Analysis::Step.find_by(id: analysis_step_id)
   end
 
-  def invoke_step(analysis_item, command_class)
-    Invoker.execute(:a_step, analysis_item, command_class)
+  def process_next_step(analysis_item, command_class)
+    Invoker.execute(:analysis_next_step_command, analysis_item, command_class)
   end
 
   def update_webhook_event_payload(webhook_event, analysis_report)

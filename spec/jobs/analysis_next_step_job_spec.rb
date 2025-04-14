@@ -13,7 +13,7 @@ RSpec.shared_examples 'does nothing' do
   end
 end
 
-RSpec.describe AnalysisStepJob, type: :job do
+RSpec.describe AnalysisNextStepJob, type: :job do
   subject { job_instance.perform(analysis_item&.id, analysis_step&.id) }
 
   let(:job_instance) { described_class.new }

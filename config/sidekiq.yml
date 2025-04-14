@@ -19,7 +19,7 @@
 :queues:
   - default
   - analysis_report
-  - analysis_step
+  - analysis_next_step
   - cloned_analysis_item
   - retry
 

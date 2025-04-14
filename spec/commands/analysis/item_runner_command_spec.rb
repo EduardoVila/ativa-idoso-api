@@ -66,7 +66,7 @@ RSpec.describe Analysis::ItemRunnerCommand, type: :command do
           item_command.call
 
           expect(Invoker).not_to have_received(:execute)
-            .with(:analysis_step_command, analysis_item)
+            .with(:analysis_step_by_step_command, analysis_item)
         end
       end
 
@@ -79,7 +79,7 @@ RSpec.describe Analysis::ItemRunnerCommand, type: :command do
           item_command.call
 
           expect(Invoker).to have_received(:execute)
-            .with(:analysis_step_command, analysis_item)
+            .with(:analysis_step_by_step_command, analysis_item)
           expect(Invoker).to have_received(:execute)
             .with(:analysis_report_sync_command, analysis_report)
         end

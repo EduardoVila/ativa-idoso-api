@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Analysis
-  class StepCommand < ApplicationCommand
+  class StepByStepCommand < ApplicationCommand
     attr_reader :analysis_item
 
     def initialize(analysis_item)
@@ -19,19 +19,19 @@ module Analysis
         current_item.steps << enabled_step
 
         # Get the item_step for the newly added current step.
-        item_step = analysis_item.item_steps.find_by(step: enabled_step)
+        item_step = current_item.item_steps.find_by(step: enabled_step)
 
         # Mark step as in progress.
         item_step.update(execution_status: :wip, started_at: Time.current)
 
         # invoke step and update the analysis item status if necessary.
-        invoke_step(current_item, enabled_step.command_class, item_step)
+        run_step(current_item, enabled_step.command_class, item_step)
 
         # Continue running step by step if the analysis item status is wip.
         next if analysis_item.reload.wip?
 
         # Update the steps data and features of the analysis item to latest values.
-        update_model_features_and_steps_data
+        update_model_features_and_steps_data(enabled_step.command_class)
         # Break the loop if the status is done/error/not_found.
         break
       end
@@ -39,20 +39,23 @@ module Analysis
 
     private
 
-    def update_model_features_and_steps_data
-      update_features if analysis_item.done?
+    def update_model_features_and_steps_data(command_class)
+      if analysis_item.done? && command_class == 'Analysis::PredictionCommand'
+        update_features
+      end
+
       update_steps_data
     end
 
     # This method invokes the step command and updates the analysis item status.
-    def invoke_step(current_item, command_class, item_step)
+    def run_step(current_item, command_class, item_step)
       if command_class == 'Analysis::PredictionCommand' # Last step.
-        run_prediction_step(current_item, command_class, item_step)
+        invoke_prediction_step(current_item, command_class, item_step)
 
         return
       end
 
-      result = run_regular_step(current_item, command_class, item_step)
+      result = invoke_regular_step(current_item, command_class, item_step)
 
       return if result[:approved]
 
@@ -62,7 +65,7 @@ module Analysis
 
     # This method runs the regular steps of the analysis item.
     # It updates the execution status of the item_step and the analysis item.
-    def run_regular_step(current_item, command_class, item_step)
+    def invoke_regular_step(current_item, command_class, item_step)
       start_time = Time.current
       result = Invoker.execute(:a_step, current_item, command_class)
 
@@ -73,7 +76,7 @@ module Analysis
 
     # This method runs the last step of the analysis item.
     # It updates the execution status of the item_step and the analysis item.
-    def run_prediction_step(current_item, command_class, item_step)
+    def invoke_prediction_step(current_item, command_class, item_step)
       start_time = Time.current
       result = Invoker.execute(:a_step, current_item, command_class)
 

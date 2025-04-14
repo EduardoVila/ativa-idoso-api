@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Analysis::StepCommand, type: :command do
+RSpec.describe Analysis::StepByStepCommand, type: :command do
   let(:analysis_item) { create :analysis_item, :wip, error_status: :none }
   let(:command) { described_class.new(analysis_item) }
 

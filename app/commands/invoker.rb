@@ -13,7 +13,7 @@
 # - :analysis_item_runner_command -> Analysis::ItemRunnerCommand
 # - :api_webhook_trigger_command -> Api::WebhookTriggerCommand
 # - :boa_vista_cadastral_command -> BoaVista::CadastralCommand
-# - :analysis_step_command -> Analysis::StepCommand
+# - :analysis_step_by_step_command -> Analysis::StepByStepCommand
 # - :analysis_report_sync_command -> Analysis::ReportSyncCommand
 #
 # Methods:
@@ -31,8 +31,9 @@ class Invoker
     analysis_item_runner_command: 'Analysis::ItemRunnerCommand',
     api_webhook_trigger_command: 'Api::WebhookTriggerCommand',
     boa_vista_cadastral_command: 'BoaVista::CadastralCommand',
-    analysis_step_command: 'Analysis::StepCommand',
-    analysis_report_sync_command: 'Analysis::ReportSyncCommand'
+    analysis_step_by_step_command: 'Analysis::StepByStepCommand',
+    analysis_report_sync_command: 'Analysis::ReportSyncCommand',
+    analysis_next_step_command: 'Analysis::NextStepCommand'
   }.freeze
 
   def self.execute(*)
@@ -40,8 +41,10 @@ class Invoker
   end
 
   def execute(command, object, klass_name = nil)
-    if COMMANDS.key?(command.to_sym)
+    if COMMANDS.key?(command.to_sym) && klass_name.nil?
       COMMANDS[command.to_sym].constantize.call(object)
+    elsif COMMANDS.key?(command.to_sym) && klass_name.present?
+      COMMANDS[command.to_sym].constantize.call(object, klass_name)
     elsif command == :a_step
       klass_name.constantize.call(object)
     else

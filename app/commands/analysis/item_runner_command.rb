@@ -53,7 +53,7 @@ module Analysis
     end
 
     def analyze_item_step_by_step
-      Invoker.execute(:analysis_step_command, analysis_item)
+      Invoker.execute(:analysis_step_by_step_command, analysis_item)
     end
   end
 end
