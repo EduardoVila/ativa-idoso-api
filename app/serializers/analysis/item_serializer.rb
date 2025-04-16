@@ -34,8 +34,15 @@ module Analysis
     attributes :id, :cpf, :name, :disapproval_situation, :debits, :age,
                :status, :created_at, :fee, :error_status, :approved,
                :presumed_incomes, :proprable_profession, :bounced_check,
-               :protested_titles, :pro_score_bounced_checks,
-               :provenir_big_data_corp, :steps_data, :predictions
+               :protested_titles, :pro_score_bounced_checks, :clone_of_id,
+               :provenir_big_data_corp, :steps_data, :predictions,
+               :original_analysis_item
+
+    def original_analysis_item
+      return if object.clone_of_id.blank?
+
+      object.clone_of.serialize_record(with: self.class)
+    end
 
     def predictions
       object_with_associations.predictions.map(&:serialize_record)
