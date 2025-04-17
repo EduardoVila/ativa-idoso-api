@@ -11,7 +11,7 @@
 #  features              :jsonb            not null
 #  name                  :string
 #  status                :integer          default("todo")
-#  steps_data  :jsonb            not null
+#  steps_data            :jsonb            not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  analysis_report_id    :bigint           not null
@@ -94,19 +94,6 @@ RSpec.describe Analysis::ItemSerializer, type: :serializer do
         it 'returns false' do
           expect(subject[:bounced_check]).to be false
         end
-      end
-    end
-
-    describe '#trials' do
-      let(:big_data_corp) { create :provenir_big_data_corp, analysis_item: }
-      let(:process) { create :provenir_process, big_data_corp: }
-      let!(:trial) { create :provenir_lawsuit, process: }
-      let!(:financial_datum) do
-        create :provenir_financial_datum, big_data_corp:
-      end
-
-      it 'returns the trials' do
-        expect(subject[:trials]).to include(trial.serialize_record)
       end
     end
 

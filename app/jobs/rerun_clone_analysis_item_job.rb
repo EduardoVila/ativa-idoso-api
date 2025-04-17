@@ -2,8 +2,8 @@
 
 require_relative 'application_job'
 
-class ClonedAnalysisItemJob < ApplicationJob
-  queue_as :cloned_analysis_item
+class RerunCloneAnalysisItemJob < ApplicationJob
+  queue_as :rerun_clone_analysis_item
 
   def perform(analysis_item_id)
     analysis_item = find_analysis_item(analysis_item_id)
@@ -16,9 +16,9 @@ class ClonedAnalysisItemJob < ApplicationJob
       webhook_event.update!(status: :processing, job_id: job_id)
       analysis_item.update!(clone_of_id: nil, status: :todo, name: nil)
       analysis_report.update!(status: :wip)
+      analysis_item.predictions.destroy_all
+      analysis_item.steps.destroy_all
     end
-
-    analysis_item.predictions.destroy_all
 
     process_analysis_item(analysis_item)
 

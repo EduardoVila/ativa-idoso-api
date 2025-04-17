@@ -2,8 +2,8 @@
 
 require_relative 'application_job'
 
-class AnalysisNextStepJob < ApplicationJob
-  queue_as :analysis_next_step
+class NextAnalysisStepJob < ApplicationJob
+  queue_as :next_analysis_step
 
   def perform(analysis_item_id, analysis_step_id)
     return if analysis_item_id.blank? || analysis_step_id.blank?

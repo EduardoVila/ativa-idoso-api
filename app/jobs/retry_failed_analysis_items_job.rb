@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class RetryJob < ApplicationJob
-  queue_as :retry
+class RetryFailedAnalysisItemsJob < ApplicationJob
+  queue_as :retry_failed_analysis_items
 
   def perform(analysis_report_id)
     analysis_report = find_analysis_report(analysis_report_id)

@@ -18,14 +18,14 @@ RSpec.describe V1::RetryAnalysisReport, type: :handler do
 
     before do
       allow(Tokenable).to receive_messages(current_client: current_client)
-      allow(RetryJob).to receive(:perform_later)
+      allow(RetryFailedAnalysisItemsJob).to receive(:perform_later)
 
       post_request
     end
 
     context 'when analysis report exists and status is error' do
-      it 'schedules the RetryJob' do
-        expect(RetryJob).to have_received(:perform_later)
+      it 'schedules the RetryFailedAnalysisItemsJob' do
+        expect(RetryFailedAnalysisItemsJob).to have_received(:perform_later)
           .with(analysis_report.id)
       end
 
@@ -39,7 +39,7 @@ RSpec.describe V1::RetryAnalysisReport, type: :handler do
 
       before do
         allow(Tokenable).to receive_messages(current_client: current_client)
-        allow(RetryJob).to receive(:perform_later)
+        allow(RetryFailedAnalysisItemsJob).to receive(:perform_later)
 
         post(route, { cpf: '00000000000' }.to_json, headers)
       end

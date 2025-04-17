@@ -11,7 +11,7 @@
 #  features              :jsonb            not null
 #  name                  :string
 #  status                :integer          default("todo")
-#  steps_data  :jsonb            not null
+#  steps_data            :jsonb            not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  analysis_report_id    :bigint           not null

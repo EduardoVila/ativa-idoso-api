@@ -5,7 +5,7 @@ Dir[File.join(__dir__, 'concerns', '*.rb')].each do |file|
 end
 
 module V1
-  class RerunAnalysisItem < Sinatra::Base
+  class RerunCloneAnalysisItem < Sinatra::Base
     include Headable
 
     post('/v1/analysis-items/:analysis_item_id/reruns') do
@@ -19,7 +19,7 @@ module V1
       verify_client_ownership!(current_client, analysis_item.report)
 
       # Enqueue job
-      ClonedAnalysisItemJob.perform_later(analysis_item.id)
+      RerunCloneAnalysisItemJob.perform_later(analysis_item.id)
       status(202)
     end
 

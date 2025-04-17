@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Analysis
   class NextStepCommand < ApplicationCommand
     attr_reader :analysis_item, :command_class, :analysis_report

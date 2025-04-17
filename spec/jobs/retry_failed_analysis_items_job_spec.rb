@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe RetryJob, type: :job do
+RSpec.describe RetryFailedAnalysisItemsJob, type: :job do
   subject { job_instance.perform(retry_record&.id) }
 
   let(:job_instance) { described_class.new }

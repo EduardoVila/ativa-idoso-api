@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe ClonedAnalysisItemJob, type: :job do
+RSpec.describe RerunCloneAnalysisItemJob, type: :job do
   subject { described_class }
 
   let(:analysis_item) { create :analysis_item, :clone }
@@ -25,7 +25,7 @@ RSpec.describe ClonedAnalysisItemJob, type: :job do
     clear_performed_jobs
   end
 
-  it { expect(subject.queue_name).to eq 'cloned_analysis_item' }
+  it { expect(subject.queue_name).to eq 'rerun_clone_analysis_item' }
 
   describe '#perform' do
     context 'when clone_of_id is present' do

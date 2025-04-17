@@ -14,7 +14,7 @@ class AlpopAnalysis < Sinatra::Base
   use V1::Authenticate
   use V1::CreateAnalysisReport
   use V1::NextAnalysisStep
-  use V1::RerunAnalysisItem
+  use V1::RerunCloneAnalysisItem
   use V1::RetryAnalysisReport
   use V1::ShowAnalysisReport
   use Rack::SslEnforcer, hsts: { subdomains: true }, only_https: true

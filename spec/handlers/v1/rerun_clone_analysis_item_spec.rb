@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe V1::RerunAnalysisItem, type: :handler do
+RSpec.describe V1::RerunCloneAnalysisItem, type: :handler do
   describe 'POST /v1/analysis-items/:analysis_item_id/reruns' do
     subject(:post_request) { post(route, headers) }
 
@@ -13,15 +13,15 @@ RSpec.describe V1::RerunAnalysisItem, type: :handler do
     let(:current_client) { analysis_item.report.api_client }
 
     before do
-      allow(ClonedAnalysisItemJob).to receive(:perform_later)
+      allow(RerunCloneAnalysisItemJob).to receive(:perform_later)
       allow(Tokenable).to receive_messages(current_client: current_client)
     end
 
     context 'when the request is valid' do
       before { post_request }
 
-      it 'enqueues the ClonedAnalysisItemJob' do
-        expect(ClonedAnalysisItemJob).to have_received(:perform_later).with(
+      it 'enqueues the RerunCloneAnalysisItemJob' do
+        expect(RerunCloneAnalysisItemJob).to have_received(:perform_later).with(
           analysis_item.id
         )
       end

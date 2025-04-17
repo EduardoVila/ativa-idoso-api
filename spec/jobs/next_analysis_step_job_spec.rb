@@ -13,7 +13,7 @@ RSpec.shared_examples 'does nothing' do
   end
 end
 
-RSpec.describe AnalysisNextStepJob, type: :job do
+RSpec.describe NextAnalysisStepJob, type: :job do
   subject { job_instance.perform(analysis_item&.id, analysis_step&.id) }
 
   let(:job_instance) { described_class.new }
@@ -28,17 +28,25 @@ RSpec.describe AnalysisNextStepJob, type: :job do
         create :api_webhook_event, event_id: analysis_item.analysis_report_id
       end
 
-      it 'calls analysis_step command' do
+      it 'invokes the next step of the analysis process' do
         subject
 
         expect(Invoker).to have_received(:execute).once
-          .with(:a_step, analysis_item, analysis_step.command_class)
+          .with(
+            :analysis_next_step_command,
+            analysis_item,
+            analysis_step.command_class
+          )
       end
 
-      it 'changes status of analysis_item to wip and after to done' do
-        allow(analysis_item).to receive(:update).and_call_original.twice
+      it 'invokes the api webhook trigger command to callback the requester' do
+        subject
 
-        expect { subject }.to change { analysis_item.steps.count }.by(1)
+        expect(Invoker).to have_received(:execute).once
+          .with(
+            :api_webhook_trigger_command,
+            webhook_event
+          )
       end
     end
 

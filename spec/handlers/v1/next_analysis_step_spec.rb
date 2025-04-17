@@ -20,15 +20,15 @@ RSpec.describe V1::NextAnalysisStep, type: :handler do
     let(:current_client) { analysis_item.report.api_client }
 
     before do
-      allow(AnalysisNextStepJob).to receive(:perform_later)
+      allow(NextAnalysisStepJob).to receive(:perform_later)
       allow(Tokenable).to receive_messages(current_client: current_client)
     end
 
     context 'when the step is not associated with the analysis item' do
       before { post_request }
 
-      it 'enqueues the AnalysisNextStepJob' do
-        expect(AnalysisNextStepJob).to have_received(:perform_later).with(
+      it 'enqueues the NextAnalysisStepJob' do
+        expect(NextAnalysisStepJob).to have_received(:perform_later).with(
           analysis_item.id, analysis_step.id
         )
       end
