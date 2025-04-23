@@ -14,19 +14,10 @@
 #
 module Analysis
   class StepSerializer < ApplicationSerializer
-    attributes :id, :name, :formatted_name, :command_class, :index_order,
-               :item_steps
+    attributes :id, :name, :formatted_name, :command_class, :index_order
 
     def formatted_name
       I18n.t("activemodel.models.item_step.attributes.name.#{object.name}")
-    end
-
-    def item_steps
-      object.item_steps.includes(:item).map do |item_step|
-        item_step.serialize_record(
-          with: Analysis::ItemStepSerializer
-        )
-      end
     end
   end
 end
