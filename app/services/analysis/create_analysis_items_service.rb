@@ -41,9 +41,29 @@ module Analysis
         disapproval_situation: previous_analysis_item.disapproval_situation
       )
 
-      # Cloning current steps
-      previous_analysis_item.steps.each do |step|
-        new_analysis_item.item_steps.create(step: step)
+      # Cloning current steps and item_steps
+      previous_analysis_item.steps.each do |current_step|
+        # Cloning the step
+        new_analysis_item.item_steps.create(step: current_step)
+
+        # Getting the new item_step from the current_step using the new analysis item
+        new_item_step = current_step.item_steps.find_by(
+          item: new_analysis_item
+        )
+
+        # Getting the previous item_step
+        previous_item_step = current_step.item_steps.find_by(
+          item: previous_analysis_item
+        )
+
+        # Updating the new_item_step with the previous_item_step attributes
+        new_item_step.update(
+          duration: previous_item_step.duration,
+          execution_status: previous_item_step.execution_status,
+          result_summary: previous_item_step.result_summary,
+          started_at: previous_item_step.started_at,
+          finished_at: previous_item_step.finished_at
+        )
       end
 
       # Cloning current predictions
