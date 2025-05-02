@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_02_150249) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_02_171449) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -126,7 +126,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_02_150249) do
     t.datetime "updated_at", null: false
     t.integer "requester", default: 0
     t.index ["api_client_id"], name: "index_api_webhook_events_on_api_client_id"
+    t.index ["callback_id"], name: "index_api_webhook_events_on_callback_id"
+    t.index ["callback_url"], name: "index_api_webhook_events_on_callback_url"
+    t.index ["event_id"], name: "index_api_webhook_events_on_event_id"
+    t.index ["event_type"], name: "index_api_webhook_events_on_event_type"
     t.index ["requester"], name: "index_api_webhook_events_on_requester"
+    t.index ["status"], name: "index_api_webhook_events_on_status"
   end
 
   create_table "audits", force: :cascade do |t|
