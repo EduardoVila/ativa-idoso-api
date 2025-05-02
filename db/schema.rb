@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_08_134112) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_02_150249) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -19,15 +19,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_134112) do
   enable_extension "uuid-ossp"
 
   create_table "analysis_item_steps", force: :cascade do |t|
+    t.bigint "analysis_item_id", null: false
+    t.bigint "analysis_step_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.datetime "started_at"
     t.datetime "finished_at"
     t.float "duration"
     t.integer "execution_status"
     t.jsonb "result_summary", default: {}, null: false
-    t.bigint "analysis_item_id", null: false
-    t.bigint "analysis_step_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.index ["analysis_item_id"], name: "index_analysis_item_steps_on_analysis_item_id"
     t.index ["analysis_step_id"], name: "index_analysis_item_steps_on_analysis_step_id"
   end
@@ -38,12 +38,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_134112) do
     t.integer "status", default: 0
     t.integer "error_status", default: 0
     t.integer "disapproval_situation"
-    t.jsonb "steps_data", default: {}, null: false
-    t.jsonb "features", default: {}, null: false
+    t.jsonb "features", default: {}
     t.bigint "clone_of_id"
     t.bigint "analysis_report_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "steps_data", default: {}, null: false
     t.index ["analysis_report_id"], name: "index_analysis_items_on_analysis_report_id"
     t.index ["clone_of_id"], name: "index_analysis_items_on_clone_of_id"
   end
@@ -68,11 +68,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_134112) do
     t.boolean "approved"
     t.integer "disapproval_situation"
     t.string "payload"
-    t.string "prediction_model_name"
     t.bigint "api_client_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "prediction_model_name"
     t.index ["api_client_id"], name: "index_analysis_reports_on_api_client_id"
+    t.index ["prediction_model_name"], name: "index_analysis_reports_on_prediction_model_name"
   end
 
   create_table "analysis_steps", force: :cascade do |t|
@@ -80,6 +81,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_134112) do
     t.string "command_class"
     t.integer "index_order"
     t.boolean "enabled", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "analysis_tokens", force: :cascade do |t|
+    t.string "access_token"
+    t.string "token_type"
+    t.integer "expires_in"
+    t.string "scope"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -96,11 +106,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_134112) do
   create_table "api_clients", force: :cascade do |t|
     t.string "client_id", null: false
     t.string "client_secret", null: false
-    t.string "name"
-    t.string "description"
     t.text "validators", default: ["blocked_negativity_validator", "exceeded_debits_validator", "protested_titles_validator", "provenir_has_obit_indication_validator", "provenir_family_holding_validator", "provenir_process_validator", "provenir_age_and_income_validator"], array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "description"
   end
 
   create_table "api_webhook_events", force: :cascade do |t|
@@ -112,16 +121,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_134112) do
     t.integer "status"
     t.jsonb "payload"
     t.jsonb "response"
-    t.integer "requester", default: 0, null: false
     t.bigint "api_client_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "requester", default: 0
     t.index ["api_client_id"], name: "index_api_webhook_events_on_api_client_id"
-    t.index ["callback_id"], name: "index_api_webhook_events_on_callback_id"
-    t.index ["callback_url"], name: "index_api_webhook_events_on_callback_url"
-    t.index ["event_id"], name: "index_api_webhook_events_on_event_id"
     t.index ["requester"], name: "index_api_webhook_events_on_requester"
-    t.index ["status"], name: "index_api_webhook_events_on_status"
   end
 
   create_table "audits", force: :cascade do |t|
