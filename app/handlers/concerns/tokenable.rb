@@ -13,7 +13,7 @@ module Tokenable # rubocop:disable Metrics/ModuleLength
     # @return [String] Encoded JWT token
     # @raise [ArgumentError] If payload is invalid
     # @raise [StandardError] If token creation fails
-    def create_jwt(payload:, expires_in: ENV.fetch('SECONDS').to_i)
+    def create_jwt(payload:, expires_in: EnvHelper.fetch('SECONDS').to_i)
       validate_payload!(payload)
 
       jwt_payload = build_payload(payload, expires_in)
@@ -71,20 +71,20 @@ module Tokenable # rubocop:disable Metrics/ModuleLength
     def build_payload(custom_payload, expires_in)
       {
         'exp' => Time.now.to_i + expires_in,
-        'iss' => ENV.fetch('JWT_ISSUER'),
+        'iss' => EnvHelper.fetch('JWT_ISSUER'),
         'iat' => Time.now.to_i
       }.merge(custom_payload)
     end
 
     def load_private_key
-      private_key_string = ENV.fetch('RSA_PRIVATE_KEY')
+      private_key_string = EnvHelper.fetch('RSA_PRIVATE_KEY')
         .gsub('\\n', "\n")
 
       OpenSSL::PKey::RSA.new(private_key_string)
     end
 
     def fetch_algorithm
-      ENV.fetch('JWT_ALGORITHM')
+      EnvHelper.fetch('JWT_ALGORITHM')
     end
 
     def extract_issuer(token)

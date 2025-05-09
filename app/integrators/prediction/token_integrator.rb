@@ -33,7 +33,7 @@ module Prediction
 
     # Endpoint: POST /api/v1/tokens
     def post_url
-      ENV.fetch('PREDICTION_TOKEN_URL')
+      EnvHelper.fetch('PREDICTION_TOKEN_URL')
     end
 
     def post_headers
@@ -47,9 +47,9 @@ module Prediction
 
     def post_body
       {
-        client_id: Base64.strict_encode64(ENV.fetch('PREDICTION_CLIENT_ID')),
+        client_id: Base64.strict_encode64(EnvHelper.fetch('PREDICTION_CLIENT_ID')),
         client_secret: Base64.strict_encode64(
-          ENV.fetch('PREDICTION_CLIENT_SECRET')
+          EnvHelper.fetch('PREDICTION_CLIENT_SECRET')
         ),
         grant_type: 'client_credentials'
       }

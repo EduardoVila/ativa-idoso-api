@@ -28,7 +28,7 @@ module PresumedIncomeHelpers
   end
 
   def url(score)
-    url = ENV.fetch('PRO_SCORE_BASE_SEARCH_URL')
+    url = EnvHelper.fetch('PRO_SCORE_BASE_SEARCH_URL')
 
     path_params(score).each do |param|
       url += "#{param.first}=#{param.second}&"
@@ -39,9 +39,9 @@ module PresumedIncomeHelpers
 
   def credentials
     {
-      rede: ENV.fetch('PRO_SCORE_REDE'),
-      loja: ENV.fetch('PRO_SCORE_LOJA'),
-      ctr: ENV.fetch('PRO_SCORE_CTR')
+      rede: EnvHelper.fetch('PRO_SCORE_REDE'),
+      loja: EnvHelper.fetch('PRO_SCORE_LOJA'),
+      ctr: EnvHelper.fetch('PRO_SCORE_CTR')
     }
   end
 

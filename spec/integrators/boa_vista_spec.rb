@@ -34,8 +34,8 @@ RSpec.describe Integrators::BoaVista do
     context 'when calls credentials' do
       let(:secrets_boavista) do
         {
-          user: ENV.fetch('BOA_VISTA_USER'),
-          password: ENV.fetch('BOA_VISTA_PASSWORD')
+          user: EnvHelper.fetch('BOA_VISTA_USER'),
+          password: EnvHelper.fetch('BOA_VISTA_PASSWORD')
         }
       end
 

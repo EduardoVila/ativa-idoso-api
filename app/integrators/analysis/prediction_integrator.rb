@@ -67,11 +67,11 @@ module Analysis
 
     # Endpoint: POST /api/v1/predictions
     def post_url
-      ENV.fetch('PREDICTION_URL')
+      EnvHelper.fetch('PREDICTION_URL')
     end
 
     def get_url(id)
-      "#{ENV.fetch('PREDICTION_URL')}/#{id}"
+      "#{EnvHelper.fetch('PREDICTION_URL')}/#{id}"
     end
 
     def headers

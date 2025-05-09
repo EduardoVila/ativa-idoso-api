@@ -10,9 +10,9 @@ require_relative '../../../app/integrators/errors/guarantor/token_response_error
 # rubocop:enable Layout/LineLength
 
 RSpec.describe Guarantor::TokenIntegrator do
-  let(:url) { ENV.fetch('GUARANTOR_TOKEN_URL') }
-  let(:client_id) { ENV.fetch('GUARANTOR_CLIENT_ID') }
-  let(:client_secret) { ENV.fetch('GUARANTOR_CLIENT_SECRET') }
+  let(:url) { EnvHelper.fetch('GUARANTOR_TOKEN_URL') }
+  let(:client_id) { EnvHelper.fetch('GUARANTOR_CLIENT_ID') }
+  let(:client_secret) { EnvHelper.fetch('GUARANTOR_CLIENT_SECRET') }
   let(:response_headers) { { 'Content-Type' => 'application/json' } }
   let(:headers) do
     {

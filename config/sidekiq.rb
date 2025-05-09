@@ -34,7 +34,7 @@ end
 
 # Fetch Redis URL, fallback to ENV variable or default to localhost.
 redis_url = sidekiq_config.fetch(
-  :redis_url, ENV.fetch('REDIS_URL', 'redis://localhost:6379/0')
+  :redis_url, EnvHelper.fetch('REDIS_URL', 'redis://localhost:6379/0')
 )
 
 redis_config = { url: redis_url, network_timeout: 5, reconnect_attempts: 3 }

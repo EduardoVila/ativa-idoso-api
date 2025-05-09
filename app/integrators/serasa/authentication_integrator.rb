@@ -44,15 +44,15 @@ module Serasa
     end
 
     def post_url
-      ENV.fetch('SERASA_FINTECH_REPORT_LOGIN_URL')
+      EnvHelper.fetch('SERASA_FINTECH_REPORT_LOGIN_URL')
     end
 
     def client_credentials
       username = Base64.strict_encode64(
-        ENV.fetch('SERASA_FINTECH_REPORT_USERNAME')
+        EnvHelper.fetch('SERASA_FINTECH_REPORT_USERNAME')
       )
       password = Base64.strict_encode64(
-        ENV.fetch('SERASA_FINTECH_REPORT_PASSWORD')
+        EnvHelper.fetch('SERASA_FINTECH_REPORT_PASSWORD')
       )
 
       "#{username}:#{password}"

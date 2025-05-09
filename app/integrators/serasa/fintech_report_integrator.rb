@@ -64,7 +64,7 @@ module Serasa
     end
 
     def url
-      ENV.fetch('SERASA_FINTECH_REPORT_URL')
+      EnvHelper.fetch('SERASA_FINTECH_REPORT_URL')
     end
 
     def not_found_message?(response_body)

@@ -40,9 +40,9 @@ module ProScore
 
     def credentials
       {
-        rede: ENV.fetch('PRO_SCORE_REDE'),
-        loja: ENV.fetch('PRO_SCORE_LOJA'),
-        ctr: ENV.fetch('PRO_SCORE_CTR')
+        rede: EnvHelper.fetch('PRO_SCORE_REDE'),
+        loja: EnvHelper.fetch('PRO_SCORE_LOJA'),
+        ctr: EnvHelper.fetch('PRO_SCORE_CTR')
       }
     end
 

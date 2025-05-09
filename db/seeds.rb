@@ -118,14 +118,14 @@ end
 # Add public keys to the database from the environment variables.
 public_keys = [
   {
-    key: ENV.fetch('RSA_PUBLIC_KEY').gsub('\\n', "\n"), # Sanitize the public key (replace escaped newlines)
+    key: EnvHelper.fetch('RSA_PUBLIC_KEY').gsub('\\n', "\n"), # Sanitize the public key (replace escaped newlines)
     issuer: 'alpop-analysis',
     algorithm: 'RS256',
     valid_from: Time.now,
     valid_to: Time.now + 1.year,
   },
   {
-    key: ENV.fetch('RSA_ALPOP_PREDICTION_PUBLIC_KEY').gsub('\\n', "\n"),
+    key: EnvHelper.fetch('RSA_ALPOP_PREDICTION_PUBLIC_KEY').gsub('\\n', "\n"),
     issuer: 'alpop-prediction',
     algorithm: 'RS256',
     valid_from: Time.now,

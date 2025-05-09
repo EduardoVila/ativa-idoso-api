@@ -14,16 +14,29 @@ require_relative 'database'
 
 Dotenv.load # Load environment variables from .env files
 
+module EnvHelper
+  def self.fetch(name, default = nil)
+    value = ENV.fetch(name, default)
+    return value unless value.is_a?(String)
+
+    # Convert hex escape sequences to their character representations
+    value.gsub(/\\x([0-9a-fA-F]{2})/) do # Regexp to match hex escape sequences
+      # Convert the hex value to an integer and then to a character
+      [::Regexp.last_match(1).to_i(16)].pack('C')
+    end
+  end
+end
+
 # To set the environment, use the RACK_ENV environment variable
-set :environment, ENV.fetch('RACK_ENV', 'development') # Default to development
+set :environment, EnvHelper.fetch('RACK_ENV', 'development') # Default to development
 
 # ApplicationLoader module to load the application and its dependencies
 module ApplicationLoader
   require 'require_all'
   require 'bundler/setup'
 
-  def self.load_gems(environment = ENV.fetch('RACK_ENV'))
-    ENV.fetch('BUNDLE_GEMFILE', File.expand_path('../Gemfile', __dir__))
+  def self.load_gems(environment = EnvHelper.fetch('RACK_ENV'))
+    EnvHelper.fetch('BUNDLE_GEMFILE', File.expand_path('../Gemfile', __dir__))
 
     Bundler.require(:default, environment.to_sym)
   end
@@ -33,9 +46,6 @@ module ApplicationLoader
 
     # Load all models first to ensure constants are available to other classes (e.g. concerns)
     require_relative '../app/models/application_record'
-
-    lib_validators = File.join(File.dirname(__FILE__), '../lib/validators/*.rb')
-    require_all lib_validators
 
     models_dir = File.join(File.dirname(__FILE__), '../app/models/*.rb')
     require_all models_dir
@@ -103,7 +113,7 @@ configure :development, :test, :production do
 
   use Rack::Cors do
     allow do
-      origins ENV.fetch('CORS_ALLOWED_ORIGINS', 'alpop.com.br')
+      origins EnvHelper.fetch('CORS_ALLOWED_ORIGINS', 'alpop.com.br')
       resource '*',
                headers: :any,
                methods: %i[get post put patch delete options head],

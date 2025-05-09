@@ -62,7 +62,7 @@ RSpec.describe Integrators::Idwall do
 
   describe '.credentials' do
     context 'when calls credentials' do
-      let(:secrets_idwall) { { token: ENV.fetch('IDWALL_TOKEN') } }
+      let(:secrets_idwall) { { token: EnvHelper.fetch('IDWALL_TOKEN') } }
 
       it 'setups token' do
         token = secrets_idwall[:token]

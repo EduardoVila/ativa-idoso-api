@@ -10,13 +10,13 @@ require_relative '../../../app/integrators/errors/serasa/response_error'
 
 RSpec.describe Serasa::AuthenticationIntegrator do
   let(:post_url) do
-    ENV.fetch('SERASA_FINTECH_REPORT_LOGIN_URL')
+    EnvHelper.fetch('SERASA_FINTECH_REPORT_LOGIN_URL')
   end
   let(:username) do
-    Base64.strict_encode64(ENV.fetch('SERASA_FINTECH_REPORT_USERNAME'))
+    Base64.strict_encode64(EnvHelper.fetch('SERASA_FINTECH_REPORT_USERNAME'))
   end
   let(:password) do
-    Base64.strict_encode64(ENV.fetch('SERASA_FINTECH_REPORT_PASSWORD'))
+    Base64.strict_encode64(EnvHelper.fetch('SERASA_FINTECH_REPORT_PASSWORD'))
   end
   let(:headers) do
     {

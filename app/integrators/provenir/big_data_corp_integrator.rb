@@ -62,7 +62,7 @@ module Provenir
     end
 
     def post_url
-      ENV.fetch('PROVENIR_BIG_DATA_CORP_URL')
+      EnvHelper.fetch('PROVENIR_BIG_DATA_CORP_URL')
     end
 
     def post_headers
@@ -80,8 +80,8 @@ module Provenir
     end
 
     def access_token
-      client_id = ENV.fetch('PROVENIR_CLIENT_ID')
-      client_secret = ENV.fetch('PROVENIR_CLIENT_SECRET')
+      client_id = EnvHelper.fetch('PROVENIR_CLIENT_ID')
+      client_secret = EnvHelper.fetch('PROVENIR_CLIENT_SECRET')
 
       Base64.strict_encode64("#{client_id}:#{client_secret}")
     end

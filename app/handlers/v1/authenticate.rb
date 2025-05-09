@@ -56,7 +56,7 @@ module V1
       {
         access_token: access_token,
         token_type: 'Bearer',
-        expires_in: ENV.fetch('SECONDS').to_i
+        expires_in: EnvHelper.fetch('SECONDS').to_i
       }.to_json
     end
   end

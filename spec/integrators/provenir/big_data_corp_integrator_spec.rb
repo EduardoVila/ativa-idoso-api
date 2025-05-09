@@ -10,7 +10,7 @@ require_relative '../../../app/integrators/errors/provenir/big_data_corp_post_re
 # rubocop: enable Layout/LineLength
 
 RSpec.describe Provenir::BigDataCorpIntegrator do
-  let(:url) { ENV.fetch('PROVENIR_BIG_DATA_CORP_URL') }
+  let(:url) { EnvHelper.fetch('PROVENIR_BIG_DATA_CORP_URL') }
   let(:response_headers) { { 'Content-Type' => 'application/json' } }
 
   before { WebMock.disable_net_connect! }

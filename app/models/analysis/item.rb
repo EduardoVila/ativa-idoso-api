@@ -30,9 +30,8 @@
 require 'require_all'
 
 require_all 'app/models/concerns/delegators'
+require_all 'app/models/concerns/validators'
 require_all 'app/models/concerns/analysis'
-
-require_relative '../../../lib/validators/cpf_validator'
 
 module Analysis
   class Item < ApplicationRecord

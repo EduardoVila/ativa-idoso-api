@@ -64,8 +64,8 @@ module BoaVista
     def post_headers
       {
         'Content-Type' => 'application/json',
-        'user' => ENV.fetch('BOA_VISTA_USER'),
-        'password' => ENV.fetch('BOA_VISTA_PASSWORD')
+        'user' => EnvHelper.fetch('BOA_VISTA_USER'),
+        'password' => EnvHelper.fetch('BOA_VISTA_PASSWORD')
       }
     end
 
@@ -77,7 +77,7 @@ module BoaVista
     end
 
     def post_url
-      ENV.fetch('BOA_VISTA_CADASTRAL_URL')
+      EnvHelper.fetch('BOA_VISTA_CADASTRAL_URL')
     end
   end
 end

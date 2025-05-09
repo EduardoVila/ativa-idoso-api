@@ -70,8 +70,8 @@ module Integrators
 
     def self.credentials
       {
-        user: ENV.fetch('BOA_VISTA_USER'),
-        password: ENV.fetch('BOA_VISTA_PASSWORD')
+        user: EnvHelper.fetch('BOA_VISTA_USER'),
+        password: EnvHelper.fetch('BOA_VISTA_PASSWORD')
       }
     end
 

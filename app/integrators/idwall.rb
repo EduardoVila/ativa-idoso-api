@@ -101,7 +101,7 @@ module Integrators
     end
 
     def self.credentials
-      { token: ENV.fetch('IDWALL_TOKEN') }
+      { token: EnvHelper.fetch('IDWALL_TOKEN') }
     end
   end
 end

@@ -9,7 +9,7 @@ require_relative '../../../app/integrators/errors/serasa/response_error'
 require_relative '../../../app/integrators/errors/serasa/not_found_error'
 
 RSpec.describe Serasa::FintechReportIntegrator do
-  let(:url) { ENV.fetch('SERASA_FINTECH_REPORT_URL') }
+  let(:url) { EnvHelper.fetch('SERASA_FINTECH_REPORT_URL') }
   let(:token) { 'fake_token' }
   let(:headers) do
     {

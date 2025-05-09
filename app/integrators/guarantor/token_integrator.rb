@@ -34,7 +34,7 @@ module Guarantor
 
     # Endpoint: POST /api/v2/authenticate
     def post_url
-      ENV.fetch('GUARANTOR_TOKEN_URL')
+      EnvHelper.fetch('GUARANTOR_TOKEN_URL')
     end
 
     def post_headers
@@ -52,8 +52,8 @@ module Guarantor
     end
 
     def client_credentials
-      client_id = ENV.fetch('GUARANTOR_CLIENT_ID')
-      client_secret = ENV.fetch('GUARANTOR_CLIENT_SECRET')
+      client_id = EnvHelper.fetch('GUARANTOR_CLIENT_ID')
+      client_secret = EnvHelper.fetch('GUARANTOR_CLIENT_SECRET')
       "#{client_id}:#{client_secret}"
     end
   end

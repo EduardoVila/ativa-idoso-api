@@ -7,9 +7,9 @@ require_relative '../integrable'
 require_relative '../../../app/integrators/prediction/token_integrator'
 
 RSpec.describe Prediction::TokenIntegrator do
-  let(:url) { ENV.fetch('PREDICTION_TOKEN_URL') }
-  let(:client_secret) { ENV.fetch('PREDICTION_CLIENT_SECRET') }
-  let(:client_id) { ENV.fetch('PREDICTION_CLIENT_ID') }
+  let(:url) { EnvHelper.fetch('PREDICTION_TOKEN_URL') }
+  let(:client_secret) { EnvHelper.fetch('PREDICTION_CLIENT_SECRET') }
+  let(:client_id) { EnvHelper.fetch('PREDICTION_CLIENT_ID') }
   let(:response_headers) { { 'Content-Type' => 'application/json' } }
   let(:headers) do
     {

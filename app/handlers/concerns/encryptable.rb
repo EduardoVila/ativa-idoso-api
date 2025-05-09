@@ -12,7 +12,7 @@ module Encryptable
     def encrypt_sensitive_data(data)
       cipher = OpenSSL::Cipher.new('AES-256-CBC')
       cipher.encrypt
-      cipher.key = ENV.fetch('ENCRYPTION_KEY', nil) # Get encryption key from environment variable
+      cipher.key = EnvHelper.fetch('ENCRYPTION_KEY', nil) # Get encryption key from environment variable
       cipher.iv = iv = cipher.random_iv # Generate random initialization vector
       encrypted = cipher.update(data.to_s) + cipher.final
       # Combine IV and encrypted data, pack as base64 strings, then encode the whole thing
@@ -28,7 +28,7 @@ module Encryptable
 
       decipher = OpenSSL::Cipher.new('AES-256-CBC')
       decipher.decrypt
-      decipher.key = ENV.fetch('ENCRYPTION_KEY', nil) # Use same key as encryption
+      decipher.key = EnvHelper.fetch('ENCRYPTION_KEY', nil) # Use same key as encryption
       decipher.iv = iv # Use the IV that was used for encryption
       decipher.update(encrypted) + decipher.final
     end

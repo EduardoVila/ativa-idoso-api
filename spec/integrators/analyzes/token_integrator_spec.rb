@@ -7,9 +7,9 @@ require_relative '../integrable'
 require_relative '../../../app/integrators/analyzes/token_integrator'
 
 RSpec.describe Analyzes::TokenIntegrator do
-  let(:url) { ENV.fetch('ANALYZES_TOKEN_URL') }
-  let(:client_id) { ENV.fetch('ANALYZES_CLIENT_ID') }
-  let(:client_secret) { ENV.fetch('ANALYZES_CLIENT_SECRET') }
+  let(:url) { EnvHelper.fetch('ANALYZES_TOKEN_URL') }
+  let(:client_id) { EnvHelper.fetch('ANALYZES_CLIENT_ID') }
+  let(:client_secret) { EnvHelper.fetch('ANALYZES_CLIENT_SECRET') }
   let(:response_headers) { { 'Content-Type' => 'application/json' } }
   let(:headers) do
     {

@@ -11,13 +11,13 @@ end
 
 RSpec.describe BoaVista::CadastralIntegrator, :cadastral_helpers do
   let(:analysis_item) { create :analysis_item }
-  let(:url) { ENV.fetch('BOA_VISTA_CADASTRAL_URL') }
+  let(:url) { EnvHelper.fetch('BOA_VISTA_CADASTRAL_URL') }
   let(:success) { 200 }
   let(:headers) do
     {
       'Content-Type' => 'application/json',
-      'user' => ENV.fetch('BOA_VISTA_USER'),
-      'password' => ENV.fetch('BOA_VISTA_PASSWORD')
+      'user' => EnvHelper.fetch('BOA_VISTA_USER'),
+      'password' => EnvHelper.fetch('BOA_VISTA_PASSWORD')
     }
   end
 

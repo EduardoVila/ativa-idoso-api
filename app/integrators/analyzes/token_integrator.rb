@@ -33,7 +33,7 @@ module Analyzes
 
     # Endpoint: POST /api/v1/tokens
     def post_url
-      ENV.fetch('ANALYZES_TOKEN_URL')
+      EnvHelper.fetch('ANALYZES_TOKEN_URL')
     end
 
     def post_headers
@@ -51,8 +51,8 @@ module Analyzes
     end
 
     def client_credentials
-      client_id = ENV.fetch('ANALYZES_CLIENT_ID')
-      client_secret = ENV.fetch('ANALYZES_CLIENT_SECRET')
+      client_id = EnvHelper.fetch('ANALYZES_CLIENT_ID')
+      client_secret = EnvHelper.fetch('ANALYZES_CLIENT_SECRET')
       "#{client_id}:#{client_secret}"
     end
   end

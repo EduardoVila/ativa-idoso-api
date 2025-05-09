@@ -37,9 +37,9 @@ module ProScore
 
     def credentials
       {
-        client_secret: ENV.fetch('PRO_SCORE_CLIENT_SECRET'),
-        username: ENV.fetch('PRO_SCORE_USERNAME'),
-        password: ENV.fetch('PRO_SCORE_PASSWORD')
+        client_secret: EnvHelper.fetch('PRO_SCORE_CLIENT_SECRET'),
+        username: EnvHelper.fetch('PRO_SCORE_USERNAME'),
+        password: EnvHelper.fetch('PRO_SCORE_PASSWORD')
       }
     end
 

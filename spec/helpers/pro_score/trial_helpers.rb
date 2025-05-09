@@ -29,11 +29,11 @@ module TrialHelpers
 
   def credentials
     {
-      rde: ENV.fetch('PRO_SCORE_RDE'),
-      rdelja: ENV.fetch('PRO_SCORE_RDELJA'),
-      ctr: ENV.fetch('PRO_SCORE_CTR'),
-      srvcns: ENV.fetch('PRO_SCORE_SRVCNS'),
-      tcnscod: ENV.fetch('PRO_SCORE_TCNSCOD')
+      rde: EnvHelper.fetch('PRO_SCORE_RDE'),
+      rdelja: EnvHelper.fetch('PRO_SCORE_RDELJA'),
+      ctr: EnvHelper.fetch('PRO_SCORE_CTR'),
+      srvcns: EnvHelper.fetch('PRO_SCORE_SRVCNS'),
+      tcnscod: EnvHelper.fetch('PRO_SCORE_TCNSCOD')
     }
   end
 

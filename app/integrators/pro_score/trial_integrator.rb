@@ -55,11 +55,11 @@ module ProScore
 
     def credentials
       {
-        rde: ENV.fetch('PRO_SCORE_RDE'),
-        rdelja: ENV.fetch('PRO_SCORE_RDELJA'),
-        ctr: ENV.fetch('PRO_SCORE_CTR'),
-        srvcns: ENV.fetch('PRO_SCORE_SRVCNS'),
-        tcnscod: ENV.fetch('PRO_SCORE_TCNSCOD')
+        rde: EnvHelper.fetch('PRO_SCORE_RDE'),
+        rdelja: EnvHelper.fetch('PRO_SCORE_RDELJA'),
+        ctr: EnvHelper.fetch('PRO_SCORE_CTR'),
+        srvcns: EnvHelper.fetch('PRO_SCORE_SRVCNS'),
+        tcnscod: EnvHelper.fetch('PRO_SCORE_TCNSCOD')
       }
     end
 
@@ -111,7 +111,7 @@ module ProScore
     end
 
     def url(analysis_item)
-      url = ENV.fetch('PRO_SCORE_TRIAL_URL')
+      url = EnvHelper.fetch('PRO_SCORE_TRIAL_URL')
 
       path_params(analysis_item).each do |param|
         url += "#{param.first}=#{param.second}&"

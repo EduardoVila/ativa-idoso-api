@@ -16,17 +16,17 @@ Dotenv.load
 # Workers do not work on JRuby or Windows (both of which do not support
 # processes).
 #
-workers Integer(ENV.fetch('WEB_CONCURRENCY', 2))
+workers Integer(EnvHelper.fetch('WEB_CONCURRENCY', 2))
 
 # Specifies the `min` and `max` threads per worker.
-threads_count = Integer(ENV.fetch('MAX_THREADS', 5))
+threads_count = Integer(EnvHelper.fetch('MAX_THREADS', 5))
 threads threads_count, threads_count
 
 # Specifies the port that Puma will listen on to receive requests.
-port ENV.fetch('PORT', 3000)
+port EnvHelper.fetch('PORT', 3000)
 
 # Specifies the `environment` that Puma will run in.
-environment ENV.fetch('RACK_ENV')
+environment EnvHelper.fetch('RACK_ENV')
 
 # Use the `preload_app!` method when specifying a `workers` number.
 # This directive tells Puma to first boot the application and load code
