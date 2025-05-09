@@ -47,7 +47,9 @@ module Prediction
 
     def post_body
       {
-        client_id: Base64.strict_encode64(EnvHelper.fetch('PREDICTION_CLIENT_ID')),
+        client_id: Base64.strict_encode64(
+          EnvHelper.fetch('PREDICTION_CLIENT_ID')
+        ),
         client_secret: Base64.strict_encode64(
           EnvHelper.fetch('PREDICTION_CLIENT_SECRET')
         ),
