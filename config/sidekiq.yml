@@ -24,13 +24,13 @@
   - retry_failed_analysis_items
 
 # custom property read by config/sidekiq.rb
-:redis_url: <%= EnvHelper.fetch('REDIS_URL', 'redis://localhost:6379/0') %>
+:redis_url: <%= ENV.fetch('REDIS_URL', 'redis://localhost:6379/0') %>
 
-:environment: <%= EnvHelper.fetch('RACK_ENV', 'development') %>
+:environment: <%= ENV.fetch('RACK_ENV', 'development') %>
 
 production:
-  :concurrency: <%= EnvHelper.fetch('SIDEKIQ_MAX_THREADS', 5) %>
+  :concurrency: <%= ENV.fetch('SIDEKIQ_MAX_THREADS', 5) %>
   # override it if needed
   # :redis_url: 'redis://redis.example.com:7372/12'
 development:
-  :concurrency: <%= EnvHelper.fetch('SIDEKIQ_MAX_THREADS', 5) %>
+  :concurrency: <%= ENV.fetch('SIDEKIQ_MAX_THREADS', 5) %>

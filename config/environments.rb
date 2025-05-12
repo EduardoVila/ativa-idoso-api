@@ -28,15 +28,15 @@ module EnvHelper
 end
 
 # To set the environment, use the RACK_ENV environment variable
-set :environment, EnvHelper.fetch('RACK_ENV', 'development') # Default to development
+set :environment, ENV.fetch('RACK_ENV', 'development') # Default to development
 
 # ApplicationLoader module to load the application and its dependencies
 module ApplicationLoader
   require 'require_all'
   require 'bundler/setup'
 
-  def self.load_gems(environment = EnvHelper.fetch('RACK_ENV'))
-    EnvHelper.fetch('BUNDLE_GEMFILE', File.expand_path('../Gemfile', __dir__))
+  def self.load_gems(environment = ENV.fetch('RACK_ENV'))
+    ENV.fetch('BUNDLE_GEMFILE', File.expand_path('../Gemfile', __dir__))
 
     Bundler.require(:default, environment.to_sym)
   end
@@ -113,7 +113,7 @@ configure :development, :test, :production do
 
   use Rack::Cors do
     allow do
-      origins EnvHelper.fetch('CORS_ALLOWED_ORIGINS', 'alpop.com.br')
+      origins ENV.fetch('CORS_ALLOWED_ORIGINS', 'alpop.com.br')
       resource '*',
                headers: :any,
                methods: %i[get post put patch delete options head],
