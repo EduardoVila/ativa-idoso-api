@@ -23,7 +23,11 @@ threads_count = Integer(ENV.fetch('MAX_THREADS', 5))
 threads threads_count, threads_count
 
 # Specifies the port that Puma will listen on to receive requests.
-port ENV.fetch('PORT', 3000)
+# In production (Heroku), this will be set by the $PORT environment variable
+port_number = ENV.fetch('PORT', 3001)
+port port_number
+
+puts "Starting Puma on port #{port_number}"
 
 # Specifies the `environment` that Puma will run in.
 environment ENV.fetch('RACK_ENV')
