@@ -53,6 +53,94 @@ RSpec.describe Analysis::StepByStepCommand, type: :command do
     end
   end
 
+  describe '#should_be_skipped?' do
+    let(:current_item) { create :analysis_item, :wip }
+    let(:enabled_step) { create :analysis_step }
+
+    context 'when step is not associated with current item' do
+      it 'returns false' do
+        result = command.send(:should_be_skipped?, current_item, enabled_step)
+
+        expect(result).to be false
+      end
+    end
+
+    context 'when step is associated with current item' do
+      before do
+        current_item.steps << enabled_step
+      end
+
+      context 'when item_step has failed status' do
+        let!(:item_step) do
+          current_item.item_steps.find_by(step: enabled_step).tap do |step|
+            step.update(execution_status: :failed)
+          end
+        end
+
+        it 'destroys the failed item_step' do
+          expect do
+            command.send(:should_be_skipped?, current_item, enabled_step)
+          end.to change { current_item.item_steps.count }.by(-1)
+        end
+
+        it 'returns false to allow retry' do
+          result = command.send(:should_be_skipped?, current_item, enabled_step)
+
+          expect(result).to be false
+        end
+      end
+
+      context 'when item_step has completed status' do
+        let!(:item_step) do
+          current_item.item_steps.find_by(step: enabled_step).tap do |step|
+            step.update(execution_status: :completed)
+          end
+        end
+
+        it 'does not destroy the item_step' do
+          expect do
+            command.send(:should_be_skipped?, current_item, enabled_step)
+          end
+            .not_to change { current_item.item_steps.count }
+        end
+
+        it 'returns true to skip the step' do
+          result = command.send(:should_be_skipped?, current_item, enabled_step)
+
+          expect(result).to be true
+        end
+      end
+
+      context 'when item_step has wip status' do
+        let!(:item_step) do
+          current_item.item_steps.find_by(step: enabled_step).tap do |step|
+            step.update(execution_status: :wip)
+          end
+        end
+
+        it 'returns true to skip the step' do
+          result = command.send(:should_be_skipped?, current_item, enabled_step)
+
+          expect(result).to be true
+        end
+      end
+
+      context 'when item_step has pending status' do
+        let!(:item_step) do
+          current_item.item_steps.find_by(step: enabled_step).tap do |step|
+            step.update(execution_status: :pending)
+          end
+        end
+
+        it 'returns true to skip the step' do
+          result = command.send(:should_be_skipped?, current_item, enabled_step)
+
+          expect(result).to be true
+        end
+      end
+    end
+  end
+
   describe '#run_step' do
     let(:analysis_step) do
       create :analysis_step

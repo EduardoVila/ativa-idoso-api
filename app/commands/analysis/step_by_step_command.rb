@@ -13,7 +13,7 @@ module Analysis
       current_item = analysis_item.clone_of || analysis_item
 
       Analysis::Step.enabled.order(:index_order).each do |enabled_step|
-        next if current_item.steps.include?(enabled_step)
+        next if should_be_skipped?(current_item, enabled_step)
 
         # Create a new item_step for the current step and associate it to current_item (N:M association).
         current_item.steps << enabled_step
@@ -38,6 +38,25 @@ module Analysis
     end
 
     private
+
+    # This method checks if the current step should be skipped.
+    # It checks the presence and failure status of the step in the current item.
+    # If the step is found and its status is failed, it will be removed from the current item.
+    # If the step is not found or its status is not failed, it checks if the step is included in the current item steps.
+    def should_be_skipped?(current_item, enabled_step)
+      found_step = current_item.item_steps.find_by(step: enabled_step)
+      failed_step = found_step&.failed?
+
+      # It will be true when step is found and its status is failed.
+      if failed_step
+        found_step.destroy
+
+        return false
+      end
+
+      # If the step is included in the current item steps, it should be skipped.
+      current_item.steps.include?(enabled_step)
+    end
 
     def update_model_features_and_steps_data(command_class)
       if analysis_item.done? && command_class == 'Analysis::PredictionCommand'
