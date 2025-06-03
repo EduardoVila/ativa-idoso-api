@@ -101,8 +101,6 @@ module Analysis
 
       prediction = human_analyzed.presence || predictions.last
 
-      return 12.0 if prediction.fee.to_s.eql?('9.5')
-
       prediction.fee
     end
 
