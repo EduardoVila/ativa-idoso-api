@@ -1,36 +1,88 @@
 # Sample configuration file for Sidekiq.
 # Options here can still be overridden by cmd line args.
-# Place this file at config/sidekiq.yml and Sidekiq will
-# pick it up automatically.
 ---
+# Global settings
 :verbose: false
-:concurrency: 15
+:concurrency: <%= ENV.fetch('SIDEKIQ_CONCURRENCY', 10) %>
+:timeout: 25
+:retry: 10
+:max_retries: 25
 
-# Set timeout to 8 on Heroku, longer if you manage your own systems.
-:timeout: 10
-
-:retry_backoff: 2
-
+# Improved logging
 :logfile: "./log/sidekiq.log"
+:log_level: <%= ENV.fetch('LOG_LEVEL', 'info') %>
 
-# Sidekiq will run this file through ERB when reading it so you can
-# even put in dynamic logic, like a host-specific queue.
-# http://www.mikeperham.com/2013/11/13/advanced-sidekiq-host-specific-queues/
+# Queue configuration with priorities (lower numbers = higher priority)
 :queues:
-  - default
-  - analysis_report
-  - next_analysis_step
-  - rerun_clone_analysis_item
-  - retry_failed_analysis_items
+  - [critical, 10]    # Highest priority
+  - [default, 5]      # Medium priority
+  - [analysis_report, 3]
+  - [next_analysis_step, 3]
+  - [rerun_clone_analysis_item, 2]
+  - [retry_failed_analysis_items, 1]  # Lowest priority
 
-# custom property read by config/sidekiq.rb
-:redis_url: <%= ENV.fetch('REDIS_URL', 'redis://localhost:6379/0') %>
-
+# Custom properties
+:redis_url: <%= ENV.fetch('STACKHERO_REDIS_URL_CLEAR', 'redis://localhost:6379/0') %>
 :environment: <%= ENV.fetch('RACK_ENV', 'development') %>
 
+# Dead job queue settings
+:dead_timeout: 86400  # 24 hours
+:dead_max_jobs: 10000
+
+# Environment-specific configurations
 production:
-  :concurrency: <%= ENV.fetch('SIDEKIQ_MAX_THREADS', 5) %>
-  # override it if needed
-  # :redis_url: 'redis://redis.example.com:7372/12'
+  :verbose: false
+  :concurrency: <%= ENV.fetch('SIDEKIQ_CONCURRENCY', 15) %>
+  :timeout: 30
+  :log_level: 'warn'
+
+  # Production-specific queue weights
+  :queues:
+    - [critical, 15]
+    - [default, 8]
+    - [analysis_report, 5]
+    - [next_analysis_step, 5]
+    - [rerun_clone_analysis_item, 3]
+    - [retry_failed_analysis_items, 1]
+
+  # Production Redis with connection pooling
+  :redis:
+    :url: <%= ENV.fetch('STACKHERO_REDIS_URL_CLEAR', 'redis://localhost:6379/0') %>
+    :network_timeout: 5
+    :pool_timeout: 5
+    :size: <%= ENV.fetch('REDIS_POOL_SIZE', 20) %>
+
+staging:
+  :verbose: true
+  :concurrency: <%= ENV.fetch('SIDEKIQ_CONCURRENCY', 8) %>
+  :timeout: 25
+  :log_level: 'info'
+
 development:
-  :concurrency: <%= ENV.fetch('SIDEKIQ_MAX_THREADS', 5) %>
+  :verbose: true
+  :concurrency: <%= ENV.fetch('SIDEKIQ_CONCURRENCY', 3) %>
+  :timeout: 15
+  :log_level: 'debug'
+
+  # Development-friendly settings
+  :queues:
+    - [critical, 5]
+    - [default, 3]
+    - [analysis_report, 2]
+    - [next_analysis_step, 2]
+    - [rerun_clone_analysis_item, 1]
+    - [retry_failed_analysis_items, 1]
+
+test:
+  :verbose: false
+  :concurrency: 1
+  :timeout: 5
+  :log_level: 'fatal'
+
+  # Simple queue setup for testing
+  :queues:
+    - default
+    - analysis_report
+    - next_analysis_step
+    - rerun_clone_analysis_item
+    - retry_failed_analysis_items

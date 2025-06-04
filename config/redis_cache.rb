@@ -9,7 +9,7 @@ module RedisCache
     size: EnvHelper.fetch('REDIS_POOL_SIZE').to_i,
     timeout: 5
   ) do
-    Redis.new(url: EnvHelper.fetch('REDIS_URL')) # Create a new Redis connection for each thread that needs one (up to 5)
+    Redis.new(url: EnvHelper.fetch('STACKHERO_REDIS_URL_CLEAR')) # Create a new Redis connection for each thread that needs one (up to 5)
   end
 
   module_function # Make all methods in this module available as module functions

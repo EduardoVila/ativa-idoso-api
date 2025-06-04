@@ -55,9 +55,16 @@ module ApplicationLoader
     require_all app_dir
   end
 
-  def self.load_sidekiq_redis
+  def self.load_sidekiq
     require_relative 'sidekiq' # Load the Sidekiq configuration
+  end
+
+  def self.load_redis_cache
     require_relative 'redis_cache' # Load the Redis cache configuration
+  end
+
+  def self.load_sentry
+    require_relative 'sentry' # Load the Sentry configuration
   end
 end
 

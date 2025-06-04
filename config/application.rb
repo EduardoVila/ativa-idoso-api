@@ -6,7 +6,9 @@ require_relative 'environments'
 
 ApplicationLoader.load_gems
 ApplicationLoader.load_app
-ApplicationLoader.load_sidekiq_redis
+ApplicationLoader.load_sidekiq
+ApplicationLoader.load_redis_cache
+ApplicationLoader.load_sentry
 
 # Start the application
 class AlpopAnalysis < Sinatra::Base
