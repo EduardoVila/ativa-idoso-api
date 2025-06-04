@@ -66,33 +66,38 @@ RSpec.describe Analysis::ItemSerializer, type: :serializer do
       end
 
       context 'when approved and has human analyzed prediction' do
-        let(:fee_value) { 7.0 }
+        let(:human_analyzed_fee) { Faker::Number.decimal(l_digits: 2) }
         let!(:predictions) do
           [
             create(
               :analysis_prediction,
-              approved: true, fee: 1000,
-              item: analysis_item
+              approved: true,
+              fee: Faker::Number.decimal(l_digits: 2),
+              item: analysis_item,
+              label: 'multi_softmax'
             ),
             create(
               :analysis_prediction,
-              approved: true, fee: fee_value,
-              item: analysis_item, label: 'human_analyzed'
+              approved: true,
+              fee: human_analyzed_fee,
+              item: analysis_item,
+              label: 'human_analyzed'
             )
           ]
         end
 
         it 'returns the human analyzed fee' do
-          expect(subject[:fee]).to eq(fee_value)
+          expect(subject[:fee]).to eq(human_analyzed_fee)
         end
       end
 
       context 'when approved without human analyzed prediction' do
-        let(:fee_value) { 7.0 }
+        let(:fee_value) { Faker::Number.decimal(l_digits: 2) }
         let!(:prediction) do
           create(
             :analysis_prediction,
-            approved: true, fee: fee_value,
+            approved: true,
+            fee: fee_value,
             item: analysis_item
           )
         end
@@ -148,7 +153,15 @@ RSpec.describe Analysis::ItemSerializer, type: :serializer do
 
     describe '#predictions' do
       let!(:predictions) do
-        create_list :analysis_prediction, 2, item: analysis_item
+        create_list(
+          :analysis_prediction,
+          2,
+          item: analysis_item,
+          label:
+          'multi_softmax',
+          approved: true,
+          fee: Faker::Number.decimal(l_digits: 2)
+        )
       end
 
       it 'returns the serialized predictions' do
