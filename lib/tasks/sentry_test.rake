@@ -26,7 +26,7 @@ class SentryTest
     end
 
     # Test message capture
-    Sentry.capture_message("Test message from #{ENV.fetch('RACK_ENV', 'development')} environment")
+    Sentry.capture_message("Test message from #{ENV.fetch('RACK_ENV')} environment")
     puts '✓ Message captured and sent to Sentry'
 
     # Test with additional context
@@ -35,7 +35,7 @@ class SentryTest
       scope.set_context(
         'test_info', {
           timestamp: Time.now,
-          environment: ENV.fetch('RACK_ENV', 'development')
+          environment: ENV.fetch('RACK_ENV')
         }
       )
 
