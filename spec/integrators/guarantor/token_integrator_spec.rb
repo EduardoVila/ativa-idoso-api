@@ -18,7 +18,7 @@ RSpec.describe Guarantor::TokenIntegrator do
     {
       'Accept' => '*/*',
       'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-      'User-Agent' => 'Faraday v2.12.2',
+      'User-Agent' => 'Faraday v2.13.1',
       'Content-Type' => 'application/x-www-form-urlencoded'
     }
   end

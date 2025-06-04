@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require_relative 'application_job'
+class NextAnalysisStepJob
+  include Sidekiq::Job
 
-class NextAnalysisStepJob < ApplicationJob
-  queue_as :next_analysis_step
+  sidekiq_options queue: :next_analysis_step
 
   def perform(analysis_item_id, analysis_step_id)
     return if analysis_item_id.blank? || analysis_step_id.blank?
@@ -20,7 +20,7 @@ class NextAnalysisStepJob < ApplicationJob
       return
     end
 
-    webhook_event.update!(status: :processing, job_id: job_id)
+    webhook_event.update!(status: :processing, job_id: jid)
 
     process_next_step(analysis_item, analysis_step.command_class)
 

@@ -34,10 +34,10 @@ module Integrable
         req.body = params if params
         req.headers['X-Idempotency-Key'] = SecureRandom.uuid if verb == :post
 
-        RequestLogger.log(req) if enable_log_request
+        RequestLogger.log(req) if enable_log_request?
       end
 
-      ResponseLogger.log(response, 'integrable', params) if enable_log_response
+      ResponseLogger.log(response, 'integrable', params) if enable_log_response?
       response
     rescue Faraday::Error => e
       retries += 1
@@ -91,21 +91,21 @@ module Integrable
     ] + Faraday::Retry::Middleware::DEFAULT_EXCEPTIONS
   end
 
-  def enable_log_response
+  def enable_log_response?
     false
   end
 
-  def enable_log_request
+  def enable_log_request?
     false
   end
 
   # SSL options for Faraday to use client certificate
-  def use_certificate
+  def use_certificate?
     false
   end
 
   def ssl_options
-    return {} unless use_certificate
+    return {} unless use_certificate?
 
     {
       client_cert: OpenSSL::X509::Certificate.new(ca_certificate),

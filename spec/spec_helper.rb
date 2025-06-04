@@ -83,7 +83,6 @@ RSpec.configure do |config|
     FactoryBot.find_definitions
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with :truncation
-    ActiveJob::Base.queue_adapter = :test
   end
 
   config.before do
@@ -120,7 +119,6 @@ RSpec.configure do |config|
   )
 
   # Job config
-  config.include ActiveJob::TestHelper, type: :job
   config.include ActiveSupport::Testing::Assertions
 
   # Serializers config

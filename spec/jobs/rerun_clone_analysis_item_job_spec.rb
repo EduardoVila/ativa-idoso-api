@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
+require 'sidekiq/testing'
 
-RSpec.describe RerunCloneAnalysisItemJob, type: :job do
+RSpec.describe RerunCloneAnalysisItemJob do
   subject { described_class }
 
   let(:analysis_item) { create :analysis_item, :clone }
@@ -20,66 +21,77 @@ RSpec.describe RerunCloneAnalysisItemJob, type: :job do
     allow(job_instance).to receive(:trigger_webhook_event)
   end
 
-  after do
-    clear_enqueued_jobs
-    clear_performed_jobs
-  end
-
-  it { expect(subject.queue_name).to eq 'rerun_clone_analysis_item' }
+  it {
+    expect(subject.sidekiq_options['queue']).to eq :rerun_clone_analysis_item
+  }
 
   describe '#perform' do
     context 'when clone_of_id is present' do
       it 'updates the webhook event' do
-        job_instance.perform(analysis_item.id)
+        Sidekiq::Testing.fake! do
+          job_instance.perform(analysis_item.id)
 
-        expect(webhook_event.reload.status).to eq 'processing'
+          expect(webhook_event.reload.status).to eq 'processing'
+        end
       end
 
       it 'updates the analysis item' do
-        job_instance.perform(analysis_item.id)
+        Sidekiq::Testing.fake! do
+          job_instance.perform(analysis_item.id)
 
-        expect(analysis_item.reload.clone_of_id).to be_nil
-        expect(analysis_item.reload.status).to eq 'todo'
-        expect(analysis_item.reload.name).to be_nil
+          expect(analysis_item.reload.clone_of_id).to be_nil
+          expect(analysis_item.reload.status).to eq 'todo'
+          expect(analysis_item.reload.name).to be_nil
+        end
       end
 
       it 'updates the analysis report status to wip' do
-        job_instance.perform(analysis_item.id)
+        Sidekiq::Testing.fake! do
+          job_instance.perform(analysis_item.id)
 
-        expect(analysis_item.report.reload.status).to eq 'wip'
+          expect(analysis_item.report.reload.status).to eq 'wip'
+        end
       end
 
       it 'destroys all predictions of the analysis item' do
-        create :analysis_prediction, item: analysis_item
+        Sidekiq::Testing.fake! do
+          create :analysis_prediction, item: analysis_item
 
-        expect { job_instance.perform(analysis_item.id) }.to change {
-          analysis_item.predictions.count
-        }.to(0)
+          expect { job_instance.perform(analysis_item.id) }.to change {
+            analysis_item.predictions.count
+          }.to(0)
+        end
       end
 
       it 'processes the analysis item' do
-        allow(job_instance).to receive(:process_analysis_item)
+        Sidekiq::Testing.fake! do
+          allow(job_instance).to receive(:process_analysis_item)
 
-        job_instance.perform(analysis_item.id)
+          job_instance.perform(analysis_item.id)
 
-        expect(job_instance).to have_received(:process_analysis_item)
-          .with(analysis_item)
+          expect(job_instance).to have_received(:process_analysis_item)
+            .with(analysis_item)
+        end
       end
 
       it 'updates the webhook event payload' do
-        allow(job_instance).to receive(:update_webhook_event_payload)
+        Sidekiq::Testing.fake! do
+          allow(job_instance).to receive(:update_webhook_event_payload)
 
-        job_instance.perform(analysis_item.id)
+          job_instance.perform(analysis_item.id)
 
-        expect(job_instance).to have_received(:update_webhook_event_payload)
-          .with(webhook_event, analysis_item.report)
+          expect(job_instance).to have_received(:update_webhook_event_payload)
+            .with(webhook_event, analysis_item.report)
+        end
       end
 
       it 'triggers the webhook event' do
-        job_instance.perform(analysis_item.id)
+        Sidekiq::Testing.fake! do
+          job_instance.perform(analysis_item.id)
 
-        expect(job_instance).to have_received(:trigger_webhook_event)
-          .with(webhook_event)
+          expect(job_instance).to have_received(:trigger_webhook_event)
+            .with(webhook_event)
+        end
       end
     end
 
@@ -87,9 +99,11 @@ RSpec.describe RerunCloneAnalysisItemJob, type: :job do
       before { analysis_item.update(clone_of_id: nil) }
 
       it 'does not process the webhook event' do
-        job_instance.perform(analysis_item.id)
+        Sidekiq::Testing.fake! do
+          job_instance.perform(analysis_item.id)
 
-        expect(webhook_event.reload.status).not_to eq 'processing'
+          expect(webhook_event.reload.status).not_to eq 'processing'
+        end
       end
     end
   end

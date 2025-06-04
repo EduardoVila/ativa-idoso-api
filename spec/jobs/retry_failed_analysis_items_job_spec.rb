@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
+require 'sidekiq/testing'
 
-RSpec.describe RetryFailedAnalysisItemsJob, type: :job do
+RSpec.describe RetryFailedAnalysisItemsJob do
   subject { job_instance.perform(retry_record&.id) }
 
   let(:job_instance) { described_class.new }
@@ -18,17 +19,21 @@ RSpec.describe RetryFailedAnalysisItemsJob, type: :job do
       end
 
       it 'executes the :retry_command on the Invoker' do
-        subject
+        Sidekiq::Testing.fake! do
+          subject
 
-        expect(Invoker).to have_received(:execute).once
-          .with(:analysis_item_runner_command, error_item)
+          expect(Invoker).to have_received(:execute).once
+            .with(:analysis_item_runner_command, error_item)
+        end
       end
 
       it 'updates the retry_record status in the process' do
-        allow(retry_record).to receive(:update).and_call_original
+        Sidekiq::Testing.fake! do
+          allow(retry_record).to receive(:update).and_call_original
 
-        expect { subject }.to change { retry_record.reload.status }
-          .from('error').to('wip')
+          expect { subject }.to change { retry_record.reload.status }
+            .from('error').to('wip')
+        end
       end
     end
 
@@ -40,12 +45,14 @@ RSpec.describe RetryFailedAnalysisItemsJob, type: :job do
       end
 
       it 'does nothing' do
-        allow(retry_record).to receive(:update).and_call_original
+        Sidekiq::Testing.fake! do
+          allow(retry_record).to receive(:update).and_call_original
 
-        subject
+          subject
 
-        expect(Invoker).not_to have_received(:execute)
-        expect(retry_record).not_to have_received(:update)
+          expect(Invoker).not_to have_received(:execute)
+          expect(retry_record).not_to have_received(:update)
+        end
       end
     end
   end

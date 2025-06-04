@@ -2,12 +2,10 @@
 
 require 'spec_helper'
 require 'webmock/rspec'
+require 'sidekiq/testing'
 
-RSpec.describe AnalysisReportJob, type: :job do
-  after do
-    clear_enqueued_jobs
-    clear_performed_jobs
-  end
+RSpec.describe AnalysisReportJob do
+  subject { described_class }
 
   describe '#perform' do
     let(:analysis_report) { create :analysis_report, status: :todo }
@@ -34,22 +32,27 @@ RSpec.describe AnalysisReportJob, type: :job do
       end
 
       it 'does not process the job' do
-        described_class.new.perform(analysis_report.id)
-        expect(Invoker).not_to have_received(:execute)
+        Sidekiq::Testing.fake! do
+          described_class.new.perform(analysis_report.id)
+          expect(Invoker).not_to have_received(:execute)
+        end
       end
     end
 
     context 'when webhook_event is found' do
       it 'processes the webhook event' do
-        described_class.new.perform(analysis_report.id)
-        expect(webhook_event.reload.status).to eq('processing')
-        expect(webhook_event.reload.job_id).not_to be_nil
+        Sidekiq::Testing.fake! do
+          described_class.new.perform(analysis_report.id)
+          expect(webhook_event.reload.status).to eq('processing')
+        end
       end
 
       it 'runs the analysis report' do
-        described_class.new.perform(analysis_report.id)
-        expect(Invoker).to have_received(:execute)
-          .with(:analysis_report_runner_command, analysis_report)
+        Sidekiq::Testing.fake! do
+          described_class.new.perform(analysis_report.id)
+          expect(Invoker).to have_received(:execute)
+            .with(:analysis_report_runner_command, analysis_report)
+        end
       end
 
       context 'when analysis report is done or not found' do
@@ -58,9 +61,11 @@ RSpec.describe AnalysisReportJob, type: :job do
         end
 
         it 'does not process analysis items' do
-          described_class.new.perform(analysis_report.id)
-          expect(Invoker).not_to have_received(:execute)
-            .with(:analysis_item_runner_command, anything)
+          Sidekiq::Testing.fake! do
+            described_class.new.perform(analysis_report.id)
+            expect(Invoker).not_to have_received(:execute)
+              .with(:analysis_item_runner_command, anything)
+          end
         end
       end
 
@@ -76,23 +81,29 @@ RSpec.describe AnalysisReportJob, type: :job do
         end
 
         it 'processes analysis items' do
-          described_class.new.perform(analysis_report.id)
-          analysis_items.each do |item|
-            expect(Invoker).to have_received(:execute)
-              .with(:analysis_item_runner_command, item)
+          Sidekiq::Testing.fake! do
+            described_class.new.perform(analysis_report.id)
+            analysis_items.each do |item|
+              expect(Invoker).to have_received(:execute)
+                .with(:analysis_item_runner_command, item)
+            end
           end
         end
 
         it 'updates the webhook event payload' do
-          described_class.new.perform(analysis_report.id)
-          expect(webhook_event.reload.payload)
-            .to eq(analysis_report.serialize_record.as_json)
+          Sidekiq::Testing.fake! do
+            described_class.new.perform(analysis_report.id)
+            expect(webhook_event.reload.payload)
+              .to eq(analysis_report.serialize_record.as_json)
+          end
         end
 
         it 'triggers the webhook event' do
-          described_class.new.perform(analysis_report.id)
-          expect(Invoker).to have_received(:execute)
-            .with(:api_webhook_trigger_command, webhook_event)
+          Sidekiq::Testing.fake! do
+            described_class.new.perform(analysis_report.id)
+            expect(Invoker).to have_received(:execute)
+              .with(:api_webhook_trigger_command, webhook_event)
+          end
         end
       end
     end

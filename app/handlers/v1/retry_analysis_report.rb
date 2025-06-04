@@ -19,7 +19,7 @@ module V1
       halt(404) if analysis_report.blank?
 
       # Enqueue retry job
-      RetryFailedAnalysisItemsJob.perform_later(analysis_report.id)
+      RetryFailedAnalysisItemsJob.perform_async(analysis_report.id)
       status(202)
     end
   end

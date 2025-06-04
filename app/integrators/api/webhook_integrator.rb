@@ -34,7 +34,7 @@ module Api
       {
         accept: '*/*',
         accept_encoding: 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-        user_agent: 'Faraday v2.12.2',
+        user_agent: 'Faraday v2.13.1',
         content_type: 'application/json',
         authorization: "Bearer #{access_token(requester)}"
       }
@@ -60,11 +60,11 @@ module Api
       end
     end
 
-    def enable_log_response
+    def enable_log_response?
       true
     end
 
-    def enable_log_request
+    def enable_log_request?
       true
     end
   end

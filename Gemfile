@@ -7,7 +7,6 @@ source 'https://rubygems.org'
 ruby '3.3.5'
 
 # Core Gems
-gem 'activejob', '~> 8' # Background job processing
 gem 'activemodel', '~> 8' # Model framework for ActiveRecord
 gem 'active_model_serializers' # JSON serialization for models
 gem 'activerecord', '~> 8' # ORM for database interaction

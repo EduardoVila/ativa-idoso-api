@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
+require 'sidekiq/testing'
 
 RSpec.shared_examples 'does nothing' do
   it 'does nothing' do
@@ -13,7 +14,7 @@ RSpec.shared_examples 'does nothing' do
   end
 end
 
-RSpec.describe NextAnalysisStepJob, type: :job do
+RSpec.describe NextAnalysisStepJob do
   subject { job_instance.perform(analysis_item&.id, analysis_step&.id) }
 
   let(:job_instance) { described_class.new }
@@ -29,24 +30,28 @@ RSpec.describe NextAnalysisStepJob, type: :job do
       end
 
       it 'invokes the next step of the analysis process' do
-        subject
+        Sidekiq::Testing.fake! do
+          subject
 
-        expect(Invoker).to have_received(:execute).once
-          .with(
-            :analysis_next_step_command,
-            analysis_item,
-            analysis_step.command_class
-          )
+          expect(Invoker).to have_received(:execute).once
+            .with(
+              :analysis_next_step_command,
+              analysis_item,
+              analysis_step.command_class
+            )
+        end
       end
 
       it 'invokes the api webhook trigger command to callback the requester' do
-        subject
+        Sidekiq::Testing.fake! do
+          subject
 
-        expect(Invoker).to have_received(:execute).once
-          .with(
-            :api_webhook_trigger_command,
-            webhook_event
-          )
+          expect(Invoker).to have_received(:execute).once
+            .with(
+              :api_webhook_trigger_command,
+              webhook_event
+            )
+        end
       end
     end
 

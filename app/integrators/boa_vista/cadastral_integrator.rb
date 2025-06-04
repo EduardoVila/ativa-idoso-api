@@ -49,15 +49,15 @@ module BoaVista
       cadastral
     end
 
-    def enable_log_response
+    def enable_log_response?
       true
     end
 
-    def enable_log_request
+    def enable_log_request?
       true
     end
 
-    def enable_nested_relations
+    def enable_nested_relations?
       true
     end
 

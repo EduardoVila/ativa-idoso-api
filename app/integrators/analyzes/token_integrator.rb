@@ -40,7 +40,7 @@ module Analyzes
       {
         accept: '*/*',
         accept_encoding: 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-        user_agent: 'Faraday v2.12.2',
+        user_agent: 'Faraday v2.13.1',
         content_type: 'application/x-www-form-urlencoded',
         authorization: "Basic #{Base64.strict_encode64(client_credentials)}"
       }

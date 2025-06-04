@@ -25,7 +25,7 @@ RSpec.describe V1::CreateAnalysisReport, type: :handler do
 
     before do
       allow(Tokenable).to receive_messages(current_client: current_client)
-      allow(AnalysisReportJob).to receive(:perform_later)
+      allow(AnalysisReportJob).to receive(:perform_async)
     end
 
     context 'when the request is valid' do
@@ -41,7 +41,7 @@ RSpec.describe V1::CreateAnalysisReport, type: :handler do
       end
 
       it 'enqueues the AnalysisReportJob' do
-        expect(AnalysisReportJob).to have_received(:perform_later)
+        expect(AnalysisReportJob).to have_received(:perform_async)
       end
     end
 

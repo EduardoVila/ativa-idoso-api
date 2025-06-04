@@ -97,7 +97,7 @@ module ProScore
       checked_trials.exclude? true
     end
 
-    def company?
+    def company
       commercial_relations.any? ? 1 : 0
     end
 

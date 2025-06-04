@@ -27,11 +27,11 @@ module Serasa
 
     private
 
-    def enable_nested_relations
+    def enable_nested_relations?
       true
     end
 
-    def enable_log_response
+    def enable_log_response?
       true
     end
 

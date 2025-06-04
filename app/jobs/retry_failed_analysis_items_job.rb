@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-class RetryFailedAnalysisItemsJob < ApplicationJob
-  queue_as :retry_failed_analysis_items
+class RetryFailedAnalysisItemsJob
+  include Sidekiq::Job
+
+  sidekiq_options queue: :retry_failed_analysis_items, retry: 3
 
   def perform(analysis_report_id)
     analysis_report = find_analysis_report(analysis_report_id)
@@ -10,7 +12,7 @@ class RetryFailedAnalysisItemsJob < ApplicationJob
     return unless analysis_report.items.any? { |item| item.status == 'error' }
 
     ApplicationRecord.transaction do
-      webhook_event.update!(status: :processing, job_id: job_id)
+      webhook_event.update!(status: :processing, job_id: jid)
       analysis_report.update!(status: :wip)
     end
 

@@ -19,7 +19,7 @@ module V1
       verify_client_ownership!(current_client, analysis_item.report)
 
       # Enqueue job
-      RerunCloneAnalysisItemJob.perform_later(analysis_item.id)
+      RerunCloneAnalysisItemJob.perform_async(analysis_item.id)
       status(202)
     end
 

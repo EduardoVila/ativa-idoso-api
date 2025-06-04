@@ -219,7 +219,7 @@ RSpec.describe Analysis::ReportSyncCommand, type: :command do
               'Accept' => '*/*',
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
               'Content-Type' => 'application/json',
-              'User-Agent' => 'Faraday v2.12.2'
+              'User-Agent' => 'Faraday v2.13.1'
             }
           ).to_return(status: 200, body: '{}', headers: {})
 
@@ -251,7 +251,7 @@ RSpec.describe Analysis::ReportSyncCommand, type: :command do
               'Accept' => '*/*',
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
               'Content-Type' => 'application/json',
-              'User-Agent' => 'Faraday v2.12.2'
+              'User-Agent' => 'Faraday v2.13.1'
             }
           ).to_timeout
 
@@ -281,7 +281,7 @@ RSpec.describe Analysis::ReportSyncCommand, type: :command do
               'Accept' => '*/*',
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
               'Content-Type' => 'application/json',
-              'User-Agent' => 'Faraday v2.12.2'
+              'User-Agent' => 'Faraday v2.13.1'
             }
           ).to_return(status: 404, body: '{}', headers: {})
 

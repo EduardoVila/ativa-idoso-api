@@ -22,9 +22,6 @@ GEM
       activemodel (>= 4.1)
       case_transform (>= 0.2)
       jsonapi-renderer (>= 0.1.1.beta1, < 0.3)
-    activejob (8.0.2)
-      activesupport (= 8.0.2)
-      globalid (>= 0.3.6)
     activemodel (8.0.2)
       activesupport (= 8.0.2)
     activerecord (8.0.2)
@@ -117,8 +114,6 @@ GEM
     fiddle (1.1.8)
     foreman (0.88.1)
     formatador (1.1.0)
-    globalid (1.2.1)
-      activesupport (>= 6.1)
     guard (2.19.1)
       formatador (>= 0.2.4)
       listen (>= 2.7, < 4.0)
@@ -365,7 +360,6 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
-  activejob (~> 8)
   activemodel (~> 8)
   activerecord (~> 8)
   activesupport (~> 8)

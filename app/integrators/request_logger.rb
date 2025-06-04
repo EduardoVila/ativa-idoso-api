@@ -10,7 +10,7 @@ class RequestLogger
         path: formatted_req[:path],
         params: formatted_req[:params],
         headers: formatted_req[:headers],
-        body: (formatted_req[:body]).to_s,
+        body: formatted_req[:body].to_s,
         options: formatted_req[:options]
       }
     )

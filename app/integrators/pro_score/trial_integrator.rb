@@ -17,7 +17,7 @@ module ProScore
 
     private
 
-    def enable_log_response
+    def enable_log_response?
       true
     end
 

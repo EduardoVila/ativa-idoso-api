@@ -13,7 +13,7 @@ RSpec.describe V1::RerunCloneAnalysisItem, type: :handler do
     let(:current_client) { analysis_item.report.api_client }
 
     before do
-      allow(RerunCloneAnalysisItemJob).to receive(:perform_later)
+      allow(RerunCloneAnalysisItemJob).to receive(:perform_async)
       allow(Tokenable).to receive_messages(current_client: current_client)
     end
 
@@ -21,7 +21,7 @@ RSpec.describe V1::RerunCloneAnalysisItem, type: :handler do
       before { post_request }
 
       it 'enqueues the RerunCloneAnalysisItemJob' do
-        expect(RerunCloneAnalysisItemJob).to have_received(:perform_later).with(
+        expect(RerunCloneAnalysisItemJob).to have_received(:perform_async).with(
           analysis_item.id
         )
       end

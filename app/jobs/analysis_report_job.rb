@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'application_job'
-
 # AnalysisReportJob is a background job responsible for processing analysis reports.
 # It performs the following steps:
 # 1. Finds the analysis report by the given ID.
@@ -13,8 +11,10 @@ require_relative 'application_job'
 # 7. Executes the webhook trigger command for the webhook event.
 #
 # @param analysis_report_id [Integer] The ID of the analysis report to be processed.
-class AnalysisReportJob < ApplicationJob
-  queue_as :analysis_report
+class AnalysisReportJob
+  include Sidekiq::Job
+
+  sidekiq_options queue: :analysis_report, retry: 3
 
   def perform(analysis_report_id)
     analysis_report = find_analysis_report(analysis_report_id)
@@ -22,7 +22,7 @@ class AnalysisReportJob < ApplicationJob
 
     return unless webhook_event
 
-    webhook_event.update(status: :processing, job_id: job_id)
+    webhook_event.update(status: :processing, job_id: jid)
 
     run_analysis_report(analysis_report)
 

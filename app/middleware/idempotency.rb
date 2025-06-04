@@ -79,7 +79,7 @@ class Idempotency
     end
 
     # 2) Acquire lock in a basic (non-atomic) manner
-    lock_acquired = attempt_lock(lock_key)
+    lock_acquired = attempt_lock?(lock_key)
 
     return handle_lock_failure(cache_key) unless lock_acquired
 
@@ -139,7 +139,7 @@ class Idempotency
     RedisCache.set(cache_key, data, ttl: ttl)
   end
 
-  def attempt_lock(lock_key)
+  def attempt_lock?(lock_key)
     return false if RedisCache.exists?(lock_key)
 
     RedisCache.set(lock_key, { locked: true }, ttl: @lock_expiry)

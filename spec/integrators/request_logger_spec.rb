@@ -20,7 +20,7 @@ RSpec.describe RequestLogger do
         .with(
           headers: {
             'Accept' => '*/*',
-            'User-Agent' => 'Faraday v2.12.2',
+            'User-Agent' => 'Faraday v2.13.1',
             'Content-Type' => 'application/json'
           }
         )

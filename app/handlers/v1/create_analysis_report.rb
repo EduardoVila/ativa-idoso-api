@@ -27,7 +27,7 @@ module V1
 
       # Create webhook and enqueue job
       create_webhook_event(analysis_report, current_client, data)
-      AnalysisReportJob.perform_later(analysis_report.id)
+      AnalysisReportJob.perform_async(analysis_report.id)
 
       # Return response with status 201 and send the alpop-analysis-pointer
       status(201)
