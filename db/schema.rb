@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_02_171449) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_04_184926) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -116,7 +116,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_02_171449) do
     t.string "callback_url"
     t.bigint "callback_id"
     t.string "event_type"
-    t.bigint "event_id"
+    t.bigint "analysis_report_id"
     t.uuid "job_id"
     t.integer "status"
     t.jsonb "payload"
@@ -125,10 +125,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_02_171449) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "requester", default: 0
+    t.index ["analysis_report_id"], name: "index_api_webhook_events_on_analysis_report_id"
     t.index ["api_client_id"], name: "index_api_webhook_events_on_api_client_id"
     t.index ["callback_id"], name: "index_api_webhook_events_on_callback_id"
     t.index ["callback_url"], name: "index_api_webhook_events_on_callback_url"
-    t.index ["event_id"], name: "index_api_webhook_events_on_event_id"
     t.index ["event_type"], name: "index_api_webhook_events_on_event_type"
     t.index ["requester"], name: "index_api_webhook_events_on_requester"
     t.index ["status"], name: "index_api_webhook_events_on_status"
@@ -1800,6 +1800,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_02_171449) do
   add_foreign_key "analysis_items", "analysis_reports"
   add_foreign_key "analysis_predictions", "analysis_items"
   add_foreign_key "analysis_reports", "api_clients"
+  add_foreign_key "api_webhook_events", "analysis_reports"
   add_foreign_key "api_webhook_events", "api_clients"
   add_foreign_key "boa_vista_additional_informations", "boa_vista_acerta_essencials"
   add_foreign_key "boa_vista_addresses", "boa_vista_cadastral_locations"

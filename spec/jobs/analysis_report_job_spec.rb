@@ -11,7 +11,7 @@ RSpec.describe AnalysisReportJob do
     let(:analysis_report) { create :analysis_report, status: :todo }
     let(:webhook_event) do
       create :api_webhook_event,
-             event_id: analysis_report.id,
+             analysis_report_id: analysis_report.id,
              client: analysis_report.api_client
     end
 
@@ -19,7 +19,7 @@ RSpec.describe AnalysisReportJob do
       allow(Analysis::Report).to receive(:find).with(analysis_report.id)
         .and_return(analysis_report)
       allow(Api::WebhookEvent).to receive(:find_by)
-        .with(event_id: analysis_report.id)
+        .with(analysis_report_id: analysis_report.id)
         .and_return(webhook_event)
       allow(Invoker).to receive(:execute)
     end
@@ -27,7 +27,7 @@ RSpec.describe AnalysisReportJob do
     context 'when webhook_event is not found' do
       before do
         allow(Api::WebhookEvent).to receive(:find_by)
-          .with(event_id: analysis_report.id)
+          .with(analysis_report_id: analysis_report.id)
           .and_return(nil)
       end
 

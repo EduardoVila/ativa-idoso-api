@@ -31,7 +31,7 @@ class NextAnalysisStepJob
   private
 
   def find_webhook_event(analysis_report_id)
-    Api::WebhookEvent.find_by(event_id: analysis_report_id)
+    Api::WebhookEvent.find_by(analysis_report_id: analysis_report_id)
   end
 
   def find_analysis_item(analysis_item_id)
