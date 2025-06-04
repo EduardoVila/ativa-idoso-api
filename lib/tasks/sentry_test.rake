@@ -29,20 +29,6 @@ class SentryTest
     Sentry.capture_message("Test message from #{ENV.fetch('RACK_ENV')} environment")
     puts '✓ Message captured and sent to Sentry'
 
-    # Test with additional context
-    Sentry.with_scope do |scope|
-      scope.set_tag('test', 'sentry_integration')
-      scope.set_context(
-        'test_info', {
-          timestamp: Time.now,
-          environment: ENV.fetch('RACK_ENV')
-        }
-      )
-
-      Sentry.capture_message('Contextual test message')
-      puts '✓ Contextual message sent to Sentry'
-    end
-
     puts 'Sentry test completed. Check your Sentry dashboard for events.'
   end
 end
