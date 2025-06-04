@@ -21,7 +21,12 @@
 # Indexes
 #
 #  index_api_webhook_events_on_api_client_id  (api_client_id)
+#  index_api_webhook_events_on_callback_id    (callback_id)
+#  index_api_webhook_events_on_callback_url   (callback_url)
+#  index_api_webhook_events_on_event_id       (event_id)
+#  index_api_webhook_events_on_event_type     (event_type)
 #  index_api_webhook_events_on_requester      (requester)
+#  index_api_webhook_events_on_status         (status)
 #
 # Foreign Keys
 #

@@ -48,6 +48,151 @@ RSpec.describe Analysis::ItemSerializer, type: :serializer do
   it { is_expected.to serialize_attribute(:error_status).from(analysis_item) }
 
   describe 'custom attributes' do
+    describe '#fee' do
+      context 'when predictions are blank' do
+        it 'returns nil' do
+          expect(subject[:fee]).to be_nil
+        end
+      end
+
+      context 'when not approved' do
+        let!(:prediction) do
+          create :analysis_prediction, approved: false, item: analysis_item
+        end
+
+        it 'returns nil' do
+          expect(subject[:fee]).to be_nil
+        end
+      end
+
+      context 'when approved and has human analyzed prediction' do
+        let(:fee_value) { 7.0 }
+        let!(:predictions) do
+          [
+            create(
+              :analysis_prediction,
+              approved: true, fee: 1000,
+              item: analysis_item
+            ),
+            create(
+              :analysis_prediction,
+              approved: true, fee: fee_value,
+              item: analysis_item, label: 'human_analyzed'
+            )
+          ]
+        end
+
+        it 'returns the human analyzed fee' do
+          expect(subject[:fee]).to eq(fee_value)
+        end
+      end
+
+      context 'when approved without human analyzed prediction' do
+        let(:fee_value) { 7.0 }
+        let!(:prediction) do
+          create(
+            :analysis_prediction,
+            approved: true, fee: fee_value,
+            item: analysis_item
+          )
+        end
+
+        it 'returns the last prediction fee' do
+          expect(subject[:fee]).to eq(fee_value)
+        end
+      end
+    end
+
+    describe '#protested_titles' do
+      context 'when boa_vista_acerta_essencial is not present' do
+        it 'returns nil' do
+          expect(subject[:protested_titles]).to be_nil
+        end
+      end
+
+      context 'when boa_vista_acerta_essencial is present' do
+        let(:boa_vista_acerta_essencial) do
+          create :boa_vista_acerta_essencial, consumer: analysis_item
+        end
+        let!(:protested_titles) do
+          create_list(
+            :boa_vista_protested_title, 2,
+            boa_vista_acerta_essencial:
+          )
+        end
+
+        it 'returns the protested titles' do
+          expect(subject[:protested_titles])
+            .to eq(protested_titles.map(&:serialize_record))
+        end
+      end
+    end
+
+    describe '#original_analysis_item' do
+      context 'when clone_of_id is blank' do
+        it 'returns nil' do
+          expect(subject[:original_analysis_item]).to be_nil
+        end
+      end
+
+      context 'when clone_of_id is present' do
+        let(:original_item) { create :analysis_item }
+        let(:analysis_item) { create :analysis_item, clone_of: original_item }
+
+        it 'returns the serialized original item' do
+          expect(subject[:original_analysis_item])
+            .to eq(original_item.serialize_record(with: described_class))
+        end
+      end
+    end
+
+    describe '#predictions' do
+      let!(:predictions) do
+        create_list :analysis_prediction, 2, item: analysis_item
+      end
+
+      it 'returns the serialized predictions' do
+        expect(subject[:predictions]).to eq(predictions.map(&:serialize_record))
+      end
+    end
+
+    describe '#pro_score_bounced_checks' do
+      context 'when pro_score_bounced_checks is not present' do
+        it 'returns nil' do
+          expect(subject[:pro_score_bounced_checks]).to be_nil
+        end
+      end
+
+      context 'when pro_score_bounced_checks is present' do
+        let(:pro_score_report) { create(:pro_score_report, analysis_item:) }
+        let!(:bounced_checks) do
+          create_list :pro_score_bounced_check, 2, report: pro_score_report
+        end
+
+        it 'returns the serialized bounced checks' do
+          expect(subject[:pro_score_bounced_checks])
+            .to eq(bounced_checks.map(&:serialize_record))
+        end
+      end
+    end
+
+    describe '#provenir_big_data_corp' do
+      context 'when provenir_big_data_corp is not present' do
+        it 'returns nil' do
+          expect(subject[:provenir_big_data_corp]).to be_nil
+        end
+      end
+
+      context 'when provenir_big_data_corp is present' do
+        let!(:big_data_corp) { create(:provenir_big_data_corp, analysis_item:) }
+
+        it 'returns the serialized big data corp' do
+          expect(subject[:provenir_big_data_corp])
+            .to eq(big_data_corp.serialize_record)
+        end
+      end
+    end
+
     describe '#presumed_incomes' do
       let(:big_data_corp) { create :provenir_big_data_corp, analysis_item: }
       let(:financial_datum) { create :provenir_financial_datum, big_data_corp: }
