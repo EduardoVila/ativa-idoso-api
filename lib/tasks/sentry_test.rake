@@ -26,7 +26,7 @@ class SentryTest
     end
 
     # Test message capture
-    Sentry.capture_message("Test message from #{ENV.fetch('RACK_ENV')} environment")
+    Sentry.capture_message('Test message')
     puts '✓ Message captured and sent to Sentry'
 
     puts 'Sentry test completed. Check your Sentry dashboard for events.'
