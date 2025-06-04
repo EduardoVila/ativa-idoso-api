@@ -38,8 +38,9 @@ gem 'rack-ssl-enforcer' # Enforce SSL for the application
 gem 'rake' # Task runner for the application
 gem 'redis' # Redis client for caching
 gem 'require_all' # Require all files in a directory
-gem 'rexml'
-gem 'sentry-ruby'
+gem 'rexml' # XML parsing library
+gem 'sentry-ruby' # Sentry integration for error tracking
+gem 'sentry-sidekiq' # Sentry integration for error tracking
 gem 'sidekiq' # Background job processing
 gem 'sidekiq-batch' # Batch processing for Sidekiq
 gem 'sidekiq-status' # Status tracking for Sidekiq jobs

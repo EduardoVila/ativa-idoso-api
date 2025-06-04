@@ -282,6 +282,9 @@ GEM
     sentry-ruby (5.22.4)
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
+    sentry-sidekiq (5.22.4)
+      sentry-ruby (~> 5.22.4)
+      sidekiq (>= 3.0)
     shellany (0.0.1)
     shoulda-matchers (6.4.0)
       activesupport (>= 5.2.0)
@@ -403,6 +406,7 @@ DEPENDENCIES
   rubocop-rake
   rubocop-rspec
   sentry-ruby
+  sentry-sidekiq
   shoulda-matchers
   sidekiq
   sidekiq-batch
