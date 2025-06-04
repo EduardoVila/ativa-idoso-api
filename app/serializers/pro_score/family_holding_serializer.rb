@@ -49,7 +49,7 @@ module ProScore
     end
 
     def analysis_report
-      analysis_item&.analysis_report
+      analysis_item&.report
     end
   end
 end
