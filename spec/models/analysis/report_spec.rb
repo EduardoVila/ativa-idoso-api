@@ -61,6 +61,13 @@ RSpec.describe Analysis::Report, type: :model do
       expect(subject).to have_many(:items).class_name('Analysis::Item')
         .dependent(:destroy)
     }
+
+    it {
+      expect(subject).to have_one(:api_webhook_event)
+        .class_name('Api::WebhookEvent')
+        .inverse_of(:analysis_report)
+        .dependent(:destroy)
+    }
   end
 
   describe 'callbacks' do
