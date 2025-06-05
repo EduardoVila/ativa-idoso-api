@@ -8,7 +8,8 @@ RSpec.describe Api::WebhookTriggerCommand do
   describe '#call' do
     let(:analysis_report) { create :analysis_report }
     let(:webhook_event) do
-      create :api_webhook_event, status: :received, event_id: analysis_report.id
+      create :api_webhook_event, status: :received,
+                                 analysis_report_id: analysis_report.id
     end
     let(:integrator) { Api::WebhookIntegrator.new }
 

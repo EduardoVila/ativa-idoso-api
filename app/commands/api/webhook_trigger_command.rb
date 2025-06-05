@@ -18,7 +18,8 @@ module Api
       integrator.create_resource(webhook_event)
     rescue ::Errors::Api::WebhookPostResponseError, StandardError => e
       webhook_event.update(status: :error, response: e.message)
-      Analysis::Report.find(webhook_event.event_id).update(status: :error)
+      Analysis::Report.find(webhook_event.analysis_report_id)
+        .update(status: :error)
       raise e
     end
   end

@@ -59,8 +59,8 @@ module V1
         callback_id: data['callback_id'],
         requester: data['requester'],
         event_type: 'analysis_report',
-        event_id: report.id,
         status: 'received',
+        analysis_report_id: report.id,
         api_client_id: client.id
       )
     end

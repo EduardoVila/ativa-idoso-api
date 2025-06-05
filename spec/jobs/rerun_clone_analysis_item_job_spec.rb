@@ -8,7 +8,8 @@ RSpec.describe RerunCloneAnalysisItemJob do
 
   let(:analysis_item) { create :analysis_item, :clone }
   let(:webhook_event) do
-    create :api_webhook_event, event_id: analysis_item.analysis_report_id
+    create :api_webhook_event,
+           analysis_report_id: analysis_item.analysis_report_id
   end
   let(:job_instance) { subject.new }
 

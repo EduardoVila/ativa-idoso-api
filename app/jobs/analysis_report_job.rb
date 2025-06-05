@@ -40,7 +40,7 @@ class AnalysisReportJob
   end
 
   def find_webhook_event(analysis_report_id)
-    Api::WebhookEvent.find_by(event_id: analysis_report_id)
+    Api::WebhookEvent.find_by(analysis_report_id: analysis_report_id)
   end
 
   def run_analysis_report(analysis_report)

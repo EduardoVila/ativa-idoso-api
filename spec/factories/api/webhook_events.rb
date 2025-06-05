@@ -35,9 +35,13 @@
 FactoryBot.define do
   factory :api_webhook_event, class: 'Api::WebhookEvent' do
     callback_url { Faker::Internet.url }
-    event_id { rand(1..100) }
+    event_type { 'analysis_report' }
+    payload { {} }
+    requester { 0 } # 'guarantor'
+    response { 200 }
     status { 'received' }
 
     client factory: :api_client
+    analysis_report factory: :analysis_report
   end
 end
