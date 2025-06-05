@@ -4,7 +4,7 @@
 source 'https://rubygems.org'
 
 # Ruby version
-ruby '3.3.5'
+ruby '3.4.2'
 
 # Core Gems
 gem 'activemodel', '~> 8' # Model framework for ActiveRecord
@@ -59,7 +59,9 @@ group :development, :test do
   gem 'faker' # Data generation for tests
   gem 'guard' # Automatic test running
   gem 'guard-rspec', require: false # Integration with RSpec
+  gem 'irb' # Interactive Ruby shell
   gem 'rack-test' # Helpers for testing Rack applications
+  gem 'reline' # Enhanced readline for Pry
   gem 'rspec' # Testing framework
   gem 'shoulda-matchers' # Matchers for common Rails functionality
   gem 'simplecov' # Code coverage reporting
