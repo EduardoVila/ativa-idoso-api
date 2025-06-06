@@ -17,10 +17,15 @@ module Api
       integrator = Api::WebhookIntegrator.new
       integrator.create_resource(webhook_event)
     rescue ::Errors::Api::WebhookPostResponseError, StandardError => e
-      webhook_event.update(status: :error, response: e.message)
-      Analysis::Report.find(webhook_event.analysis_report_id)
-        .update(status: :error)
-      raise e
+      logger = Logger.new($stdout)
+      logger.error(
+        <<~ERR
+          Failed to deliver Webhook Event #{webhook_event.id} to #{webhook_event.callback_url}.
+          Exception: #{e}
+        ERR
+      )
+
+      raise e # Raise error to be handled by Sidekiq retries
     end
   end
 end
