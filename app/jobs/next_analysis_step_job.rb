@@ -38,19 +38,25 @@ class NextAnalysisStepJob
   sidekiq_options(queue: :next_analysis_step)
 
   sidekiq_retries_exhausted do |msg, ex|
-    analysis_report_id = msg['args'].first
+    analysis_item_id = msg['args'][0]
+    analysis_step_id = msg['args'][1]
+
+    analysis_item = Analysis::Item.select(:id, :analysis_report_id)
+      .find(analysis_item_id)
+    return unless analysis_item
+
     webhook_event = Api::WebhookEvent.find_by(
-      analysis_report_id: analysis_report_id
+      analysis_report_id: analysis_item.analysis_report_id
     )
     return unless webhook_event
 
     logger = Logger.new($stdout)
     logger.info(
       <<~EXHAUSTED
-        NextAnalysisStepJob failed after retries exhausted for analysis report ID: #{analysis_report_id}.
+        NextAnalysisStepJob failed after retries exhausted for analysis item ID: #{analysis_item_id}, step ID: #{analysis_step_id}.
         Exception: #{ex.message}
         Webhook Event ID: #{webhook_event.id}
-      EXHAUSTED
+    EXHAUSTED
     )
 
     webhook_event&.update(status: :error, response: ex.message)
@@ -60,16 +66,15 @@ class NextAnalysisStepJob
     return if analysis_item_id.blank? || analysis_step_id.blank?
 
     analysis_item = find_analysis_item(analysis_item_id)
+    return unless analysis_item
+
     analysis_step = find_analysis_step(analysis_step_id)
+    return unless analysis_step
+
+    return if analysis_item.steps.exists?(id: analysis_step_id)
+
     webhook_event = find_webhook_event(analysis_item.analysis_report_id)
-
-    if analysis_item.blank? ||
-       analysis_step.blank? ||
-       webhook_event.blank? ||
-       analysis_item.steps.find_by(id: analysis_step_id).present?
-
-      return
-    end
+    return unless webhook_event
 
     webhook_event.update!(status: :processing, job_id: jid)
 
@@ -87,11 +92,11 @@ class NextAnalysisStepJob
   end
 
   def find_analysis_item(analysis_item_id)
-    Analysis::Item.find(analysis_item_id)
+    Analysis::Item.includes(:report, :steps).find(analysis_item_id)
   end
 
   def find_analysis_step(analysis_step_id)
-    Analysis::Step.find_by(id: analysis_step_id)
+    Analysis::Step.select(:id, :command_class).find_by(id: analysis_step_id)
   end
 
   def process_next_step(analysis_item, command_class)
@@ -99,7 +104,7 @@ class NextAnalysisStepJob
   end
 
   def update_webhook_event_payload(webhook_event, analysis_report)
-    webhook_event.update(payload: analysis_report.reload.serialize_record)
+    webhook_event.update!(payload: analysis_report.reload.serialize_record)
   end
 
   def trigger_webhook_event(webhook_event)

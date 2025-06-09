@@ -52,12 +52,14 @@ class RetryFailedAnalysisItemsJob
     webhook_event&.update(status: :error, response: ex.message)
   end
   def perform(analysis_report_id)
+    return if analysis_report_id.blank?
+
     analysis_report = find_analysis_report(analysis_report_id)
-    webhook_event = find_webhook_event(analysis_report_id)
-
-    return unless webhook_event && analysis_report
-
+    return unless analysis_report
     return unless analysis_report.items.any? { |item| item.status == 'error' }
+
+    webhook_event = find_webhook_event(analysis_report_id)
+    return unless webhook_event
 
     ApplicationRecord.transaction do
       webhook_event.update!(status: :processing, job_id: jid)
@@ -88,7 +90,7 @@ class RetryFailedAnalysisItemsJob
   end
 
   def update_webhook_event_payload(webhook_event, analysis_report)
-    webhook_event.update(payload: analysis_report.reload.serialize_record)
+    webhook_event.update!(payload: analysis_report.reload.serialize_record)
   end
 
   def trigger_webhook_event(webhook_event)
