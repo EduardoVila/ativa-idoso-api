@@ -42,9 +42,9 @@ class AnalysisReportJob
     )
     return unless webhook_event
 
-    logger = Logger.new($stdout)
-    logger.info(
+    Sidekiq.logger.info(
       <<~EXHAUSTED
+        Job exhaustion!
         AnalysisReportJob failed after retries exhausted for Analysis Report ID: #{analysis_report_id}.
         Exception: #{ex.message}
         Webhook Event ID: #{webhook_event.id}

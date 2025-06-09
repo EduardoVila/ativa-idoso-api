@@ -50,13 +50,13 @@ class NextAnalysisStepJob
     )
     return unless webhook_event
 
-    logger = Logger.new($stdout)
-    logger.info(
+    Sidekiq.logger.info(
       <<~EXHAUSTED
+        Job exhaustion!
         NextAnalysisStepJob failed after retries exhausted for analysis item ID: #{analysis_item_id}, step ID: #{analysis_step_id}.
         Exception: #{ex.message}
         Webhook Event ID: #{webhook_event.id}
-    EXHAUSTED
+      EXHAUSTED
     )
 
     webhook_event&.update(status: :error, response: ex.message)

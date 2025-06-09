@@ -40,9 +40,9 @@ class RetryFailedAnalysisItemsJob
     )
     return unless webhook_event
 
-    logger = Logger.new($stdout)
-    logger.info(
+    Sidekiq.logger.info(
       <<~EXHAUSTED
+        Job exhaustion!
         RetryFailedAnalysisItemsJob failed after retries exhausted for analysis report ID: #{analysis_report_id}.
         Exception: #{ex.message}
         Webhook Event ID: #{webhook_event.id}
@@ -51,6 +51,7 @@ class RetryFailedAnalysisItemsJob
 
     webhook_event&.update(status: :error, response: ex.message)
   end
+
   def perform(analysis_report_id)
     return if analysis_report_id.blank?
 
