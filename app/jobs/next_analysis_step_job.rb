@@ -1,9 +1,60 @@
 # frozen_string_literal: true
 
+# Job responsible for processing the next analysis step in a sequence of analysis operations.
+#
+# This Sidekiq job manages the execution of individual analysis steps within an analysis workflow.
+# It handles webhook event updates, processes analysis commands, and triggers webhook notifications
+# upon completion or failure.
+#
+# The job includes retry exhaustion handling that logs failures and updates webhook event status
+# to error when all retries are consumed.
+#
+# @example Enqueue the job
+#   NextAnalysisStepJob.perform_async(analysis_item_id, analysis_step_id)
+#
+# Parameters:
+# - analysis_item_id: ID of the analysis item to process
+# - analysis_step_id: ID of the specific analysis step to execute
+#
+# The job performs the following operations:
+# 1. Validates input parameters and fetches required records
+# 2. Updates webhook event status to processing
+# 3. Executes the analysis step command
+# 4. Updates webhook event payload with analysis results
+# 5. Triggers webhook notification
+#
+# Skips execution if:
+# - Required parameters are blank
+# - Required records cannot be found
+# - The analysis step has already been processed for the analysis item
+#
+# Sidekiq Configuration:
+# - Queue: :next_analysis_step
+# - Retry Handling: Uses Sidekiq's default retry mechanism with custom exhaustion handling
+
 class NextAnalysisStepJob
   include Sidekiq::Job
 
-  sidekiq_options queue: :next_analysis_step
+  sidekiq_options(queue: :next_analysis_step)
+
+  sidekiq_retries_exhausted do |msg, ex|
+    analysis_report_id = msg['args'].first
+    webhook_event = Api::WebhookEvent.find_by(
+      analysis_report_id: analysis_report_id
+    )
+    return unless webhook_event
+
+    logger = Logger.new($stdout)
+    logger.info(
+      <<~EXHAUSTED
+        NextAnalysisStepJob failed after retries exhausted for analysis report ID: #{analysis_report_id}.
+        Exception: #{ex.message}
+        Webhook Event ID: #{webhook_event.id}
+      EXHAUSTED
+    )
+
+    webhook_event&.update(status: :error, response: ex.message)
+  end
 
   def perform(analysis_item_id, analysis_step_id)
     return if analysis_item_id.blank? || analysis_step_id.blank?
@@ -25,6 +76,7 @@ class NextAnalysisStepJob
     process_next_step(analysis_item, analysis_step.command_class)
 
     update_webhook_event_payload(webhook_event, analysis_item.report)
+
     trigger_webhook_event(webhook_event)
   end
 

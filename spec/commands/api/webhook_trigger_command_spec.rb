@@ -8,8 +8,11 @@ RSpec.describe Api::WebhookTriggerCommand do
   describe '#call' do
     let(:analysis_report) { create :analysis_report }
     let(:webhook_event) do
-      create :api_webhook_event, status: :received,
-                                 analysis_report_id: analysis_report.id
+      create(
+        :api_webhook_event,
+        status: :received,
+        analysis_report_id: analysis_report.id
+      )
     end
     let(:integrator) { Api::WebhookIntegrator.new }
 
@@ -26,6 +29,7 @@ RSpec.describe Api::WebhookTriggerCommand do
 
       it 'returns immediately without creating a resource' do
         subject.call
+
         expect(integrator).not_to have_received(:create_resource)
       end
     end
@@ -33,6 +37,7 @@ RSpec.describe Api::WebhookTriggerCommand do
     context 'when the webhook event is not processed' do
       it 'creates a resource using the integrator' do
         subject.call
+
         expect(integrator).to have_received(:create_resource)
           .with(webhook_event)
       end
@@ -44,23 +49,12 @@ RSpec.describe Api::WebhookTriggerCommand do
           .and_return(integrator)
         allow(integrator).to receive(:create_resource).with(webhook_event)
           .and_raise(Errors::Api::WebhookPostResponseError)
-        allow(Analysis::Report).to receive(:find).with(analysis_report.id)
-          .and_return(analysis_report)
-        allow(webhook_event).to receive(:update)
-        allow(analysis_report).to receive(:update)
       end
 
-      it 'updates webhook_event and report with error status raising error' do
+      it 'raises error Errors::Api::WebhookPostResponseError' do
         expect do
           subject.call
         end.to raise_error(Errors::Api::WebhookPostResponseError)
-
-        expect(webhook_event).to have_received(:update).with(
-          status: :error,
-          response: 'Errors::Api::WebhookPostResponseError'
-        )
-        expect(Analysis::Report).to have_received(:find)
-          .with(analysis_report.id)
       end
     end
   end

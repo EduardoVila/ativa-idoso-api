@@ -38,6 +38,7 @@ module Integrable
       end
 
       ResponseLogger.log(response, 'integrable', params) if enable_log_response?
+
       response
     rescue Faraday::Error => e
       retries += 1
@@ -57,17 +58,18 @@ module Integrable
       end
 
       ErrorLogger.log(e)
+
       raise e
     end
   end
 
   private
 
-  def should_retry?(exception, url, verb = nil)
+  def should_retry?(exception, _url = nil, _verb = nil)
     return false if AlpopAnalysis.test?
 
-    # TODO: idempotency logic is ready. This return should be removed when tested in QA
-    return false if url.include?('alpop.com.br') && verb == :post
+    # Comment out if idempotency logic is breaking:
+    # return false if url.include?('alpop.com.br') && verb == :post
 
     [
       Faraday::ConnectionFailed,

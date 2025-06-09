@@ -5,14 +5,13 @@
 :verbose: false
 :concurrency: <%= ENV.fetch('SIDEKIQ_CONCURRENCY', 10) %>
 :timeout: 25
-:retry: 10
-:max_retries: 25
+:retry: 5 # Default retry count for failed jobs
 
 # Improved logging
 :logfile: "./log/sidekiq.log"
 :log_level: <%= ENV.fetch('LOG_LEVEL', 'info') %>
 
-# Queue configuration with priorities (lower numbers = higher priority)
+# Queue configuration
 :queues:
   - [critical, 10]    # Highest priority
   - [default, 5]      # Medium priority
@@ -27,14 +26,15 @@
 
 # Dead job queue settings
 :dead_timeout: 86400  # 24 hours
-:dead_max_jobs: 10000
+:dead_max_jobs: 10000 # Max jobs in dead queue
 
 # Environment-specific configurations
 production:
   :verbose: false
   :concurrency: <%= ENV.fetch('SIDEKIQ_CONCURRENCY', 15) %>
   :timeout: 30
-  :log_level: 'warn'
+  :log_level: 'info'
+  :retry: 5
 
   # Production-specific queue weights
   :queues:
@@ -63,6 +63,7 @@ development:
   :concurrency: <%= ENV.fetch('SIDEKIQ_CONCURRENCY', 3) %>
   :timeout: 15
   :log_level: 'debug'
+  :retry: 3
 
   # Development-friendly settings
   :queues:
@@ -76,8 +77,9 @@ development:
 test:
   :verbose: false
   :concurrency: 1
-  :timeout: 5
+  :timeout: 1
   :log_level: 'fatal'
+  :retry: 0
 
   # Simple queue setup for testing
   :queues:
