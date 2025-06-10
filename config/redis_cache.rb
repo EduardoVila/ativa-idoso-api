@@ -3,13 +3,49 @@
 require 'redis'
 require 'json'
 
+# RedisCache module provides a thread-safe Redis caching interface with connection pooling.
+#
+# This module encapsulates Redis operations and manages a connection pool to ensure
+# efficient and safe access to Redis from multiple threads. It provides common
+# caching operations like storing, retrieving, and managing cached data with
+# automatic JSON serialization/deserialization.
+#
+# Features:
+# - Connection pooling with configurable size and timeouts
+# - Automatic JSON serialization for stored values
+# - TTL (Time-To-Live) support for automatic key expiration
+# - Thread-safe operations
+# - Comprehensive key management utilities
+#
+# Configuration:
+# - REDIS_POOL_SIZE: Number of connections in the pool
+# - STACKHERO_REDIS_URL_CLEAR: Redis connection URL
+# - REDIS_TTL: Default expiration time for cached values (in seconds)
+#
+# @example Basic usage
+#   RedisCache.set('user:123', { name: 'John', age: 30 })
+#   user = RedisCache.get('user:123')
+#   RedisCache.delete('user:123')
+#
+# @example With custom TTL
+#   RedisCache.set('session:abc', session_data, ttl: 3600) # 1 hour
+#
+# @example Checking existence and clearing cache
+#   RedisCache.exists?('user:123') # => true/false
+#   RedisCache.clear_all # Remove all cached data
 module RedisCache
-  # Create a connection pool with 5 connections and a 5-second timeout for each connection attempt
+  # Create a connection pool with 5 connections and a 12-second timeout for each connection attempt
   REDIS_POOL = ConnectionPool.new(
     size: EnvHelper.fetch('REDIS_POOL_SIZE').to_i,
-    timeout: 5
+    timeout: 12
   ) do
-    Redis.new(url: EnvHelper.fetch('STACKHERO_REDIS_URL_CLEAR')) # Create a new Redis connection for each thread that needs one (up to 5)
+    Redis.new(
+      url: EnvHelper.fetch('STACKHERO_REDIS_URL_CLEAR'),
+      connect_timeout: 12,
+      read_timeout: 12,
+      write_timeout: 12,
+      reconnect_attempts: 5
+    ) # Create a new Redis connection for each thread that needs one (up to 5)
   end
 
   module_function # Make all methods in this module available as module functions
