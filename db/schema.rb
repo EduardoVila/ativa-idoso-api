@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_04_184926) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_09_155330) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -117,7 +117,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_04_184926) do
     t.bigint "callback_id"
     t.string "event_type"
     t.bigint "analysis_report_id"
-    t.uuid "job_id"
+    t.string "job_id"
     t.integer "status"
     t.jsonb "payload"
     t.jsonb "response"
