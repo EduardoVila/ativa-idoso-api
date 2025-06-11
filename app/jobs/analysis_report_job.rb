@@ -42,9 +42,9 @@ class AnalysisReportJob
     )
     return unless webhook_event
 
-    logger = Logger.new($stdout)
-    logger.info(
+    Sidekiq.logger.info(
       <<~EXHAUSTED
+        Job exhaustion!
         AnalysisReportJob failed after retries exhausted for Analysis Report ID: #{analysis_report_id}.
         Exception: #{ex.message}
         Webhook Event ID: #{webhook_event.id}
@@ -55,14 +55,17 @@ class AnalysisReportJob
   end
 
   def perform(analysis_report_id)
+    return if analysis_report_id.blank?
+
     analysis_report = find_analysis_report(analysis_report_id)
+    return unless analysis_report
+    return if analysis_report.done?
+
     webhook_event = find_webhook_event(analysis_report_id)
+    return unless webhook_event
+    return if webhook_event.processed?
 
-    return unless webhook_event && analysis_report
-
-    return if webhook_event.processed? && analysis_report.done?
-
-    webhook_event.update(status: :processing, job_id: jid)
+    webhook_event.update!(status: :processing, job_id: jid)
 
     run_analysis_report(analysis_report)
 
@@ -94,7 +97,7 @@ class AnalysisReportJob
   end
 
   def update_webhook_event_payload(webhook_event, analysis_report)
-    webhook_event.update(payload: analysis_report.reload.serialize_record)
+    webhook_event.update!(payload: analysis_report.reload.serialize_record)
   end
 
   def trigger_webhook_event(webhook_event)

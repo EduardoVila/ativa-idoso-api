@@ -28,16 +28,21 @@ class RerunCloneAnalysisItemJob
   sidekiq_options(queue: :rerun_clone_analysis_item)
 
   sidekiq_retries_exhausted do |msg, ex|
-    analysis_report_id = msg['args'].first
+    analysis_item_id = msg['args'][0]
+
+    analysis_item = Analysis::Item.select(:id, :analysis_report_id)
+      .find(analysis_item_id)
+    return unless analysis_item
+
     webhook_event = Api::WebhookEvent.find_by(
-      analysis_report_id: analysis_report_id
+      analysis_report_id: analysis_item.analysis_report_id
     )
     return unless webhook_event
 
-    logger = Logger.new($stdout)
-    logger.info(
+    Sidekiq.logger.info(
       <<~EXHAUSTED
-        RerunCloneAnalysisItemJob failed after retries exhausted for analysis report ID: #{analysis_report_id}.
+        Job exhaustion!
+        RerunCloneAnalysisItemJob failed after retries exhausted for analysis item ID: #{analysis_item_id}.
         Exception: #{ex.message}
         Webhook Event ID: #{webhook_event.id}
       EXHAUSTED
@@ -48,12 +53,12 @@ class RerunCloneAnalysisItemJob
 
   def perform(analysis_item_id)
     analysis_item = find_analysis_item(analysis_item_id)
+    return unless analysis_item&.clone_of_id.present? # Ensure the item is a clone
+
     webhook_event = find_webhook_event(analysis_item.analysis_report_id)
+    return unless webhook_event
+
     analysis_report = analysis_item.report
-
-    return unless webhook_event && analysis_item && analysis_report
-
-    return if analysis_item.clone_of_id.blank?
 
     ApplicationRecord.transaction do
       webhook_event.update!(status: :processing, job_id: jid)
@@ -85,7 +90,7 @@ class RerunCloneAnalysisItemJob
   end
 
   def update_webhook_event_payload(webhook_event, analysis_report)
-    webhook_event.update(payload: analysis_report.reload.serialize_record)
+    webhook_event.update!(payload: analysis_report.reload.serialize_record)
   end
 
   def trigger_webhook_event(webhook_event)
