@@ -63,3 +63,6 @@ bundle/
 
 # Redis
 dump.rdb
+
+# mise-en-place tool manager
+mise.toml
