@@ -35,15 +35,15 @@
 
 module Api
   class WebhookEvent < ApplicationRecord
-    belongs_to :client, class_name: 'Api::Client', foreign_key: 'api_client_id'
+    belongs_to :api_client, class_name: 'Api::Client',
+                            foreign_key: 'api_client_id'
+
     belongs_to :analysis_report, class_name: 'Analysis::Report',
                                  foreign_key: 'analysis_report_id'
 
     enum :status, %i[received processing processed error]
-    enum :requester, %i[guarantor analyzes]
 
     validates :status, inclusion: { in: statuses.keys }
-    validates :requester, inclusion: { in: requesters.keys }
     validates :callback_url,
               presence: true,
               format: { with: URI::DEFAULT_PARSER.make_regexp }

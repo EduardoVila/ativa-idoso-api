@@ -4,18 +4,16 @@ require 'spec_helper'
 require_relative '../integrable'
 
 RSpec.describe ProScore::AuthenticationIntegrator do
-  subject { described_class.new.authenticate }
+  subject { described_class.new }
 
   let(:url) { 'https://api.proscore.com.br/oauth/token' }
   let(:headers) { { headers: { 'Content-Type' => 'application/json' } } }
 
+  before { WebMock.disable_net_connect! }
+
   it_behaves_like 'integrable', described_class
 
   describe '.authenticate' do
-    before do
-      WebMock.disable_net_connect!
-    end
-
     context 'when it returns 200' do
       let(:body_path) do
         File.join(__dir__, '..', '..', 'fixtures',
@@ -28,7 +26,7 @@ RSpec.describe ProScore::AuthenticationIntegrator do
       end
 
       it 'returns an instance of ProScore::Authentication' do
-        expect(subject).to be_a(ProScore::Authentication)
+        expect(subject.authenticate).to be_a(ProScore::Authentication)
       end
     end
 
@@ -39,7 +37,8 @@ RSpec.describe ProScore::AuthenticationIntegrator do
       end
 
       it 'raises a Errors::ProScore::ResponseError' do
-        expect { subject }.to raise_error(Errors::ProScore::ResponseError)
+        expect { subject.authenticate }
+          .to raise_error(Errors::ProScore::ResponseError)
       end
     end
 
@@ -50,7 +49,8 @@ RSpec.describe ProScore::AuthenticationIntegrator do
       end
 
       it 'raises a Errors::ProScore::ResponseError after retries' do
-        expect { subject }.to raise_error(Errors::ProScore::ResponseError)
+        expect { subject.authenticate }
+          .to raise_error(Errors::ProScore::ResponseError)
       end
     end
   end

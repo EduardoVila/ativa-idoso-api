@@ -25,8 +25,12 @@ module Api
                                 dependent: :destroy
 
     has_many :webhook_events, class_name: 'Api::WebhookEvent',
-                              inverse_of: :client,
+                              inverse_of: :api_client,
                               dependent: :destroy
+
+    has_one :webhook_credential, class_name: 'Api::WebhookCredential',
+                                 inverse_of: :api_client,
+                                 dependent: :destroy
 
     validates :client_id, presence: true, uniqueness: true
     validates :client_secret, presence: true
@@ -39,28 +43,21 @@ module Api
       self
     end
 
+    def hash_secret(secret = SecureRandom.hex(32))
+      hashed_secret = BCrypt::Password.create(secret)
+
+      update(client_secret: hashed_secret)
+
+      hashed_secret
+    end
+
     private
 
     def set_client_credentials
       self.client_id = SecureRandom.hex(32)
-      client_secret = SecureRandom.hex(32)
 
-      encoded_client_id = Base64.strict_encode64(client_id)
-      encoded_client_secret = Base64.strict_encode64(client_secret)
+      return self.client_secret = hash_secret if client_secret.nil?
 
-      unless AlpopAnalysis.settings.test?
-        # Log the client credentials to the console for admin use
-        logger = Logger.new($stdout)
-        logger.info(
-          "#{'Database populated with new client:'.green.bold}\n\n" \
-          "client_id: #{client_id.yellow.bold}\n" \
-          "client_secret: #{client_secret.yellow.bold}\n\n" \
-          "strict base64 client_id: #{encoded_client_id.yellow.bold}\n" \
-          "strict base64 client_secret: #{encoded_client_secret.yellow.bold}\n"
-        )
-      end
-
-      # Hash the client_secret before saving it to the database
       self.client_secret = BCrypt::Password.create(client_secret)
     end
   end

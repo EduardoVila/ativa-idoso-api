@@ -4,18 +4,18 @@ require_relative 'webhook_trigger_command_error'
 
 module Api
   class WebhookTriggerCommand < ApplicationCommand
-    attr_reader :webhook_event
-
-    def initialize(webhook_event)
-      super()
+    def initialize(webhook_event, integrator = Api::WebhookEventIntegrator)
       @webhook_event = webhook_event
+      @integrator = integrator
+      super()
     end
 
     def call
-      return if webhook_event.processed? # Guard clause to avoid unnecessary calls
+      return if webhook_event.blank? ||
+                webhook_credential.blank? ||
+                webhook_event.processed?
 
-      integrator = Api::WebhookIntegrator.new
-      integrator.create_resource(webhook_event)
+      integrator.new.create_resource(webhook_event, webhook_credential)
     rescue ::Errors::Api::WebhookPostResponseError, StandardError => e
       logger = Logger.new($stdout)
       logger.error(
@@ -26,6 +26,16 @@ module Api
       )
 
       raise e # Raise error to be handled by Sidekiq retries
+    end
+
+    private
+
+    attr_reader :webhook_event, :integrator
+
+    def webhook_credential
+      @webhook_credential ||= Api::WebhookCredential.find_by(
+        api_client: webhook_event.api_client
+      )
     end
   end
 end

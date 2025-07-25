@@ -25,7 +25,7 @@ RSpec.describe Prediction::TokenIntegrator do
   it_behaves_like 'integrable', described_class
 
   describe '#create_resource' do
-    subject(:response) { described_class.new.create_resource }
+    subject(:integrator) { described_class.new }
 
     context 'when the response is successful' do
       let(:json_file) { 'token' }
@@ -47,7 +47,7 @@ RSpec.describe Prediction::TokenIntegrator do
       end
 
       it 'returns an Analysis::Prediction instance' do
-        expect(response).to be_a(Prediction::Token)
+        expect(integrator.create_resource).to be_a(Prediction::Token)
       end
     end
 
@@ -59,7 +59,7 @@ RSpec.describe Prediction::TokenIntegrator do
 
       it 'raises a Errors::Analysis::TokenPostResponseError' do
         expect do
-          response
+          integrator.create_resource
         end.to raise_error(Faraday::ForbiddenError)
       end
     end
@@ -71,7 +71,8 @@ RSpec.describe Prediction::TokenIntegrator do
       end
 
       it 'raises a Faraday::ConnectionFailed after retries' do
-        expect { response }.to raise_error(Faraday::ConnectionFailed)
+        expect { integrator.create_resource }
+          .to raise_error(Faraday::ConnectionFailed)
       end
     end
   end

@@ -45,7 +45,7 @@ RSpec.describe Api::WebhookEvent, type: :model do
 
   describe 'associations' do
     it {
-      expect(subject).to belong_to(:client)
+      expect(subject).to belong_to(:api_client)
         .class_name('Api::Client')
         .with_foreign_key('api_client_id')
     }
@@ -62,11 +62,6 @@ RSpec.describe Api::WebhookEvent, type: :model do
       expect(subject).to define_enum_for(:status)
         .with_values(%i[received processing processed error])
     }
-
-    it {
-      expect(subject).to define_enum_for(:requester)
-        .with_values(%i[guarantor analyzes])
-    }
   end
 
   describe 'validations' do
@@ -74,12 +69,16 @@ RSpec.describe Api::WebhookEvent, type: :model do
 
     describe 'callback_url format validation' do
       it 'accepts valid URLs' do
-        webhook_event = build :api_webhook_event, callback_url: 'https://example.com/webhook'
+        webhook_event = build(
+          :api_webhook_event, callback_url: 'https://example.com/webhook'
+        )
+
         expect(webhook_event).to be_valid
       end
 
       it 'rejects invalid URLs' do
         webhook_event = build :api_webhook_event, callback_url: 'invalid-url'
+
         expect(webhook_event).not_to be_valid
         expect(webhook_event.errors[:callback_url]).to be_present
       end

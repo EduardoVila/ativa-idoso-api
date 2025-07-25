@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_09_155330) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_25_190225) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -94,15 +94,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_09_155330) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "analyzes_tokens", force: :cascade do |t|
-    t.string "access_token"
-    t.string "token_type"
-    t.integer "expires_in"
-    t.string "scope"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "api_clients", force: :cascade do |t|
     t.string "client_id", null: false
     t.string "client_secret", null: false
@@ -110,6 +101,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_09_155330) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "description"
+  end
+
+  create_table "api_webhook_credentials", force: :cascade do |t|
+    t.bigint "api_client_id", null: false
+    t.string "client_id"
+    t.string "client_secret"
+    t.string "auth_url"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["api_client_id"], name: "index_api_webhook_credentials_on_api_client_id"
   end
 
   create_table "api_webhook_events", force: :cascade do |t|
@@ -124,13 +126,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_09_155330) do
     t.bigint "api_client_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "requester", default: 0
     t.index ["analysis_report_id"], name: "index_api_webhook_events_on_analysis_report_id"
     t.index ["api_client_id"], name: "index_api_webhook_events_on_api_client_id"
     t.index ["callback_id"], name: "index_api_webhook_events_on_callback_id"
     t.index ["callback_url"], name: "index_api_webhook_events_on_callback_url"
     t.index ["event_type"], name: "index_api_webhook_events_on_event_type"
-    t.index ["requester"], name: "index_api_webhook_events_on_requester"
     t.index ["status"], name: "index_api_webhook_events_on_status"
   end
 
@@ -751,15 +751,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_09_155330) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["boa_vista_acerta_essencial_id"], name: "index_zip_code_confirmations_on_acerta_essencial_id", unique: true
-  end
-
-  create_table "guarantor_tokens", force: :cascade do |t|
-    t.string "access_token"
-    t.string "token_type"
-    t.integer "expires_in"
-    t.string "scope"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "idwall_addresses", force: :cascade do |t|
@@ -1800,6 +1791,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_09_155330) do
   add_foreign_key "analysis_items", "analysis_reports"
   add_foreign_key "analysis_predictions", "analysis_items"
   add_foreign_key "analysis_reports", "api_clients"
+  add_foreign_key "api_webhook_credentials", "api_clients"
   add_foreign_key "api_webhook_events", "analysis_reports"
   add_foreign_key "api_webhook_events", "api_clients"
   add_foreign_key "boa_vista_additional_informations", "boa_vista_acerta_essencials"
