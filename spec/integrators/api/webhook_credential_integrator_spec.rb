@@ -51,23 +51,6 @@ RSpec.describe Api::WebhookCredentialIntegrator do
       end
     end
 
-    context 'when Faraday::Error is raised' do
-      before do
-        allow(ErrorLogger).to receive(:log)
-        stub_request(:post, webhook_credential.auth_url)
-          .with(headers: request_headers)
-          .to_raise(Faraday::Error.new('Connection failed'))
-      end
-
-      it 'logs and raises the error' do
-        expect { integrator.create_resource(webhook_credential) }
-          .to raise_error(Faraday::Error)
-
-        expect(ErrorLogger).to have_received(:log)
-          .with(instance_of(Faraday::Error))
-      end
-    end
-
     context 'when webhook_credential is present and response is valid' do
       before do
         stub_request(:post, webhook_credential.auth_url)
@@ -82,6 +65,60 @@ RSpec.describe Api::WebhookCredentialIntegrator do
         expect(result[:access_token]).to eq('abc123')
         expect(result[:expires_in]).to eq(1800)
         expect(result[:expires_at]).to be_within(2).of(Time.now.to_i + 1800)
+      end
+    end
+
+    context 'when the response is unsuccessful due to missing authorization' do
+      before do
+        allow(ErrorLogger).to receive(:log)
+
+        stub_request(:post, webhook_credential.auth_url)
+          .with(headers: request_headers)
+          .to_return(
+            status: 403,
+            body: nil,
+            headers: response_headers
+          )
+      end
+
+      it 'raises a Faraday::ForbiddenError' do
+        expect { integrator.create_resource(webhook_credential) }
+          .to raise_error(Faraday::ForbiddenError)
+      end
+
+      it 'logs the error' do
+        suppress Faraday::ForbiddenError do
+          integrator.create_resource(webhook_credential)
+
+          expect(ErrorLogger).to have_received(:log)
+        end
+      end
+    end
+
+    context 'when a Faraday::ServerError error occurs' do
+      before do
+        allow(ErrorLogger).to receive(:log)
+
+        stub_request(:post, webhook_credential.auth_url)
+          .with(headers: request_headers)
+          .to_return(
+            status: 500,
+            body: nil,
+            headers: response_headers
+          )
+      end
+
+      it 'raises a Faraday::ServerError error' do
+        expect { integrator.create_resource(webhook_credential) }
+          .to raise_error(Faraday::ServerError)
+      end
+
+      it 'logs the error' do
+        suppress Faraday::ServerError do
+          integrator.create_resource(webhook_credential)
+
+          expect(ErrorLogger).to have_received(:log)
+        end
       end
     end
   end
