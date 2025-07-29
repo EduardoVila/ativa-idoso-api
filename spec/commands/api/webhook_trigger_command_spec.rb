@@ -15,7 +15,7 @@ RSpec.describe Api::WebhookTriggerCommand do
       )
     end
     let!(:webhook_credential) do
-      create :api_webhook_credential, api_client: webhook_event.api_client
+      create :api_webhook_credential, api_client: analysis_report.api_client
     end
     let(:integrator) { instance_double(Api::WebhookEventIntegrator) }
 
@@ -47,29 +47,19 @@ RSpec.describe Api::WebhookTriggerCommand do
       end
     end
 
-    context 'when the webhook credential is blank' do
-      let!(:webhook_credential) { nil }
-
-      it 'returns immediately without creating a resource' do
-        subject.call
-
-        expect(integrator).not_to have_received(:create_resource)
-      end
-    end
-
     context 'when the webhook event is not processed' do
       it 'creates a resource using the integrator' do
         subject.call
 
         expect(integrator).to have_received(:create_resource)
-          .with(webhook_event, webhook_credential)
+          .with(webhook_event, webhook_event.api_webhook_credential)
       end
     end
 
     context 'when there is an error' do
       before do
         allow(integrator).to receive(:create_resource)
-          .with(webhook_event, webhook_credential)
+          .with(webhook_event, webhook_event.api_webhook_credential)
           .and_raise(Errors::Api::WebhookPostResponseError)
       end
 

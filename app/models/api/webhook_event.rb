@@ -35,11 +35,12 @@
 
 module Api
   class WebhookEvent < ApplicationRecord
-    belongs_to :api_client, class_name: 'Api::Client',
-                            foreign_key: 'api_client_id'
-
     belongs_to :analysis_report, class_name: 'Analysis::Report',
-                                 foreign_key: 'analysis_report_id'
+                                 foreign_key: 'analysis_report_id',
+                                 inverse_of: :api_webhook_events
+
+    belongs_to :api_webhook_credential, class_name: 'Api::WebhookCredential',
+                                        foreign_key: 'api_webhook_credential_id'
 
     enum :status, %i[received processing processed error]
 

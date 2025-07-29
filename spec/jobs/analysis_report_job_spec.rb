@@ -12,7 +12,8 @@ RSpec.describe AnalysisReportJob do
     let(:webhook_event) do
       create :api_webhook_event,
              analysis_report_id: analysis_report.id,
-             api_client: analysis_report.api_client
+             api_webhook_credential: analysis_report.api_client
+               .api_webhook_credentials.first
     end
 
     before do

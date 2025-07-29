@@ -52,11 +52,11 @@ module Analysis
                      inverse_of: :report,
                      dependent: :destroy
 
-    has_one :api_webhook_event,
-            class_name: 'Api::WebhookEvent',
-            foreign_key: 'analysis_report_id',
-            inverse_of: :analysis_report,
-            dependent: :destroy
+    has_many :api_webhook_events,
+             class_name: 'Api::WebhookEvent',
+             foreign_key: 'analysis_report_id',
+             inverse_of: :analysis_report,
+             dependent: :destroy
 
     scope :approved, -> { where(approved: true) }
 

@@ -11,9 +11,7 @@ module Api
     end
 
     def call
-      return if webhook_event.blank? ||
-                webhook_credential.blank? ||
-                webhook_event.processed?
+      return if webhook_event.blank? || webhook_event.processed?
 
       integrator.new.create_resource(webhook_event, webhook_credential)
     rescue ::Errors::Api::WebhookPostResponseError, StandardError => e
@@ -33,9 +31,7 @@ module Api
     attr_reader :webhook_event, :integrator
 
     def webhook_credential
-      @webhook_credential ||= Api::WebhookCredential.find_by(
-        api_client: webhook_event.api_client
-      )
+      @webhook_credential ||= webhook_event.api_webhook_credential
     end
   end
 end

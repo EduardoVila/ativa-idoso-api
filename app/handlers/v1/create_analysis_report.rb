@@ -25,8 +25,14 @@ module V1
       analysis_report = create_analysis_report(data, current_client)
       halt(422) unless analysis_report.persisted?
 
-      # Create webhook and enqueue job
-      create_webhook_event(analysis_report, current_client, data)
+      # Check if the client has a webhook credential
+      halt(422) if current_client.api_webhook_credentials.blank?
+
+      # Create webhook event to track the analysis report
+      credential = current_client.api_webhook_credentials.first
+      create_webhook_event(analysis_report, credential, data)
+
+      # Enqueue job to process the analysis report
       AnalysisReportJob.perform_async(analysis_report.id)
 
       # Return response with status 201 and send the alpop-analysis-pointer
@@ -52,14 +58,14 @@ module V1
       ).tap(&:save)
     end
 
-    def create_webhook_event(report, client, data)
+    def create_webhook_event(report, credential, data)
       Api::WebhookEvent.create(
         callback_url: data['callback_url'],
         callback_id: data['callback_id'],
         event_type: 'analysis_report',
         status: 'received',
-        analysis_report_id: report.id,
-        api_client_id: client.id
+        analysis_report: report,
+        api_webhook_credential: credential
       )
     end
   end

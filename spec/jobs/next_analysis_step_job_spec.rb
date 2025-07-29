@@ -27,7 +27,9 @@ RSpec.describe NextAnalysisStepJob do
       let(:analysis_step) { create :analysis_step }
       let!(:webhook_event) do
         create :api_webhook_event,
-               analysis_report_id: analysis_item.analysis_report_id
+               analysis_report_id: analysis_item.analysis_report_id,
+               api_webhook_credential: analysis_item.report.api_client
+                 .api_webhook_credentials.first
       end
 
       it 'invokes the next step of the analysis process' do

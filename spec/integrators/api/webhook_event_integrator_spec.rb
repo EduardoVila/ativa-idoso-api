@@ -17,9 +17,7 @@ RSpec.describe Api::WebhookEventIntegrator do
       callback_id: '12345'
     )
   end
-  let(:webhook_credential) do
-    create :api_webhook_credential, api_client: webhook_event.api_client
-  end
+  let(:webhook_credential) { create :api_webhook_credential }
   let(:response_headers) { { 'Content-Type' => 'application/json' } }
   let(:request_headers) do
     {

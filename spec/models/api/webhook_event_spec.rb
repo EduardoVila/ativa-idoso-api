@@ -44,17 +44,17 @@ RSpec.describe Api::WebhookEvent, type: :model do
   end
 
   describe 'associations' do
-    it {
-      expect(subject).to belong_to(:api_client)
-        .class_name('Api::Client')
-        .with_foreign_key('api_client_id')
-    }
-
-    it {
+    it do
       expect(subject).to belong_to(:analysis_report)
         .class_name('Analysis::Report')
         .with_foreign_key('analysis_report_id')
-    }
+    end
+
+    it do
+      expect(subject).to belong_to(:api_webhook_credential)
+        .class_name('Api::WebhookCredential')
+        .with_foreign_key('api_webhook_credential_id')
+    end
   end
 
   describe 'enums' do

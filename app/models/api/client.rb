@@ -24,13 +24,9 @@ module Api
                                 inverse_of: :api_client,
                                 dependent: :destroy
 
-    has_many :webhook_events, class_name: 'Api::WebhookEvent',
-                              inverse_of: :api_client,
-                              dependent: :destroy
-
-    has_one :webhook_credential, class_name: 'Api::WebhookCredential',
-                                 inverse_of: :api_client,
-                                 dependent: :destroy
+    has_many :api_webhook_credentials, class_name: 'Api::WebhookCredential',
+                                       inverse_of: :api_client,
+                                       dependent: :destroy
 
     validates :client_id, presence: true, uniqueness: true
     validates :client_secret, presence: true

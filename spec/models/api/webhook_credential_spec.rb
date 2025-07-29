@@ -8,6 +8,13 @@ RSpec.describe Api::WebhookCredential, type: :model do
       expect(subject).to belong_to(:api_client).class_name('Api::Client')
         .with_foreign_key('api_client_id')
     end
+
+    it do
+      expect(subject).to have_many(:api_webhook_events)
+        .class_name('Api::WebhookEvent')
+        .with_foreign_key('api_webhook_credential_id')
+        .dependent(:destroy)
+    end
   end
 
   describe 'encryption' do

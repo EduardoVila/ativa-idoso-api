@@ -15,7 +15,10 @@ RSpec.describe RetryFailedAnalysisItemsJob do
       let(:retry_record) { create :analysis_report, :error }
       let!(:error_item) { create :analysis_item, :error, report: retry_record }
       let!(:webhook_event) do
-        create :api_webhook_event, analysis_report_id: retry_record.id
+        create :api_webhook_event,
+               analysis_report_id: retry_record.id,
+               api_webhook_credential: retry_record.api_client
+                 .api_webhook_credentials.first
       end
 
       it 'executes the :retry_command on the Invoker' do

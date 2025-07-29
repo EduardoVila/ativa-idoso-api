@@ -11,6 +11,9 @@ RSpec.describe V1::CreateAnalysisReport, type: :handler do
     let(:route) { '/v1/analysis-reports' }
     let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
     let(:current_client) { create :api_client }
+    let!(:webhook_credential) do
+      create :api_webhook_credential, api_client: current_client
+    end
     let(:params) do
       {
         data: {
