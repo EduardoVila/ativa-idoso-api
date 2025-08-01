@@ -47,6 +47,13 @@ module Api
       hashed_secret
     end
 
+    def active_subscriptions
+      Api::WebhookSubscription
+        .joins(:api_webhook_credential)
+        .where(api_webhook_credentials: { api_client_id: id })
+        .active
+    end
+
     private
 
     def set_client_credentials

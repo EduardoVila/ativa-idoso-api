@@ -11,7 +11,10 @@ module V1
 
     post('/v1/analysis-reports') do
       current_client = Tokenable.current_client(request)
-      halt(401) if current_client.blank?
+      halt(401, { 'WWW-Authenticate' => 'Bearer' }) if current_client.blank?
+
+      subscriptions = current_client.active_subscriptions
+      halt(404, 'No active subscriptions found') if subscriptions.blank?
 
       # Parse and validate request body
       body_params = ensure_valid_request_body(request)
@@ -22,34 +25,28 @@ module V1
       halt(400) unless required_params_present?(data)
 
       # Create analysis report
-      analysis_report = create_analysis_report(data, current_client)
-      halt(422) unless analysis_report.persisted?
+      report = create_report(data, current_client)
+      halt(422) unless report.persisted?
 
-      # Check if the client has a webhook credential
-      halt(422) if current_client.api_webhook_credentials.blank?
-
-      # Create webhook event to track the analysis report
-      credential = current_client.api_webhook_credentials.first
-      create_webhook_event(analysis_report, credential, data)
+      # For each active subscription create events to track analysis report
+      subscriptions.each { |sub| create_event(report, sub, data) }
+      halt(422) if report.api_webhook_events.blank?
 
       # Enqueue job to process the analysis report
-      AnalysisReportJob.perform_async(analysis_report.id)
+      AnalysisReportJob.perform_async(report.id)
 
       # Return response with status 201 and send the alpop-analysis-pointer
       status(201)
-      analysis_report.serialize_record.to_json
+      report.serialize_record.to_json
     end
 
     private
 
     def required_params_present?(params)
-      params['cpfs'].present? &&
-        params['callback_url'].present? &&
-        params['callback_id'].present? &&
-        params['callback_url'] =~ URI::DEFAULT_PARSER.make_regexp
+      params['cpfs'].present? && params['callback_id'].present?
     end
 
-    def create_analysis_report(data, client)
+    def create_report(data, client)
       ::Analysis::Report.new(
         cpfs: data['cpfs'],
         prediction_model_name: data['prediction_model_name'],
@@ -58,14 +55,13 @@ module V1
       ).tap(&:save)
     end
 
-    def create_webhook_event(report, credential, data)
+    def create_event(report, subscription, data)
       Api::WebhookEvent.create(
-        callback_url: data['callback_url'],
         callback_id: data['callback_id'],
         event_type: 'analysis_report',
         status: 'received',
         analysis_report: report,
-        api_webhook_credential: credential
+        api_webhook_subscription: subscription
       )
     end
   end

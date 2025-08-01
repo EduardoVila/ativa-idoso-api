@@ -6,6 +6,7 @@ module Api
   class WebhookTriggerCommand < ApplicationCommand
     def initialize(webhook_event, integrator = Api::WebhookEventIntegrator)
       @webhook_event = webhook_event
+      @webhook_subscription = webhook_event&.api_webhook_subscription
       @integrator = integrator
       super()
     end
@@ -13,25 +14,11 @@ module Api
     def call
       return if webhook_event.blank? || webhook_event.processed?
 
-      integrator.new.create_resource(webhook_event, webhook_credential)
-    rescue ::Errors::Api::WebhookPostResponseError, StandardError => e
-      logger = Logger.new($stdout)
-      logger.error(
-        <<~ERR
-          Failed to deliver Webhook Event #{webhook_event.id} to #{webhook_event.callback_url}.
-          Exception: #{e}
-        ERR
-      )
-
-      raise e # Raise error to be handled by Sidekiq retries
+      integrator.new.create_resource(webhook_event, webhook_subscription)
     end
 
     private
 
-    attr_reader :webhook_event, :integrator
-
-    def webhook_credential
-      @webhook_credential ||= webhook_event.api_webhook_credential
-    end
+    attr_reader :webhook_event, :webhook_subscription, :integrator
   end
 end

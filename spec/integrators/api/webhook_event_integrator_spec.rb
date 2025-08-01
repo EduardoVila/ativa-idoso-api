@@ -12,12 +12,11 @@ RSpec.describe Api::WebhookEventIntegrator do
   let(:webhook_event) do
     create(
       :api_webhook_event,
-      callback_url: 'https://example.com/callback',
       payload: { key: 'value' },
       callback_id: '12345'
     )
   end
-  let(:webhook_credential) { create :api_webhook_credential }
+  let(:webhook_subscription) { create :api_webhook_subscription }
   let(:response_headers) { { 'Content-Type' => 'application/json' } }
   let(:request_headers) do
     {
@@ -50,25 +49,25 @@ RSpec.describe Api::WebhookEventIntegrator do
       }.to_json
     end
 
-    context 'when webhook_event or webhook_credential is blank' do
+    context 'when webhook_event or webhook_subscription is blank' do
       it 'returns nil if webhook_event is blank' do
-        expect(integrator.create_resource(nil, webhook_credential)).to be_nil
+        expect(integrator.create_resource(nil, webhook_subscription)).to be_nil
       end
 
-      it 'returns nil if webhook_credential is blank' do
+      it 'returns nil if webhook_subscription is blank' do
         expect(integrator.create_resource(webhook_event, nil)).to be_nil
       end
     end
 
     context 'when the response is successful' do
       before do
-        stub_request(:post, webhook_event.callback_url)
+        stub_request(:post, webhook_subscription.endpoint_url)
           .with(headers: request_headers, body: request_body)
           .to_return(status: 200, headers: response_headers)
       end
 
       it 'updates the event and returns it' do
-        integrator.create_resource(webhook_event, webhook_credential)
+        integrator.create_resource(webhook_event, webhook_subscription)
 
         expect(webhook_event.status).to eq('processed')
         expect(webhook_event.response).to eq(200)
@@ -77,7 +76,7 @@ RSpec.describe Api::WebhookEventIntegrator do
 
     context 'when the response is unsuccessful' do
       before do
-        stub_request(:post, webhook_event.callback_url)
+        stub_request(:post, webhook_subscription.endpoint_url)
           .with(headers: request_headers)
           .to_raise(Faraday::ForbiddenError.new('Forbidden'))
           .and_return(status: 403, body: nil, headers: response_headers)
@@ -85,14 +84,14 @@ RSpec.describe Api::WebhookEventIntegrator do
 
       it 'raises an Api::WebhookTriggerCommandError' do
         expect do
-          integrator.create_resource(webhook_event, webhook_credential)
+          integrator.create_resource(webhook_event, webhook_subscription)
         end.to raise_error(Faraday::ForbiddenError)
       end
     end
 
     context 'when a Faraday::ConnectionFailed error occurs' do
       before do
-        stub_request(:post, webhook_event.callback_url)
+        stub_request(:post, webhook_subscription.endpoint_url)
           .with(headers: request_headers)
           .to_raise(Faraday::ConnectionFailed.new('Connection failed'))
           .and_return(
@@ -104,7 +103,7 @@ RSpec.describe Api::WebhookEventIntegrator do
 
       it 'raises a Faraday::ConnectionFailed' do
         expect do
-          integrator.create_resource(webhook_event, webhook_credential)
+          integrator.create_resource(webhook_event, webhook_subscription)
         end.to raise_error(Faraday::ConnectionFailed)
       end
     end

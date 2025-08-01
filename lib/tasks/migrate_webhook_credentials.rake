@@ -1,16 +1,25 @@
 # frozen_string_literal: true
 
 namespace :db do
-  desc 'Migrate webhook_events to use webhook_credential association'
+  desc 'Migrate api_webhook_events to use api_webhook_subscription association'
   task migrate_webhook_credentials: :environment do
     require_relative '../../config/environments' # Environment setup
     require_relative '../../config/application' # Application setup
 
+    # client -> credentials -> subscriptions -> events
     Api::WebhookEvent.find_each do |event|
-      credential = event.api_client.api_webhook_credentials.first
-      next unless credential
+      api_client = event.api_client
+      credentials = api_client.api_webhook_credentials
+      next if credentials.empty?
 
-      event.update!(api_webhook_credential: credential)
+      credentials.find_each do |credential|
+        subscriptions = credential.api_wehbook_subscriptions
+        next if subscriptions.empty?
+
+        subscriptions.each do |subscription|
+          subscription.api_webhook_events << event
+        end
+      end
     end
   end
 end

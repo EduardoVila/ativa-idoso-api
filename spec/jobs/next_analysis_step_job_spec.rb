@@ -7,36 +7,54 @@ RSpec.shared_examples 'does nothing' do
   it 'does nothing' do
     allow(analysis_item).to receive(:update).and_call_original
 
-    subject
+    subject.perform(analysis_item&.id, analysis_step&.id)
 
-    expect(Invoker).not_to have_received(:execute)
+    expect(invoker_spy).not_to have_received(:execute)
     expect(analysis_item).not_to have_received(:update)
   end
 end
 
 RSpec.describe NextAnalysisStepJob do
-  subject { job_instance.perform(analysis_item&.id, analysis_step&.id) }
+  subject { described_class.new }
 
-  let(:job_instance) { described_class.new }
+  describe '#perform' do
+    let(:delivery_spy) { instance_spy(Api::WebhookDeliveryService) }
+    let(:invoker_spy) { class_spy(Invoker) }
 
-  describe '#call' do
-    before { allow(Invoker).to receive(:execute) }
+    before do
+      allow(Api::WebhookDeliveryService).to receive(:new)
+        .and_return(delivery_spy)
+      allow(delivery_spy).to receive(:call)
+
+      stub_const('Invoker', invoker_spy)
+      allow(invoker_spy).to receive(:execute)
+
+      # Clear Sidekiq jobs before each test
+      Sidekiq::Testing.fake! do
+        Sidekiq::Job.clear_all
+      end
+    end
+
+    # Clear Sidekiq jobs after each test
+    after do
+      Sidekiq::Testing.fake! do
+        Sidekiq::Job.clear_all
+      end
+    end
 
     context 'when it performs correctly' do
       let(:analysis_item) { create :analysis_item }
       let(:analysis_step) { create :analysis_step }
       let!(:webhook_event) do
         create :api_webhook_event,
-               analysis_report_id: analysis_item.analysis_report_id,
-               api_webhook_credential: analysis_item.report.api_client
-                 .api_webhook_credentials.first
+               analysis_report_id: analysis_item.analysis_report_id
       end
 
       it 'invokes the next step of the analysis process' do
         Sidekiq::Testing.fake! do
-          subject
+          subject.perform(analysis_item&.id, analysis_step&.id)
 
-          expect(Invoker).to have_received(:execute).once
+          expect(invoker_spy).to have_received(:execute).once
             .with(
               :analysis_next_step_command,
               analysis_item,
@@ -45,15 +63,12 @@ RSpec.describe NextAnalysisStepJob do
         end
       end
 
-      it 'invokes the api webhook trigger command to callback the requester' do
+      it 'calls the delivery service' do
         Sidekiq::Testing.fake! do
-          subject
+          subject.perform(analysis_item&.id, analysis_step&.id)
 
-          expect(Invoker).to have_received(:execute).once
-            .with(
-              :api_webhook_trigger_command,
-              webhook_event
-            )
+          expect(delivery_spy).to have_received(:call)
+            .with([webhook_event], analysis_item.report.reload)
         end
       end
     end

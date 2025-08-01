@@ -40,7 +40,7 @@ FactoryBot.define do
     response { 200 }
     status { 'received' }
 
-    api_webhook_credential factory: :api_webhook_credential
+    api_webhook_subscription factory: :api_webhook_subscription
     analysis_report factory: :analysis_report
   end
 end

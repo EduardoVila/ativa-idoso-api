@@ -7,8 +7,9 @@ module Api
     belongs_to :api_client, class_name: 'Api::Client',
                             foreign_key: 'api_client_id'
 
-    has_many :api_webhook_events, class_name: 'Api::WebhookEvent',
-                                  foreign_key: 'api_webhook_credential_id',
-                                  dependent: :destroy
+    has_many :api_webhook_subscriptions,
+             class_name: 'Api::WebhookSubscription',
+             foreign_key: 'api_webhook_credential_id',
+             dependent: :destroy
   end
 end

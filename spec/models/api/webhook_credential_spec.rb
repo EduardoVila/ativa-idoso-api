@@ -10,8 +10,8 @@ RSpec.describe Api::WebhookCredential, type: :model do
     end
 
     it do
-      expect(subject).to have_many(:api_webhook_events)
-        .class_name('Api::WebhookEvent')
+      expect(subject).to have_many(:api_webhook_subscriptions)
+        .class_name('Api::WebhookSubscription')
         .with_foreign_key('api_webhook_credential_id')
         .dependent(:destroy)
     end

@@ -14,11 +14,14 @@ RSpec.describe V1::CreateAnalysisReport, type: :handler do
     let!(:webhook_credential) do
       create :api_webhook_credential, api_client: current_client
     end
+    let!(:webhook_subscription) do
+      create :api_webhook_subscription,
+             api_webhook_credential: webhook_credential
+    end
     let(:params) do
       {
         data: {
           cpfs: [cpf.to_s],
-          callback_url: 'http://example.test/callback',
           callback_id: '123',
           prediction_model: 'model_name'
         }
@@ -58,6 +61,17 @@ RSpec.describe V1::CreateAnalysisReport, type: :handler do
       end
     end
 
+    context 'when subscription is not found' do
+      before do
+        webhook_subscription.destroy
+        post_request
+      end
+
+      it 'returns status 404' do
+        expect(last_response.status).to eq(404)
+      end
+    end
+
     context 'when params are invalid' do
       shared_examples 'returns bad request' do
         it 'returns status 400' do
@@ -73,21 +87,6 @@ RSpec.describe V1::CreateAnalysisReport, type: :handler do
             data: {
               cpfs: [],
               callback_url: 'http://example.test/callback',
-              callback_id: '123',
-              prediction_model: 'model_name'
-            }
-          }
-        end
-
-        it_behaves_like 'returns bad request'
-      end
-
-      context 'with invalid callback_url' do
-        let(:params) do
-          {
-            data: {
-              cpfs: ['12345678901'],
-              callback_url: 'invalid_url',
               callback_id: '123',
               prediction_model: 'model_name'
             }

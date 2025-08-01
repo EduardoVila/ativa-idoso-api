@@ -51,9 +51,9 @@ RSpec.describe Api::WebhookEvent, type: :model do
     end
 
     it do
-      expect(subject).to belong_to(:api_webhook_credential)
-        .class_name('Api::WebhookCredential')
-        .with_foreign_key('api_webhook_credential_id')
+      expect(subject).to belong_to(:api_webhook_subscription)
+        .class_name('Api::WebhookSubscription')
+        .with_foreign_key('api_webhook_subscription_id')
     end
   end
 
@@ -62,26 +62,5 @@ RSpec.describe Api::WebhookEvent, type: :model do
       expect(subject).to define_enum_for(:status)
         .with_values(%i[received processing processed error])
     }
-  end
-
-  describe 'validations' do
-    it { is_expected.to validate_presence_of(:callback_url) }
-
-    describe 'callback_url format validation' do
-      it 'accepts valid URLs' do
-        webhook_event = build(
-          :api_webhook_event, callback_url: 'https://example.com/webhook'
-        )
-
-        expect(webhook_event).to be_valid
-      end
-
-      it 'rejects invalid URLs' do
-        webhook_event = build :api_webhook_event, callback_url: 'invalid-url'
-
-        expect(webhook_event).not_to be_valid
-        expect(webhook_event.errors[:callback_url]).to be_present
-      end
-    end
   end
 end

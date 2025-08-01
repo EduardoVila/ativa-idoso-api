@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_29_165513) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_30_180421) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -125,15 +125,27 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_29_165513) do
     t.jsonb "response"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "api_webhook_credential_id"
     t.bigint "api_client_id"
+    t.bigint "api_webhook_subscription_id"
     t.index ["analysis_report_id"], name: "index_api_webhook_events_on_analysis_report_id"
     t.index ["api_client_id"], name: "index_api_webhook_events_on_api_client_id"
-    t.index ["api_webhook_credential_id"], name: "index_api_webhook_events_on_api_webhook_credential_id"
+    t.index ["api_webhook_subscription_id"], name: "index_api_webhook_events_on_api_webhook_subscription_id"
     t.index ["callback_id"], name: "index_api_webhook_events_on_callback_id"
     t.index ["callback_url"], name: "index_api_webhook_events_on_callback_url"
     t.index ["event_type"], name: "index_api_webhook_events_on_event_type"
     t.index ["status"], name: "index_api_webhook_events_on_status"
+  end
+
+  create_table "api_webhook_subscriptions", force: :cascade do |t|
+    t.bigint "api_webhook_credential_id", null: false
+    t.string "endpoint_url"
+    t.boolean "active", default: true, null: false
+    t.integer "max_retries", default: 5, null: false
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["api_webhook_credential_id"], name: "index_api_webhook_subscriptions_on_api_webhook_credential_id"
   end
 
   create_table "audits", force: :cascade do |t|
@@ -1796,7 +1808,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_29_165513) do
   add_foreign_key "api_webhook_credentials", "api_clients"
   add_foreign_key "api_webhook_events", "analysis_reports"
   add_foreign_key "api_webhook_events", "api_clients"
-  add_foreign_key "api_webhook_events", "api_webhook_credentials"
+  add_foreign_key "api_webhook_events", "api_webhook_subscriptions"
+  add_foreign_key "api_webhook_subscriptions", "api_webhook_credentials"
   add_foreign_key "boa_vista_additional_informations", "boa_vista_acerta_essencials"
   add_foreign_key "boa_vista_addresses", "boa_vista_cadastral_locations"
   add_foreign_key "boa_vista_bank_branch_phones_addresses", "boa_vista_acerta_essencials"

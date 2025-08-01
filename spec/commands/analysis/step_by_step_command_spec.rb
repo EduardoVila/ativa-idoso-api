@@ -24,7 +24,7 @@ RSpec.describe Analysis::StepByStepCommand, type: :command do
 
     it 'invokes steps for each step' do
       steps.each do |step|
-        expect(command).to receive(:run_step) # rubocop:disable RSpec/MessageSpies
+        expect(command).to receive(:run_step)
       end
 
       command.call

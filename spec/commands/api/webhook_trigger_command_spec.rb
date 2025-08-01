@@ -14,8 +14,12 @@ RSpec.describe Api::WebhookTriggerCommand do
         analysis_report_id: analysis_report.id
       )
     end
-    let!(:webhook_credential) do
+    let(:webhook_credential) do
       create :api_webhook_credential, api_client: analysis_report.api_client
+    end
+    let!(:webhook_subscription) do
+      create :api_webhook_subscription,
+             api_webhook_credential: webhook_credential
     end
     let(:integrator) { instance_double(Api::WebhookEventIntegrator) }
 
@@ -52,14 +56,14 @@ RSpec.describe Api::WebhookTriggerCommand do
         subject.call
 
         expect(integrator).to have_received(:create_resource)
-          .with(webhook_event, webhook_event.api_webhook_credential)
+          .with(webhook_event, webhook_event.api_webhook_subscription)
       end
     end
 
     context 'when there is an error' do
       before do
         allow(integrator).to receive(:create_resource)
-          .with(webhook_event, webhook_event.api_webhook_credential)
+          .with(webhook_event, webhook_event.api_webhook_subscription)
           .and_raise(Errors::Api::WebhookPostResponseError)
       end
 
