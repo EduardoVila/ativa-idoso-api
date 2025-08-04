@@ -59,7 +59,7 @@ module BlankObjectFilterable
 
   def filter_relevant_attributes(attributes)
     attributes.reject do |key, _|
-      key.match?(/_id$/) || %w[id created_at updated_at].include?(key) # rubocop:disable Performance/CollectionLiteralInLoop
+      key.match?(/_id$/) || %w[id created_at updated_at].include?(key)
     end
   end
 end
