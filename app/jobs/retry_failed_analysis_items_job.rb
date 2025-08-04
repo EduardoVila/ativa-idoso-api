@@ -77,7 +77,7 @@ class RetryFailedAnalysisItemsJob
 
     return if analysis_report.items.none? { |i| i.status == 'error' }
 
-    webhook_events = analysis_report.api_webhook_events.reject(&:processed?)
+    webhook_events = analysis_report.api_webhook_events
     return if webhook_events.blank?
 
     [analysis_report, webhook_events]

@@ -11,7 +11,7 @@ RSpec.describe Analysis::StepByStepCommand, type: :command do
     let(:steps) { create_list :analysis_step, 3 }
 
     before do
-      allow(Analysis::Step).to receive_message_chain(:enabled, :order) # rubocop:disable RSpec/MessageChain
+      allow(Analysis::Step).to receive_message_chain(:enabled, :order)
         .and_return(steps)
       allow(command).to receive(:run_step)
     end

@@ -60,7 +60,7 @@ class AnalysisReportJob
     analysis_report = find_analysis_report(analysis_report_id)
     return if analysis_report.blank? || analysis_report.done?
 
-    webhook_events = analysis_report.api_webhook_events.reject(&:processed?)
+    webhook_events = analysis_report.api_webhook_events
     return if webhook_events.blank?
 
     webhook_events.each { |w| w.update!(status: :processing, job_id: jid) }

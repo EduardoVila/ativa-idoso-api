@@ -90,7 +90,7 @@ class NextAnalysisStepJob
 
     analysis_report = analysis_item.report
 
-    webhook_events = analysis_report.api_webhook_events.reject(&:processed?)
+    webhook_events = analysis_report.api_webhook_events
     return if webhook_events.blank?
 
     [analysis_item, analysis_step, analysis_report, webhook_events]

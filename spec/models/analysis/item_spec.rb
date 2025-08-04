@@ -77,7 +77,8 @@ RSpec.describe Analysis::Item, type: :model do
     describe '#validate_monthly_analysis_item_limit' do
       context 'when there are 4000 analysis_items in the month' do
         before do
-          allow(described_class).to receive_message_chain(:where, :count).and_return(4000) # rubocop:disable RSpec/MessageChain
+          allow(described_class).to receive_message_chain(:where, :count)
+            .and_return(4000)
         end
 
         let(:analysis_item) { build :analysis_item }
@@ -92,7 +93,8 @@ RSpec.describe Analysis::Item, type: :model do
 
       context 'when there are more than 4000 analysis_items in the month' do
         before do
-          allow(described_class).to receive_message_chain(:where, :count).and_return(4001) # rubocop:disable RSpec/MessageChain
+          allow(described_class).to receive_message_chain(:where, :count)
+            .and_return(4001)
         end
 
         let(:analysis_item) { build :analysis_item }
