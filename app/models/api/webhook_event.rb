@@ -35,17 +35,21 @@
 
 module Api
   class WebhookEvent < ApplicationRecord
-    belongs_to :client, class_name: 'Api::Client', foreign_key: 'api_client_id'
+    # TODO: to be removed after rake
+    belongs_to :api_client, class_name: 'Api::Client',
+                            foreign_key: 'api_client_id'
+
     belongs_to :analysis_report, class_name: 'Analysis::Report',
-                                 foreign_key: 'analysis_report_id'
+                                 foreign_key: 'analysis_report_id',
+                                 inverse_of: :api_webhook_events
+
+    belongs_to :api_webhook_subscription,
+               class_name: 'Api::WebhookSubscription',
+               foreign_key: 'api_webhook_subscription_id',
+               inverse_of: :api_webhook_events
 
     enum :status, %i[received processing processed error]
-    enum :requester, %i[guarantor analyzes]
 
     validates :status, inclusion: { in: statuses.keys }
-    validates :requester, inclusion: { in: requesters.keys }
-    validates :callback_url,
-              presence: true,
-              format: { with: URI::DEFAULT_PARSER.make_regexp }
   end
 end

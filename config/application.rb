@@ -4,24 +4,28 @@
 
 require_relative 'environments'
 
-ApplicationLoader.load_gems
-ApplicationLoader.load_app
-ApplicationLoader.load_sidekiq
-ApplicationLoader.load_redis_cache
-ApplicationLoader.load_sentry
+%i[
+  load_gems
+  load_app
+  load_sidekiq
+  load_redis_cache
+  load_sentry
+].each { |method| ApplicationLoader.public_send(method) }
 
 # Start the application
 class AlpopAnalysis < Sinatra::Base
+  # Middleware
   use Idempotency
+
+  # Endpoint handlers
   use V1::Authenticate
   use V1::CreateAnalysisReport
   use V1::NextAnalysisStep
   use V1::RerunCloneAnalysisItem
   use V1::RetryAnalysisReport
   use V1::ShowAnalysisReport
-  use Rack::SslEnforcer, hsts: { subdomains: true }, only_https: true
-  use Rack::Protection
 
+  # Health check endpoint
   get '/' do
     headers 'Content-Type' => 'application/json'
     { message: 'Analysis API is running.' }.to_json

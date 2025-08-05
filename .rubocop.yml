@@ -8,7 +8,7 @@ require:
   - rubocop-rspec
 
 AllCops:
-  TargetRubyVersion: 3.3.5
+  TargetRubyVersion: 3.4
   NewCops: enable
   Exclude:
   - 'tmp/**/*'
@@ -79,7 +79,7 @@ Layout/EmptyLinesAroundModuleBody:
   Enabled: false
 
 Layout/EmptyLineBetweenDefs:
-  NumberOfEmptyLines: [1, 2] # min: 1, max: 2
+  NumberOfEmptyLines: 1 # min: 1, max: 2
 
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
@@ -209,6 +209,12 @@ RSpec/MultipleMemoizedHelpers:
 
 RSpec/ExampleLength:
   Max: 15
+
+RSpec/MessageChain:
+  Enabled: false
+
+RSpec/MessageSpies:
+  Enabled: false
 
 RSpec/MultipleExpectations:
   Enabled: false

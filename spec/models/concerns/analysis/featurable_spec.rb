@@ -2,10 +2,14 @@
 
 require 'spec_helper'
 
-RSpec.describe Featurable, type: :concern do
+RSpec.describe Analysis::Featurable, type: :concern do
   let(:dummy_class) do
     Class.new do
-      include Featurable
+      include Analysis::Featurable
+
+      def update(attributes)
+        attributes.each { |key, value| send("#{key}=", value) }
+      end
 
       attr_accessor(
         :provenir_presumed_income_class,
@@ -172,6 +176,20 @@ RSpec.describe Featurable, type: :concern do
 
         expect(dummy_instance.featurable).to eq(expected_features)
       end
+    end
+  end
+
+  describe '#update_features' do
+    let(:dummy_instance) { dummy_class.new }
+
+    before do
+      allow(dummy_instance).to receive(:update)
+    end
+
+    it 'calls update with featurable hash' do
+      dummy_instance.update_features
+      expect(dummy_instance).to have_received(:update)
+        .with(features: dummy_instance.featurable)
     end
   end
 end

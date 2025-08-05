@@ -18,7 +18,7 @@ RSpec.describe Provenir::BigDataCorpIntegrator do
   it_behaves_like 'integrable', described_class
 
   describe '#create_resource' do
-    subject(:response) { described_class.new.create_resource(analysis_item) }
+    subject(:integrator) { described_class.new }
 
     let(:analysis_item) { create :analysis_item }
 
@@ -37,7 +37,8 @@ RSpec.describe Provenir::BigDataCorpIntegrator do
       end
 
       it 'returns a Provenir::BigDataCorp instance' do
-        expect(response).to be_a(Provenir::BigDataCorp)
+        expect(integrator.create_resource(analysis_item))
+          .to be_a(Provenir::BigDataCorp)
       end
     end
 
@@ -48,9 +49,9 @@ RSpec.describe Provenir::BigDataCorpIntegrator do
         ).to_return(status: 403, body: nil, headers: response_headers)
       end
 
-      it 'raises a BigDataCorpPostResponseError' do
+      it 'raises a Faraday::ForbiddenError' do
         expect do
-          response
+          integrator.create_resource(analysis_item)
         end.to raise_error(Faraday::ForbiddenError)
       end
     end
@@ -63,9 +64,8 @@ RSpec.describe Provenir::BigDataCorpIntegrator do
       end
 
       it 'raises a BigDataCorpPostResponseError after retries' do
-        expect { response }.to raise_error(
-          Errors::Provenir::BigDataCorpPostResponseError
-        )
+        expect { integrator.create_resource(analysis_item) }
+          .to raise_error(Errors::Provenir::BigDataCorpPostResponseError)
       end
     end
   end

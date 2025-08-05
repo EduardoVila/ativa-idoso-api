@@ -63,7 +63,7 @@ RSpec.describe Analysis::Report, type: :model do
     }
 
     it {
-      expect(subject).to have_one(:api_webhook_event)
+      expect(subject).to have_many(:api_webhook_events)
         .class_name('Api::WebhookEvent')
         .inverse_of(:analysis_report)
         .dependent(:destroy)

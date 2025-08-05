@@ -55,46 +55,48 @@ class RetryFailedAnalysisItemsJob
   def perform(analysis_report_id)
     return if analysis_report_id.blank?
 
-    analysis_report = find_analysis_report(analysis_report_id)
-    return unless analysis_report
-    return unless analysis_report.items.any? { |item| item.status == 'error' }
+    report, events = prepare_job_objects(analysis_report_id)
 
-    webhook_event = find_webhook_event(analysis_report_id)
-    return unless webhook_event
+    return unless report && events.any?
 
     ApplicationRecord.transaction do
-      webhook_event.update!(status: :processing, job_id: jid)
-      analysis_report.update!(status: :wip)
+      events.each { |e| e.update!(status: :processing, job_id: jid) }
+
+      report.update!(status: :wip)
     end
 
-    process_items_with_error_status(analysis_report)
+    run_items_with_error_status(report)
 
-    update_webhook_event_payload(webhook_event, analysis_report)
-
-    trigger_webhook_event(webhook_event)
+    deliver_webhook_events(events, report)
   end
 
   private
+
+  def prepare_job_objects(analysis_report_id)
+    analysis_report = find_analysis_report(analysis_report_id)
+
+    return if analysis_report.nil?
+
+    return if analysis_report.items.none? { |i| i.status == 'error' }
+
+    webhook_events = analysis_report.api_webhook_events
+
+    return if webhook_events.blank?
+
+    [analysis_report, webhook_events]
+  end
 
   def find_analysis_report(analysis_report_id)
     Analysis::Report.find(analysis_report_id)
   end
 
-  def find_webhook_event(analysis_report_id)
-    Api::WebhookEvent.find_by(analysis_report_id: analysis_report_id)
-  end
-
-  def process_items_with_error_status(analysis_report)
+  def run_items_with_error_status(analysis_report)
     analysis_report.items.where(status: 'error').each do |analysis_item|
       Invoker.execute(:analysis_item_runner_command, analysis_item)
     end
   end
 
-  def update_webhook_event_payload(webhook_event, analysis_report)
-    webhook_event.update!(payload: analysis_report.reload.serialize_record)
-  end
-
-  def trigger_webhook_event(webhook_event)
-    Invoker.execute(:api_webhook_trigger_command, webhook_event)
+  def deliver_webhook_events(webhook_events, analysis_report)
+    Api::WebhookDeliveryService.new.call(webhook_events, analysis_report.reload)
   end
 end

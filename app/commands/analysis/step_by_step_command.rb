@@ -60,10 +60,10 @@ module Analysis
 
     def update_model_features_and_steps_data(command_class)
       if analysis_item.done? && command_class == 'Analysis::PredictionCommand'
-        update_features
+        analysis_item.update_features
       end
 
-      update_steps_data
+      analysis_item.update_steps_data
     end
 
     # This method invokes the step command and updates the analysis item status.
@@ -162,16 +162,6 @@ module Analysis
       Analysis::Prediction.create(
         label: 'pre_prediction', item: analysis_item, approved: false
       )
-    end
-
-    def update_steps_data
-      steps_data = analysis_item.steps_summary
-      analysis_item.update(steps_data:)
-    end
-
-    def update_features
-      features = analysis_item.featurable
-      analysis_item.update(features:)
     end
   end
 end

@@ -20,14 +20,15 @@ RSpec.describe Serasa::FintechReportIntegrator do
   let(:response_headers) { { 'Content-Type' => 'application/json' } }
 
   before do
-    allow(Serasa::AuthenticationService).to receive(:call).and_return(token)
     WebMock.disable_net_connect!
+
+    allow(Serasa::AuthenticationService).to receive(:call).and_return(token)
   end
 
   it_behaves_like 'integrable', described_class
 
   describe '#load_data' do
-    subject(:response) { described_class.new.load_data(analysis_item) }
+    subject(:integrator) { described_class.new }
 
     let(:analysis_item) { create :analysis_item }
 
@@ -47,11 +48,13 @@ RSpec.describe Serasa::FintechReportIntegrator do
       end
 
       it 'returns a Serasa::FintechReport instance' do
-        expect(response).to be_a(Serasa::FintechReport)
+        expect(integrator.load_data(analysis_item))
+          .to be_a(Serasa::FintechReport)
       end
 
       it 'saves the serasa_fintech_report' do
-        expect { response }.to change(Serasa::FintechReport, :count).by(1)
+        expect { integrator.load_data(analysis_item) }
+          .to change(Serasa::FintechReport, :count).by(1)
       end
     end
 
@@ -70,8 +73,9 @@ RSpec.describe Serasa::FintechReportIntegrator do
         ).to_return(status: 404, body: response_body, headers: response_headers)
       end
 
-      it 'raises a Faraday::ResourceNotFound' do
-        expect { response }.to raise_error(Faraday::ResourceNotFound)
+      it 'raises a #<Faraday::ResourceNotFound' do
+        expect { integrator.load_data(analysis_item) }
+          .to raise_error(Faraday::ResourceNotFound)
       end
     end
 
@@ -84,7 +88,8 @@ RSpec.describe Serasa::FintechReportIntegrator do
       end
 
       it 'raises a Faraday::ServerError with the response status' do
-        expect { response }.to raise_error(Faraday::ServerError)
+        expect { integrator.load_data(analysis_item) }
+          .to raise_error(Faraday::ServerError)
       end
     end
 
@@ -96,8 +101,9 @@ RSpec.describe Serasa::FintechReportIntegrator do
         ).to_raise(Faraday::ConnectionFailed.new('Connection failed'))
       end
 
-      it 'raises a Errors::Serasa::ResponseError after retries' do
-        expect { response }.to raise_error(Errors::Serasa::ResponseError)
+      it 'raises a Faraday::ConnectionFailed after retries' do
+        expect { integrator.load_data(analysis_item) }
+          .to raise_error(Errors::Serasa::ResponseError)
       end
     end
   end
