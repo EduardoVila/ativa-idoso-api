@@ -58,22 +58,18 @@ class AnalysisReportJob
     return if analysis_report_id.blank?
 
     analysis_report = find_analysis_report(analysis_report_id)
-    return unless analysis_report
-    return if analysis_report.done?
+    return if analysis_report.blank? || analysis_report.done?
 
-    webhook_event = find_webhook_event(analysis_report_id)
-    return unless webhook_event
-    return if webhook_event.processed?
+    webhook_events = analysis_report.api_webhook_events
+    return if webhook_events.blank?
 
-    webhook_event.update!(status: :processing, job_id: jid)
+    webhook_events.each { |w| w.update!(status: :processing, job_id: jid) }
 
     run_analysis_report(analysis_report)
 
-    process_analysis_items(analysis_report)
+    run_analysis_items(analysis_report)
 
-    update_webhook_event_payload(webhook_event, analysis_report)
-
-    trigger_webhook_event(webhook_event)
+    deliver_webhook_events(webhook_events, analysis_report)
   end
 
   private
@@ -82,25 +78,17 @@ class AnalysisReportJob
     Analysis::Report.find(analysis_report_id)
   end
 
-  def find_webhook_event(analysis_report_id)
-    Api::WebhookEvent.find_by(analysis_report_id: analysis_report_id)
-  end
-
   def run_analysis_report(analysis_report)
     Invoker.execute(:analysis_report_runner_command, analysis_report)
   end
 
-  def process_analysis_items(analysis_report)
+  def run_analysis_items(analysis_report)
     analysis_report.reload.items.each do |item|
       Invoker.execute(:analysis_item_runner_command, item)
     end
   end
 
-  def update_webhook_event_payload(webhook_event, analysis_report)
-    webhook_event.update!(payload: analysis_report.reload.serialize_record)
-  end
-
-  def trigger_webhook_event(webhook_event)
-    Invoker.execute(:api_webhook_trigger_command, webhook_event)
+  def deliver_webhook_events(webhook_events, analysis_report)
+    Api::WebhookDeliveryService.new.call(webhook_events, analysis_report.reload)
   end
 end

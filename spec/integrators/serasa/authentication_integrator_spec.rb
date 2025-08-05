@@ -31,7 +31,7 @@ RSpec.describe Serasa::AuthenticationIntegrator do
   it_behaves_like 'integrable', described_class
 
   describe '#authenticate' do
-    subject(:response) { described_class.new.authenticate }
+    subject(:integrator) { described_class.new }
 
     context 'when the authentication is successful' do
       let(:json_file) { 'authentication_response' }
@@ -52,11 +52,13 @@ RSpec.describe Serasa::AuthenticationIntegrator do
       end
 
       it 'returns a Serasa::Authentication instance' do
-        expect(response).to be_a(Serasa::Authentication)
+        expect(integrator.authenticate)
+          .to be_a(Serasa::Authentication)
       end
 
       it 'saves the Serasa::Authentication record' do
-        expect { response }.to change(Serasa::Authentication, :count).by(1)
+        expect { integrator.authenticate }
+          .to change(Serasa::Authentication, :count).by(1)
       end
     end
 
@@ -70,7 +72,8 @@ RSpec.describe Serasa::AuthenticationIntegrator do
       end
 
       it 'raises a Errors::Serasa::ResponseError with the response status' do
-        expect { response }.to raise_error(Errors::Serasa::ResponseError)
+        expect { integrator.authenticate }
+          .to raise_error(Errors::Serasa::ResponseError)
       end
     end
 
@@ -84,7 +87,8 @@ RSpec.describe Serasa::AuthenticationIntegrator do
       end
 
       it 'raises a Errors::Serasa::ResponseError after retries' do
-        expect { response }.to raise_error(Errors::Serasa::ResponseError)
+        expect { integrator.authenticate }
+          .to raise_error(Errors::Serasa::ResponseError)
       end
     end
   end

@@ -21,14 +21,12 @@ RSpec.describe BoaVista::CadastralIntegrator, :cadastral_helpers do
     }
   end
 
+  before { WebMock.disable_net_connect! }
+
   it_behaves_like 'integrable', described_class
 
   describe '#create_resource' do
-    subject(:response) { described_class.new.create_resource(analysis_item) }
-
-    before do
-      WebMock.disable_net_connect!
-    end
+    subject(:integrator) { described_class.new }
 
     context 'when it is success' do
       before do
@@ -42,7 +40,8 @@ RSpec.describe BoaVista::CadastralIntegrator, :cadastral_helpers do
       end
 
       it 'creates boa vista cadastral correctly' do
-        expect { response }.to change(BoaVista::Cadastral, :count).by(1)
+        expect { integrator.create_resource(analysis_item) }
+          .to change(BoaVista::Cadastral, :count).by(1)
       end
     end
 
@@ -58,7 +57,8 @@ RSpec.describe BoaVista::CadastralIntegrator, :cadastral_helpers do
       end
 
       it 'raises a StandardError' do
-        expect { response }.to raise_error(StandardError)
+        expect { integrator.create_resource(analysis_item) }
+          .to raise_error(StandardError)
       end
     end
 
@@ -73,8 +73,9 @@ RSpec.describe BoaVista::CadastralIntegrator, :cadastral_helpers do
         )
       end
 
-      it 'raises ProScoreResponseError' do
-        expect { response }.to raise_error(BoaVistaResponseError)
+      it 'raises BoaVistaResponseError' do
+        expect { integrator.create_resource(analysis_item) }
+          .to raise_error(BoaVistaResponseError)
       end
     end
   end

@@ -37,11 +37,10 @@ FactoryBot.define do
     callback_url { Faker::Internet.url }
     event_type { 'analysis_report' }
     payload { {} }
-    requester { 0 } # 'guarantor'
     response { 200 }
     status { 'received' }
 
-    client factory: :api_client
+    api_webhook_subscription factory: :api_webhook_subscription
     analysis_report factory: :analysis_report
   end
 end

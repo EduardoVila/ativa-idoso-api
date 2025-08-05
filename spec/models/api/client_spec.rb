@@ -36,6 +36,7 @@ RSpec.describe Api::Client, type: :model do
 
   describe 'associations' do
     it { is_expected.to have_many(:analysis_reports) }
+    it { is_expected.to have_many(:api_webhook_credentials) }
   end
 
   describe '#authenticate' do

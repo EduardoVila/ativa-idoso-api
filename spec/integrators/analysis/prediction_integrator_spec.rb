@@ -27,7 +27,7 @@ RSpec.describe Analysis::PredictionIntegrator do
   it_behaves_like 'integrable', described_class
 
   describe '#create_resource' do
-    subject(:response) { described_class.new.create_resource(analysis_item) }
+    subject(:integrator) { described_class.new }
 
     let(:analysis_item) { create :analysis_item }
 
@@ -51,19 +51,26 @@ RSpec.describe Analysis::PredictionIntegrator do
       end
 
       it 'returns an Analysis::Prediction instance' do
-        expect(response).to be_a(Analysis::Prediction)
+        expect(integrator.create_resource(analysis_item))
+          .to be_a(Analysis::Prediction)
       end
     end
 
     context 'when the response is unsuccessful' do
       before do
-        stub_request(:post, url).with(headers: request_headers)
-          .to_return(status: 403, body: nil, headers: response_headers)
+        stub_request(:post, url).with(
+          headers: request_headers,
+          body: {
+            cpf: analysis_item.cpf,
+            features: analysis_item.featurable,
+            prediction_model_name: nil
+          }.to_json
+        ).to_return(status: 403, body: nil, headers: response_headers)
       end
 
       it 'raises a Faraday::ForbiddenError' do
         expect do
-          response
+          integrator.create_resource(analysis_item)
         end.to raise_error(Faraday::ForbiddenError)
       end
     end
@@ -71,19 +78,18 @@ RSpec.describe Analysis::PredictionIntegrator do
     context 'when a Faraday::ConnectionFailed error occurs' do
       before do
         stub_request(:post, url).with(headers: request_headers)
-          .to_raise(Errors::Analysis::PredictionPostResponseError)
+          .to_raise(Faraday::ConnectionFailed)
       end
 
-      it 'raises a PredictionPostResponseError after retries' do
-        expect { response }.to raise_error(
-          Errors::Analysis::PredictionPostResponseError
-        )
+      it 'raises a Faraday::ConnectionFailed after retries' do
+        expect { integrator.create_resource(analysis_item)  }
+          .to raise_error(Faraday::ConnectionFailed)
       end
     end
   end
 
   describe '#show_resource' do
-    subject(:response) { described_class.new.show_resource(prediction_id) }
+    subject(:integrator) { described_class.new }
 
     let(:prediction_id) { '123' }
     let(:get_url) { "#{url}/#{prediction_id}" }
@@ -107,7 +113,8 @@ RSpec.describe Analysis::PredictionIntegrator do
       end
 
       it 'returns an Analysis::Prediction instance' do
-        expect(response).to be_a(Analysis::Prediction)
+        expect(integrator.show_resource(prediction_id))
+          .to be_a(Analysis::Prediction)
       end
     end
 
@@ -123,7 +130,8 @@ RSpec.describe Analysis::PredictionIntegrator do
       end
 
       it 'raises a PredictionPostResponseError' do
-        expect { response }.to raise_error(Faraday::ForbiddenError)
+        expect { integrator.show_resource(prediction_id) }
+          .to raise_error(Faraday::ForbiddenError)
       end
     end
 
@@ -131,13 +139,16 @@ RSpec.describe Analysis::PredictionIntegrator do
       before do
         stub_request(:get, get_url)
           .with(headers: request_headers)
-          .to_raise(Errors::Analysis::PredictionGetResponseError)
+          .to_return(
+            status: 500,
+            body: nil,
+            headers: response_headers
+          )
       end
 
       it 'raises a PredictionGetResponseError' do
-        expect { response }.to raise_error(
-          Errors::Analysis::PredictionGetResponseError
-        )
+        expect { integrator.show_resource(prediction_id) }
+          .to raise_error(Faraday::ServerError)
       end
     end
   end

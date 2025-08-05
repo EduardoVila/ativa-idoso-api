@@ -96,6 +96,8 @@ configure :production do
   set :database, Database.fetch_config
   set :show_exceptions, false # Disable error reporting
   set :logging, true # Enable logging in production
+
+  # use Rack::SslEnforcer, hsts: { subdomains: true }, only_https: true
 end
 
 configure :development, :test, :production do
@@ -103,10 +105,10 @@ configure :development, :test, :production do
   enable :dump_errors
   enable :raise_errors
 
-  set :server, :puma # Use the Puma web server
-  set :app_file, File.expand_path('application.rb', __dir__) # Set the application file
-  set :root, File.expand_path('../alpop-analysis', __dir__) # Set the root directory
-  set :public_folder, File.expand_path('public', __dir__) # Set the public directory
+  set :server, :puma
+  set :app_file, File.expand_path('application.rb', __dir__)
+  set :root, File.expand_path('../alpop-analysis', __dir__)
+  set :public_folder, File.expand_path('public', __dir__)
   set :time_zone,
       Time.zone_default = ActiveSupport::TimeZone['America/Sao_Paulo']
 
@@ -118,6 +120,21 @@ configure :development, :test, :production do
   ]
   I18n.default_locale = :'pt-BR'
 
+  set :orm, ActiveRecord::Base # Set the ORM to ActiveRecord
+  if settings.environment == :development
+    ActiveRecord::Base.logger =
+      Logger.new($stdout)
+  end
+
+  # Enable ActiveRecord encryption
+  ActiveRecord::Encryption.config.primary_key =
+    EnvHelper.fetch('ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY')
+  ActiveRecord::Encryption.config.deterministic_key =
+    EnvHelper.fetch('ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY')
+  ActiveRecord::Encryption.config.key_derivation_salt =
+    EnvHelper.fetch('ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT')
+
+  use Rack::Protection
   use Rack::Cors do
     allow do
       origins ENV.fetch('CORS_ALLOWED_ORIGINS', 'alpop.com.br')

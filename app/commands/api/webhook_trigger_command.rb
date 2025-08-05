@@ -4,28 +4,21 @@ require_relative 'webhook_trigger_command_error'
 
 module Api
   class WebhookTriggerCommand < ApplicationCommand
-    attr_reader :webhook_event
-
-    def initialize(webhook_event)
-      super()
+    def initialize(webhook_event, integrator = Api::WebhookEventIntegrator)
       @webhook_event = webhook_event
+      @webhook_subscription = webhook_event&.api_webhook_subscription
+      @integrator = integrator
+      super()
     end
 
     def call
-      return if webhook_event.processed? # Guard clause to avoid unnecessary calls
+      return if webhook_event.blank? || webhook_event.processed?
 
-      integrator = Api::WebhookIntegrator.new
-      integrator.create_resource(webhook_event)
-    rescue ::Errors::Api::WebhookPostResponseError, StandardError => e
-      logger = Logger.new($stdout)
-      logger.error(
-        <<~ERR
-          Failed to deliver Webhook Event #{webhook_event.id} to #{webhook_event.callback_url}.
-          Exception: #{e}
-        ERR
-      )
-
-      raise e # Raise error to be handled by Sidekiq retries
+      integrator.new.create_resource(webhook_event, webhook_subscription)
     end
+
+    private
+
+    attr_reader :webhook_event, :webhook_subscription, :integrator
   end
 end

@@ -65,30 +65,38 @@ class NextAnalysisStepJob
   def perform(analysis_item_id, analysis_step_id)
     return if analysis_item_id.blank? || analysis_step_id.blank?
 
-    analysis_item = find_analysis_item(analysis_item_id)
-    return unless analysis_item
+    item, step, report, events =
+      prepare_job_objects(analysis_item_id, analysis_step_id)
 
-    analysis_step = find_analysis_step(analysis_step_id)
-    return unless analysis_step
+    return if [item, step, report, events].any?(&:blank?)
 
-    return if analysis_item.steps.exists?(id: analysis_step_id)
+    events.each { |event| event.update!(status: :processing, job_id: jid) }
 
-    webhook_event = find_webhook_event(analysis_item.analysis_report_id)
-    return unless webhook_event
+    run_next_step(item, step.command_class)
 
-    webhook_event.update!(status: :processing, job_id: jid)
-
-    process_next_step(analysis_item, analysis_step.command_class)
-
-    update_webhook_event_payload(webhook_event, analysis_item.report)
-
-    trigger_webhook_event(webhook_event)
+    deliver_webhook_events(events, report)
   end
 
   private
 
-  def find_webhook_event(analysis_report_id)
-    Api::WebhookEvent.find_by(analysis_report_id: analysis_report_id)
+  def prepare_job_objects(analysis_item_id, analysis_step_id)
+    analysis_item = find_analysis_item(analysis_item_id)
+
+    return if analysis_item.nil?
+
+    analysis_step = find_analysis_step(analysis_step_id)
+
+    return if analysis_step.nil?
+
+    return if analysis_item.steps.exists?(id: analysis_step_id)
+
+    analysis_report = analysis_item.report
+
+    webhook_events = analysis_report.api_webhook_events
+
+    return if webhook_events.blank?
+
+    [analysis_item, analysis_step, analysis_report, webhook_events]
   end
 
   def find_analysis_item(analysis_item_id)
@@ -99,15 +107,11 @@ class NextAnalysisStepJob
     Analysis::Step.select(:id, :command_class).find_by(id: analysis_step_id)
   end
 
-  def process_next_step(analysis_item, command_class)
+  def run_next_step(analysis_item, command_class)
     Invoker.execute(:analysis_next_step_command, analysis_item, command_class)
   end
 
-  def update_webhook_event_payload(webhook_event, analysis_report)
-    webhook_event.update!(payload: analysis_report.reload.serialize_record)
-  end
-
-  def trigger_webhook_event(webhook_event)
-    Invoker.execute(:api_webhook_trigger_command, webhook_event)
+  def deliver_webhook_events(webhook_events, analysis_report)
+    Api::WebhookDeliveryService.new.call(webhook_events, analysis_report.reload)
   end
 end

@@ -3,6 +3,7 @@
 module Analysis
   module StepTrackable
     extend ActiveSupport::Concern
+
     included do
       def available_analysis_steps
         Analysis::Step.enabled.order(:index_order).map(&:serialize_record)
@@ -36,6 +37,10 @@ module Analysis
           next_analysis_step:,
           last_analysis_executed_step:
         }
+      end
+
+      def update_steps_data
+        update(steps_data: steps_summary)
       end
     end
   end

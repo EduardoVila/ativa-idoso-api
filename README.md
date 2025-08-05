@@ -404,8 +404,7 @@ Each endpoint includes comprehensive error handling:
  "response" => 200,
  "api_client_id" => 9,
  "created_at" => 2025-06-10 13:52:48.971188 UTC,
- "updated_at" => 2025-06-10 14:11:00.989995 UTC,
- "requester" => "guarantor"}
+ "updated_at" => 2025-06-10 14:11:00.989995 UTC}
 ```
 
 * Analysis items maintain detailed execution logs with the junction object `item_steps`:
