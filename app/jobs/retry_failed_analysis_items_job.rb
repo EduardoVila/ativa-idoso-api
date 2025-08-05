@@ -61,6 +61,7 @@ class RetryFailedAnalysisItemsJob
 
     ApplicationRecord.transaction do
       events.each { |e| e.update!(status: :processing, job_id: jid) }
+
       report.update!(status: :wip)
     end
 
@@ -73,11 +74,13 @@ class RetryFailedAnalysisItemsJob
 
   def prepare_job_objects(analysis_report_id)
     analysis_report = find_analysis_report(analysis_report_id)
+
     return if analysis_report.nil?
 
     return if analysis_report.items.none? { |i| i.status == 'error' }
 
     webhook_events = analysis_report.api_webhook_events
+
     return if webhook_events.blank?
 
     [analysis_report, webhook_events]

@@ -81,9 +81,11 @@ class NextAnalysisStepJob
 
   def prepare_job_objects(analysis_item_id, analysis_step_id)
     analysis_item = find_analysis_item(analysis_item_id)
+
     return if analysis_item.nil?
 
     analysis_step = find_analysis_step(analysis_step_id)
+
     return if analysis_step.nil?
 
     return if analysis_item.steps.exists?(id: analysis_step_id)
@@ -91,6 +93,7 @@ class NextAnalysisStepJob
     analysis_report = analysis_item.report
 
     webhook_events = analysis_report.api_webhook_events
+
     return if webhook_events.blank?
 
     [analysis_item, analysis_step, analysis_report, webhook_events]

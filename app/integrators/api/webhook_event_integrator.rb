@@ -67,9 +67,11 @@ module Api
 
     def authorization_header(webhook_subscription)
       credential = webhook_subscription.api_webhook_credential
+
       return unless credential
 
       access_token = access_token(credential)
+
       return unless access_token
 
       { authorization: "Bearer #{access_token}" }
