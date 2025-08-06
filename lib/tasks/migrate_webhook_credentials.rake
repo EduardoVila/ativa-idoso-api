@@ -13,7 +13,7 @@ namespace :db do
       next if credentials.empty?
 
       credentials.find_each do |credential|
-        subscriptions = credential.api_wehbook_subscriptions
+        subscriptions = credential.api_webhook_subscriptions
         next if subscriptions.empty?
 
         subscriptions.each do |subscription|
