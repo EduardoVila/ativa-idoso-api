@@ -29,7 +29,7 @@ module V1
       halt(422) unless report.persisted?
 
       # For each active subscription create events to track analysis report
-      subscriptions.each { |sub| create_event(report, sub, data) }
+      subscriptions.each { |sub| create_event(report, sub, data, current_client) }
       halt(422) if report.api_webhook_events.blank?
 
       # Enqueue job to process the analysis report
@@ -55,12 +55,13 @@ module V1
       ).tap(&:save)
     end
 
-    def create_event(report, subscription, data)
+    def create_event(report, subscription, data, client)
       Api::WebhookEvent.create(
         callback_id: data['callback_id'],
         event_type: 'analysis_report',
         status: 'received',
         analysis_report: report,
+        api_client_id: client.id,
         api_webhook_subscription: subscription
       )
     end
