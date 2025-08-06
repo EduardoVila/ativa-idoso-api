@@ -29,7 +29,9 @@ module V1
       halt(422) unless report.persisted?
 
       # For each active subscription create events to track analysis report
-      subscriptions.each { |sub| create_event(report, sub, data, current_client) }
+      subscriptions.each do |sub|
+        create_event(report, sub, data, current_client)
+      end
       halt(422) if report.api_webhook_events.blank?
 
       # Enqueue job to process the analysis report
