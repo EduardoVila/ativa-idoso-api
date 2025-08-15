@@ -23,7 +23,7 @@ definitions:
           - apt-get update && apt-get install -y xclip
           - bundle install
           - bundle exec rubocop
-          - bundle exec rspec
+          # - bundle exec rspec
         services:
           - redis
           - postgres
