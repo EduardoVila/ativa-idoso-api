@@ -78,11 +78,13 @@ module Analysis
     end
 
     def name
-      object_with_associations.boa_vista_cadastral_name
+      object_with_associations.boa_vista_cadastral_name ||
+        object_with_associations.provenir_basic_datum.name
     end
 
     def age
-      object_with_associations.boa_vista_cadastral_age
+      object_with_associations.boa_vista_cadastral_age ||
+        object_with_associations.provenir_age
     end
 
     def approved
