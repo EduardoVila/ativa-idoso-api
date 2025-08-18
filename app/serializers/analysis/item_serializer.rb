@@ -77,14 +77,12 @@ module Analysis
       object_with_associations.pro_score_bounced_check? || false
     end
 
-    # WORKAROUND
     def name
-      object_with_associations.provenir_basic_datum.name
+      object_with_associations.boa_vista_cadastral_name
     end
 
-    # WORKAROUND
     def age
-      object_with_associations.provenir_age
+      object_with_associations.boa_vista_cadastral_age
     end
 
     def approved

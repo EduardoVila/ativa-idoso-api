@@ -17,14 +17,13 @@ module Analysis
 
       analysis_item.update(status: :wip)
 
-      # WORKAROUND
-      # if analysis_item.name.blank?
-      #   run_boa_vista_cadastral
+      if analysis_item.name.blank?
+        run_boa_vista_cadastral
 
-      #   return if boa_vista_error?
+        return if boa_vista_error?
 
-      #   update_analysis_item_name
-      # end
+        update_analysis_item_name
+      end
 
       analyze_item_step_by_step
 
