@@ -17,7 +17,7 @@ module Analysis
 
       analysis_item.update(status: :wip)
 
-      if analysis_item.name.blank?
+      if analysis_item.name.blank? && boa_vista_cadastral_enabled
         run_boa_vista_cadastral
 
         return if boa_vista_error?
@@ -54,6 +54,10 @@ module Analysis
 
     def analyze_item_step_by_step
       Invoker.execute(:analysis_step_by_step_command, analysis_item)
+    end
+
+    def boa_vista_cadastral_enabled
+      ENV.fetch('BOA_VISTA_CADASTRAL_ENABLED', true)
     end
   end
 end
