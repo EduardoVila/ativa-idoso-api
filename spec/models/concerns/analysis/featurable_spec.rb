@@ -23,6 +23,11 @@ RSpec.describe Analysis::Featurable, type: :concern do
         :provenir_business_total_partners,
         :provenir_total_assets_class,
         :provenir_tax_returns_count,
+        :provenir_currently_owner,
+        :provenir_lawsuits_total,
+        :provenir_marital_status,
+        :provenir_currently_on_collection,
+        :provenir_currently_employed,
         :boa_vista_acerta_essencial_debit_with_maximum_value,
         :serasa_debit_with_maximum_value,
         :boa_vista_acerta_essencial_debit_with_minimum_value,
@@ -59,6 +64,11 @@ RSpec.describe Analysis::Featurable, type: :concern do
         dummy_instance.provenir_business_total_partners = 1
         dummy_instance.provenir_total_assets_class = 'B'
         dummy_instance.provenir_tax_returns_count = 2
+        dummy_instance.provenir_currently_owner = 0
+        dummy_instance.provenir_lawsuits_total = 0
+        dummy_instance.provenir_marital_status = 0
+        dummy_instance.provenir_currently_on_collection = 0
+        dummy_instance.provenir_currently_employed = 0
         dummy_instance
           .boa_vista_acerta_essencial_debit_with_maximum_value = 1000
         dummy_instance.serasa_debit_with_maximum_value = 500
@@ -94,6 +104,11 @@ RSpec.describe Analysis::Featurable, type: :concern do
           provenir_business_total_partners: 1,
           provenir_total_assets_class: 'B',
           provenir_tax_returns_count: 2,
+          provenir_currently_owner: 0,
+          provenir_lawsuits_total: 0,
+          provenir_marital_status: 0,
+          provenir_currently_on_collection: 0,
+          provenir_currently_employed: 0,
           boa_vista_acerta_essencial_debit_with_maximum_value: 1000,
           boa_vista_acerta_essencial_debit_with_minimum_value: 100,
           boa_vista_acerta_essencial_debits_total_value: 2000,
@@ -125,6 +140,11 @@ RSpec.describe Analysis::Featurable, type: :concern do
         dummy_instance.provenir_business_total_partners = 1
         dummy_instance.provenir_total_assets_class = 'B'
         dummy_instance.provenir_tax_returns_count = 2
+        dummy_instance.provenir_currently_owner = 0
+        dummy_instance.provenir_lawsuits_total = 0
+        dummy_instance.provenir_marital_status = 0
+        dummy_instance.provenir_currently_on_collection = 0
+        dummy_instance.provenir_currently_employed = 0
         dummy_instance.boa_vista_acerta_essencial_debit_with_maximum_value = nil
         dummy_instance.serasa_debit_with_maximum_value = 500
         dummy_instance.boa_vista_acerta_essencial_debit_with_minimum_value = nil
@@ -160,6 +180,11 @@ RSpec.describe Analysis::Featurable, type: :concern do
           provenir_business_total_partners: 1,
           provenir_total_assets_class: 'B',
           provenir_tax_returns_count: 2,
+          provenir_currently_owner: 0,
+          provenir_lawsuits_total: 0,
+          provenir_marital_status: 0,
+          provenir_currently_on_collection: 0,
+          provenir_currently_employed: 0,
           boa_vista_acerta_essencial_debit_with_maximum_value: 500,
           boa_vista_acerta_essencial_debit_with_minimum_value: 50,
           boa_vista_acerta_essencial_debits_total_value: 1500,
