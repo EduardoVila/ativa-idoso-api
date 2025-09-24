@@ -31,6 +31,11 @@ module Analysis
           provenir_total_assets_class:
               provenir_total_assets_class,
           provenir_tax_returns_count: provenir_tax_returns_count,
+          provenir_currently_owner: provenir_currently_owner,
+          provenir_lawsuits_total: provenir_lawsuits_total,
+          provenir_marital_status: provenir_marital_status,
+          provenir_currently_on_collection: provenir_currently_on_collection,
+          provenir_currently_employed: provenir_currently_employed,
           boa_vista_acerta_essencial_debit_with_maximum_value:
               boa_vista_acerta_essencial_debit_with_maximum_value ||
                 serasa_debit_with_maximum_value,
