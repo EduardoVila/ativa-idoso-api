@@ -78,7 +78,7 @@ RSpec.describe Analysis::Item, type: :model do
       context 'when there are 4000 analysis_items in the month' do
         before do
           allow(described_class).to receive_message_chain(:where, :count)
-            .and_return(4000)
+            .and_return(ENV.fetch('SCORE_MONTHLY_LIMIT', 4000).to_i)
         end
 
         let(:analysis_item) { build :analysis_item }
@@ -94,7 +94,7 @@ RSpec.describe Analysis::Item, type: :model do
       context 'when there are more than 4000 analysis_items in the month' do
         before do
           allow(described_class).to receive_message_chain(:where, :count)
-            .and_return(4001)
+            .and_return(ENV.fetch('SCORE_MONTHLY_LIMIT', 4001).to_i)
         end
 
         let(:analysis_item) { build :analysis_item }

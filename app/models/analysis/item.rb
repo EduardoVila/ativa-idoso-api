@@ -140,7 +140,9 @@ module Analysis
         created_at: Time.current.all_month
       ).count
 
-      errors.add(:base, :monthly_score_limit) if scores_this_month > 4000
+      errors.add(:base, :monthly_score_limit) if scores_this_month > ENV.fetch(
+        'SCORE_MONTHLY_LIMIT', 4000
+      ).to_i
     end
   end
 end
