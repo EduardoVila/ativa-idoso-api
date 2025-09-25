@@ -208,7 +208,7 @@ RSpec/MultipleMemoizedHelpers:
   Enabled: false
 
 RSpec/ExampleLength:
-  Max: 15
+  Max: 20
 
 RSpec/MessageChain:
   Enabled: false
@@ -226,6 +226,12 @@ RSpec/LetSetup:
   Enabled: false
 
 RSpec/IndexedLet:
+  Enabled: false
+
+RSpec/VerifiedDoubles:
+  Enabled: false
+
+RSpec/StubbedMock:
   Enabled: false
 
 Layout/EndOfLine:
