@@ -9,6 +9,10 @@ definitions:
       memory: 512
     postgres:
       image: postgres
+      environment:
+        POSTGRES_DB: $DB_TEST
+        POSTGRES_USER: $POSTGRES_USER
+        POSTGRES_PASSWORD: $POSTGRES_PASSWORD
 
   steps:
     - step: &install-dependencies-and-run-tests
