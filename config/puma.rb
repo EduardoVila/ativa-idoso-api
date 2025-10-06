@@ -56,7 +56,5 @@ end
 # cannot share connections between processes.
 #
 on_worker_boot do
-  if defined?(ActiveRecord)
-    ActiveRecord::Base.establish_connection(Database.fetch_config)
-  end
+  ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
 end

@@ -27,26 +27,26 @@ definitions:
         services:
           - redis
           - postgres
-    - step: &building-artifacts
-        name: Building Artifacts
-        script:
-          - cd ..
-          - tar czfv application.tgz build/
-          - mv application.tgz build/
-          - cd build
-        artifacts:
-          - application.tgz
     - step: &deploy-to-production
         name: Deploy to Production
+        image: gcr.io/google.com/cloudsdktool/cloud-sdk:latest
+        deployment: Production
+        services:
+          - docker
         script:
-          - pipe: atlassian/heroku-deploy:0.1.1
-            variables:
-              HEROKU_API_KEY: $HEROKU_API_KEY
-              HEROKU_APP_NAME: $HEROKU_APP_NAME
-              ZIP_FILE: "application.tgz"
-          - curl https://cli-assets.heroku.com/install.sh | bash
-          - heroku run rake db:migrate --app $HEROKU_APP_NAME
-
+          - echo $GCP_SA_KEY | base64 -d > ${BITBUCKET_CLONE_DIR}/gcp-key.json
+          - gcloud auth activate-service-account --key-file=${BITBUCKET_CLONE_DIR}/gcp-key.json
+          - gcloud config set project $GCP_PROJECT_ID
+          - gcloud auth configure-docker $GCP_LOCALE-docker.pkg.dev --quiet
+          - docker build -t $ARTIFACT_REPOSITORY_NAME:$BITBUCKET_COMMIT .
+          - docker tag $ARTIFACT_REPOSITORY_NAME:$BITBUCKET_COMMIT $GCP_LOCALE-docker.pkg.dev/$GCP_PROJECT_ID/$GCP_ARTIFACT_REPO/$ARTIFACT_REPOSITORY_NAME:$BITBUCKET_COMMIT
+          - docker push $GCP_LOCALE-docker.pkg.dev/$GCP_PROJECT_ID/$GCP_ARTIFACT_REPO/$ARTIFACT_REPOSITORY_NAME:$BITBUCKET_COMMIT
+          - gcloud container clusters get-credentials $GCP_CLUSTER_NAME --region $GCP_LOCALE --project $GCP_PROJECT_ID
+          - export IMAGE_URL=$GCP_LOCALE-docker.pkg.dev/$GCP_PROJECT_ID/$GCP_ARTIFACT_REPO/$ARTIFACT_REPOSITORY_NAME:$BITBUCKET_COMMIT
+          - sed -i "s|placeholder-image-tag|${IMAGE_URL}|g" k8/production/deployment.yaml
+          - sed -i "s|placeholder-image-tag|${IMAGE_URL}|g" k8/production/cronjob.yaml
+          - kubectl apply -f k8/production/deployment.yaml
+          - kubectl apply -f k8/production/cronjob.yaml
 pipelines:
   default:
     - step: *install-dependencies-and-run-tests
@@ -55,5 +55,4 @@ pipelines:
       - step: *install-dependencies-and-run-tests
     main:
       - step: *install-dependencies-and-run-tests
-      - step: *building-artifacts
       - step: *deploy-to-production

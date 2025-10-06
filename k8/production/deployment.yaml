@@ -1,0 +1,123 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-deployment
+  namespace: analysis
+  labels:
+    app: api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: api
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: api
+          image: southamerica-east1-docker.pkg.dev/alpop-dev-297614/alpop-production/alpop-analysis:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3001
+              name: api
+          env:
+            - name: RUN_MIGRATIONS
+              value: 'true'
+          envFrom:
+            - secretRef:
+                name: alpop-analysis-secrets
+          resources:
+            requests:
+              cpu: "25m"
+              memory: "300Mi"
+            limits:
+              cpu: "200m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3001
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            failureThreshold: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3001
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sidekiq-deployment
+  namespace: analysis
+  labels:
+    app: sidekiq
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sidekiq
+  template:
+    metadata:
+      labels:
+        app: sidekiq
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: sidekiq
+          image: southamerica-east1-docker.pkg.dev/alpop-dev-297614/alpop-production/alpop-analysis:latest
+          imagePullPolicy: Always
+          command: ['bundle', 'exec', 'sidekiq', '-r', './config/application.rb']
+          envFrom:
+            - secretRef:
+                name: alpop-analysis-secrets
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "200Mi"
+            limits:
+              cpu: "300m"
+              memory: "400Mi"
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+  namespace: analysis
+  labels:
+    app: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: redis
+          image: redis:6
+          ports:
+            - containerPort: 6379
+              name: redis
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "32Mi"
+            limits:
+              cpu: "100m"
+              memory: "64Mi"

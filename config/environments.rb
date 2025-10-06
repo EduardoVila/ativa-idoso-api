@@ -2,15 +2,11 @@
 
 # This is the environments file that will be used to configure the application
 
-# settings.database.connection.raw_connection.conninfo to get connection info
-# settings.database.connection.raw_connection.conninfo[6][:val] to get connection dbname
-
 require 'sinatra' # Load the Sinatra web framework
 require 'sinatra/activerecord' # Load the ActiveRecord ORM
 require 'dotenv/load' # Load the dotenv gem to read .env files
 require 'rack/cors' # Load the Rack::Cors middleware for CORS support
 require 'rack/ssl-enforcer' # Load the Rack::SslEnforcer middleware for SSL enforcement
-require_relative 'database'
 
 Dotenv.load # Load environment variables from .env files
 
@@ -26,6 +22,8 @@ module EnvHelper
     end
   end
 end
+
+set :database_file, 'database.yml'
 
 # To set the environment, use the RACK_ENV environment variable
 set :environment, ENV.fetch('RACK_ENV', 'development') # Default to development
@@ -70,7 +68,6 @@ end
 
 # Load environment-specific configurations
 configure :development do
-  set :database, Database.fetch_config
   set :show_exceptions, :after_handler # Enable error reporting
   set :logging, true # Enable logging in development
 
@@ -88,12 +85,10 @@ configure :development do
 end
 
 configure :test do
-  set :database, Database.fetch_config
   set :show_exceptions, false # Disable error reporting
 end
 
 configure :production do
-  set :database, Database.fetch_config
   set :show_exceptions, false # Disable error reporting
   set :logging, true # Enable logging in production
 

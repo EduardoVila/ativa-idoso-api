@@ -41,9 +41,6 @@ redis_config = { url: redis_url, network_timeout: 5, reconnect_attempts: 3 }
 
 sidekiq_config.tap do |yaml_config|
   Sidekiq.configure_server do |config|
-    config.on(:startup) do
-      ActiveRecord::Base.establish_connection(Database.fetch_config)
-    end
     config.merge!(yaml_config)
 
     # Configure Redis connection for the server.

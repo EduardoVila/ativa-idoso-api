@@ -1,0 +1,54 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:16
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+
+  app:
+    build: .
+    command: bundle exec puma -C config/puma.rb
+    restart: on-failure:3
+    ports:
+      - "3001:3001"
+    env_file:
+      - .env
+    environment:
+      - RUN_MIGRATIONS=true
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:/app:rw
+      - bundle_cache:/bundle
+
+  redis:
+    image: 'redis:7.2-alpine'
+    command: redis-server
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis:/data
+
+  sidekiq:
+    build: .
+    stdin_open: true
+    tty: true
+    command: bundle exec sidekiq -r './app.rb' -C './config/sidekiq.yml'
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - app
+    volumes:
+      - .:/alpop-analysis
+
+volumes:
+  bundle_cache:
+  redis:

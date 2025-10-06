@@ -1,0 +1,31 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: alpop-analysis-cert
+  namespace: analysis
+spec:
+  domains:
+    - analysis.alpop.com.br
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: alpop-analysis-ingress
+  namespace: analysis
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    networking.gke.io/managed-certificates: alpop-analysis-cert
+spec:
+  rules:
+  - host: analysis.alpop.com.br
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: alpop-analysis-tcp
+            port:
+              number: 80
