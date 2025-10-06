@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: southamerica-east1-docker.pkg.dev/alpop-dev-297614/alpop-production/alpop-analysis:latest
+          image: placeholder-image-tag
           imagePullPolicy: Always
           ports:
             - containerPort: 3001
@@ -74,7 +74,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: sidekiq
-          image: southamerica-east1-docker.pkg.dev/alpop-dev-297614/alpop-production/alpop-analysis:latest
+          image: placeholder-image-tag
           imagePullPolicy: Always
           command: ['bundle', 'exec', 'sidekiq', '-r', './config/application.rb']
           envFrom:
