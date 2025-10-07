@@ -44,9 +44,7 @@ definitions:
           - gcloud container clusters get-credentials $GCP_CLUSTER_NAME --region $GCP_LOCALE --project $GCP_PROJECT_ID
           - export IMAGE_URL=$GCP_LOCALE-docker.pkg.dev/$GCP_PROJECT_ID/$GCP_ARTIFACT_REPO/$ARTIFACT_REPOSITORY_NAME:$BITBUCKET_COMMIT
           - sed -i "s|placeholder-image-tag|${IMAGE_URL}|g" k8/production/deployment.yaml
-          - sed -i "s|placeholder-image-tag|${IMAGE_URL}|g" k8/production/cronjob.yaml
           - kubectl apply -f k8/production/deployment.yaml
-          - kubectl apply -f k8/production/cronjob.yaml
 pipelines:
   default:
     - step: *install-dependencies-and-run-tests
