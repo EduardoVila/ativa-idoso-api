@@ -40,6 +40,7 @@ class AnalysisReportJob
     webhook_event = Api::WebhookEvent.find_by(
       analysis_report_id: analysis_report_id
     )
+
     return unless webhook_event
 
     Sidekiq.logger.info(
@@ -58,17 +59,17 @@ class AnalysisReportJob
     return if analysis_report_id.blank?
 
     analysis_report = find_analysis_report(analysis_report_id)
+
     return if analysis_report.blank? || analysis_report.done?
 
     webhook_events = analysis_report.api_webhook_events
+
     return if webhook_events.blank?
 
     webhook_events.each { |w| w.update!(status: :processing, job_id: jid) }
 
     run_analysis_report(analysis_report)
-
     run_analysis_items(analysis_report)
-
     deliver_webhook_events(webhook_events, analysis_report)
   end
 
