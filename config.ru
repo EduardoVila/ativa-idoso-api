@@ -14,4 +14,6 @@
 require_relative 'config/application' # Load your main application file
 require 'sidekiq/web'
 
+use Rack::CommonLogger, $stdout
+
 run Rack::URLMap.new('/' => AlpopAnalysis, '/sidekiq' => Sidekiq::Web) # Run the Sinatra application
