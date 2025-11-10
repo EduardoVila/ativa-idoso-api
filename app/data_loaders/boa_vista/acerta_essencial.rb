@@ -9,6 +9,8 @@ module DataLoaders
       def self.load(cpf, credit_type)
         data = Integrators::BoaVista.acerta_essencial(cpf, credit_type)
 
+        return if missing_cpf_on_base(data)
+
         acerta_essencial = parse(cpf, credit_type, data)
 
         return if acerta_essencial.blank?
@@ -16,6 +18,10 @@ module DataLoaders
         acerta_essencial.raw_data = data
 
         acerta_essencial
+      end
+
+      def self.missing_cpf_on_base(data)
+        data.to_s.include?('CPF NAO DISPONIVEL NA BASE')
       end
     end
   end
