@@ -84,11 +84,17 @@ module Analysis
     end
 
     def post_body(analysis_item)
-      {
+      body = {
         cpf: analysis_item.cpf,
         features: analysis_item.featurable,
         prediction_model_name: analysis_item.prediction_model_name
-      }.to_json
+      }
+
+      # Shadow model flow
+      shadow = analysis_item.shadow_features
+      body[:shadow_features] = shadow if shadow
+
+      body.to_json
     end
 
     def access_token
