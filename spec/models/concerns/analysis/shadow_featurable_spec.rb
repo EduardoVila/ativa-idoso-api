@@ -21,7 +21,8 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
         :provenir_total_collection_months,
         :provenir_last_collection_date,
         :boa_vista_acerta_essencial_parsed_debit_min_value,
-        :boa_vista_acerta_essencial_parsed_debit_median_value
+        :boa_vista_acerta_essencial_parsed_debit_median_value,
+        :boa_vista_acerta_essencial_parsed_debit_max_value
       )
     end
   end
@@ -67,12 +68,14 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
         dummy_instance.boa_vista_acerta_essencial_parsed_debit_min_value = nil
         dummy_instance
           .boa_vista_acerta_essencial_parsed_debit_median_value = nil
+        dummy_instance
+          .boa_vista_acerta_essencial_parsed_debit_max_value = nil
       end
 
       it 'returns a hash with 14 string keys' do
         result = dummy_instance.shadow_features
 
-        expect(result.keys.size).to eq(14)
+        expect(result.keys.size).to eq(15)
         expect(result.keys).to all(be_a(String))
       end
 
@@ -89,6 +92,7 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
           income_range_ordinal
           min_prior_debts_value
           median_prior_debts_value
+          max_prior_debts_value
           current_consecutive_collection_months
           max_consecutive_collection_months
           total_collection_months
@@ -145,6 +149,8 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
         dummy_instance.boa_vista_acerta_essencial_parsed_debit_min_value = nil
         dummy_instance
           .boa_vista_acerta_essencial_parsed_debit_median_value = nil
+        dummy_instance
+          .boa_vista_acerta_essencial_parsed_debit_max_value = nil
       end
 
       it 'computes days_since from dates correctly' do
@@ -231,6 +237,8 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
         dummy_instance.boa_vista_acerta_essencial_parsed_debit_min_value = nil
         dummy_instance
           .boa_vista_acerta_essencial_parsed_debit_median_value = nil
+        dummy_instance
+          .boa_vista_acerta_essencial_parsed_debit_max_value = nil
         allow(Date).to receive(:current).and_return(Date.new(2026, 2, 5))
       end
 
@@ -420,6 +428,8 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
         dummy_instance.boa_vista_acerta_essencial_parsed_debit_min_value = nil
         dummy_instance
           .boa_vista_acerta_essencial_parsed_debit_median_value = nil
+        dummy_instance
+          .boa_vista_acerta_essencial_parsed_debit_max_value = nil
       end
 
       it 'passes through delegator value to hash' do
@@ -455,11 +465,14 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
         dummy_instance.boa_vista_acerta_essencial_parsed_debit_min_value = nil
         dummy_instance
           .boa_vista_acerta_essencial_parsed_debit_median_value = nil
+        dummy_instance
+          .boa_vista_acerta_essencial_parsed_debit_max_value = nil
 
         result = dummy_instance.shadow_features
 
         expect(result['min_prior_debts_value']).to eq(-1)
         expect(result['median_prior_debts_value']).to eq(-1)
+        expect(result['max_prior_debts_value']).to eq(-1)
       end
 
       it 'passes through numeric values from delegators' do
@@ -467,11 +480,14 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
           .boa_vista_acerta_essencial_parsed_debit_min_value = 789.01
         dummy_instance
           .boa_vista_acerta_essencial_parsed_debit_median_value = 1234.56
+        dummy_instance
+          .boa_vista_acerta_essencial_parsed_debit_max_value = 5678.90
 
         result = dummy_instance.shadow_features
 
         expect(result['min_prior_debts_value']).to eq(789.01)
         expect(result['median_prior_debts_value']).to eq(1234.56)
+        expect(result['max_prior_debts_value']).to eq(5678.90)
       end
     end
 
@@ -492,6 +508,8 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
         dummy_instance.boa_vista_acerta_essencial_parsed_debit_min_value = nil
         dummy_instance
           .boa_vista_acerta_essencial_parsed_debit_median_value = nil
+        dummy_instance
+          .boa_vista_acerta_essencial_parsed_debit_max_value = nil
       end
 
       it 'returns sentinel values for all collection features' do

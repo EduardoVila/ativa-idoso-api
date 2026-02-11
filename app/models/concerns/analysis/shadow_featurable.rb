@@ -18,7 +18,7 @@ module Analysis
     MAX_DAYS_CAP = 10_950 # 30 years in days
 
     included do
-      # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+      # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength
       def shadow_features
         return nil if provenir_big_data_corp.blank?
 
@@ -53,6 +53,9 @@ module Analysis
           'median_prior_debts_value' =>
             boa_vista_acerta_essencial_parsed_debit_median_value ||
               SENTINEL_NOT_FOUND,
+          'max_prior_debts_value' =>
+            boa_vista_acerta_essencial_parsed_debit_max_value ||
+              SENTINEL_NOT_FOUND,
           'current_consecutive_collection_months' =>
             provenir_current_consecutive_collection_months ||
               SENTINEL_COUNT_MISSING,
@@ -72,7 +75,7 @@ module Analysis
             )
         }
       end
-      # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+      # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength
 
       private
 

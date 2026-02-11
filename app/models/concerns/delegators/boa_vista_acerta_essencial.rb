@@ -49,6 +49,13 @@ module Delegators
           (sorted[(len / 2) - 1] + sorted[len / 2]) / 2.0
         end
       end
+
+      def boa_vista_acerta_essencial_parsed_debit_max_value
+        values = boa_vista_acerta_essencial_parsed_debit_values
+        return nil if values.empty?
+
+        values.max
+      end
     end
   end
 end

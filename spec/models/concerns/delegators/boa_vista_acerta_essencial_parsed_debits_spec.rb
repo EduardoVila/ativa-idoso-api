@@ -138,4 +138,38 @@ RSpec.describe Delegators::BoaVistaAcertaEssencial do
         .to be_nil
     end
   end
+
+  describe '#boa_vista_acerta_essencial_parsed_debit_max_value' do
+    it 'returns maximum parsed value' do
+      dummy_instance.boa_vista_acerta_essencial = acerta
+      allow(acerta).to receive(:debits).and_return(debits)
+      allow(debits).to receive(:blank?).and_return(false)
+      allow(debits).to receive(:pluck).with(:value)
+        .and_return(['500,00', '100,00', '300,00'])
+
+      expect(dummy_instance
+        .boa_vista_acerta_essencial_parsed_debit_max_value)
+        .to eq(500.0)
+    end
+
+    it 'returns nil when debits are empty' do
+      dummy_instance.boa_vista_acerta_essencial = acerta
+      allow(acerta).to receive(:debits).and_return(debits)
+      allow(debits).to receive(:blank?).and_return(false)
+      allow(debits).to receive(:pluck).with(:value)
+        .and_return([])
+
+      expect(dummy_instance
+        .boa_vista_acerta_essencial_parsed_debit_max_value)
+        .to be_nil
+    end
+
+    it 'returns nil when boa_vista_acerta_essencial is nil' do
+      dummy_instance.boa_vista_acerta_essencial = nil
+
+      expect(dummy_instance
+        .boa_vista_acerta_essencial_parsed_debit_max_value)
+        .to be_nil
+    end
+  end
 end
