@@ -2,9 +2,7 @@
 
 require 'spec_helper'
 
-# rubocop:disable RSpec/SpecFilePathFormat
-RSpec.describe Delegators::Provenir, '#provenir_income_range_ordinal' do
-  # rubocop:enable RSpec/SpecFilePathFormat
+RSpec.describe Delegators::Provenir do
   let(:dummy_class) do
     Class.new do
       include Delegators::Provenir

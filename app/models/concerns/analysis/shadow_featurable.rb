@@ -20,7 +20,7 @@ module Analysis
     included do
       # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength
       def shadow_features
-        return nil if provenir_big_data_corp.blank?
+        return if provenir_big_data_corp.blank?
 
         {
           'age' => provenir_age || SENTINEL_NOT_FOUND,
