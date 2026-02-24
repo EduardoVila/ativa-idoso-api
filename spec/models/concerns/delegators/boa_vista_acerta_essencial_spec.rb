@@ -172,4 +172,66 @@ RSpec.describe Delegators::BoaVistaAcertaEssencial do
         .to be_nil
     end
   end
+
+  describe '#boa_vista_acerta_essencial_n_debt_occurrences_as_debtor' do
+    it 'returns total_debtor as integer' do
+      debit_occurrence = double('DebitOccurrence', total_debtor: '5')
+      dummy_instance.boa_vista_acerta_essencial = acerta
+      allow(acerta)
+        .to receive(:debit_occurrence).and_return(debit_occurrence)
+
+      expect(dummy_instance
+        .boa_vista_acerta_essencial_n_debt_occurrences_as_debtor)
+        .to eq(5)
+    end
+
+    it 'returns nil when debit_occurrence is nil' do
+      dummy_instance.boa_vista_acerta_essencial = acerta
+      allow(acerta).to receive(:debit_occurrence).and_return(nil)
+
+      expect(dummy_instance
+        .boa_vista_acerta_essencial_n_debt_occurrences_as_debtor)
+        .to be_nil
+    end
+
+    it 'returns nil when boa_vista is nil' do
+      dummy_instance.boa_vista_acerta_essencial = nil
+
+      expect(dummy_instance
+        .boa_vista_acerta_essencial_n_debt_occurrences_as_debtor)
+        .to be_nil
+    end
+  end
+
+  describe '#boa_vista_acerta_essencial_cpf_consultations_90d' do
+    it 'returns total as integer' do
+      consultation = double('Previous90DaysConsultation', total: '12')
+      dummy_instance.boa_vista_acerta_essencial = acerta
+      allow(acerta)
+        .to receive(:previous90_days_consultation)
+        .and_return(consultation)
+
+      expect(dummy_instance
+        .boa_vista_acerta_essencial_cpf_consultations_90d)
+        .to eq(12)
+    end
+
+    it 'returns nil when previous90_days_consultation is nil' do
+      dummy_instance.boa_vista_acerta_essencial = acerta
+      allow(acerta)
+        .to receive(:previous90_days_consultation).and_return(nil)
+
+      expect(dummy_instance
+        .boa_vista_acerta_essencial_cpf_consultations_90d)
+        .to be_nil
+    end
+
+    it 'returns nil when boa_vista is nil' do
+      dummy_instance.boa_vista_acerta_essencial = nil
+
+      expect(dummy_instance
+        .boa_vista_acerta_essencial_cpf_consultations_90d)
+        .to be_nil
+    end
+  end
 end

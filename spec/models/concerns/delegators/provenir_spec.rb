@@ -64,4 +64,52 @@ RSpec.describe Delegators::Provenir do
 
     expect(dummy_instance.provenir_income_range_ordinal).to eq(0)
   end
+
+  describe '#provenir_years_since_last_tax_return' do
+    let(:tax_returns) { double('TaxReturns') }
+    let(:financial_datum) { double('FinancialDatum', tax_returns: tax_returns) }
+
+    before do
+      allow(big_data_corp)
+        .to receive(:financial_datum).and_return(financial_datum)
+    end
+
+    it 'returns years since the most recent tax return' do
+      allow(Date).to receive(:current).and_return(Date.new(2026, 2, 24))
+      allow(tax_returns).to receive(:maximum).with(:year).and_return(2023)
+
+      expect(dummy_instance.provenir_years_since_last_tax_return).to eq(3)
+    end
+
+    it 'returns nil when no tax returns exist' do
+      allow(tax_returns).to receive(:maximum).with(:year).and_return(nil)
+
+      expect(dummy_instance.provenir_years_since_last_tax_return).to be_nil
+    end
+
+    it 'returns nil when financial_datum is nil' do
+      allow(big_data_corp)
+        .to receive(:financial_datum).and_return(nil)
+
+      expect(dummy_instance.provenir_years_since_last_tax_return).to be_nil
+    end
+  end
+
+  describe '#provenir_collection_origins' do
+    let(:collection) { double('Collection', collection_origins: 3) }
+
+    it 'delegates to provenir_collection' do
+      allow(big_data_corp)
+        .to receive(:collection).and_return(collection)
+
+      expect(dummy_instance.provenir_collection_origins).to eq(3)
+    end
+
+    it 'returns nil when collection is nil' do
+      allow(big_data_corp)
+        .to receive(:collection).and_return(nil)
+
+      expect(dummy_instance.provenir_collection_origins).to be_nil
+    end
+  end
 end

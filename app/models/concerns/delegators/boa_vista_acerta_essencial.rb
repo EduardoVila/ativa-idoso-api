@@ -48,6 +48,16 @@ module Delegators
         (sorted[(len / 2) - 1] + sorted[len / 2]) / 2.0
       end
 
+      def boa_vista_acerta_essencial_n_debt_occurrences_as_debtor
+        occurrence = boa_vista_acerta_essencial&.debit_occurrence
+        occurrence&.total_debtor&.to_i
+      end
+
+      def boa_vista_acerta_essencial_cpf_consultations_90d
+        consultation = boa_vista_acerta_essencial&.previous90_days_consultation
+        consultation&.total&.to_i
+      end
+
       def boa_vista_acerta_essencial_parsed_debit_max_value
         values = boa_vista_acerta_essencial_parsed_debit_values
 

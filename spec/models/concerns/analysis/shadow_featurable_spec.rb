@@ -13,16 +13,21 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
         :provenir_extended_phone,
         :provenir_extended_address,
         :provenir_financial_risk,
+        :provenir_financial_datum,
         :provenir_collection_occurrences,
+        :provenir_collection_origins,
         :provenir_tax_returns_count,
         :provenir_income_range_ordinal,
         :provenir_current_consecutive_collection_months,
         :provenir_max_consecutive_collection_months,
         :provenir_total_collection_months,
         :provenir_last_collection_date,
+        :provenir_years_since_last_tax_return,
         :boa_vista_acerta_essencial_parsed_debit_min_value,
         :boa_vista_acerta_essencial_parsed_debit_median_value,
-        :boa_vista_acerta_essencial_parsed_debit_max_value
+        :boa_vista_acerta_essencial_parsed_debit_max_value,
+        :boa_vista_acerta_essencial_n_debt_occurrences_as_debtor,
+        :boa_vista_acerta_essencial_cpf_consultations_90d
       )
     end
   end
@@ -58,49 +63,53 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
         dummy_instance.provenir_extended_phone = phone
         dummy_instance.provenir_extended_address = address
         dummy_instance.provenir_financial_risk = financial_risk
+        dummy_instance.provenir_financial_datum = double('FinancialDatum')
         dummy_instance.provenir_current_consecutive_collection_months = 2
         dummy_instance.provenir_max_consecutive_collection_months = 5
         dummy_instance.provenir_total_collection_months = 12
         dummy_instance.provenir_last_collection_date = Date.new(2025, 1, 1)
         dummy_instance.provenir_collection_occurrences = 7
+        dummy_instance.provenir_collection_origins = 3
         dummy_instance.provenir_tax_returns_count = 4
         dummy_instance.provenir_income_range_ordinal = 4
+        dummy_instance.provenir_years_since_last_tax_return = 2
         dummy_instance.boa_vista_acerta_essencial_parsed_debit_min_value = nil
         dummy_instance
           .boa_vista_acerta_essencial_parsed_debit_median_value = nil
         dummy_instance
           .boa_vista_acerta_essencial_parsed_debit_max_value = nil
+        dummy_instance
+          .boa_vista_acerta_essencial_n_debt_occurrences_as_debtor = nil
+        dummy_instance
+          .boa_vista_acerta_essencial_cpf_consultations_90d = nil
       end
 
-      it 'returns a hash with 14 string keys' do
+      it 'returns a hash with 19 string keys' do
         result = dummy_instance.shadow_features
 
-        expect(result.keys.size).to eq(15)
+        expect(result.keys.size).to eq(19)
         expect(result.keys).to all(be_a(String))
       end
 
       it 'includes all expected keys' do
-        result = dummy_instance.shadow_features
-
         expected_keys = %w[
-          age
-          days_since_last_phone_passage
+          age days_since_last_phone_passage
           days_since_last_occupation_start_date
           days_since_first_address_passage
-          days_since_last_address_passage
-          tax_returns_count
-          income_range_ordinal
-          min_prior_debts_value
-          median_prior_debts_value
-          max_prior_debts_value
+          days_since_last_address_passage tax_returns_count
+          income_range_ordinal min_prior_debts_value
+          median_prior_debts_value max_prior_debts_value
           current_consecutive_collection_months
           max_consecutive_collection_months
-          total_collection_months
-          collection_occurrences
+          total_collection_months collection_occurrences
           days_since_last_collection_date
+          n_debt_occurrences_as_debtor
+          cpf_consultations_90d collection_origins
+          years_since_last_tax_return
         ]
 
-        expect(result.keys).to match_array(expected_keys)
+        expect(dummy_instance.shadow_features.keys)
+          .to match_array(expected_keys)
       end
 
       it 'returns correct age' do
@@ -124,11 +133,12 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
         expect(dummy_instance.shadow_features['tax_returns_count']).to eq(4)
       end
 
-      it 'returns -1 for debit features when delegators return nil' do
+      it 'returns 0 for debit features when delegators return nil' do
         result = dummy_instance.shadow_features
 
-        expect(result['min_prior_debts_value']).to eq(-1)
-        expect(result['median_prior_debts_value']).to eq(-1)
+        expect(result['min_prior_debts_value']).to eq(0)
+        expect(result['median_prior_debts_value']).to eq(0)
+        expect(result['max_prior_debts_value']).to eq(0)
       end
     end
 
@@ -139,18 +149,25 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
         dummy_instance.provenir_extended_phone = phone
         dummy_instance.provenir_extended_address = address
         dummy_instance.provenir_financial_risk = financial_risk
+        dummy_instance.provenir_financial_datum = double('FinancialDatum')
         dummy_instance.provenir_current_consecutive_collection_months = 0
         dummy_instance.provenir_max_consecutive_collection_months = 0
         dummy_instance.provenir_total_collection_months = 0
         dummy_instance.provenir_last_collection_date = Date.new(2025, 1, 1)
         dummy_instance.provenir_collection_occurrences = 0
+        dummy_instance.provenir_collection_origins = 0
         dummy_instance.provenir_tax_returns_count = 1
         dummy_instance.provenir_income_range_ordinal = 0
+        dummy_instance.provenir_years_since_last_tax_return = 1
         dummy_instance.boa_vista_acerta_essencial_parsed_debit_min_value = nil
         dummy_instance
           .boa_vista_acerta_essencial_parsed_debit_median_value = nil
         dummy_instance
           .boa_vista_acerta_essencial_parsed_debit_max_value = nil
+        dummy_instance
+          .boa_vista_acerta_essencial_n_debt_occurrences_as_debtor = nil
+        dummy_instance
+          .boa_vista_acerta_essencial_cpf_consultations_90d = nil
       end
 
       it 'computes days_since from dates correctly' do
@@ -227,18 +244,25 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
         dummy_instance.provenir_age = 30
         dummy_instance.provenir_extended_address = nil
         dummy_instance.provenir_financial_risk = nil
+        dummy_instance.provenir_financial_datum = nil
         dummy_instance.provenir_current_consecutive_collection_months = nil
         dummy_instance.provenir_max_consecutive_collection_months = nil
         dummy_instance.provenir_total_collection_months = nil
         dummy_instance.provenir_last_collection_date = nil
         dummy_instance.provenir_collection_occurrences = nil
+        dummy_instance.provenir_collection_origins = nil
         dummy_instance.provenir_tax_returns_count = nil
         dummy_instance.provenir_income_range_ordinal = 0
+        dummy_instance.provenir_years_since_last_tax_return = nil
         dummy_instance.boa_vista_acerta_essencial_parsed_debit_min_value = nil
         dummy_instance
           .boa_vista_acerta_essencial_parsed_debit_median_value = nil
         dummy_instance
           .boa_vista_acerta_essencial_parsed_debit_max_value = nil
+        dummy_instance
+          .boa_vista_acerta_essencial_n_debt_occurrences_as_debtor = nil
+        dummy_instance
+          .boa_vista_acerta_essencial_cpf_consultations_90d = nil
         allow(Date).to receive(:current).and_return(Date.new(2026, 2, 5))
       end
 
@@ -419,17 +443,24 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
         dummy_instance.provenir_extended_phone = nil
         dummy_instance.provenir_extended_address = nil
         dummy_instance.provenir_financial_risk = nil
+        dummy_instance.provenir_financial_datum = nil
         dummy_instance.provenir_current_consecutive_collection_months = nil
         dummy_instance.provenir_max_consecutive_collection_months = nil
         dummy_instance.provenir_total_collection_months = nil
         dummy_instance.provenir_last_collection_date = nil
         dummy_instance.provenir_collection_occurrences = nil
+        dummy_instance.provenir_collection_origins = nil
         dummy_instance.provenir_tax_returns_count = nil
+        dummy_instance.provenir_years_since_last_tax_return = nil
         dummy_instance.boa_vista_acerta_essencial_parsed_debit_min_value = nil
         dummy_instance
           .boa_vista_acerta_essencial_parsed_debit_median_value = nil
         dummy_instance
           .boa_vista_acerta_essencial_parsed_debit_max_value = nil
+        dummy_instance
+          .boa_vista_acerta_essencial_n_debt_occurrences_as_debtor = nil
+        dummy_instance
+          .boa_vista_acerta_essencial_cpf_consultations_90d = nil
       end
 
       it 'passes through delegator value to hash' do
@@ -452,16 +483,23 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
         dummy_instance.provenir_extended_phone = nil
         dummy_instance.provenir_extended_address = nil
         dummy_instance.provenir_financial_risk = nil
+        dummy_instance.provenir_financial_datum = nil
         dummy_instance.provenir_current_consecutive_collection_months = nil
         dummy_instance.provenir_max_consecutive_collection_months = nil
         dummy_instance.provenir_total_collection_months = nil
         dummy_instance.provenir_last_collection_date = nil
         dummy_instance.provenir_collection_occurrences = nil
+        dummy_instance.provenir_collection_origins = nil
         dummy_instance.provenir_tax_returns_count = nil
         dummy_instance.provenir_income_range_ordinal = 0
+        dummy_instance.provenir_years_since_last_tax_return = nil
+        dummy_instance
+          .boa_vista_acerta_essencial_n_debt_occurrences_as_debtor = nil
+        dummy_instance
+          .boa_vista_acerta_essencial_cpf_consultations_90d = nil
       end
 
-      it 'returns -1 when delegators return nil (no debits)' do
+      it 'returns 0 when delegators return nil (no debits)' do
         dummy_instance.boa_vista_acerta_essencial_parsed_debit_min_value = nil
         dummy_instance
           .boa_vista_acerta_essencial_parsed_debit_median_value = nil
@@ -470,9 +508,9 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
 
         result = dummy_instance.shadow_features
 
-        expect(result['min_prior_debts_value']).to eq(-1)
-        expect(result['median_prior_debts_value']).to eq(-1)
-        expect(result['max_prior_debts_value']).to eq(-1)
+        expect(result['min_prior_debts_value']).to eq(0)
+        expect(result['median_prior_debts_value']).to eq(0)
+        expect(result['max_prior_debts_value']).to eq(0)
       end
 
       it 'passes through numeric values from delegators' do
@@ -498,18 +536,25 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
         dummy_instance.provenir_extended_phone = nil
         dummy_instance.provenir_extended_address = nil
         dummy_instance.provenir_financial_risk = nil
+        dummy_instance.provenir_financial_datum = nil
         dummy_instance.provenir_current_consecutive_collection_months = nil
         dummy_instance.provenir_max_consecutive_collection_months = nil
         dummy_instance.provenir_total_collection_months = nil
         dummy_instance.provenir_last_collection_date = nil
         dummy_instance.provenir_collection_occurrences = nil
+        dummy_instance.provenir_collection_origins = nil
         dummy_instance.provenir_tax_returns_count = nil
         dummy_instance.provenir_income_range_ordinal = 0
+        dummy_instance.provenir_years_since_last_tax_return = nil
         dummy_instance.boa_vista_acerta_essencial_parsed_debit_min_value = nil
         dummy_instance
           .boa_vista_acerta_essencial_parsed_debit_median_value = nil
         dummy_instance
           .boa_vista_acerta_essencial_parsed_debit_max_value = nil
+        dummy_instance
+          .boa_vista_acerta_essencial_n_debt_occurrences_as_debtor = nil
+        dummy_instance
+          .boa_vista_acerta_essencial_cpf_consultations_90d = nil
       end
 
       it 'returns sentinel values for all collection features' do
@@ -520,6 +565,122 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
         expect(result['total_collection_months']).to eq(0)
         expect(result['collection_occurrences']).to eq(0)
         expect(result['days_since_last_collection_date']).to eq(999_999)
+        expect(result['collection_origins']).to eq(-1)
+      end
+    end
+
+    context 'with new Boa Vista features' do
+      before do
+        dummy_instance.provenir_big_data_corp = double('BigDataCorp')
+        dummy_instance.provenir_age = 30
+        dummy_instance.provenir_extended_phone = nil
+        dummy_instance.provenir_extended_address = nil
+        dummy_instance.provenir_financial_risk = nil
+        dummy_instance.provenir_financial_datum = nil
+        dummy_instance.provenir_current_consecutive_collection_months = nil
+        dummy_instance.provenir_max_consecutive_collection_months = nil
+        dummy_instance.provenir_total_collection_months = nil
+        dummy_instance.provenir_last_collection_date = nil
+        dummy_instance.provenir_collection_occurrences = nil
+        dummy_instance.provenir_collection_origins = nil
+        dummy_instance.provenir_tax_returns_count = nil
+        dummy_instance.provenir_income_range_ordinal = 0
+        dummy_instance.provenir_years_since_last_tax_return = nil
+        dummy_instance.boa_vista_acerta_essencial_parsed_debit_min_value = nil
+        dummy_instance
+          .boa_vista_acerta_essencial_parsed_debit_median_value = nil
+        dummy_instance
+          .boa_vista_acerta_essencial_parsed_debit_max_value = nil
+      end
+
+      it 'returns -1 when Boa Vista count features are nil' do
+        dummy_instance
+          .boa_vista_acerta_essencial_n_debt_occurrences_as_debtor = nil
+        dummy_instance
+          .boa_vista_acerta_essencial_cpf_consultations_90d = nil
+
+        result = dummy_instance.shadow_features
+
+        expect(result['n_debt_occurrences_as_debtor']).to eq(-1)
+        expect(result['cpf_consultations_90d']).to eq(-1)
+      end
+
+      it 'passes through numeric values' do
+        dummy_instance
+          .boa_vista_acerta_essencial_n_debt_occurrences_as_debtor = 5
+        dummy_instance
+          .boa_vista_acerta_essencial_cpf_consultations_90d = 12
+
+        result = dummy_instance.shadow_features
+
+        expect(result['n_debt_occurrences_as_debtor']).to eq(5)
+        expect(result['cpf_consultations_90d']).to eq(12)
+      end
+    end
+
+    context 'with years_since_last_tax_return sentinel logic' do
+      before do
+        dummy_instance.provenir_big_data_corp = double('BigDataCorp')
+        dummy_instance.provenir_age = 30
+        dummy_instance.provenir_extended_phone = nil
+        dummy_instance.provenir_extended_address = nil
+        dummy_instance.provenir_financial_risk = nil
+        dummy_instance.provenir_current_consecutive_collection_months = nil
+        dummy_instance.provenir_max_consecutive_collection_months = nil
+        dummy_instance.provenir_total_collection_months = nil
+        dummy_instance.provenir_last_collection_date = nil
+        dummy_instance.provenir_collection_occurrences = nil
+        dummy_instance.provenir_collection_origins = nil
+        dummy_instance.provenir_income_range_ordinal = 0
+        dummy_instance.boa_vista_acerta_essencial_parsed_debit_min_value = nil
+        dummy_instance
+          .boa_vista_acerta_essencial_parsed_debit_median_value = nil
+        dummy_instance
+          .boa_vista_acerta_essencial_parsed_debit_max_value = nil
+        dummy_instance
+          .boa_vista_acerta_essencial_n_debt_occurrences_as_debtor = nil
+        dummy_instance
+          .boa_vista_acerta_essencial_cpf_consultations_90d = nil
+      end
+
+      it 'returns SENTINEL_NOT_FOUND when no financial data' do
+        dummy_instance.provenir_financial_datum = nil
+        dummy_instance.provenir_tax_returns_count = nil
+        dummy_instance.provenir_years_since_last_tax_return = nil
+
+        result = dummy_instance.shadow_features
+
+        expect(result['years_since_last_tax_return']).to eq(-1)
+      end
+
+      it 'returns SENTINEL_INFINITE with financial data but zero tax returns' do
+        dummy_instance.provenir_financial_datum = double('FinancialDatum')
+        dummy_instance.provenir_tax_returns_count = 0
+        dummy_instance.provenir_years_since_last_tax_return = nil
+
+        result = dummy_instance.shadow_features
+
+        expect(result['years_since_last_tax_return']).to eq(999_999)
+      end
+
+      it 'returns SENTINEL_INFINITE when tax_returns_count is nil' do
+        dummy_instance.provenir_financial_datum = double('FinancialDatum')
+        dummy_instance.provenir_tax_returns_count = nil
+        dummy_instance.provenir_years_since_last_tax_return = nil
+
+        result = dummy_instance.shadow_features
+
+        expect(result['years_since_last_tax_return']).to eq(999_999)
+      end
+
+      it 'returns years value when tax returns exist' do
+        dummy_instance.provenir_financial_datum = double('FinancialDatum')
+        dummy_instance.provenir_tax_returns_count = 3
+        dummy_instance.provenir_years_since_last_tax_return = 2
+
+        result = dummy_instance.shadow_features
+
+        expect(result['years_since_last_tax_return']).to eq(2)
       end
     end
   end
