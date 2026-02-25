@@ -8,9 +8,8 @@ module Analysis
   module ShadowFeaturable
     extend ActiveSupport::Concern
 
-    # Sentinel values for missing or invalid data
+    # Sentinel values for missing or invalid data (must match core/config.py)
     SENTINEL_NOT_FOUND = -1
-    SENTINEL_COUNT_MISSING = 0
     SENTINEL_INFINITE = 999_999
 
     # Date validation constants
@@ -21,30 +20,37 @@ module Analysis
     def shadow_features
       return if provenir_big_data_corp.blank?
 
+      # Point-in-time anchor: matches SQL's analysis_date (ai.created_at)
+      ref_date = created_at.to_date
+
       {
         'age' => provenir_age || SENTINEL_NOT_FOUND,
         'days_since_last_phone_passage' =>
           days_since_date(
             provenir_extended_phone&.newest_phone_passage_date,
+            reference_date: ref_date,
             missing_sentinel: SENTINEL_NOT_FOUND
           ),
         'days_since_last_occupation_start_date' =>
           days_since_date(
             provenir_financial_risk&.last_occupation_start_date,
+            reference_date: ref_date,
             missing_sentinel: SENTINEL_NOT_FOUND
           ),
         'days_since_first_address_passage' =>
           days_since_date(
             provenir_extended_address&.oldest_address_passage_date,
+            reference_date: ref_date,
             missing_sentinel: SENTINEL_NOT_FOUND
           ),
         'days_since_last_address_passage' =>
           days_since_date(
             provenir_extended_address&.newest_address_passage_date,
+            reference_date: ref_date,
             missing_sentinel: SENTINEL_NOT_FOUND
           ),
         'tax_returns_count' =>
-          provenir_tax_returns_count || SENTINEL_COUNT_MISSING,
+          provenir_tax_returns_count || SENTINEL_NOT_FOUND,
         'income_range_ordinal' => provenir_income_range_ordinal,
         'min_prior_debts_value' =>
           boa_vista_acerta_essencial_parsed_debit_min_value || 0,
@@ -52,21 +58,19 @@ module Analysis
           boa_vista_acerta_essencial_parsed_debit_median_value || 0,
         'max_prior_debts_value' =>
           boa_vista_acerta_essencial_parsed_debit_max_value || 0,
-        'current_consecutive_collection_months' =>
-          provenir_current_consecutive_collection_months ||
-            SENTINEL_COUNT_MISSING,
         'max_consecutive_collection_months' =>
           provenir_max_consecutive_collection_months ||
-            SENTINEL_COUNT_MISSING,
+            SENTINEL_NOT_FOUND,
         'total_collection_months' =>
           provenir_total_collection_months ||
-            SENTINEL_COUNT_MISSING,
+            SENTINEL_NOT_FOUND,
         'collection_occurrences' =>
           provenir_collection_occurrences ||
-            SENTINEL_COUNT_MISSING,
+            SENTINEL_NOT_FOUND,
         'days_since_last_collection_date' =>
           days_since_date(
             provenir_last_collection_date,
+            reference_date: ref_date,
             missing_sentinel: SENTINEL_INFINITE
           ),
         'n_debt_occurrences_as_debtor' =>
@@ -94,7 +98,7 @@ module Analysis
       provenir_years_since_last_tax_return || SENTINEL_NOT_FOUND
     end
 
-    def days_since_date(date, missing_sentinel:)
+    def days_since_date(date, reference_date:, missing_sentinel:)
       return missing_sentinel if date.blank?
 
       # Safe date conversion
@@ -107,13 +111,13 @@ module Analysis
       # Detect sentinel dates (0001-01-01, 9999-12-31)
       return missing_sentinel if [1, 9999].include?(date_obj.year)
 
-      # Validate date range (1900-01-01 to today)
-      if date_obj < MIN_VALID_DATE || date_obj > Date.current
+      # Validate date range (1900-01-01 to reference_date)
+      if date_obj < MIN_VALID_DATE || date_obj > reference_date
         return missing_sentinel
       end
 
-      # Calculate days
-      days = (Date.current - date_obj).to_i
+      # Calculate days from point-in-time anchor
+      days = (reference_date - date_obj).to_i
 
       # Apply 30-year cap
       [days, MAX_DAYS_CAP].min

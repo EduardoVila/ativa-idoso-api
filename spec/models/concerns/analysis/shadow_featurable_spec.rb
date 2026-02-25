@@ -8,6 +8,7 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
       include Analysis::ShadowFeaturable
 
       attr_accessor(
+        :created_at,
         :provenir_big_data_corp,
         :provenir_age,
         :provenir_extended_phone,
@@ -18,7 +19,6 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
         :provenir_collection_origins,
         :provenir_tax_returns_count,
         :provenir_income_range_ordinal,
-        :provenir_current_consecutive_collection_months,
         :provenir_max_consecutive_collection_months,
         :provenir_total_collection_months,
         :provenir_last_collection_date,
@@ -58,13 +58,13 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
 
     context 'when all Provenir data is present' do
       before do
+        dummy_instance.created_at = Date.new(2026, 2, 25)
         dummy_instance.provenir_big_data_corp = double('BigDataCorp')
         dummy_instance.provenir_age = 35
         dummy_instance.provenir_extended_phone = phone
         dummy_instance.provenir_extended_address = address
         dummy_instance.provenir_financial_risk = financial_risk
         dummy_instance.provenir_financial_datum = double('FinancialDatum')
-        dummy_instance.provenir_current_consecutive_collection_months = 2
         dummy_instance.provenir_max_consecutive_collection_months = 5
         dummy_instance.provenir_total_collection_months = 12
         dummy_instance.provenir_last_collection_date = Date.new(2025, 1, 1)
@@ -84,10 +84,10 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
           .boa_vista_acerta_essencial_cpf_consultations_90d = nil
       end
 
-      it 'returns a hash with 19 string keys' do
+      it 'returns a hash with 18 string keys' do
         result = dummy_instance.shadow_features
 
-        expect(result.keys.size).to eq(19)
+        expect(result.keys.size).to eq(18)
         expect(result.keys).to all(be_a(String))
       end
 
@@ -99,7 +99,6 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
           days_since_last_address_passage tax_returns_count
           income_range_ordinal min_prior_debts_value
           median_prior_debts_value max_prior_debts_value
-          current_consecutive_collection_months
           max_consecutive_collection_months
           total_collection_months collection_occurrences
           days_since_last_collection_date
@@ -123,7 +122,6 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
       it 'returns correct collection values' do
         result = dummy_instance.shadow_features
 
-        expect(result['current_consecutive_collection_months']).to eq(2)
         expect(result['max_consecutive_collection_months']).to eq(5)
         expect(result['total_collection_months']).to eq(12)
         expect(result['collection_occurrences']).to eq(7)
@@ -144,13 +142,13 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
 
     context 'with temporal features' do
       before do
+        dummy_instance.created_at = Date.new(2026, 2, 4)
         dummy_instance.provenir_big_data_corp = double('BigDataCorp')
         dummy_instance.provenir_age = 30
         dummy_instance.provenir_extended_phone = phone
         dummy_instance.provenir_extended_address = address
         dummy_instance.provenir_financial_risk = financial_risk
         dummy_instance.provenir_financial_datum = double('FinancialDatum')
-        dummy_instance.provenir_current_consecutive_collection_months = 0
         dummy_instance.provenir_max_consecutive_collection_months = 0
         dummy_instance.provenir_total_collection_months = 0
         dummy_instance.provenir_last_collection_date = Date.new(2025, 1, 1)
@@ -171,8 +169,6 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
       end
 
       it 'computes days_since from dates correctly' do
-        allow(Date).to receive(:current).and_return(Date.new(2026, 2, 4))
-
         result = dummy_instance.shadow_features
 
         expect(result['days_since_last_phone_passage']).to eq(234)
@@ -240,12 +236,12 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
 
     context 'with enhanced date validation' do
       before do
+        dummy_instance.created_at = Date.new(2026, 2, 5)
         dummy_instance.provenir_big_data_corp = double('BigDataCorp')
         dummy_instance.provenir_age = 30
         dummy_instance.provenir_extended_address = nil
         dummy_instance.provenir_financial_risk = nil
         dummy_instance.provenir_financial_datum = nil
-        dummy_instance.provenir_current_consecutive_collection_months = nil
         dummy_instance.provenir_max_consecutive_collection_months = nil
         dummy_instance.provenir_total_collection_months = nil
         dummy_instance.provenir_last_collection_date = nil
@@ -263,7 +259,6 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
           .boa_vista_acerta_essencial_n_debt_occurrences_as_debtor = nil
         dummy_instance
           .boa_vista_acerta_essencial_cpf_consultations_90d = nil
-        allow(Date).to receive(:current).and_return(Date.new(2026, 2, 5))
       end
 
       context 'when detecting sentinel dates' do
@@ -438,13 +433,13 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
 
     context 'with income_range_ordinal from delegator' do
       before do
+        dummy_instance.created_at = Date.new(2026, 2, 25)
         dummy_instance.provenir_big_data_corp = double('BigDataCorp')
         dummy_instance.provenir_age = 25
         dummy_instance.provenir_extended_phone = nil
         dummy_instance.provenir_extended_address = nil
         dummy_instance.provenir_financial_risk = nil
         dummy_instance.provenir_financial_datum = nil
-        dummy_instance.provenir_current_consecutive_collection_months = nil
         dummy_instance.provenir_max_consecutive_collection_months = nil
         dummy_instance.provenir_total_collection_months = nil
         dummy_instance.provenir_last_collection_date = nil
@@ -478,13 +473,13 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
 
     context 'with debit features sentinel handling' do
       before do
+        dummy_instance.created_at = Date.new(2026, 2, 25)
         dummy_instance.provenir_big_data_corp = double('BigDataCorp')
         dummy_instance.provenir_age = 30
         dummy_instance.provenir_extended_phone = nil
         dummy_instance.provenir_extended_address = nil
         dummy_instance.provenir_financial_risk = nil
         dummy_instance.provenir_financial_datum = nil
-        dummy_instance.provenir_current_consecutive_collection_months = nil
         dummy_instance.provenir_max_consecutive_collection_months = nil
         dummy_instance.provenir_total_collection_months = nil
         dummy_instance.provenir_last_collection_date = nil
@@ -531,13 +526,13 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
 
     context 'when collection is absent' do
       before do
+        dummy_instance.created_at = Date.new(2026, 2, 25)
         dummy_instance.provenir_big_data_corp = double('BigDataCorp')
         dummy_instance.provenir_age = 30
         dummy_instance.provenir_extended_phone = nil
         dummy_instance.provenir_extended_address = nil
         dummy_instance.provenir_financial_risk = nil
         dummy_instance.provenir_financial_datum = nil
-        dummy_instance.provenir_current_consecutive_collection_months = nil
         dummy_instance.provenir_max_consecutive_collection_months = nil
         dummy_instance.provenir_total_collection_months = nil
         dummy_instance.provenir_last_collection_date = nil
@@ -560,10 +555,9 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
       it 'returns sentinel values for all collection features' do
         result = dummy_instance.shadow_features
 
-        expect(result['current_consecutive_collection_months']).to eq(0)
-        expect(result['max_consecutive_collection_months']).to eq(0)
-        expect(result['total_collection_months']).to eq(0)
-        expect(result['collection_occurrences']).to eq(0)
+        expect(result['max_consecutive_collection_months']).to eq(-1)
+        expect(result['total_collection_months']).to eq(-1)
+        expect(result['collection_occurrences']).to eq(-1)
         expect(result['days_since_last_collection_date']).to eq(999_999)
         expect(result['collection_origins']).to eq(-1)
       end
@@ -571,13 +565,13 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
 
     context 'with new Boa Vista features' do
       before do
+        dummy_instance.created_at = Date.new(2026, 2, 25)
         dummy_instance.provenir_big_data_corp = double('BigDataCorp')
         dummy_instance.provenir_age = 30
         dummy_instance.provenir_extended_phone = nil
         dummy_instance.provenir_extended_address = nil
         dummy_instance.provenir_financial_risk = nil
         dummy_instance.provenir_financial_datum = nil
-        dummy_instance.provenir_current_consecutive_collection_months = nil
         dummy_instance.provenir_max_consecutive_collection_months = nil
         dummy_instance.provenir_total_collection_months = nil
         dummy_instance.provenir_last_collection_date = nil
@@ -620,12 +614,12 @@ RSpec.describe Analysis::ShadowFeaturable, type: :concern do
 
     context 'with years_since_last_tax_return sentinel logic' do
       before do
+        dummy_instance.created_at = Date.new(2026, 2, 25)
         dummy_instance.provenir_big_data_corp = double('BigDataCorp')
         dummy_instance.provenir_age = 30
         dummy_instance.provenir_extended_phone = nil
         dummy_instance.provenir_extended_address = nil
         dummy_instance.provenir_financial_risk = nil
-        dummy_instance.provenir_current_consecutive_collection_months = nil
         dummy_instance.provenir_max_consecutive_collection_months = nil
         dummy_instance.provenir_total_collection_months = nil
         dummy_instance.provenir_last_collection_date = nil
