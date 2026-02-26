@@ -91,8 +91,10 @@ module Analysis
       }
 
       # Shadow model flow
-      shadow = analysis_item.shadow_features
-      body[:shadow_features] = shadow if shadow
+      if EnvHelper.fetch('SHADOW_MODELS_ENABLED', 'false') == 'true'
+        shadow = analysis_item.shadow_features
+        body[:shadow_features] = shadow if shadow
+      end
 
       body.to_json
     end
