@@ -29,6 +29,10 @@ module Delegators
                allow_nil: true
 
       delegate :is_currently_on_collection, :collection_occurrences,
+               :current_consecutive_collection_months,
+               :max_consecutive_collection_months,
+               :total_collection_months, :last_collection_date,
+               :collection_origins,
                to: :provenir_collection, prefix: :provenir, allow_nil: true
 
       delegate :total_assets, :tax_returns, :income_estimate,
@@ -92,6 +96,21 @@ module Delegators
           '15 A 20 SM' => 8,
           'ACIMA DE 20 SM' => 9
         }[provenir_bigdata_v2] || 0
+      end
+
+      def provenir_income_range_ordinal
+        {
+          '0 A 1 SM' => 1, '1 A 2 SM' => 2, '2 A 3 SM' => 3,
+          '3 A 5 SM' => 4, '5 A 7 SM' => 5, '7 A 10 SM' => 6,
+          '10 A 15 SM' => 7, '15 A 20 SM' => 8, 'ACIMA DE 20 SM' => 9
+        }[provenir_financial_risk&.estimated_income_range] || 0
+      end
+
+      def provenir_years_since_last_tax_return
+        max_year = provenir_tax_returns&.maximum(:year)
+        return if max_year.nil?
+
+        Date.current.year - max_year.to_i
       end
 
       def provenir_currently_on_collection

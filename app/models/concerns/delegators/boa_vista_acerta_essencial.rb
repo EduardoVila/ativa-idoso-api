@@ -16,6 +16,53 @@ module Delegators
                :division_between_income_and_protested_title_value,
                to: :boa_vista_acerta_essencial, allow_nil: true,
                prefix: :boa_vista_acerta_essencial
+
+      def boa_vista_acerta_essencial_parsed_debit_values
+        debits = boa_vista_acerta_essencial&.debits
+
+        return [] if debits.blank?
+
+        debits.pluck(:value).filter_map do |v|
+          v.delete('.').tr(',', '.').to_f if v.present?
+        end
+      end
+
+      def boa_vista_acerta_essencial_parsed_debit_min_value
+        values = boa_vista_acerta_essencial_parsed_debit_values
+
+        return if values.empty?
+
+        values.min
+      end
+
+      def boa_vista_acerta_essencial_parsed_debit_median_value
+        values = boa_vista_acerta_essencial_parsed_debit_values
+
+        return if values.empty?
+
+        sorted = values.sort
+        len = sorted.length
+
+        return sorted[len / 2] if len.odd?
+
+        (sorted[(len / 2) - 1] + sorted[len / 2]) / 2.0
+      end
+
+      def boa_vista_acerta_essencial_n_debt_occurrences_as_debtor
+        occurrence = boa_vista_acerta_essencial&.debit_occurrence
+        occurrence&.total_debtor&.to_i
+      end
+
+      def boa_vista_acerta_essencial_cpf_consultations_90d
+        consultation = boa_vista_acerta_essencial&.previous90_days_consultation
+        consultation&.total&.to_i
+      end
+
+      def boa_vista_acerta_essencial_parsed_debit_max_value
+        values = boa_vista_acerta_essencial_parsed_debit_values
+
+        values.max if values.any?
+      end
     end
   end
 end

@@ -43,6 +43,7 @@ module Analysis
     include ::Auditable
     include DisapprovalSituationConcern
     include Featurable
+    include ShadowFeaturable
     include StepTrackable
 
     auditable

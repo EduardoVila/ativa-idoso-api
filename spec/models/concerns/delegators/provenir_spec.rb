@@ -1,0 +1,115 @@
+# frozen_string_literal: true
+
+require 'spec_helper'
+
+RSpec.describe Delegators::Provenir do
+  let(:dummy_class) do
+    Class.new do
+      include Delegators::Provenir
+
+      attr_accessor :provenir_big_data_corp
+    end
+  end
+
+  let(:dummy_instance) { dummy_class.new }
+
+  let(:financial_risk) { double('FinancialRisk') }
+  let(:big_data_corp) do
+    double('BigDataCorp', financial_risk: financial_risk)
+  end
+
+  before do
+    dummy_instance.provenir_big_data_corp = big_data_corp
+  end
+
+  {
+    '0 A 1 SM' => 1,
+    '1 A 2 SM' => 2,
+    '2 A 3 SM' => 3,
+    '3 A 5 SM' => 4,
+    '5 A 7 SM' => 5,
+    '7 A 10 SM' => 6,
+    '10 A 15 SM' => 7,
+    '15 A 20 SM' => 8,
+    'ACIMA DE 20 SM' => 9
+  }.each do |range, ordinal|
+    it "maps '#{range}' to #{ordinal}" do
+      allow(financial_risk)
+        .to receive(:estimated_income_range)
+        .and_return(range)
+
+      expect(dummy_instance.provenir_income_range_ordinal)
+        .to eq(ordinal)
+    end
+  end
+
+  it "maps unknown string 'SEM INFORMACAO' to 0" do
+    allow(financial_risk)
+      .to receive(:estimated_income_range)
+      .and_return('SEM INFORMACAO')
+
+    expect(dummy_instance.provenir_income_range_ordinal).to eq(0)
+  end
+
+  it 'maps nil income range to 0' do
+    allow(financial_risk)
+      .to receive(:estimated_income_range).and_return(nil)
+
+    expect(dummy_instance.provenir_income_range_ordinal).to eq(0)
+  end
+
+  it 'returns 0 when financial_risk is nil' do
+    allow(big_data_corp)
+      .to receive(:financial_risk).and_return(nil)
+
+    expect(dummy_instance.provenir_income_range_ordinal).to eq(0)
+  end
+
+  describe '#provenir_years_since_last_tax_return' do
+    let(:tax_returns) { double('TaxReturns') }
+    let(:financial_datum) { double('FinancialDatum', tax_returns: tax_returns) }
+
+    before do
+      allow(big_data_corp)
+        .to receive(:financial_datum).and_return(financial_datum)
+    end
+
+    it 'returns years since the most recent tax return' do
+      allow(Date).to receive(:current).and_return(Date.new(2026, 2, 24))
+      allow(tax_returns).to receive(:maximum).with(:year).and_return(2023)
+
+      expect(dummy_instance.provenir_years_since_last_tax_return).to eq(3)
+    end
+
+    it 'returns nil when no tax returns exist' do
+      allow(tax_returns).to receive(:maximum).with(:year).and_return(nil)
+
+      expect(dummy_instance.provenir_years_since_last_tax_return).to be_nil
+    end
+
+    it 'returns nil when financial_datum is nil' do
+      allow(big_data_corp)
+        .to receive(:financial_datum).and_return(nil)
+
+      expect(dummy_instance.provenir_years_since_last_tax_return).to be_nil
+    end
+  end
+
+  describe '#provenir_collection_origins' do
+    let(:collection) { double('Collection', collection_origins: 3) }
+
+    it 'delegates to provenir_collection' do
+      allow(big_data_corp)
+        .to receive(:collection).and_return(collection)
+
+      expect(dummy_instance.provenir_collection_origins).to eq(3)
+    end
+
+    it 'returns nil when collection is nil' do
+      allow(big_data_corp)
+        .to receive(:collection).and_return(nil)
+
+      expect(dummy_instance.provenir_collection_origins).to be_nil
+    end
+  end
+end
