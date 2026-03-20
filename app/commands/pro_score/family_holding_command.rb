@@ -26,6 +26,8 @@ module ProScore
       family_holdings.map do |family_holding|
         formatted_cpf = CPF::Formatter.format(family_holding.cpf_do_parente)
 
+        return false if formatted_cpf.blank?
+
         Analysis::Item.joins(:predictions).where(status: :done).where("
           analysis_items.cpf = :cpf AND
           analysis_predictions.approved = false AND
