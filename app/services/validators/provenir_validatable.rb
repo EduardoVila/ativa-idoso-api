@@ -82,6 +82,8 @@ module Validators
     end
 
     def provenir_reproved_relative?(cpf)
+      return false if cpf.blank?
+
       date = Time.zone.today - 30.days
 
       Analysis::Item.joins(:predictions)
