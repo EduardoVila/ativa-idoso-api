@@ -19,6 +19,7 @@ module Analysis
         reproved_by_protested_title
         reproved_by_recent_debit
         prediction
+        reproved_by_minimum_age
       ]
     end
   end

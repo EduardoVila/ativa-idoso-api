@@ -23,9 +23,11 @@ module Analysis
         return if boa_vista_error?
 
         update_analysis_item_name
+
+        check_minimum_age
       end
 
-      analyze_item_step_by_step
+      analyze_item_step_by_step if analysis_item.wip?
 
       sync_analysis_report
     end
@@ -58,6 +60,23 @@ module Analysis
 
     def boa_vista_cadastral_enabled
       ENV.fetch('BOA_VISTA_CADASTRAL_ENABLED', true)
+    end
+
+    def check_minimum_age
+      return unless analysis_item.boa_vista_cadastral.present?
+
+      birth_date = analysis_item.boa_vista_cadastral
+        .basic_registration&.birth_date
+
+      return if birth_date.blank?
+
+      birth_date = birth_date.to_date
+      return if (Date.current - birth_date).to_i / 365 >= 18
+
+      analysis_item.update(
+        status: :done,
+        disapproval_situation: :reproved_by_minimum_age
+      )
     end
   end
 end

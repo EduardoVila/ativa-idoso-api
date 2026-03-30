@@ -121,6 +121,11 @@ FactoryBot.define do
       disapproval_situation { :reproved_by_age_and_income }
     end
 
+    trait :reproved_by_minimum_age do
+      status { :done }
+      disapproval_situation { :reproved_by_minimum_age }
+    end
+
     trait :with_analysis_associations do
       after(:create) do |analysis_item|
         create :provenir_big_data_corp, analysis_item: analysis_item
