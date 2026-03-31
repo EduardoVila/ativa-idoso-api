@@ -102,10 +102,9 @@ RSpec.describe Analysis::ItemRunnerCommand, type: :command do
 
         before do
           basic_registration
-          allow(analysis_item).to receive(:error_status).and_return('none')
           allow(analysis_item)
-            .to receive(:boa_vista_cadastral_name)
-            .and_return('Test Name')
+            .to receive_messages(error_status: 'none',
+                                 boa_vista_cadastral_name: 'Test Name')
         end
 
         it 'sets status to done and reproved_by_minimum_age' do
@@ -148,10 +147,9 @@ RSpec.describe Analysis::ItemRunnerCommand, type: :command do
 
         before do
           basic_registration
-          allow(analysis_item).to receive(:error_status).and_return('none')
           allow(analysis_item)
-            .to receive(:boa_vista_cadastral_name)
-            .and_return('Test Name')
+            .to receive_messages(error_status: 'none',
+                                 boa_vista_cadastral_name: 'Test Name')
         end
 
         it 'continues to step by step analysis' do
@@ -186,10 +184,9 @@ RSpec.describe Analysis::ItemRunnerCommand, type: :command do
 
         before do
           basic_registration
-          allow(analysis_item).to receive(:error_status).and_return('none')
           allow(analysis_item)
-            .to receive(:boa_vista_cadastral_name)
-            .and_return('Test Name')
+            .to receive_messages(error_status: 'none',
+                                 boa_vista_cadastral_name: 'Test Name')
         end
 
         it 'continues to step by step analysis' do
