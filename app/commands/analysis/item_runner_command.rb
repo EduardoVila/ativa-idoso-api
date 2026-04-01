@@ -63,14 +63,17 @@ module Analysis
     end
 
     def check_minimum_age
-      return unless analysis_item.boa_vista_cadastral.present?
+      bv_cadastral = analysis_item.boa_vista_cadastral
 
-      birth_date = analysis_item.boa_vista_cadastral
-        .basic_registration&.birth_date
+      return if bv_cadastral.blank?
+
+      basic_registration = bv_cadastral.basic_registration
+      birth_date = basic_registration&.birth_date
 
       return if birth_date.blank?
 
       birth_date = birth_date.to_date
+
       return if (Date.current - birth_date).to_i / 365 >= 18
 
       analysis_item.update(
