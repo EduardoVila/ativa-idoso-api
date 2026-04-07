@@ -84,6 +84,131 @@ RSpec.describe Analysis::ItemRunnerCommand, type: :command do
             .with(:analysis_report_sync_command, analysis_report)
         end
       end
+
+      context 'when client is under minimum age' do
+        let(:analysis_item) do
+          create :analysis_item, status: :todo, name: nil
+        end
+        let(:boa_vista_cadastral) do
+          create :boa_vista_cadastral, consumer: analysis_item
+        end
+        let(:basic_registration) do
+          create(
+            :boa_vista_basic_registration,
+            boa_vista_cadastral: boa_vista_cadastral,
+            birth_date: 15.years.ago.to_date.to_s
+          )
+        end
+
+        before do
+          basic_registration
+          allow(analysis_item).to(
+            receive_messages(
+              error_status: 'none', boa_vista_cadastral_name: 'Test Name'
+            )
+          )
+        end
+
+        it 'sets status to done and reproved_by_minimum_age' do
+          item_command.call
+
+          expect(analysis_item.reload.status).to eq('done')
+          expect(analysis_item.disapproval_situation)
+            .to eq('reproved_by_minimum_age')
+        end
+
+        it 'does not call analyze_item_step_by_step' do
+          item_command.call
+
+          expect(Invoker).not_to have_received(:execute)
+            .with(:analysis_step_by_step_command, analysis_item)
+        end
+
+        it 'calls sync_analysis_report' do
+          item_command.call
+
+          expect(Invoker).to have_received(:execute)
+            .with(:analysis_report_sync_command, analysis_report)
+        end
+      end
+
+      context 'when client is at minimum age (18 years old)' do
+        let(:analysis_item) do
+          create :analysis_item, status: :todo, name: nil
+        end
+        let(:boa_vista_cadastral) do
+          create :boa_vista_cadastral, consumer: analysis_item
+        end
+        let(:basic_registration) do
+          create(
+            :boa_vista_basic_registration,
+            boa_vista_cadastral: boa_vista_cadastral,
+            birth_date: 18.years.ago.to_date.to_s
+          )
+        end
+
+        before do
+          basic_registration
+          allow(analysis_item).to(
+            receive_messages(
+              error_status: 'none', boa_vista_cadastral_name: 'Test Name'
+            )
+          )
+        end
+
+        it 'continues to step by step analysis' do
+          item_command.call
+
+          expect(Invoker).to have_received(:execute)
+            .with(:analysis_step_by_step_command, analysis_item)
+        end
+
+        it 'does not set reproved_by_minimum_age' do
+          item_command.call
+
+          expect(analysis_item.reload.disapproval_situation)
+            .not_to eq('reproved_by_minimum_age')
+        end
+      end
+
+      context 'when birth_date is nil' do
+        let(:analysis_item) do
+          create :analysis_item, status: :todo, name: nil
+        end
+        let(:boa_vista_cadastral) do
+          create :boa_vista_cadastral, consumer: analysis_item
+        end
+        let(:basic_registration) do
+          create(
+            :boa_vista_basic_registration,
+            boa_vista_cadastral: boa_vista_cadastral,
+            birth_date: nil
+          )
+        end
+
+        before do
+          basic_registration
+          allow(analysis_item).to(
+            receive_messages(
+              error_status: 'none', boa_vista_cadastral_name: 'Test Name'
+            )
+          )
+        end
+
+        it 'continues to step by step analysis' do
+          item_command.call
+
+          expect(Invoker).to have_received(:execute)
+            .with(:analysis_step_by_step_command, analysis_item)
+        end
+
+        it 'does not block the analysis' do
+          item_command.call
+
+          expect(analysis_item.reload.disapproval_situation)
+            .not_to eq('reproved_by_minimum_age')
+        end
+      end
     end
   end
 end
