@@ -15,7 +15,7 @@ RSpec.describe ResearchAndDevelopment::PopulateAnalysisItemService,
 
     it 'creates ResearchAndDevelopment::AnalysisItem with analysis_item data' do
       expect do
-        described_class.call(analysis_item)
+        described_class.call(analysis_item.id)
       end.to change(ResearchAndDevelopment::AnalysisItem, :count).by(1)
 
       expect(created.analysis_items_cpf).to eq(analysis_item.cpf)

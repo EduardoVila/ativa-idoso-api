@@ -4,8 +4,8 @@ module ResearchAndDevelopment
   class PopulateAnalysisItemService < ApplicationService
     include Nestable
 
-    def initialize(analysis_item)
-      @analysis_item = analysis_item
+    def initialize(analysis_item_id)
+      @analysis_item = Analysis::Item.find(analysis_item_id)
     end
 
     def call

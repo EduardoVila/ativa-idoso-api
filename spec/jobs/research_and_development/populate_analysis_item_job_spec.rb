@@ -21,7 +21,7 @@ RSpec.describe ResearchAndDevelopment::PopulateAnalysisItemJob, type: :job do
     end
 
     it 'calls the call method on the analysis_item service' do
-      subject.perform(analysis_item)
+      subject.perform(analysis_item.id)
 
       expect(analysis_item_service).to have_received(:call)
     end
