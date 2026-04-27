@@ -42,5 +42,6 @@ FactoryBot.define do
 
     api_webhook_subscription factory: :api_webhook_subscription
     analysis_report factory: :analysis_report
+    api_client factory: :api_client
   end
 end
