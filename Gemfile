@@ -15,6 +15,7 @@ gem 'bcrypt' # Password hashing
 gem 'bullet' # N+1 query detection
 gem 'colorize' # Colorized output
 gem 'cpf_cnpj' # CPF and CNPJ validation
+gem 'csv'
 gem 'damerau-levenshtein' # Damerau-Levenshtein distance calculation
 gem 'dotenv' # Environment variable management
 gem 'faraday' # HTTP client for making API requests
