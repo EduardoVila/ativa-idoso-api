@@ -41,7 +41,7 @@ RSpec.describe Analysis::PredictionCommand, type: :command do
 
     context 'when analysis_item has error status' do
       before do
-        allow(analysis_item).to receive(:alpop_prediction_error_status?)
+        allow(analysis_item).to receive(:prediction_error_status?)
           .and_return(true)
 
         allow(analysis_item).to receive(:update)
@@ -70,10 +70,10 @@ RSpec.describe Analysis::PredictionCommand, type: :command do
         allow(analysis_item).to receive(:update)
       end
 
-      it 'updates analysis_item error_status to alpop_prediction' do
+      it 'updates analysis_item error_status to prediction' do
         described_class.call(analysis_item)
         expect(analysis_item).to have_received(:update)
-          .with(error_status: :alpop_prediction)
+          .with(error_status: :prediction)
       end
 
       it 'returns a failure hash' do
