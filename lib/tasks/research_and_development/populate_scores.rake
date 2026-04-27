@@ -10,7 +10,7 @@ namespace :populate_scores do
         analysis_items_analysis_report_id: analysis_item.analysis_report_id
       )
 
-      ResearchAndDevelopment::PopulateScoreJob.perform_later(analysis_item)
+      ResearchAndDevelopment::PopulateScoreJob.perform_async(analysis_item)
     end
   end
 end
