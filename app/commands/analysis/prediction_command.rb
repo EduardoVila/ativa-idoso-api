@@ -7,7 +7,7 @@ module Analysis
     attr_reader :analysis_item
 
     def call
-      if analysis_item.alpop_prediction_error_status?
+      if analysis_item.prediction_error_status?
         analysis_item.update(error_status: :none)
       end
 
@@ -19,7 +19,7 @@ module Analysis
 
         reproved_hash(:prediction)
       rescue ::Errors::Analysis::PredictionPostResponseError, StandardError
-        analysis_item.update(error_status: :alpop_prediction)
+        analysis_item.update(error_status: :prediction)
 
         failure_hash
       end

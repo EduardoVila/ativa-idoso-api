@@ -60,7 +60,7 @@ FactoryBot.define do
         none idwall boa_vista pro_score_trials serasa
         pro_score_family_holdings pro_score_bounced_checks
         pro_score_presumed_income pro_score_commercial_relations
-        provenir_big_data_corp alpop_prediction
+        provenir_big_data_corp prediction
       ].sample
     end
 
