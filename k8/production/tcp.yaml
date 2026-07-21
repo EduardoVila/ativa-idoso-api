@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: alpop-analysis-tcp
+  name: ativa-idoso-api-tcp
   namespace: analysis
   labels:
-    app: alpop-analysis-tcp
+    app: ativa-idoso-api-tcp
 spec:
   selector:
     app: api

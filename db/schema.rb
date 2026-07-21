@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_04_27_122031) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_20_001351) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -92,6 +92,16 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_27_122031) do
     t.string "scope"
     t.string "token_type"
     t.datetime "updated_at", null: false
+  end
+
+  create_table "answers", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "option_id", null: false
+    t.string "complement"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["option_id"], name: "index_answers_on_option_id"
+    t.index ["user_id"], name: "index_answers_on_user_id"
   end
 
   create_table "api_clients", force: :cascade do |t|
@@ -853,6 +863,17 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_27_122031) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "options", force: :cascade do |t|
+    t.string "description", null: false
+    t.string "color", null: false
+    t.string "icon", null: false
+    t.text "other_options", default: [], array: true
+    t.bigint "question_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_options_on_question_id"
+  end
+
   create_table "prediction_tokens", force: :cascade do |t|
     t.string "access_token"
     t.datetime "created_at", null: false
@@ -1573,6 +1594,14 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_27_122031) do
     t.datetime "valid_to", null: false
   end
 
+  create_table "questions", force: :cascade do |t|
+    t.string "description", null: false
+    t.bigint "research_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["research_id"], name: "index_questions_on_research_id"
+  end
+
   create_table "request_logs", force: :cascade do |t|
     t.string "body"
     t.datetime "created_at", null: false
@@ -2122,6 +2151,12 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_27_122031) do
     t.index ["analysis_items_payment_situation"], name: "r_n_d_payment_situation_index"
   end
 
+  create_table "researches", force: :cascade do |t|
+    t.string "title", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "response_logs", force: :cascade do |t|
     t.string "body"
     t.datetime "created_at", null: false
@@ -2337,12 +2372,44 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_27_122031) do
     t.index ["owner_type", "owner_id"], name: "index_serasa_summaries_on_owner", unique: true
   end
 
+  create_table "users", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "cpf", null: false
+    t.integer "status", default: 0, null: false
+    t.string "access_token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cpf"], name: "index_users_on_cpf", unique: true
+  end
+
+  create_table "videos", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "url", null: false
+    t.integer "section", null: false
+    t.integer "level", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "views", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "video_id", null: false
+    t.boolean "watched_completely", default: false
+    t.integer "percentage_watched", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_views_on_user_id"
+    t.index ["video_id"], name: "index_views_on_video_id"
+  end
+
   add_foreign_key "analysis_item_steps", "analysis_items"
   add_foreign_key "analysis_item_steps", "analysis_steps"
   add_foreign_key "analysis_items", "analysis_items", column: "clone_of_id"
   add_foreign_key "analysis_items", "analysis_reports"
   add_foreign_key "analysis_predictions", "analysis_items"
   add_foreign_key "analysis_reports", "api_clients"
+  add_foreign_key "answers", "options"
+  add_foreign_key "answers", "users"
   add_foreign_key "api_webhook_credentials", "api_clients"
   add_foreign_key "api_webhook_events", "analysis_reports"
   add_foreign_key "api_webhook_events", "api_clients"
@@ -2387,6 +2454,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_27_122031) do
   add_foreign_key "idwall_reports", "analysis_items"
   add_foreign_key "idwall_trial_parts", "idwall_trials"
   add_foreign_key "idwall_trials", "idwall_reports"
+  add_foreign_key "options", "questions"
   add_foreign_key "pro_score_bounced_checks", "pro_score_reports"
   add_foreign_key "pro_score_commercial_relations", "pro_score_reports"
   add_foreign_key "pro_score_criminal_antecedents", "pro_score_reports"
@@ -2430,6 +2498,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_27_122031) do
   add_foreign_key "provenir_sources", "provenir_rgs"
   add_foreign_key "provenir_tax_returns", "provenir_financial_data"
   add_foreign_key "provenir_updates", "provenir_lawsuits"
+  add_foreign_key "questions", "researches"
   add_foreign_key "serasa_addresses", "serasa_registrations"
   add_foreign_key "serasa_check_items", "serasa_checks"
   add_foreign_key "serasa_checks", "serasa_negative_data", column: "serasa_negative_data_id"
@@ -2446,4 +2515,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_27_122031) do
   add_foreign_key "serasa_scores", "serasa_fintech_reports"
   add_foreign_key "serasa_stolen_document_items", "serasa_stolen_documents"
   add_foreign_key "serasa_stolen_documents", "serasa_facts"
+  add_foreign_key "views", "users"
+  add_foreign_key "views", "videos"
 end

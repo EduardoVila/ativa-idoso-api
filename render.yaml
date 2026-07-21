@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: ativa-idoso-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile.production
+    healthCheckPath: /
+    envVars:
+      - key: RACK_ENV
+        value: production
+      - key: PORT
+        value: "10000"
+      - key: RUN_MIGRATIONS
+        value: "true"
+      - key: DATABASE_POOL_SIZE
+        value: "5"
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false
+      - key: DATABASE_URL
+        sync: false

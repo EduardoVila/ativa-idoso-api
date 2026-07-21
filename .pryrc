@@ -6,4 +6,4 @@ require 'pry-byebug'
 Pry.config.color = true
 
 # Customize the prompt
-Pry.config.prompt_name = 'alpop-analysis'
+Pry.config.prompt_name = 'ativa-idoso-api'

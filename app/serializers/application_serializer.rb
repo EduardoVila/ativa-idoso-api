@@ -4,14 +4,10 @@ class ApplicationSerializer < ActiveModel::Serializer
 
   private
 
-  def decorated_object
-    @decorated_object ||= object.decorate
-  end
+  def serialize_objects_collection(resources)
+    return [] if resources.blank?
 
-  def serialize_objects_collection(array)
-    return [] if array.blank?
-
-    array.map { |hash| hash.as_json.symbolize_keys }
+    resources.map(&:serialize_record)
   end
 
   def serialize_record(record)

@@ -4,8 +4,6 @@ pt-BR:
       item_step:
         attributes:
           name:
-            alpop_process_payment_situation: Histórico Alpop
-            alpop_block_list: Lista de bloqueados
             pro_score_family_holdings: Membros da família
             pro_score_bounced_checks: Cheque sem fundo
             pro_score_trials: Processos

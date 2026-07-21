@@ -52,18 +52,6 @@ module ApplicationLoader
     app_dir = File.join(File.dirname(__FILE__), '../app/**/*.rb')
     require_all app_dir
   end
-
-  def self.load_sidekiq
-    require_relative 'sidekiq' # Load the Sidekiq configuration
-  end
-
-  def self.load_redis_cache
-    require_relative 'redis_cache' # Load the Redis cache configuration
-  end
-
-  def self.load_sentry
-    require_relative 'sentry' # Load the Sentry configuration
-  end
 end
 
 # Load environment-specific configurations
@@ -102,7 +90,7 @@ configure :development, :test, :production do
 
   set :server, :puma
   set :app_file, File.expand_path('application.rb', __dir__)
-  set :root, File.expand_path('../alpop-analysis', __dir__)
+  set :root, File.expand_path('../ativa-idoso-api', __dir__)
   set :public_folder, File.expand_path('public', __dir__)
   set :time_zone,
       Time.zone_default = ActiveSupport::TimeZone['America/Sao_Paulo']
@@ -121,18 +109,10 @@ configure :development, :test, :production do
       Logger.new($stdout)
   end
 
-  # Enable ActiveRecord encryption
-  ActiveRecord::Encryption.config.primary_key =
-    EnvHelper.fetch('ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY')
-  ActiveRecord::Encryption.config.deterministic_key =
-    EnvHelper.fetch('ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY')
-  ActiveRecord::Encryption.config.key_derivation_salt =
-    EnvHelper.fetch('ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT')
-
   use Rack::Protection
   use Rack::Cors do
     allow do
-      origins ENV.fetch('CORS_ALLOWED_ORIGINS', 'alpop.com.br')
+      origins ENV.fetch('CORS_ALLOWED_ORIGINS', 'ativa-idoso.com.br')
       resource '*',
                headers: :any,
                methods: %i[get post put patch delete options head],

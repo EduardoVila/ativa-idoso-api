@@ -12,15 +12,15 @@ ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
 
-WORKDIR /alpop-analysis
+WORKDIR /ativa-idoso-api
 
-COPY Gemfile /alpop-analysis/Gemfile
-COPY Gemfile.lock /alpop-analysis/Gemfile.lock
+COPY Gemfile /ativa-idoso-api/Gemfile
+COPY Gemfile.lock /ativa-idoso-api/Gemfile.lock
 
 RUN gem install bundler:2.6.3
 RUN bundle install
 
-COPY . /alpop-analysis
+COPY . /ativa-idoso-api
 
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh

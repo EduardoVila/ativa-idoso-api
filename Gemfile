@@ -16,17 +16,14 @@ gem 'bullet' # N+1 query detection
 gem 'colorize' # Colorized output
 gem 'cpf_cnpj' # CPF and CNPJ validation
 gem 'csv'
-gem 'damerau-levenshtein' # Damerau-Levenshtein distance calculation
 gem 'dotenv' # Environment variable management
 gem 'faraday' # HTTP client for making API requests
 gem 'faraday-net_http' # Net::HTTP adapter for Faraday
 gem 'fiddle'
-gem 'foreman' # Process manager for running multiple processes
 gem 'i18n' # Internationalization support
 gem 'jwt' # JSON Web Token support
 gem 'nokogiri'
 gem 'ostruct' # OpenStruct for storing data
-gem 'paper_trail' # Versioning for records
 gem 'pg' # PostgreSQL database adapter
 gem 'pry' # REPL for debugging
 gem 'pry-byebug' # Enhanced REPL for debugging
@@ -36,14 +33,8 @@ gem 'rack-attack' # Rack middleware for blocking requests
 gem 'rack-cors', require: 'rack/cors' # CORS middleware
 gem 'rack-ssl-enforcer' # Enforce SSL for the application
 gem 'rake' # Task runner for the application
-gem 'redis' # Redis client for caching
 gem 'require_all' # Require all files in a directory
 gem 'rexml' # XML parsing library
-gem 'sentry-ruby' # Sentry integration for error tracking
-gem 'sentry-sidekiq' # Sentry integration for error tracking
-gem 'sidekiq' # Background job processing
-gem 'sidekiq-batch' # Batch processing for Sidekiq
-gem 'sidekiq-status' # Status tracking for Sidekiq jobs
 gem 'sinatra' # Core framework for the application
 gem 'sinatra-activerecord' # ActiveRecord integration with Sinatra
 gem 'sinatra-contrib' # Additional Sinatra utilities
@@ -58,8 +49,6 @@ group :development, :test do
   gem 'database_cleaner-active_record' # Ensures a clean state for tests
   gem 'factory_bot' # Fixtures replacement for tests
   gem 'faker' # Data generation for tests
-  gem 'guard' # Automatic test running
-  gem 'guard-rspec', require: false # Integration with RSpec
   gem 'irb' # Interactive Ruby shell
   gem 'rack-test' # Helpers for testing Rack applications
   gem 'reline' # Enhanced readline for Pry
@@ -73,7 +62,7 @@ end
 
 group :development do
   # Development and Debugging Gems
-  gem 'annotaterb' # Adds comments to models with schema information
+  gem 'annotaterb', '~> 4.22'
   gem 'database_consistency', require: false # Database consistency checks
   gem 'rubocop' # Code analyzer and formatter
   gem 'rubocop-capybara' # Capybara-specific RuboCop rules

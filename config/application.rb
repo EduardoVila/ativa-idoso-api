@@ -7,23 +7,15 @@ require_relative 'environments'
 %i[
   load_gems
   load_app
-  load_sidekiq
-  load_redis_cache
-  load_sentry
 ].each { |method| ApplicationLoader.public_send(method) }
 
 # Start the application
-class AlpopAnalysis < Sinatra::Base
-  # Middleware
-  use Idempotency
-
+class AtivaIdosoApi < Sinatra::Base
   # Endpoint handlers
   use V1::Authenticate
-  use V1::CreateAnalysisReport
-  use V1::NextAnalysisStep
-  use V1::RerunCloneAnalysisItem
-  use V1::RetryAnalysisReport
-  use V1::ShowAnalysisReport
+  use V1::Users
+  use V1::Researches
+  use V1::Videos
 
   # Health check endpoint
   get '/' do

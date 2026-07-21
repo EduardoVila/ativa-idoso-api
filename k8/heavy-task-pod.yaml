@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: rails-console-heavy
+  namespace: analysis
+spec:
+  restartPolicy: Never
+  containers:
+    - name: app
+      image: southamerica-east1-docker.pkg.dev/alpop-dev-297614/alpop-production/ativa-idoso-api:d9f29f0eb7e34b70194aacdce8f4a6d045d170f2
+      command: ["bash"]
+      stdin: true
+      tty: true
+      envFrom:
+        - secretRef:
+            name: ativa-idoso-api-secrets
+      resources:
+        requests:
+          memory: "2Gi"
+          cpu: "500m"
+        limits:
+          memory: "8Gi"
+          cpu: "2"

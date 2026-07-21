@@ -1,7 +1,7 @@
 apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
 metadata:
-  name: alpop-analysis-cert
+  name: ativa-idoso-api-cert
   namespace: analysis
 spec:
   domains:
@@ -12,11 +12,11 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: alpop-analysis-ingress
+  name: ativa-idoso-api-ingress
   namespace: analysis
   annotations:
     kubernetes.io/ingress.class: "gce"
-    networking.gke.io/managed-certificates: alpop-analysis-cert
+    networking.gke.io/managed-certificates: ativa-idoso-api-cert
 spec:
   rules:
   - host: analysis.alpop.com.br
@@ -26,6 +26,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: alpop-analysis-tcp
+            name: ativa-idoso-api-tcp
             port:
               number: 80

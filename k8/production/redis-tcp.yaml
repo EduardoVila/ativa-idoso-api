@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: alpop-analysis-redis-tcp-service
+  name: ativa-idoso-api-redis-tcp-service
   namespace: analysis
 spec:
   selector:

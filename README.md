@@ -1,19 +1,19 @@
 # README #
 
-## Alpop Analysis Setup Guide ##
+## Ativa Idoso Api Setup Guide ##
 
 ### What is this repository for? ###
 
-* Alpop Analysis API microservice
+* Ativa Idoso Api API microservice
 * Version 1.0
 
-### Installation of Alpop Analysis ###
+### Installation of Ativa Idoso Api ###
 
 * Clone the repository:
 
 ```sh
-git clone git@bitbucket.org:alpop-dev/alpop-analysis.git
-cd <path/to>/alpop-analysis
+#todo
+cd <path/to>/ativa-idoso-api
 ```
 
 * Install dependencies:
@@ -63,7 +63,7 @@ sudo service redis-server stop
 
 ## Architecture Overview and Main Flows ##
 
-The alpop-analysis project follows a command pattern architecture using Sinatra as the web framework.
+The ativa-idoso-api project follows a command pattern architecture using Sinatra as the web framework.
 
 Sinatra is a lightweight, flexible, and powerful Ruby DSL (Domain-Specific Language) for building web applications. It's designed for simplicity and ease of use, allowing developers to quickly create dynamic web pages, APIs, and more with minimal setup and effort.
 
@@ -313,7 +313,7 @@ end
 
 **Webhook Integration**:
 
-`Api::WebhookEvent` tracks all analysis operations and it is useful to check interactions between the caller apps (alpop-api, alpop-saas-api) and the callee (alpop-analysis).
+`Api::WebhookEvent` tracks all analysis operations and it is useful to check interactions between the caller apps (alpop-api, alpop-saas-api) and the callee (ativa-idoso-api).
 
 * Status updates: received → processing → processed / error
 * Error status is set when all retries are done.
@@ -368,7 +368,7 @@ Each endpoint includes comprehensive error handling:
   end
 
   def should_retry?(exception, _url = nil, _verb = nil)
-    return false if AlpopAnalysis.test?
+    return false if AtivaIdosoApi.test?
 
     # Comment out if idempotency logic is breaking:
     # return false if url.include?('alpop.com.br') && verb == :post

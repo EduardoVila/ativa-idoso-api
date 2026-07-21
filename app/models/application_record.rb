@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-class ApplicationRecord < ActiveRecord::Base
-  require_relative 'concerns/auditable'
+require_all 'app/models/concerns/validators'
+require 'active_support/core_ext/object/with_options'
 
+class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
   def self.human_enum_name(name, value)

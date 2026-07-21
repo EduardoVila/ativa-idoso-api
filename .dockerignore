@@ -1,0 +1,14 @@
+.env
+.env.*
+!.env.production.example
+.git
+.gitignore
+.bundle
+log/
+tmp/
+coverage/
+spec/
+vendor/bundle/
+Dockerfile*
+docker-compose*.yml
+README.md

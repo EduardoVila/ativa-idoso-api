@@ -47,7 +47,7 @@ services:
       - redis
       - app
     volumes:
-      - .:/alpop-analysis
+      - .:/ativa-idoso-api
 
 volumes:
   bundle_cache:
