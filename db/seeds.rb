@@ -161,8 +161,10 @@ def seed_initial_research
   puts "Seeded #{questions.size} initial research questions."
 end
 
-if ENV.fetch('RACK_ENV', 'development') == 'production'
-  warn 'Development seeds were not loaded in production.'
+production_seed_allowed = ENV['ALLOW_PRODUCTION_SEED'] == 'true'
+
+if ENV.fetch('RACK_ENV', 'development') == 'production' && !production_seed_allowed
+  warn 'Seeds were not loaded in production. Set ALLOW_PRODUCTION_SEED=true to confirm.'
 else
   seed_development_videos
   seed_initial_research

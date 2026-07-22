@@ -17,4 +17,11 @@ else
   echo "Skipping database migrations."
 fi
 
+if [ "$RUN_SEEDS" = "true" ]; then
+  echo "Running production seeds..."
+  ALLOW_PRODUCTION_SEED=true bundle exec rake db:seed
+else
+  echo "Skipping database seeds."
+fi
+
 exec "$@"
