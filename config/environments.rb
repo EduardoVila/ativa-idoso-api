@@ -114,14 +114,4 @@ configure :development, :test, :production do
   # browser applications and can reject authenticated cross-origin API reads
   # with a 403 after the endpoint has already generated its response.
   use Rack::Protection, except: [:json_csrf]
-  use Rack::Cors do
-    allow do
-      origins '*'
-      resource '*',
-               headers: :any,
-               methods: %i[get post put patch delete options head],
-               expose: %w[Authorization],
-               max_age: 600
-    end
-  end
 end

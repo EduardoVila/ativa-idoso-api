@@ -11,6 +11,17 @@ require_relative 'environments'
 
 # Start the application
 class AtivaIdosoApi < Sinatra::Base
+  use Rack::Cors do
+    allow do
+      origins '*'
+      resource '*',
+               headers: :any,
+               methods: %i[get post put patch delete options head],
+               expose: %w[Authorization],
+               max_age: 600
+    end
+  end
+
   # Endpoint handlers
   use V1::Authenticate
   use V1::Users
