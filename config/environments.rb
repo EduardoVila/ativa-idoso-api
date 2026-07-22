@@ -116,12 +116,7 @@ configure :development, :test, :production do
   use Rack::Protection, except: [:json_csrf]
   use Rack::Cors do
     allow do
-      allowed_origins = ENV.fetch('CORS_ALLOWED_ORIGINS', 'ativa-idoso.com.br')
-                              .split(',')
-                              .map(&:strip)
-                              .reject(&:empty?)
-
-      origins(*allowed_origins)
+      origins '*'
       resource '*',
                headers: :any,
                methods: %i[get post put patch delete options head],
