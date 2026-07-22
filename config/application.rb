@@ -16,10 +16,11 @@ class AtivaIdosoApi < Sinatra::Base
   use V1::Users
   use V1::Researches
   use V1::Videos
+  use V1::SatisfactionSurveys
 
   # Health check endpoint
   get '/' do
     headers 'Content-Type' => 'application/json'
-    { message: 'Analysis API is running.' }.to_json
+    { message: 'Ativa Idoso API is running.' }.to_json
   end
 end

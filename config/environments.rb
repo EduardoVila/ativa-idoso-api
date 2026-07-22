@@ -109,10 +109,19 @@ configure :development, :test, :production do
       Logger.new($stdout)
   end
 
-  use Rack::Protection
+  # The API is authenticated with the Authorization header and does not use
+  # browser sessions/cookies. JsonCsrf is intended for JSON responses from
+  # browser applications and can reject authenticated cross-origin API reads
+  # with a 403 after the endpoint has already generated its response.
+  use Rack::Protection, except: [:json_csrf]
   use Rack::Cors do
     allow do
-      origins ENV.fetch('CORS_ALLOWED_ORIGINS', 'ativa-idoso.com.br')
+      allowed_origins = ENV.fetch('CORS_ALLOWED_ORIGINS', 'ativa-idoso.com.br')
+                              .split(',')
+                              .map(&:strip)
+                              .reject(&:empty?)
+
+      origins(*allowed_origins)
       resource '*',
                headers: :any,
                methods: %i[get post put patch delete options head],

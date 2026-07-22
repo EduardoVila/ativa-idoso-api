@@ -29,6 +29,7 @@ class User < ApplicationRecord
 
   has_many :answers, dependent: :destroy
   has_many :views, dependent: :destroy
+  has_one :satisfaction_survey_response, dependent: :destroy
 
   private
 

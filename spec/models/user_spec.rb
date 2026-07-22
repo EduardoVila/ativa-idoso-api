@@ -28,6 +28,7 @@ RSpec.describe User, type: :model do
   describe 'associations' do
     it { is_expected.to have_many :answers }
     it { is_expected.to have_many :views }
+    it { is_expected.to have_one :satisfaction_survey_response }
   end
 
   describe 'validations' do

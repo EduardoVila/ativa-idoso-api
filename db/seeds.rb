@@ -1,116 +1,169 @@
 # frozen_string_literal: true
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
 
-ApplicationLoader.load_gems
-ApplicationLoader.load_app
+require_relative '../config/application'
 
-# analysis_steps is an array of hashes where each hash represents a step in the analyis process.
-# Each step contains the following keys:
-# - :name: A symbol representing the name of the analyis step.
-# - :command_class: A string representing the class name of the command to be executed for this step.
-# - :index_order: An integer representing the order in which the step should be executed.
-analysis_steps = [
-  {
-    name: :pro_score_bounced_checks,
-    command_class: 'ProScore::BouncedCheckCommand',
-    index_order: 1
-  },
-  {
-    name: :provenir_big_data_corp,
-    command_class: 'Provenir::BigDataCorpCommand',
-    index_order: 2
-  },
-  {
-    name: :boa_vista_acerta_essencial,
-    command_class: 'BoaVista::AcertaEssencialCommand',
-    index_order: 3
-  },
-  {
-    name: :pre_predictions,
-    command_class: 'PrePredictionCommand',
-    index_order: 4
-  },
-  {
-    name: :predictions,
-    command_class: 'Analysis::PredictionCommand',
-    index_order: 5
-  }
-]
+def seed_development_videos
+  videos = [
+    ['Membros inferiores - Idoso frágil - Vídeo 1', 'https://youtu.be/XN1ghoDQkXw', :lower_limbs, :beginner],
+    ['Membros inferiores - Idoso frágil - Vídeo 2', 'https://youtu.be/V0-HvA04e1k', :lower_limbs, :beginner],
+    ['Membros inferiores - Idoso frágil - Vídeo 3', 'https://youtu.be/hnvF3fdaRUg', :lower_limbs, :beginner],
+    ['Membros inferiores - Idoso frágil - Vídeo 4', 'https://youtu.be/ZcbnAjy_fHI', :lower_limbs, :beginner],
+    ['Membros inferiores - Idoso frágil - Vídeo 5', 'https://youtu.be/dotudSJjVr4', :lower_limbs, :beginner],
+    ['Membros inferiores - Idoso ativo - Vídeo 1', 'https://youtu.be/ZaCT9lHWFOU', :lower_limbs, :advanced],
+    ['Membros inferiores - Idoso ativo - Vídeo 2', 'https://youtu.be/W51-dcwvwmY', :lower_limbs, :advanced],
+    ['Membros inferiores - Idoso ativo - Vídeo 3', 'https://youtu.be/WJrz-C9EIS4', :lower_limbs, :advanced],
+    ['Membros inferiores - Idoso ativo - Vídeo 4', 'https://youtu.be/x9CfTUhKHac', :lower_limbs, :advanced],
+    ['Membros inferiores - Idoso ativo - Vídeo 5', 'https://youtu.be/9Ydj9lGqI5k', :lower_limbs, :advanced],
+    ['Membros superiores - Idoso frágil - Vídeo 1', 'https://youtu.be/FxuhGCDpxbo', :upper_limbs, :beginner],
+    ['Membros superiores - Idoso frágil - Vídeo 2', 'https://youtu.be/712gbWM1Nes', :upper_limbs, :beginner],
+    ['Membros superiores - Idoso frágil - Vídeo 3', 'https://youtu.be/3KFylyV1Mn8', :upper_limbs, :beginner],
+    ['Membros superiores - Idoso frágil - Vídeo 4', 'https://youtu.be/i2FOCj6d6-Y', :upper_limbs, :beginner],
+    ['Membros superiores - Idoso frágil - Vídeo 5', 'https://youtu.be/cjFvWv0f6XA', :upper_limbs, :beginner],
+    ['Membros superiores - Idoso ativo - Vídeo 1', 'https://youtu.be/HTx9k6rd9sM', :upper_limbs, :advanced],
+    ['Membros superiores - Idoso ativo - Vídeo 2', 'https://youtu.be/VglBfL2c15I', :upper_limbs, :advanced],
+    ['Membros superiores - Idoso ativo - Vídeo 3', 'https://youtu.be/GECNgHLc1Ms', :upper_limbs, :advanced],
+    ['Membros superiores - Idoso ativo - Vídeo 4', 'https://youtu.be/jklsuwupW_s', :upper_limbs, :advanced],
+    ['Membros superiores - Idoso ativo - Vídeo 5', 'https://youtu.be/FzNbcQZwEkk', :upper_limbs, :advanced]
+  ].map do |title, url, section, level|
+    { title: title, url: url, section: section, level: level }
+  end
 
-analysis_steps.each do |analysis_step|
-  Analysis::Step.find_or_create_by(analysis_step)
+  legacy_titles = [
+    'Mobilidade dos braços e ombros para iniciantes',
+    'Alongamento dos braços e ombros',
+    'Fortalecimento dos membros superiores',
+    'Coordenação avançada de braços e ombros',
+    'Mobilidade das pernas para iniciantes',
+    'Alongamento das pernas e quadril',
+    'Fortalecimento de pernas e joelhos',
+    'Equilíbrio e estabilidade avançados',
+    'Caminhada segura para iniciantes',
+    'Preparação para caminhada',
+    'Caminhada com resistência avançada',
+    'Desafio avançado de caminhada e equilíbrio'
+  ]
+  Video.where(title: legacy_titles).destroy_all
+
+videos.each do |attributes|
+  video = Video.find_or_initialize_by(title: attributes[:title])
+  video.assign_attributes(attributes)
+  video.save!
 end
 
-banned_keywords_objects = [
-  {
-    criminal: [
-      'ameaca', 'bando', 'carcere privado', 'corrupcao', 'crime',
-      'crimes', 'criminal', 'droga', 'drogas', 'entorpecente',
-      'entorpecentes', 'escravo', 'estelionato', 'execucao criminal',
-      'execucao de pena', 'execucao penal', 'extorsao',
-      'falsidade ideologica', 'formacao de quadrilha', 'fraude',
-      'fraudes', 'furto', 'ilicita', 'ilicitas', 'ilicito', 'ilicitos',
-      'latrocinio', 'lei maria da penha', 'maria da penha',
-      'organizacao criminosa', 'penal', 'penha', 'quadrilha',
-      'receptacao', 'reducao a condicao',
-      'reducao a condicao analoga a de escravo', 'roubo','sequestro',
-      'substancias toxicas', 'toxico', 'toxicos', 'trafico',
-      'trafico de drogas', 'trafico de entorpecentes',
-      'trafico de substancias', 'trafico de substancias entorpecentes',
-      'trafico de substancias ilicitas',
-      'trafico de substancias proibidas',
-      'trafico de substancias psicotropicas',
-      'trafico de substancias quimicas', 'trafico de substancias toxicas',
-      'violencia', 'violencia de genero', 'violencia domestica'
-    ]
-  },
-  {
-    lease_agreement: [
-      'aluguel', 'consignatorias', 'despejo', 'locacao',
-      'locacao de imoveis', 'locacao de imovel', 'renovatorias',
-      'revisionais'
-    ]
-  },
-  {
-    execution: [
-      'execucao', 'execucao de alimentos', 'execucao de titulo',
-      'execucao de titulo de credito', 'execucao de titulo extrajudicial',
-      'execucao fiscal',
-    ]
-  },
-  {
-    warranty: [
-      'alienacao', 'alienacao fiduciaria',
-      'alienacao fiduciaria de imovel', 'alienacao fiduciaria de veiculo',
-      'apreensao', 'busca', 'busca e apreensao', 'cobranca',
-      'cobranca de divida', 'fiduciaria', 'garantias'
-    ]
-  },
-  {
-    real_estate: [
-      'agua', 'eletrica', 'energia', 'fornecimento',
-      'fornecimento de agua', 'fornecimento de agua e esgoto',
-      'fornecimento de energia', 'fornecimento de energia eletrica'
-    ]
-  },
-  {
-    negotiable_instrument: [
-      'cheque', 'cheques', 'cobranca de cheques',
-      'cobranca de duplicatas', 'cobranca de titulos',
-      'cobranca de titulos de credito', 'direitos e titulos de credito',
-      'duplicata', 'duplicatas', 'titulo de credito', 'titulos de credito'
-    ]
-  }
-]
+puts "Seeded #{videos.size} development videos."
+end
 
-# Create Lawsuit::BannedKeyword instances.
-banned_keywords_objects.each do |hash|
-  hash.each_pair do |litigation_category, keywords|
-    keywords.each do |keyword|
-      Lawsuit::BannedKeyword.create!({
-        keyword: keyword, litigation_category: litigation_category
-      })
+def seed_initial_research
+  research = Research.find_or_initialize_by(title: 'Pesquisa inicial')
+  research.save!
+
+  option_colors = {
+    turquoise: '#6ACDC3',
+    blue: '#83A2E2',
+    red: '#F0A1AC'
+  }
+
+  questions = [
+    {
+      description: 'Qual sua idade?',
+      options: (50..100).map do |age|
+        {
+          description: age.to_s,
+          color: option_colors[:turquoise],
+          icon: 'numbers'
+        }
+      end
+    },
+    {
+      description: 'Qual seu gênero?',
+      options: [
+        { description: 'Feminino', color: option_colors[:turquoise], icon: 'woman' },
+        { description: 'Masculino', color: option_colors[:blue], icon: 'man' },
+        { description: 'Outro', color: option_colors[:turquoise], icon: 'add' }
+      ]
+    },
+    {
+      description: 'Mora no bairro São Sebastião?',
+      options: [
+        { description: 'Sim', color: option_colors[:turquoise], icon: 'thumb_up' },
+        { description: 'Não', color: option_colors[:red], icon: 'thumb_down' }
+      ]
+    },
+    {
+      description: 'Você mora?',
+      options: [
+        { description: 'Sozinho(a)', color: option_colors[:turquoise], icon: 'person' },
+        { description: 'Com familiares', color: option_colors[:blue], icon: 'groups' },
+        { description: 'Com cuidador', color: option_colors[:turquoise], icon: 'volunteer_activism' }
+      ]
+    },
+    {
+      description: 'Qual a sua escolaridade?',
+      options: [
+        { description: 'Não alfabetizado(a)', color: option_colors[:turquoise], icon: 'close' },
+        { description: 'Ensino fundamental', color: option_colors[:blue], icon: 'menu_book' },
+        { description: 'Ensino médio', color: option_colors[:turquoise], icon: 'domain' },
+        { description: 'Ensino superior', color: option_colors[:blue], icon: 'school' }
+      ]
+    },
+    {
+      description: 'Possui alguma doença crônica (ex: hipertensão, diabetes, artrose)?',
+      options: [
+        {
+          description: 'Sim',
+          color: option_colors[:turquoise],
+          icon: 'thumb_up',
+          other_options: %w[Hipertensão Diabetes Artrose Osteoporose Outra]
+        },
+        { description: 'Não', color: option_colors[:red], icon: 'thumb_down' }
+      ]
+    },
+    {
+      description: 'Sente dores com frequência?',
+      options: [
+        { description: 'Sim', color: option_colors[:turquoise], icon: 'thumb_up' },
+        { description: 'Não', color: option_colors[:red], icon: 'thumb_down' }
+      ]
+    },
+    {
+      description: 'Costuma praticar atividade física?',
+      options: [
+        {
+          description: 'Sim',
+          color: option_colors[:turquoise],
+          icon: 'thumb_up',
+          other_options: %w[Caminhada Musculação Hidroginástica Alongamento Outra]
+        },
+        { description: 'Não', color: option_colors[:red], icon: 'thumb_down' }
+      ]
+    }
+  ]
+
+  questions.each do |question_attributes|
+    question = research.questions.find_or_initialize_by(
+      description: question_attributes[:description]
+    )
+    question.save!
+
+    question_attributes[:options].each do |option_attributes|
+      option = question.options.find_or_initialize_by(
+        description: option_attributes[:description]
+      )
+      option.assign_attributes(
+        color: option_attributes[:color],
+        icon: option_attributes[:icon],
+        other_options: option_attributes.fetch(:other_options, [])
+      )
+      option.save!
     end
   end
+
+  puts "Seeded #{questions.size} initial research questions."
+end
+
+if ENV.fetch('RACK_ENV', 'development') == 'production'
+  warn 'Development seeds were not loaded in production.'
+else
+  seed_development_videos
+  seed_initial_research
 end
