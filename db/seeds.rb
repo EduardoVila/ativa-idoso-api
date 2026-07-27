@@ -23,7 +23,8 @@ def seed_development_videos
     ['Membros superiores - Idoso ativo - Vídeo 2', 'https://youtu.be/VglBfL2c15I', :upper_limbs, :advanced],
     ['Membros superiores - Idoso ativo - Vídeo 3', 'https://youtu.be/GECNgHLc1Ms', :upper_limbs, :advanced],
     ['Membros superiores - Idoso ativo - Vídeo 4', 'https://youtu.be/jklsuwupW_s', :upper_limbs, :advanced],
-    ['Membros superiores - Idoso ativo - Vídeo 5', 'https://youtu.be/FzNbcQZwEkk', :upper_limbs, :advanced]
+    ['Membros superiores - Idoso ativo - Vídeo 5', 'https://youtu.be/FzNbcQZwEkk', :upper_limbs, :advanced],
+    ['Caminhada para iniciantes', 'https://youtu.be/c9AiX8iqObU', :hiking, :beginner]
   ].map do |title, url, section, level|
     { title: title, url: url, section: section, level: level }
   end
@@ -44,13 +45,13 @@ def seed_development_videos
   ]
   Video.where(title: legacy_titles).destroy_all
 
-videos.each do |attributes|
-  video = Video.find_or_initialize_by(title: attributes[:title])
-  video.assign_attributes(attributes)
-  video.save!
-end
+  videos.each do |attributes|
+    video = Video.find_or_initialize_by(url: attributes[:url])
+    video.assign_attributes(attributes)
+    video.save!
+  end
 
-puts "Seeded #{videos.size} development videos."
+  puts "Seeded #{videos.size} development videos."
 end
 
 def seed_initial_research
