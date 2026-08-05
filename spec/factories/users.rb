@@ -21,6 +21,13 @@ FactoryBot.define do
     name { Faker::Name.name }
     cpf { Faker::CPF.pretty }
 
+    trait :anonymous do
+      name { 'Usuário anônimo' }
+      cpf { nil }
+      device_id { SecureRandom.uuid }
+      anonymous { true }
+    end
+
     trait :authenticated do
       access_token { SecureRandom.hex(10) }
     end

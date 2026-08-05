@@ -40,6 +40,12 @@ RSpec.describe User, type: :model do
     describe 'name' do
       it { is_expected.to validate_presence_of :name }
     end
+
+    it 'allows anonymous users without CPF when they have a device id' do
+      user = build(:user, :anonymous)
+
+      expect(user).to be_valid
+    end
   end
 
   describe 'enums' do

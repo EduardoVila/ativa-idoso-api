@@ -30,7 +30,7 @@ module V1
     SCORE_KEYS = SatisfactionSurveyResponse::SCORES.map(&:to_s).freeze
 
     get('/v1/satisfaction_surveys') do
-      halt(401) unless user
+      require_identified_user!
 
       content_type :json
 
@@ -46,7 +46,7 @@ module V1
     end
 
     post('/v1/satisfaction_surveys') do
-      halt(401) unless user
+      require_identified_user!
 
       content_type :json
 
@@ -81,6 +81,11 @@ module V1
 
     def response_exists?
       user.satisfaction_survey_response.present?
+    end
+
+    def require_identified_user!
+      halt(401, { error: 'Authentication required.' }.to_json) unless user
+      halt(403, { error: 'Anonymous users cannot answer the satisfaction survey.' }.to_json) if user.anonymous?
     end
 
     def survey_params

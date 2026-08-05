@@ -23,9 +23,12 @@ class User < ApplicationRecord
   enum :status, { research_pending: 0, active: 1 }
 
   with_options presence: true do
-    validates :cpf, cpf: true
+    validates :cpf, presence: true, unless: :anonymous?
     validates :name
   end
+
+  validates :cpf, cpf: true, if: -> { cpf.present? }
+  validates :device_id, presence: true, uniqueness: true, if: :anonymous?
 
   has_many :answers, dependent: :destroy
   has_many :views, dependent: :destroy

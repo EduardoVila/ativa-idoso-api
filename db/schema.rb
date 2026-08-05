@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_07_21_193000) do
+ActiveRecord::Schema[8.0].define(version: 2026_08_04_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -67,12 +67,15 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_21_193000) do
 
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
-    t.string "cpf", null: false
+    t.string "cpf"
     t.integer "status", default: 0, null: false
     t.string "access_token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["cpf"], name: "index_users_on_cpf", unique: true
+    t.string "device_id"
+    t.boolean "anonymous", default: false, null: false
+    t.index ["cpf"], name: "index_users_on_cpf", unique: true, where: "(cpf IS NOT NULL)"
+    t.index ["device_id"], name: "index_users_on_device_id", unique: true, where: "(device_id IS NOT NULL)"
   end
 
   create_table "videos", force: :cascade do |t|

@@ -19,5 +19,5 @@
 require_relative 'application_serializer'
 
 class UserSerializer < ApplicationSerializer
-  attributes :id, :cpf, :name, :access_token, :status
+  attributes :id, :cpf, :name, :access_token, :status, :anonymous
 end

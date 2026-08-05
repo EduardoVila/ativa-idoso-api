@@ -84,6 +84,7 @@ Resposta de sucesso: `201 Created`. Cada nota deve ser um número entre 1 e 5.
 | ---: | --- |
 | 400 | JSON inválido |
 | 401 | Token ausente ou inválido |
+| 403 | Usuário anônimo não pode responder a pesquisa |
 | 409 | Usuário já respondeu |
 | 422 | Nota inválida ou campo ausente |
 

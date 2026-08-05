@@ -9,7 +9,7 @@ module V1
     include Authenticable
 
     get('/v1/researches/:id') do
-      halt(401) unless user
+      require_identified_user!
 
       research = Research.find_by(id: params[:id])
 
@@ -21,7 +21,7 @@ module V1
     end
 
     post('/v1/researches/:id/submit_answers') do
-      halt(401) unless user
+      require_identified_user!
 
       halt(404) unless research
 
@@ -59,6 +59,11 @@ module V1
 
     def user
       @user ||= current_user(request)
+    end
+
+    def require_identified_user!
+      halt(401, { error: 'Authentication required.' }.to_json) unless user
+      halt(403, { error: 'Anonymous users cannot answer the research.' }.to_json) if user.anonymous?
     end
 
     def answers

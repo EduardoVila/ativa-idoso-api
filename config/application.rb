@@ -24,6 +24,7 @@ class AtivaIdosoApi < Sinatra::Base
 
   # Endpoint handlers
   use V1::Authenticate
+  use V1::AnonymousSessions
   use V1::Users
   use V1::Researches
   use V1::Videos

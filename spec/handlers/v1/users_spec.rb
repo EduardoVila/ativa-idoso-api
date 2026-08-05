@@ -21,6 +21,19 @@ RSpec.describe V1::Users, type: :handler do
       end
     end
 
+    context 'when the CPF already exists' do
+      let!(:existing_user) { create(:user, cpf: valid_params_data[:cpf]) }
+      let(:valid_params_data) { build(:user).attributes.slice('name', 'cpf') }
+      let(:valid_params) { valid_params_data.to_json }
+
+      it 'returns the existing user for authentication' do
+        expect { post_request }.not_to change(User, :count)
+
+        expect(last_response.status).to eq(200)
+        expect(last_response.body).to eq(existing_user.serialize_record.to_json)
+      end
+    end
+
     context 'when the request is invalid' do
       let(:valid_params) { {}.to_json }
 

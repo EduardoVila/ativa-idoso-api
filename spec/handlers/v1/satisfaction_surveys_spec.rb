@@ -39,6 +39,15 @@ RSpec.describe V1::SatisfactionSurveys, type: :handler do
       expect(body['submitted']).to be(true)
       expect(body['response']['id']).to eq(response.id)
     end
+
+    it 'does not allow anonymous users to access the survey' do
+      anonymous_user = create(:user, :anonymous)
+      get '/v1/satisfaction_surveys', nil, {
+        'HTTP_AUTHORIZATION' => anonymous_user.access_token
+      }
+
+      expect(last_response.status).to eq(403)
+    end
   end
 
   describe 'POST /v1/satisfaction_surveys' do
